@@ -43,16 +43,47 @@ python -m build
 twine check dist/*
 ```
 
+Also smoke-test the built wheel locally before tagging:
+
+```bash
+python -m venv /tmp/verityspec-wheel
+/tmp/verityspec-wheel/bin/python -m pip install --upgrade pip
+/tmp/verityspec-wheel/bin/pip install dist/*.whl
+/tmp/verityspec-wheel/bin/verity --version
+/tmp/verityspec-wheel/bin/verity pack validate
+/tmp/verityspec-wheel/bin/verity validate examples/basic
+```
+
+If `twine` is installed but the console script is not on `PATH`, run
+`python -m twine check dist/*` and record that in the PR verification notes.
+
+## Release PR
+
+- Create a release-prep issue in the release milestone.
+- Work from a `release/<version>` branch.
+- Include the local release verification commands in the PR body.
+- Wait for all GitHub Actions checks to pass before merging.
+- After merge, verify local `main` and the `main` CI run before tagging.
+
 ## Tag
 
 ```bash
-VERSION=v0.9.0
+VERSION=v0.15.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```
 
 Pushing a `v*` tag runs the release workflow, builds the distributions, checks
 them, smoke-tests the wheel, and creates a GitHub release with the artifacts.
+
+After the release workflow finishes:
+
+- Verify the GitHub release exists for the tag.
+- Verify the wheel and source distribution are attached.
+- Confirm PyPI publishing was not triggered unless explicitly requested.
+- Close the release milestone.
+- Refresh agent context from `AGENTS.md`, `git status`, and the latest commit
+  before continuing with the next sprint.
 
 ## PyPI
 

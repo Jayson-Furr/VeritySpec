@@ -2,8 +2,15 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.15.0
+
 - Added golden security-report fixtures and unit/CLI snapshot coverage for the
   `examples/security` report shape.
+- Documented the required AI operating loop for sprint work, release prep,
+  PR verification, main verification, release tagging, and roadmap upkeep.
+- Added v0.15.0 release notes and roadmap closeout.
 
 ## 0.14.0
 
