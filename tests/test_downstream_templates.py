@@ -13,6 +13,7 @@ DOWNSTREAM_FILES = [
     ROOT / ".github" / "workflows" / "product-contract.yml",
     ROOT / "docs" / "downstream-ci.md",
     ROOT / "templates" / "github-actions" / "product-contract-direct.yml",
+    ROOT / "templates" / "github-actions" / "product-contract-monorepo.yml",
     ROOT / "templates" / "github-actions" / "product-contract-reusable.yml",
     ROOT / "templates" / "github-actions" / "product-contract-with-local-packs.yml",
 ]
@@ -65,11 +66,30 @@ class DownstreamTemplateTests(unittest.TestCase):
         local_pack_template = (
             ROOT / "templates" / "github-actions" / "product-contract-with-local-packs.yml"
         ).read_text(encoding="utf-8")
+        monorepo_template = (ROOT / "templates" / "github-actions" / "product-contract-monorepo.yml").read_text(
+            encoding="utf-8"
+        )
 
         reusable_ref = f"Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@{CURRENT_TAG}"
         self.assertIn(reusable_ref, reusable_template)
         self.assertIn(reusable_ref, local_pack_template)
+        self.assertIn(reusable_ref, monorepo_template)
         self.assertIn("pack-paths: packs/features packs/security", local_pack_template)
+
+    def test_monorepo_downstream_template_checks_multiple_workspaces_with_shared_packs(self) -> None:
+        text = (ROOT / "templates" / "github-actions" / "product-contract-monorepo.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("strategy:", text)
+        self.assertIn("fail-fast: false", text)
+        self.assertIn("matrix:", text)
+        self.assertIn("services/catalog/specs", text)
+        self.assertIn("apps/admin/specs", text)
+        self.assertIn("packages/cli/specs", text)
+        self.assertIn("packs/shared", text)
+        self.assertIn("pack-paths: ${{ matrix.pack_paths }}", text)
+        self.assertIn("strict: ${{ matrix.strict }}", text)
 
     def test_pypi_docs_reference_current_release_tag_and_safeguards(self) -> None:
         text = PYPI_DOC.read_text(encoding="utf-8")

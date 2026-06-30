@@ -11,6 +11,8 @@ Copy one of the maintained templates into a downstream repository as
   VeritySpec workflow.
 - `templates/github-actions/product-contract-with-local-packs.yml`: calls the
   reusable workflow with local external pack paths.
+- `templates/github-actions/product-contract-monorepo.yml`: calls the reusable
+  workflow once per workspace in a monorepo matrix, with shared local packs.
 - `templates/github-actions/product-contract-direct.yml`: installs VeritySpec
   directly and runs the contract commands inline.
 
@@ -103,3 +105,47 @@ jobs:
       workspace: specs/product
       pack-paths: packs/features packs/security
 ```
+
+## Monorepo Workflow
+
+For a monorepo with several VeritySpec workspaces and shared local packs, copy
+`templates/github-actions/product-contract-monorepo.yml` and replace the matrix
+entries with the downstream repository's workspace paths:
+
+```yaml
+name: Product Contract Monorepo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verity:
+    name: ${{ matrix.workspace }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - workspace: services/catalog/specs
+            pack_paths: packs/shared packs/catalog
+            strict: true
+          - workspace: apps/admin/specs
+            pack_paths: packs/shared packs/admin
+            strict: true
+          - workspace: packages/cli/specs
+            pack_paths: packs/shared packs/cli
+            strict: true
+    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.33.0
+    with:
+      workspace: ${{ matrix.workspace }}
+      pack-paths: ${{ matrix.pack_paths }}
+      strict: ${{ matrix.strict }}
+```
+
+Use `packs/shared` for pack contracts reused by multiple workspaces, and add
+workspace-specific pack paths only where those product surfaces need them.

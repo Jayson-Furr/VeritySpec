@@ -19,6 +19,9 @@ verity generate product-impact tests/fixtures/product_impact/baseline tests/fixt
 
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
+Downstream GitHub Actions users can copy
+`templates/github-actions/product-contract-monorepo.yml` to run the reusable
+product-contract workflow once per workspace while sharing local pack paths.
 
 Use product-contract profiles when a workspace has a known enforcement posture:
 

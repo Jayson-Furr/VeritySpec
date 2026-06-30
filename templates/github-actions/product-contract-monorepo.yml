@@ -1,0 +1,32 @@
+name: Product Contract Monorepo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verity:
+    name: ${{ matrix.workspace }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - workspace: services/catalog/specs
+            pack_paths: packs/shared packs/catalog
+            strict: true
+          - workspace: apps/admin/specs
+            pack_paths: packs/shared packs/admin
+            strict: true
+          - workspace: packages/cli/specs
+            pack_paths: packs/shared packs/cli
+            strict: true
+    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.33.0
+    with:
+      workspace: ${{ matrix.workspace }}
+      pack-paths: ${{ matrix.pack_paths }}
+      strict: ${{ matrix.strict }}
