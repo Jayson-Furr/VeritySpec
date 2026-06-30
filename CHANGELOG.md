@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.27.0
+
 - Added product-contract enforcement profiles for release, strict, regulated,
   public API, and internal-tool workflows.
+- Added v0.27.0 release notes and roadmap closeout.
 
 ## 0.26.0
 
