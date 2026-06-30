@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "docs" / "product-surface-pack-boundaries.md"
+ENGINE_DOC = ROOT / "docs" / "engine-product-delivery-packs.md"
 
 
 class ProductSurfaceBoundaryTests(unittest.TestCase):
@@ -14,7 +15,9 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
         packs = (ROOT / "docs" / "packs.md").read_text(encoding="utf-8")
 
         self.assertIn("docs/product-surface-pack-boundaries.md", readme)
+        self.assertIn("docs/engine-product-delivery-packs.md", readme)
         self.assertIn("product-surface-pack-boundaries.md", packs)
+        self.assertIn("engine-product-delivery-packs.md", packs)
 
     def test_boundary_note_defines_expected_surface_packs(self) -> None:
         text = DOC.read_text(encoding="utf-8")
@@ -55,6 +58,24 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
         ]:
             with self.subTest(concern=concern):
                 self.assertIn(concern, text)
+
+    def test_engine_product_delivery_note_defines_future_pack_scope(self) -> None:
+        text = ENGINE_DOC.read_text(encoding="utf-8")
+
+        for phrase in [
+            "GitHub manages workflow. VeritySpec manages truth.",
+            "verity.pack.godot",
+            "verity.pack.unreal",
+            "verity.pack.product-delivery",
+            "unity.agent-context-exporter",
+            "godot.validation-runner",
+            "unreal.gameplay-ability",
+            "product.scope",
+            "verity pack validate",
+            "commercial, legal, marketplace, or certification guarantees",
+        ]:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
 
 
 if __name__ == "__main__":
