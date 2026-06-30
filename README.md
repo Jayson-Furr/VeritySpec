@@ -32,6 +32,7 @@ python3 -m venv .venv
 python -m pip install --upgrade pip setuptools
 pip install -e .
 
+verity --version
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
@@ -47,6 +48,34 @@ Without installation, run the package directly:
 
 ```bash
 PYTHONPATH=src python3 -m verityspec validate examples/basic
+```
+
+## CLI Contract
+
+The contract-checking commands support text and JSON output:
+
+```bash
+verity validate examples/basic --format json
+verity lint examples/basic --strict --format json
+verity readiness examples/basic --strict --format json
+```
+
+Stable exit codes:
+
+| Code | Meaning |
+|---:|---|
+| 0 | Success |
+| 1 | Product contract failed validation, lint, readiness, or generation preflight |
+| 2 | Usage error, including invalid command arguments |
+| 3 | Unexpected internal error |
+
+Minimal CI usage:
+
+```bash
+verity validate examples/basic
+verity lint examples/basic --strict
+verity readiness examples/basic --strict
+verity generate openapi examples/basic --out build/openapi.json
 ```
 
 Run tests:

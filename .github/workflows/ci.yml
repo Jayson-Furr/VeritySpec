@@ -37,6 +37,17 @@ jobs:
       - name: Check example readiness
         run: verity readiness examples/basic --strict
 
+      - name: Check CLI contract
+        run: |
+          mkdir -p build
+          verity --version
+          verity validate examples/basic --format json > build/validate.json
+          verity lint examples/basic --strict --format json > build/lint.json
+          verity readiness examples/basic --strict --format json > build/readiness.json
+          python -m json.tool build/validate.json >/dev/null
+          python -m json.tool build/lint.json >/dev/null
+          python -m json.tool build/readiness.json >/dev/null
+
       - name: Check generators
         run: |
           verity generate openapi examples/basic --out build/openapi.json
@@ -49,4 +60,3 @@ jobs:
           python -m json.tool build/asyncapi.json >/dev/null
           python -m json.tool build/schema-bundle.json >/dev/null
           python -m py_compile build/models.py
-
