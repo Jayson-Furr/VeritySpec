@@ -5,6 +5,8 @@
 - Added built-in `verity.pack.accessibility` with `accessibility.claim`
   records, readiness gates, reference rules, documentation, CI coverage, and
   an executable accessibility example.
+- Added `verity generate accessibility-report` for accessibility claim,
+  ownership, verification, impact, and release-gap summaries.
 
 ## 0.7.0
 

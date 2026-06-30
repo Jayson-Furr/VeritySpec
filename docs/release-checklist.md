@@ -29,6 +29,7 @@ verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
+verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 python -m build
 twine check dist/*

@@ -89,5 +89,5 @@
       "targetKind": "schema.object"
     }
   ],
-  "generators": ["schema-bundle"]
+  "generators": ["schema-bundle", "accessibility-report"]
 }

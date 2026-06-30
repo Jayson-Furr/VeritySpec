@@ -35,8 +35,8 @@ This implementation provides:
 - Readiness gates driven by pack metadata, including conditional pack rules
   for release-blocking policy.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
-  bundles, CLI reference docs, validation reports, security reports, and
-  observability reports, with
+  bundles, CLI reference docs, validation reports, security reports,
+  observability reports, and accessibility reports, with
   OpenAPI path-parameter support and snapshot-tested type/model output
   including nested Python dataclasses.
 - A PrismSpec importer that produces a converted workspace and migration report.
@@ -96,6 +96,7 @@ verity generate cli-reference examples/basic --out build/cli-reference.md
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
+verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
 verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import

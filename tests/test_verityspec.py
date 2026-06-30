@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from verityspec.generators import (
+    generate_accessibility_report,
     generate_asyncapi,
     generate_openapi,
     generate_python_models,
@@ -422,6 +423,37 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(
             ["api.accounts.get", "schema.account"],
             [target["id"] for target in control["targets"]],
+        )
+
+    def test_accessibility_report_summarizes_accessibility_claims(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "accessibility")
+
+        report = generate_accessibility_report(workspace)
+
+        self.assertEqual("accessibility_report", report["type"])
+        self.assertEqual(1, report["claimCount"])
+        self.assertEqual({"checkout-platform": 1}, report["summary"]["byOwner"])
+        self.assertEqual({"wcag-2.2": 1}, report["summary"]["byStandard"])
+        self.assertEqual({"a": 1}, report["summary"]["byLevel"])
+        self.assertEqual({"high": 1}, report["summary"]["byImpact"])
+        self.assertEqual({"verified": 1}, report["summary"]["byCoverage"])
+        self.assertEqual(1, report["summary"]["verifiedClaims"])
+        self.assertEqual([], report["summary"]["criticalUnverified"])
+        self.assertEqual(
+            {
+                "criticalUnverified": [],
+                "claimsWithoutTargets": [],
+                "missingOwners": [],
+                "missingVerificationDates": [],
+            },
+            report["summary"]["releaseGaps"],
+        )
+        claim = report["claims"][0]
+        self.assertEqual("accessibility.claim.checkout_keyboard", claim["id"])
+        self.assertTrue(claim["verified"])
+        self.assertEqual(
+            ["product.accessible_checkout"],
+            [target["id"] for target in claim["targets"]],
         )
 
 
