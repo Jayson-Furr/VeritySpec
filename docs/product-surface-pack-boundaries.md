@@ -4,11 +4,11 @@ VeritySpec should add large product surfaces through deliberate packs, not by
 expanding the core kernel or creating a broad static catalog. This note defines
 the initial boundaries for future GUI, desktop, mobile, and game packs.
 
-`verity.pack.game-core` now provides the first narrow built-in game scope. The
-remaining GUI, desktop, mobile, engine, asset, liveops, evidence, dependency,
-portfolio, and broader game scopes should still use this note to define pack
-ownership, overlap rules, and readiness expectations before implementation
-begins.
+`verity.pack.game-core` and `verity.pack.game-assets` now provide the first
+narrow built-in game scopes. The remaining GUI, desktop, mobile, engine,
+gameplay, content, liveops, evidence, dependency, portfolio, and broader game
+scopes should still use this note to define pack ownership, overlap rules, and
+readiness expectations before implementation begins.
 
 ## Pack Boundary Rule
 
@@ -120,17 +120,21 @@ The first mobile schemas should wait until the pack includes store-submission
 readiness examples and validates at least one iOS or Android platform target
 with explicit permission rationale.
 
-## Game Core and Future Game Packs
+## Game Core, Game Assets, and Future Game Packs
 
-Current pack ID: `verity.pack.game-core`.
+Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`.
 
 The game-core pack describes the first narrow game product-contract surface:
 game product identity, playable modes, game loops, and prototype scope. It is
 not the whole game domain.
 
+The game-assets pack describes the first narrow creative-source surface: GDD
+source records, visual identity records, identity images, and concept art. It
+links creative sources to game-core records without becoming a full asset
+pipeline, content, economy, or engine pack.
+
 Future broader game packs may use pack IDs such as `verity.pack.game`,
-`verity.pack.game-assets`, `verity.pack.gameplay`, `verity.pack.content`, or
-`verity.pack.liveops`.
+`verity.pack.gameplay`, `verity.pack.content`, or `verity.pack.liveops`.
 
 Future game packs should describe game product contracts, especially the bridge
 between game design intent, implementation scope, QA, telemetry, liveops, and

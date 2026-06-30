@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(18, report["recordCount"])
+        self.assertEqual(22, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(9, report["summary"]["trackedSurfaces"])
-        self.assertEqual(9, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(9, report["summary"]["coveredSurfaces"])
+        self.assertEqual(10, report["summary"]["trackedSurfaces"])
+        self.assertEqual(10, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(10, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1039,6 +1039,7 @@ class VeritySpecTests(unittest.TestCase):
                 "compliance": 1,
                 "deployment": 2,
                 "events": 1,
+                "game-assets": 4,
                 "game-core": 4,
                 "observability": 4,
                 "security": 1,
@@ -1056,6 +1057,7 @@ class VeritySpecTests(unittest.TestCase):
         )
         surfaces = {surface["id"]: surface for surface in report["surfaces"]}
         self.assertEqual("verity.pack.api", surfaces["api"]["packId"])
+        self.assertEqual("verity.pack.game-assets", surfaces["game-assets"]["packId"])
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
         self.assertEqual(
@@ -1070,6 +1072,15 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(
             ["deployment.runtime.coverage_api", "deployment.target.coverage_production"],
             [record["id"] for record in surfaces["deployment"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "game.concept-art.coverage_zone",
+                "game.gdd-source.coverage_pitch",
+                "game.identity-image.coverage_key_art",
+                "game.visual-identity.coverage_style",
+            ],
+            [record["id"] for record in surfaces["game-assets"]["records"]],
         )
         self.assertEqual([], report["products"][0]["missingSurfaces"])
 
@@ -1353,6 +1364,46 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("game.product.missing_links", [issue.record_id for issue in issues])
+
+    def test_game_assets_readiness_requires_visual_identity_asset_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "game-assets-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.game-core", "verity.pack.game-assets"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "visual-identity.json").write_text(
+                json.dumps(
+                    {
+                        "id": "game.visual-identity.missing_assets",
+                        "kind": "game.visual-identity",
+                        "name": "Missing Assets",
+                        "description": "Visual identity missing linked asset records.",
+                        "status": "ready",
+                        "owner": "art-direction",
+                        "tone": "Readable.",
+                        "artDirection": "Small fixture.",
+                        "styleKeywords": ["readable"],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("game.visual-identity.missing_assets", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

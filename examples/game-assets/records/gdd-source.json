@@ -1,0 +1,26 @@
+{
+  "id": "game.gdd-source.dream_extraction",
+  "kind": "game.gdd-source",
+  "name": "Dream Extraction GDD",
+  "description": "Creative source document for the Dream Extraction game concept.",
+  "status": "ready",
+  "owner": "creative-direction",
+  "path": "gdd/dream-extraction.md",
+  "sourceType": "markdown",
+  "summary": "Co-op extraction roguelite built around unstable dream zones, memory shards, and timed escape.",
+  "revision": "2026-06-30",
+  "references": [
+    {
+      "type": "derivesRecord",
+      "target": "game.mode.coop_extraction"
+    },
+    {
+      "type": "derivesRecord",
+      "target": "game.loop.extract_escape_upgrade"
+    },
+    {
+      "type": "derivesRecord",
+      "target": "game.prototype-scope.vertical_slice_01"
+    }
+  ]
+}

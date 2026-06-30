@@ -105,6 +105,17 @@ verity readiness examples/game-core --strict
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.game-assets`, include the usual contract
+checks and keep a schema bundle for creative-source, identity, concept-art, and
+agent handoff tooling:
+
+```bash
+verity validate examples/game-assets
+verity lint examples/game-assets --strict
+verity readiness examples/game-assets --strict
+verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 

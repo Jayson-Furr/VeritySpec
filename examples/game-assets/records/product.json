@@ -1,0 +1,19 @@
+{
+  "id": "product.dream_extraction_assets",
+  "kind": "product",
+  "name": "Dream Extraction Assets",
+  "description": "Product contract connecting the Dream Extraction game concept to creative source and visual assets.",
+  "status": "ready",
+  "owner": "creative-direction",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "describes",
+      "target": "game.product.dream_extraction"
+    },
+    {
+      "type": "hasGameAssets",
+      "target": "game.visual-identity.dream_extraction"
+    }
+  ]
+}

@@ -69,6 +69,10 @@ Game-core records use readiness gates to keep early game contracts executable.
 A `game.product` should link to mode, loop, and prototype-scope records before
 strict readiness passes.
 
+Game-assets records use readiness gates to keep creative-source contracts
+traceable. A `game.visual-identity` should link to identity image and concept
+art records before strict readiness passes.
+
 Run readiness checks:
 
 ```bash
@@ -77,6 +81,7 @@ verity readiness examples/basic --strict
 verity readiness examples/basic --profile release
 verity readiness examples/deployment --strict
 verity readiness examples/game-core --strict
+verity readiness examples/game-assets --strict
 verity readiness examples/basic --strict --format json
 ```
 

@@ -40,6 +40,9 @@ verity readiness examples/deployment --strict
 verity validate examples/game-core
 verity lint examples/game-core --strict
 verity readiness examples/game-core --strict
+verity validate examples/game-assets
+verity lint examples/game-assets --strict
+verity readiness examples/game-assets --strict
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity validate tests/fixtures/cross_pack_coverage
@@ -61,6 +64,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
+verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -84,6 +88,7 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/basic
 /tmp/verityspec-wheel/bin/verity validate examples/deployment
 /tmp/verityspec-wheel/bin/verity validate examples/game-core
+/tmp/verityspec-wheel/bin/verity validate examples/game-assets
 ```
 
 If `twine` is installed but the console script is not on `PATH`, run
