@@ -724,11 +724,12 @@ Sprint 51 should release the completed `v0.17.0` scope:
 
 ## v0.18.0
 
-The `v0.18.0` milestone is active.
+The `v0.18.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 52 | Complete | Roadmap-report generator |
+| 53 | Complete | v0.18.0 release preparation |
 
 ## Sprint 52 Priorities
 
@@ -742,6 +743,22 @@ Sprint 52 should make roadmap governance machine-readable:
 - Add library and CLI coverage for the report shape.
 - Update README, generator docs, changelog, and roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 53 Priorities
+
+Sprint 53 should release the completed `v0.18.0` scope:
+
+- Promote Unreleased changelog entries into `0.18.0`.
+- Bump package metadata to `0.18.0`.
+- Add v0.18.0 release notes.
+- Update README badge, latest-release text, install references, workspace
+  package-version text, and release-notes link to `v0.18.0`.
+- Update downstream CI templates, docs, PyPI fallback docs, and reusable
+  workflow release pins to `v0.18.0`.
+- Keep PyPI publishing disabled unless explicitly requested.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.18.0 GitHub release when checks pass.
+- Close the v0.18.0 milestone after release verification.
 
 ## Later Candidates
 
