@@ -111,6 +111,46 @@ In GitHub Actions, prefer explicit `shell: bash` for multi-line Unix command
 steps. Use PowerShell in workflows only when the job targets Windows or needs
 PowerShell-specific behavior.
 
+## Required Operating Loop
+
+AI agents must follow the same development, release, and project-management
+loop that has been used successfully in this repository:
+
+1. Start by reading this file, checking `git status --short --branch`, checking
+   the latest commit, confirming the active shell, and identifying the active
+   issue, milestone, branch, and roadmap section.
+2. Convert substantive work into a public sprint, release, feature, fix, or
+   docs branch with a GitHub issue and milestone before implementation when the
+   work is not already tracked.
+3. Keep work in small executable increments. Read the relevant files first,
+   follow existing patterns, and avoid broad speculative rewrites.
+4. Update behavior, tests, examples, docs, README, changelog, roadmap, release
+   notes, workflow templates, and public version references together when they
+   are part of the same change.
+5. Keep the README release badge, latest-release text, install tag, workspace
+   package-version text, release-notes link, downstream CI pins, and package
+   version aligned during release prep.
+6. Run focused checks first when useful, then the standard local checks. For
+   release work, also build distributions, run `twine check`, and smoke-test
+   the built wheel.
+7. Commit only after local verification. After every commit, re-read this file,
+   check `git status --short --branch`, and check the latest commit before
+   continuing.
+8. Push the branch, open a PR with a concise summary and the exact local
+   verification performed, then watch GitHub Actions until checks pass or fail.
+9. If GitHub Actions is unavailable because of billing, credits, quota, runner
+   availability, or another platform reason, run and record equivalent local
+   checks in the PR and continue from that evidence.
+10. Merge only after checks pass or the local-verification fallback is recorded.
+    After merge, verify local `main`, verify the `main` CI run, and confirm the
+    issue and milestone state.
+11. For authorized releases, use a release-prep branch and PR, merge to `main`,
+    tag from `main`, watch the release workflow, verify the GitHub release and
+    uploaded artifacts, and then close the milestone.
+12. When the active roadmap is caught up, keep the next-20 roadmap planning
+    section populated with concrete future points for fixing, improving,
+    continuing, and expanding the project.
+
 ## Standard Local Checks
 
 Use these checks before committing meaningful changes:

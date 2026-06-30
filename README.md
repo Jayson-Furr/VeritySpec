@@ -49,6 +49,8 @@ This implementation provides:
 - Doctor diagnostics that can be printed to stdout or written as JSON reports.
 - Downstream GitHub Actions templates and a reusable workflow for product-contract enforcement.
 - Golden security-report fixture coverage for stable report-shape review.
+- A canonical AI agent entry point with shell discipline, branch/PR/release
+  workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 
 ## Quick Start
 

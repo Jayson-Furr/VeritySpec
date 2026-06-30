@@ -633,6 +633,9 @@ Sprint 47 should release the completed `v0.15.0` scope:
   package-version text, and release-notes link to `v0.15.0`.
 - Update downstream CI templates, docs, and reusable workflow release pins to
   `v0.15.0`.
+- Codify the required AI operating loop and release checklist steps used for
+  sprint implementation, PR verification, main verification, tagging, release
+  asset checks, and roadmap upkeep.
 - Run local release verification and GitHub Actions.
 - Tag and publish the v0.15.0 GitHub release when checks pass.
 - Close the v0.15.0 milestone after release verification.

@@ -16,6 +16,9 @@ generator and CLI tests.
   absolute workspace path, and package version.
 - Documented security-report golden coverage in generator and security-pack
   docs.
+- Documented the required AI operating loop for sprint work, release prep,
+  PR verification, main verification, release tagging, release asset checks,
+  and roadmap upkeep.
 - Updated README, changelog, roadmap, and downstream CI release pins.
 
 ## Compatibility
