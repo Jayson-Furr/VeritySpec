@@ -843,11 +843,12 @@ Sprint 57 should release the completed `v0.20.0` scope:
 
 ## v0.21.0
 
-The `v0.21.0` milestone is active.
+The `v0.21.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 58 | Active | Structured issue location fields |
+| 58 | Complete | Structured issue location fields |
+| 59 | Complete | v0.21.0 release preparation |
 
 ## Sprint 58 Priorities
 
@@ -862,6 +863,22 @@ Sprint 58 should make JSON diagnostics easier for tools and agents to consume:
 - Update README, changelog, roadmap, contract-intelligence docs, and generator
   docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 59 Priorities
+
+Sprint 59 should release the completed `v0.21.0` scope:
+
+- Promote Unreleased changelog entries into `0.21.0`.
+- Bump package metadata to `0.21.0`.
+- Add v0.21.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.21.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.21.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.21.0 GitHub release when checks pass.
+- Close the v0.21.0 milestone after release verification.
 
 ## Later Candidates
 
