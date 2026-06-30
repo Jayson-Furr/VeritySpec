@@ -7,6 +7,9 @@ Use this checklist for public releases.
 - Confirm `CHANGELOG.md` has an entry for the release.
 - Confirm the version in `pyproject.toml` and `src/verityspec/__init__.py`
   matches the intended tag.
+- Confirm the README release badge, latest-release text, install tag,
+  workspace package-version text, and release-notes link match the intended
+  tag.
 - Run local checks:
 
 ```bash

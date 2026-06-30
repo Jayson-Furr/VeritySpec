@@ -2,11 +2,18 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.13.0
+
 - Added pack authoring coverage proving `verity pack init` scaffolds can be
   loaded by a sample workspace for validation, strict linting, strict
   readiness, and schema-bundle generation.
 - Updated `verity pack init` scaffolds to include a starter `product` to
   generated-kind `uses` reference rule.
+- Added release badge bookkeeping to the AI-agent entry point and release
+  checklist so README release updates include the visible badge.
+- Added v0.13.0 release notes and roadmap closeout.
 
 ## 0.12.0
 
