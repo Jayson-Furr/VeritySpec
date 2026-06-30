@@ -160,6 +160,48 @@ is complete:
 - UI, observability, accessibility, deployment, and compliance packs.
 - Downstream project templates and examples.
 
+## Next 20 Roadmap Points
+
+These points define the next backlog once the active roadmap is caught up. They
+are planning inputs, not release commitments. Convert each point into a GitHub
+issue and milestone before implementation begins.
+
+1. Release `v0.5.0` after Sprint 19 security-pack verification is complete.
+2. Add a security-readiness hardening pass for unverified critical controls.
+3. Add a compatibility test matrix for fixture workspaces across supported
+   workspace spec versions.
+4. Improve validation issue locations for nested schema, readiness, and
+   reference errors.
+5. Add `verity doctor --report-out` for writing diagnostics without shell
+   redirection.
+6. Add `verity init --template` for API, CLI, events, and security starter
+   workspaces.
+7. Add a first `verity.pack.observability` pack for telemetry events, metrics,
+   dashboards, and alert ownership.
+8. Add an observability report generator that summarizes signals, ownership,
+   and release gaps.
+9. Add a first `verity.pack.accessibility` pack for UI accessibility claims,
+   checks, and evidence.
+10. Add an accessibility report generator suitable for release review.
+11. Add a first `verity.pack.compliance` pack that maps controls to frameworks
+    without making legal claims.
+12. Add a compliance matrix generator that joins security, accessibility, and
+    observability evidence.
+13. Improve `verity diff` with machine-readable change severity and breaking
+    change classification.
+14. Add migration dry-run fixtures for every supported workspace version edge.
+15. Add generator plugin metadata so packs can advertise report capabilities
+    more explicitly than a string list.
+16. Add pack authoring tests that verify generated scaffolds can be used by a
+    sample workspace immediately.
+17. Add downstream repository templates for GitHub Actions product-contract
+    enforcement.
+18. Add golden security-report fixtures once the report shape stabilizes.
+19. Add public contribution guidance for proposing new packs and schema
+    changes.
+20. Review package distribution readiness for PyPI trusted publishing and
+    decide whether to publish the `verityspec` package publicly.
+
 ## Working Rule
 
 No sprint is complete unless:
