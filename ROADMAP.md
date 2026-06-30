@@ -29,7 +29,7 @@ The active milestone is `v0.2.0`.
 | 9 | Complete | Version registry, workspace version validation, `verity migrate`, version-aware diffing |
 | 10 | Complete | External pack loading through workspace `packPaths` and CLI `--pack-path` flags |
 | 11 | Complete | Generator maturity, richer OpenAPI/AsyncAPI metadata, golden type/model snapshots |
-| 12 | In progress | CI productization, release notes, action warning cleanup, v0.2.0 release readiness |
+| 12 | Complete | CI productization, release notes, action warning cleanup, v0.2.0 release readiness |
 
 ## Sprint 12 Priorities
 
@@ -37,6 +37,8 @@ Sprint 12 should finish the `v0.2.0` line by making VeritySpec easier to adopt
 from downstream repositories:
 
 - Add a reusable or copy-paste CI workflow for product-contract checks.
+- Add a canonical AI-agent entry point for coding agents.
+- Add a post-commit context refresh rule for AI agents.
 - Add v0.2.0 release notes.
 - Review GitHub Actions version warnings.
 - Run final package build, wheel install, examples, importer, generator, and docs checks.

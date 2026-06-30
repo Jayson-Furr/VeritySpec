@@ -45,7 +45,7 @@ verity --version
 Until PyPI publishing is enabled, install from GitHub:
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.1.0"
+pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.2.0"
 verity --version
 ```
 
@@ -189,6 +189,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 ## Documentation
 
 - [Workspace format](docs/workspace-format.md)
+- [AI agent entry point](AGENTS.md)
 - [Roadmap](ROADMAP.md)
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
@@ -199,6 +200,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Versioning and migrations](docs/versioning-and-migrations.md)
 - [PrismSpec migration](docs/prismspec-migration.md)
 - [CI](docs/ci.md)
+- [Downstream CI](docs/downstream-ci.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)
 

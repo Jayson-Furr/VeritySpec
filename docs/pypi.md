@@ -15,7 +15,7 @@ verity --version
 Until PyPI publishing is enabled, install from GitHub:
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.1.0"
+pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.2.0"
 verity --version
 ```
 
@@ -40,4 +40,3 @@ Before using `publish_pypi=true`:
 3. Run the `Release` workflow manually with `publish_pypi=true`.
 
 No PyPI API token should be committed to this repository.
-

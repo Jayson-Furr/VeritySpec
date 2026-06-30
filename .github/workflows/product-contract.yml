@@ -1,0 +1,77 @@
+name: Product Contract
+
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        description: "Workspace path to validate"
+        required: false
+        default: "."
+        type: string
+      python-version:
+        description: "Python version used to run VeritySpec"
+        required: false
+        default: "3.12"
+        type: string
+      install-command:
+        description: "Command used to install VeritySpec"
+        required: false
+        default: 'pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.2.0"'
+        type: string
+      pack-paths:
+        description: "Space-separated local pack paths"
+        required: false
+        default: ""
+        type: string
+      strict:
+        description: "Run lint and readiness in strict mode"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  product-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install VeritySpec
+        run: ${{ inputs.install-command }}
+
+      - name: Check product contract
+        shell: bash
+        env:
+          WORKSPACE: ${{ inputs.workspace }}
+          PACK_PATHS: ${{ inputs.pack-paths }}
+          STRICT: ${{ inputs.strict }}
+        run: |
+          mkdir -p build
+          pack_args=()
+          for pack_path in $PACK_PATHS; do
+            pack_args+=(--pack-path "$pack_path")
+          done
+
+          verity --version
+          verity validate "$WORKSPACE" "${pack_args[@]}"
+
+          if [ "$STRICT" = "true" ]; then
+            verity lint "$WORKSPACE" --strict "${pack_args[@]}"
+            verity readiness "$WORKSPACE" --strict "${pack_args[@]}"
+          else
+            verity lint "$WORKSPACE" "${pack_args[@]}"
+            verity readiness "$WORKSPACE" "${pack_args[@]}"
+          fi
+
+          verity doctor "$WORKSPACE" --format json "${pack_args[@]}" > build/verity-doctor.json
+          verity generate validation-report "$WORKSPACE" --out build/verity-validation-report.json "${pack_args[@]}"
+          python -m json.tool build/verity-doctor.json >/dev/null
+          python -m json.tool build/verity-validation-report.json >/dev/null

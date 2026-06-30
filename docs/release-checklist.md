@@ -16,6 +16,8 @@ verity pack validate
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity validate tests/fixtures/custom_pack_workspace
+verity validate tests/fixtures/generator_maturity
 python -m build
 twine check dist/*
 ```
@@ -23,8 +25,8 @@ twine check dist/*
 ## Tag
 
 ```bash
-git tag -a v0.1.0 -m "VeritySpec v0.1.0"
-git push origin v0.1.0
+git tag -a v0.2.0 -m "VeritySpec v0.2.0"
+git push origin v0.2.0
 ```
 
 Pushing a `v*` tag runs the release workflow, builds the distributions, checks
