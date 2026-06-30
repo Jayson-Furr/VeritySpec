@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verityspec"
-version = "0.2.0"
+version = "0.3.0"
 description = "Executable product contracts for humans, tools, and agents."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -27,6 +27,9 @@ classifiers = [
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Software Development :: Documentation",
   "Topic :: Software Development :: Quality Assurance"
 ]
