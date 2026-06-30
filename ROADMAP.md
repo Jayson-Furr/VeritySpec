@@ -1165,11 +1165,12 @@ Sprint 73 should release the completed `v0.28.0` scope:
 
 ## v0.29.0
 
-The `v0.29.0` milestone is active.
+The `v0.29.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 74 | In Progress | Cross-pack coverage dashboards |
+| 74 | Complete | Cross-pack coverage dashboards |
+| 75 | Complete | v0.29.0 release preparation |
 
 ## Sprint 74 Priorities
 
@@ -1187,6 +1188,22 @@ Sprint 74 should add cross-pack coverage dashboards:
 - Update CI, release checklist, generator docs, README, AGENTS, changelog, and
   roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 75 Priorities
+
+Sprint 75 should release the completed `v0.29.0` scope:
+
+- Promote Unreleased changelog entries into `0.29.0`.
+- Bump package metadata to `0.29.0`.
+- Add v0.29.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.29.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.29.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.29.0 GitHub release when checks pass.
+- Close the v0.29.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 

@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.29.0
+
 - Added `verity generate coverage-dashboard` for cross-pack product-surface
   coverage summaries across API, CLI, events, security, accessibility,
   observability, compliance, and deployment records.
+- Added v0.29.0 release notes and roadmap closeout.
 
 ## 0.28.0
 
