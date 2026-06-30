@@ -73,9 +73,12 @@ Game-assets records use readiness gates to keep creative-source contracts
 traceable. A `game.visual-identity` should link to identity image and concept
 art records before strict readiness passes.
 
-Unity records use readiness gates to keep implementation contracts executable.
-A `unity.project` should link to package, scene, and build-target records before
-strict readiness passes.
+Unity records use readiness gates to keep implementation and engine-tooling
+contracts executable. A `unity.project` should link to package, shared-library,
+prefab, assembly, scene, and build-target records before strict readiness
+passes. Tooling records such as `unity.scanner`, `unity.validation-runner`,
+`unity.readiness-dashboard`, and `unity.agent-context-exporter` should also
+carry graph links to the Unity records they scan, run, report, or describe.
 
 Gameplay records use readiness gates to keep mechanics and encounters
 implementation-ready. A `game.mechanic` should declare inputs, outputs, and

@@ -39,34 +39,43 @@ certification claims.
 
 Existing pack ID: `verity.pack.unity`.
 
-The current Unity pack covers the first narrow Unity implementation surface:
-Unity projects, package dependencies, scenes, and build targets. Future
-expansion should stay incremental and validated.
+The current Unity pack covers Unity implementation and engine-tooling records:
+projects, package dependencies, packages, shared libraries, prefabs, assembly
+definitions, scanners, validation runners, readiness dashboards,
+agent-context exporters, scenes, and build targets. Future expansion should
+stay incremental and validated.
 
-Useful future record kinds include:
+Delivered engine-tooling record kinds include:
 
 - `unity.package`
 - `unity.shared-library`
 - `unity.prefab`
-- `unity.scriptable-object`
 - `unity.asmdef`
+- `unity.scanner`
+- `unity.validation-runner`
+- `unity.readiness-dashboard`
+- `unity.agent-context-exporter`
+
+Useful future record kinds include:
+
+- `unity.scriptable-object`
 - `unity.addressable-group`
 - `unity.input-action-map`
 - `unity.platform-target`
 - `unity.save-schema`
 - `unity.localization-table`
 - `unity.editor-window`
-- `unity.scanner`
-- `unity.validation-runner`
-- `unity.readiness-dashboard`
-- `unity.agent-context-exporter`
 
 ## Godot Pack
 
 Proposed pack ID: `verity.pack.godot`.
 
 The Godot pack should describe Godot projects, addons, runtime contracts,
-editor surfaces, validation tooling, and agent handoff surfaces.
+editor surfaces, validation tooling, agent handoff surfaces, and the
+engine-specific contracts needed by games made with Godot. Generic game design,
+gameplay, content, economy, progression, liveops, and evidence records should
+still come from the game-oriented packs; the Godot pack should own the Godot
+implementation boundary.
 
 Useful future record kinds include:
 
@@ -96,7 +105,11 @@ Useful future record kinds include:
 Proposed pack ID: `verity.pack.unreal`.
 
 The Unreal pack should describe Unreal projects, plugins, modules, assets,
-build targets, editor tools, validation tooling, and agent handoff surfaces.
+build targets, editor tools, validation tooling, agent handoff surfaces, and
+the engine-specific contracts needed by games made with Unreal. Generic game
+design, gameplay, content, economy, progression, liveops, and evidence records
+should still come from the game-oriented packs; the Unreal pack should own the
+Unreal implementation boundary.
 
 Useful future record kinds include:
 

@@ -7,9 +7,9 @@ the initial boundaries for future GUI, desktop, mobile, and game packs.
 `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
 `verity.pack.gameplay`, `verity.pack.content`, and `verity.pack.economy` now
 provide the first narrow built-in game and engine scopes. The remaining GUI,
-desktop, mobile, progression, liveops, evidence, dependency, portfolio, and broader game scopes
-should still use this note to define pack ownership, overlap rules, and
-readiness expectations before implementation begins.
+desktop, mobile, progression, liveops, evidence, dependency, portfolio, and
+broader game scopes should still use this note to define pack ownership,
+overlap rules, and readiness expectations before implementation begins.
 
 ## Pack Boundary Rule
 
@@ -136,10 +136,12 @@ source records, visual identity records, identity images, and concept art. It
 links creative sources to game-core records without becoming a full asset
 pipeline, content, economy, or engine pack.
 
-The Unity pack describes the first narrow engine-specific implementation
-surface: Unity project records, package dependencies, scenes, and build
-targets. It does not define generic gameplay, content, liveops, evidence, or
-workspace-dependency behavior.
+The Unity pack describes the engine-specific implementation and tooling
+surface: Unity project records, package dependencies, packages, shared
+libraries, prefabs, assembly definitions, scanners, validation runners,
+readiness dashboards, agent-context exporters, scenes, and build targets. It
+does not define generic gameplay, content, economy, progression, liveops,
+evidence, or workspace-dependency behavior.
 
 The gameplay pack describes the first narrow playable-system surface: mechanics,
 abilities, rules, and encounters. It does not define content manifests,

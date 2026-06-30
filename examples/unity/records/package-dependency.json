@@ -1,5 +1,5 @@
 {
-  "id": "unity.package.input_system",
+  "id": "unity.package-dependency.input_system",
   "kind": "unity.package-dependency",
   "name": "Unity Input System",
   "description": "Unity package dependency for prototype player controls.",

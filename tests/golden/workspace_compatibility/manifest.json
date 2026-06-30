@@ -329,17 +329,25 @@
         "verity.pack.game-core",
         "verity.pack.unity"
       ],
-      "recordCount": 9,
+      "recordCount": 17,
       "recordKinds": {
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
         "game.prototype-scope": 1,
         "product": 1,
+        "unity.agent-context-exporter": 1,
+        "unity.asmdef": 1,
         "unity.build-target": 1,
+        "unity.package": 1,
         "unity.package-dependency": 1,
+        "unity.prefab": 1,
         "unity.project": 1,
-        "unity.scene": 1
+        "unity.readiness-dashboard": 1,
+        "unity.scanner": 1,
+        "unity.scene": 1,
+        "unity.shared-library": 1,
+        "unity.validation-runner": 1
       },
       "compatibilityVariants": [
         {

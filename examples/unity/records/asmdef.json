@@ -1,0 +1,20 @@
+{
+  "id": "unity.asmdef.dream_runtime",
+  "kind": "unity.asmdef",
+  "name": "Dream Extraction Runtime Assembly",
+  "description": "Assembly definition for runtime prototype scripts and generated Unity tooling.",
+  "status": "ready",
+  "owner": "unity-engineering",
+  "asmdefPath": "Assets/DreamExtraction/DreamExtraction.Runtime.asmdef",
+  "assemblyName": "DreamExtraction.Runtime",
+  "defineConstraints": [],
+  "referencedAssemblies": [
+    "Unity.InputSystem"
+  ],
+  "references": [
+    {
+      "type": "usesPackage",
+      "target": "unity.package.input_system"
+    }
+  ]
+}

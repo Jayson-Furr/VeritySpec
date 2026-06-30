@@ -1,0 +1,24 @@
+{
+  "id": "unity.package.input_system",
+  "kind": "unity.package",
+  "name": "Unity Input System Package",
+  "description": "Unity package contract for prototype player controls.",
+  "status": "ready",
+  "owner": "unity-engineering",
+  "packageName": "com.unity.inputsystem",
+  "version": "1.7.0",
+  "source": "unity-registry",
+  "packagePath": "Packages/com.unity.inputsystem",
+  "purpose": "Provides input action maps for co-op prototype movement and interaction controls.",
+  "capabilities": [
+    "input-actions",
+    "gamepad",
+    "keyboard-mouse"
+  ],
+  "references": [
+    {
+      "type": "declaredByDependency",
+      "target": "unity.package-dependency.input_system"
+    }
+  ]
+}

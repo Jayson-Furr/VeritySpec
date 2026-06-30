@@ -1586,7 +1586,7 @@ class VerityCliTests(unittest.TestCase):
 
         self.assertEqual(0, result.returncode)
         self.assertEqual("coverage_dashboard", payload["type"])
-        self.assertEqual(39, payload["recordCount"])
+        self.assertEqual(47, payload["recordCount"])
         self.assertEqual(14, payload["summary"]["trackedSurfaces"])
         self.assertEqual(14, payload["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, payload["summary"]["coveragePercent"])

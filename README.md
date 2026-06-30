@@ -26,8 +26,8 @@ This implementation provides:
 - Built-in packs for core product records, APIs, CLIs, events, security
   controls, observability signals, accessibility claims, compliance mappings,
   deployment targets, early game product contracts, and creative game asset
-  contracts, Unity implementation contracts, gameplay contracts, and game
-  content contracts, and economy contracts.
+  contracts, Unity implementation and engine-tooling contracts, gameplay
+  contracts, game content contracts, and economy contracts.
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
@@ -119,6 +119,7 @@ verity validate docs/fixtures/pack-scaffold/workspace
 verity validate examples/game-core
 verity validate examples/game-assets
 verity validate examples/unity
+verity graph examples/unity
 verity validate examples/gameplay
 verity validate examples/content
 verity validate examples/economy
@@ -316,7 +317,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/deployment](examples/deployment/verityspec.json): focused deployment target workspace.
 - [examples/game-core](examples/game-core/verityspec.json): focused game product-contract workspace.
 - [examples/game-assets](examples/game-assets/verityspec.json): focused game creative-source workspace.
-- [examples/unity](examples/unity/verityspec.json): focused Unity implementation workspace.
+- [examples/unity](examples/unity/verityspec.json): focused Unity implementation and engine-tooling workspace.
 - [examples/gameplay](examples/gameplay/verityspec.json): focused gameplay mechanic and encounter workspace.
 - [examples/content](examples/content/verityspec.json): focused game content manifest workspace.
 - [examples/economy](examples/economy/verityspec.json): focused game economy workspace.
