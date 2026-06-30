@@ -37,8 +37,19 @@ def issue_count(issues: Iterable[Issue], severity: str) -> int:
     return sum(1 for issue in issues if issue.severity == severity)
 
 
+def warning_count(issues: Iterable[Issue]) -> int:
+    return issue_count(issues, "warning")
+
+
 def has_errors(issues: Iterable[Issue]) -> bool:
     return any(issue.severity == "error" for issue in issues)
+
+
+def should_fail(issues: Iterable[Issue], fail_on: str = "error") -> bool:
+    materialized = list(issues)
+    if fail_on == "warning":
+        return any(issue.severity in {"error", "warning"} for issue in materialized)
+    return has_errors(materialized)
 
 
 def apply_strict(issues: Iterable[Issue]) -> list[Issue]:
@@ -50,7 +61,18 @@ def apply_strict(issues: Iterable[Issue]) -> list[Issue]:
     ]
 
 
+def dedupe_issues(issues: Iterable[Issue]) -> list[Issue]:
+    seen: set[tuple[str, str, str, Optional[str], Optional[str]]] = set()
+    result: list[Issue] = []
+    for issue in issues:
+        key = (issue.severity, issue.code, issue.message, issue.location, issue.record_id)
+        if key in seen:
+            continue
+        seen.add(key)
+        result.append(issue)
+    return result
+
+
 def print_issues(issues: Iterable[Issue], out: TextIO) -> None:
     for issue in issues:
         print(issue.format(), file=out)
-

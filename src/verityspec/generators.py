@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 import keyword
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from . import __version__
 from .issues import Issue, issue_count
 from .packs import PackRegistry
 from .workspace import Record, Workspace
@@ -286,9 +288,16 @@ def generate_validation_report(
     warnings = issue_count(issues, "warning")
     return {
         "type": "validation_report",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "verityVersion": __version__,
         "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
         "specVersion": workspace.config.get("specVersion"),
         "packs": workspace.pack_ids,
+        "packVersions": {
+            pack_id: pack.version
+            for pack_id, pack in sorted(registry.packs.items(), key=lambda item: item[0])
+        },
         "knownKinds": registry.known_kinds,
         "recordCount": len(workspace.records),
         "passed": errors == 0,

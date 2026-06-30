@@ -19,6 +19,9 @@ Run graph output:
 ```bash
 verity graph examples/basic
 verity graph examples/basic --format json
+verity graph examples/basic --focus api.users.create
+verity graph examples/basic --orphans
+verity graph tests/fixtures/broken_semantics --cycles --format json
 ```
 
 Run semantic validation:
@@ -26,4 +29,3 @@ Run semantic validation:
 ```bash
 verity validate examples/basic --strict
 ```
-

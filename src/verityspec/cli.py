@@ -8,6 +8,7 @@ from typing import Callable
 
 from . import __version__
 from .diffing import diff_to_text, diff_workspaces
+from .explain import ISSUE_EXPLANATIONS, explain_issue
 from .generators import (
     generate_asyncapi,
     generate_cli_reference,
@@ -20,7 +21,7 @@ from .generators import (
 )
 from .graph import build_graph, graph_to_text
 from .importers.prismspec import import_prismspec
-from .issues import has_errors, issue_count, print_issues
+from .issues import dedupe_issues, has_errors, issue_count, print_issues, should_fail
 from .pack_validation import list_builtin_pack_summaries, validate_builtin_packs
 from .packs import load_pack_registry
 from .readiness import evaluate_readiness
@@ -41,7 +42,11 @@ def load_context(path: str):
 
 
 def issue_exit(issues) -> int:
-    return EXIT_CONTRACT_FAILED if has_errors(issues) else EXIT_SUCCESS
+    return EXIT_CONTRACT_FAILED if should_fail(issues) else EXIT_SUCCESS
+
+
+def issue_exit_with_fail_on(issues, fail_on: str) -> int:
+    return EXIT_CONTRACT_FAILED if should_fail(issues, fail_on) else EXIT_SUCCESS
 
 
 def print_issue_summary(label: str, issues) -> None:
@@ -113,14 +118,14 @@ def cmd_validate(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace)
     issues = validate_workspace(workspace, registry, strict=args.strict)
     print_issue_result("Validation", "validate", issues, args.format)
-    return issue_exit(issues)
+    return issue_exit_with_fail_on(issues, args.fail_on)
 
 
 def cmd_lint(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace)
     issues = lint_workspace(workspace, registry, strict=args.strict)
     print_issue_result("Lint", "lint", issues, args.format)
-    return issue_exit(issues)
+    return issue_exit_with_fail_on(issues, args.fail_on)
 
 
 def cmd_readiness(args: argparse.Namespace) -> int:
@@ -129,17 +134,68 @@ def cmd_readiness(args: argparse.Namespace) -> int:
     readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
     issues = validation_issues + readiness_issues
     print_issue_result("Readiness", "readiness", issues, args.format)
-    return issue_exit(issues)
+    return issue_exit_with_fail_on(issues, args.fail_on)
 
 
 def cmd_graph(args: argparse.Namespace) -> int:
     workspace, _registry = load_context(args.workspace)
     graph = build_graph(workspace)
+    if args.focus:
+        graph = focus_graph(graph, args.focus)
+    if args.orphans:
+        graph = orphan_graph(graph)
+    if args.cycles:
+        graph = cycle_graph(graph)
     if args.format == "json":
         print(json.dumps(graph, indent=2))
     else:
         print(graph_to_text(graph))
     return EXIT_SUCCESS
+
+
+def focus_graph(graph: dict, focus_id: str) -> dict:
+    related = {focus_id}
+    edges = []
+    for edge in graph["edges"]:
+        if edge["source"] == focus_id or edge["target"] == focus_id:
+            edges.append(edge)
+            related.add(edge["source"])
+            related.add(edge["target"])
+    nodes = [node for node in graph["nodes"] if node["id"] in related]
+    return {"nodes": nodes, "edges": edges}
+
+
+def orphan_graph(graph: dict) -> dict:
+    connected = set()
+    for edge in graph["edges"]:
+        connected.add(edge["source"])
+        connected.add(edge["target"])
+    nodes = [
+        node
+        for node in graph["nodes"]
+        if node["id"] not in connected and node["kind"] not in {"product", "schema.object"}
+    ]
+    return {"nodes": nodes, "edges": []}
+
+
+def cycle_graph(graph: dict) -> dict:
+    adjacency: dict[str, list[str]] = {node["id"]: [] for node in graph["nodes"]}
+    for edge in graph["edges"]:
+        adjacency.setdefault(edge["source"], []).append(edge["target"])
+    from .validation import find_cycles
+
+    cycles = find_cycles(adjacency)
+    cycle_nodes = {record_id for cycle in cycles for record_id in cycle}
+    cycle_edges = [
+        edge
+        for edge in graph["edges"]
+        if edge["source"] in cycle_nodes and edge["target"] in cycle_nodes
+    ]
+    return {
+        "nodes": [node for node in graph["nodes"] if node["id"] in cycle_nodes],
+        "edges": cycle_edges,
+        "cycles": cycles,
+    }
 
 
 def cmd_diff(args: argparse.Namespace) -> int:
@@ -197,6 +253,71 @@ def cmd_import(args: argparse.Namespace) -> int:
     return EXIT_USAGE_ERROR
 
 
+def cmd_doctor(args: argparse.Namespace) -> int:
+    workspace, registry = load_context(args.workspace)
+    validation_issues = validate_workspace(workspace, registry, strict=args.strict)
+    lint_issues = lint_workspace(workspace, registry, strict=args.strict)
+    readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
+    issues = dedupe_issues(validation_issues + lint_issues + readiness_issues)
+    graph = build_graph(workspace)
+    result = {
+        "command": "doctor",
+        "workspace": str(workspace.base_path),
+        "packs": workspace.pack_ids,
+        "records": len(workspace.records),
+        "graph": {
+            "nodes": len(graph["nodes"]),
+            "edges": len(graph["edges"]),
+        },
+        "passed": not should_fail(issues, args.fail_on),
+        "summary": {
+            "errors": issue_count(issues, "error"),
+            "warnings": issue_count(issues, "warning"),
+            "issues": len(issues),
+        },
+        "issues": [issue.to_dict() for issue in issues],
+    }
+    if args.format == "json":
+        print(json.dumps(result, indent=2))
+    else:
+        print(f"Workspace: {result['workspace']}")
+        print(f"Records: {result['records']}")
+        print(f"Graph: {result['graph']['nodes']} node(s), {result['graph']['edges']} edge(s)")
+        print_issue_summary("Doctor", issues)
+        print_issues(issues, sys.stdout)
+    return EXIT_CONTRACT_FAILED if not result["passed"] else EXIT_SUCCESS
+
+
+def cmd_explain(args: argparse.Namespace) -> int:
+    if args.code:
+        explanation = explain_issue(args.code)
+        if explanation is None:
+            print(f"Unknown issue code: {args.code}", file=sys.stderr)
+            return EXIT_USAGE_ERROR
+        payload = {"code": args.code, **explanation}
+        if args.format == "json":
+            print(json.dumps(payload, indent=2))
+        else:
+            print(f"{args.code}: {payload['title']}")
+            print(f"Severity: {payload['severity']}")
+            print(payload["description"])
+            print(f"Resolution: {payload['resolution']}")
+        return EXIT_SUCCESS
+
+    payload = {
+        "issueCodes": [
+            {"code": code, **explanation}
+            for code, explanation in sorted(ISSUE_EXPLANATIONS.items())
+        ]
+    }
+    if args.format == "json":
+        print(json.dumps(payload, indent=2))
+    else:
+        for item in payload["issueCodes"]:
+            print(f"{item['code']} - {item['title']}")
+    return EXIT_SUCCESS
+
+
 def cmd_pack_list(args: argparse.Namespace) -> int:
     packs = list_builtin_pack_summaries()
     if args.format == "json":
@@ -230,23 +351,41 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("workspace")
     validate_parser.add_argument("--strict", action="store_true")
     validate_parser.add_argument("--format", choices=["text", "json"], default="text")
+    validate_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
     validate_parser.set_defaults(func=cmd_validate)
 
     lint_parser = subparsers.add_parser("lint", help="Lint a workspace.")
     lint_parser.add_argument("workspace")
     lint_parser.add_argument("--strict", action="store_true")
     lint_parser.add_argument("--format", choices=["text", "json"], default="text")
+    lint_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
     lint_parser.set_defaults(func=cmd_lint)
 
     readiness_parser = subparsers.add_parser("readiness", help="Evaluate release readiness gates.")
     readiness_parser.add_argument("workspace")
     readiness_parser.add_argument("--strict", action="store_true")
     readiness_parser.add_argument("--format", choices=["text", "json"], default="text")
+    readiness_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
     readiness_parser.set_defaults(func=cmd_readiness)
+
+    doctor_parser = subparsers.add_parser("doctor", help="Run diagnostics for a workspace.")
+    doctor_parser.add_argument("workspace")
+    doctor_parser.add_argument("--strict", action="store_true")
+    doctor_parser.add_argument("--format", choices=["text", "json"], default="text")
+    doctor_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    doctor_parser.set_defaults(func=cmd_doctor)
+
+    explain_parser = subparsers.add_parser("explain", help="Explain a validation issue code.")
+    explain_parser.add_argument("code", nargs="?")
+    explain_parser.add_argument("--format", choices=["text", "json"], default="text")
+    explain_parser.set_defaults(func=cmd_explain)
 
     graph_parser = subparsers.add_parser("graph", help="Print the workspace reference graph.")
     graph_parser.add_argument("workspace")
     graph_parser.add_argument("--format", choices=["text", "json"], default="text")
+    graph_parser.add_argument("--focus")
+    graph_parser.add_argument("--orphans", action="store_true")
+    graph_parser.add_argument("--cycles", action="store_true")
     graph_parser.set_defaults(func=cmd_graph)
 
     diff_parser = subparsers.add_parser("diff", help="Diff two workspaces.")

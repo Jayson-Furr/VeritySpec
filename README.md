@@ -62,6 +62,8 @@ verity pack validate
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity doctor examples/basic
+verity explain reference.missing
 verity graph examples/basic
 verity generate openapi examples/basic --out build/openapi.json
 verity generate asyncapi examples/basic --out build/asyncapi.json
@@ -85,6 +87,7 @@ The contract-checking commands support text and JSON output:
 verity validate examples/basic --format json
 verity lint examples/basic --strict --format json
 verity readiness examples/basic --strict --format json
+verity doctor examples/basic --format json
 ```
 
 Stable exit codes:
@@ -182,6 +185,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)
+- [Contract intelligence](docs/contract-intelligence.md)
 - [CI](docs/ci.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)

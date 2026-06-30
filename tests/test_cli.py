@@ -51,6 +51,40 @@ class VerityCliTests(unittest.TestCase):
         self.assertTrue(payload["passed"])
         self.assertEqual("readiness", payload["command"])
 
+    def test_doctor_json_output(self) -> None:
+        result = verity_command("doctor", "examples/basic", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("doctor", payload["command"])
+        self.assertEqual(8, payload["records"])
+
+    def test_explain_issue_code_json_output(self) -> None:
+        result = verity_command("explain", "reference.missing", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("reference.missing", payload["code"])
+        self.assertEqual("Missing reference target", payload["title"])
+
+    def test_graph_focus_json_output(self) -> None:
+        result = verity_command("graph", "examples/basic", "--focus", "api.users.create", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        node_ids = {node["id"] for node in payload["nodes"]}
+        self.assertIn("api.users.create", node_ids)
+        self.assertIn("schema.create_user_request", node_ids)
+        self.assertIn("event.user.created", node_ids)
+
+    def test_graph_cycles_json_output(self) -> None:
+        result = verity_command("graph", "tests/fixtures/broken_semantics", "--cycles", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["cycles"])
+
     def test_lint_strict_json_output(self) -> None:
         result = verity_command("lint", "examples/basic", "--strict", "--format", "json")
 
@@ -95,6 +129,58 @@ class VerityCliTests(unittest.TestCase):
         self.assertFalse(payload["passed"])
         self.assertEqual(1, payload["summary"]["errors"])
         self.assertEqual("reference.missing", payload["issues"][0]["code"])
+
+    def test_fail_on_warning_exit_code(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "warning-only",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.warning_only",
+                        "kind": "product",
+                        "name": "Warning Only",
+                        "description": "A workspace with a warning but no validation error.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "schema.json").write_text(
+                json.dumps(
+                    {
+                        "id": "schema.unused",
+                        "kind": "schema.object",
+                        "name": "Unused Schema",
+                        "description": "Unused by design.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "jsonSchema": {"type": "object", "properties": {}},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            default_result = verity_command("validate", str(root), "--format", "json")
+            fail_on_warning_result = verity_command(
+                "validate", str(root), "--format", "json", "--fail-on", "warning"
+            )
+
+        self.assertEqual(0, default_result.returncode)
+        self.assertEqual(1, fail_on_warning_result.returncode)
 
     def test_usage_error_exit_code(self) -> None:
         result = verity_command("unknown-command")

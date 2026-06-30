@@ -7,6 +7,7 @@ verity pack validate
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity doctor examples/basic --fail-on warning
 verity generate validation-report examples/basic --out build/validation-report.json
 ```
 

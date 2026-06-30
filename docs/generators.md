@@ -17,3 +17,11 @@ Most generators run validation first and fail if the product contract has
 errors. `validation-report` is special: it always writes the report, then exits
 with the validation result.
 
+Validation reports include:
+
+- Generation timestamp
+- VeritySpec CLI version
+- Workspace path
+- Loaded pack versions
+- Known record kinds
+- Issue summary and full issue list

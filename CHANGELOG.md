@@ -12,3 +12,4 @@
 - Added Sprint 4 examples and documentation: focused API, CLI, events, and broken workspaces plus docs for workspace format, lifecycle, readiness, generators, graph checks, and CI.
 - Added Sprint 5 release automation: package build checks, tag-driven GitHub releases, PyPI publishing preparation, and release checklist.
 - Added Sprint 6 public package polish: README badges, install guidance, PyPI setup docs, and GitHub `pypi` environment preparation.
+- Added Sprint 7 contract intelligence: `doctor`, `explain`, `--fail-on`, graph filters, richer validation report metadata, and CI coverage.
