@@ -4,7 +4,7 @@ from typing import Any
 
 from .issues import Issue
 from .packs import PackRegistry
-from .workspace import Workspace
+from .workspace import Record, Workspace
 
 
 def is_missing(value: Any) -> bool:
@@ -20,6 +20,25 @@ def get_field(data: dict[str, Any], path: str) -> Any:
     return current
 
 
+def is_control_verified(record: Record) -> bool:
+    """Return True when a record satisfies the standard verification envelope.
+
+    A record is considered verified when its `coverage` is `verified`, its
+    `verification.method` is not `not-verified`, and it carries non-empty
+    `verification.evidence`. Packs that declare `requireVerifiedForRisk` gates
+    rely on this predicate.
+    """
+    verification = record.data.get("verification")
+    if not isinstance(verification, dict):
+        return False
+    return (
+        record.data.get("coverage") == "verified"
+        and verification.get("method") != "not-verified"
+        and isinstance(verification.get("evidence"), str)
+        and bool(verification.get("evidence", "").strip())
+    )
+
+
 def evaluate_readiness(
     workspace: Workspace, registry: PackRegistry, strict: bool = False
 ) -> list[Issue]:
@@ -32,6 +51,10 @@ def evaluate_readiness(
             continue
         required = [field for field in gate.get("required", []) if isinstance(field, str)]
         min_items = gate.get("minItems", {})
+        require_verified_for_risk = gate.get("requireVerifiedForRisk", [])
+        if not isinstance(require_verified_for_risk, list):
+            require_verified_for_risk = []
+        risk_levels = {str(value) for value in require_verified_for_risk if isinstance(value, str)}
         gate_id = gate.get("id", "readiness.gate")
 
         for record in workspace.records:
@@ -73,6 +96,19 @@ def evaluate_readiness(
                                 record.id,
                             )
                         )
+
+            if risk_levels and str(record.data.get("riskLevel")) in risk_levels:
+                if not is_control_verified(record):
+                    issues.append(
+                        Issue(
+                            severity,
+                            "readiness.unverified_critical",
+                            f"Readiness gate {gate_id} requires risk level "
+                            f"'{record.data.get('riskLevel')}' controls to be verified.",
+                            record.location,
+                            record.id,
+                        )
+                    )
 
     return issues
 

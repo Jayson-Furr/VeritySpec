@@ -22,6 +22,20 @@ Required release fields include:
 - `verification.evidence`
 - at least one `references` item
 
+## Readiness Gates
+
+The `security.control.release` readiness gate enforces the required fields and
+references above, plus a `requireVerifiedForRisk` rule: security controls whose
+`riskLevel` is `critical` must be **verified** before they pass release
+readiness. A control is verified when `coverage` is `verified`,
+`verification.method` is not `not-verified`, and `verification.evidence` is a
+non-empty string.
+
+Unverified critical controls fail `verity readiness --strict` with the
+`readiness.unverified_critical` issue code instead of only appearing in the
+generated security report. Lower-risk unverified controls still surface in the
+security report but do not fail readiness.
+
 Use explicit references to connect controls to product surfaces:
 
 ```json

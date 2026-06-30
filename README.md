@@ -29,7 +29,9 @@ This implementation provides:
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
   records, unused schemas, reference cycles, and workspace spec versions.
-- Readiness gates driven by pack metadata.
+- Readiness gates driven by pack metadata, including pack-declared
+  `requireVerifiedForRisk` rules so critical unverified security controls fail
+  release readiness (`readiness.unverified_critical`).
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, and security reports, with
   OpenAPI path-parameter support and snapshot-tested type/model output

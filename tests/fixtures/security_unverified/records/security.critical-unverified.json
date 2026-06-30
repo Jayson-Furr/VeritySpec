@@ -1,0 +1,24 @@
+{
+  "id": "security.control.critical_unverified",
+  "kind": "security.control",
+  "name": "Critical Unverified Control",
+  "description": "A critical control that has not been verified yet, used to exercise the readiness gate.",
+  "status": "draft",
+  "owner": "platform-security",
+  "category": "authorization",
+  "controlType": "preventive",
+  "riskLevel": "critical",
+  "objective": "Ensure critical controls must be verified before release readiness.",
+  "coverage": "planned",
+  "verification": {
+    "method": "manual-review",
+    "evidence": "Pending scheduled review",
+    "lastVerified": "2026-06-30"
+  },
+  "references": [
+    {
+      "type": "appliesTo",
+      "target": "product.unverified_critical"
+    }
+  ]
+}

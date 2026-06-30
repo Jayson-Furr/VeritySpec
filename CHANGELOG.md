@@ -2,7 +2,17 @@
 
 ## Unreleased
 
-- No changes yet.
+- Hardened the `security.control.release` readiness gate so critical
+  unverified security controls fail release readiness with the new
+  `readiness.unverified_critical` issue code instead of only appearing in the
+  generated security report.
+- Added pack-manifest support for the `requireVerifiedForRisk` readiness gate
+  field, validated against the kind's `riskLevel` enum.
+- Added the `tests/fixtures/security_unverified` fixture and tests covering
+  the critical-unverified readiness failure and the verified security example
+  still passing.
+- Reused the shared `is_control_verified` predicate from readiness in the
+  security report generator to keep verification semantics in one place.
 
 ## 0.5.0
 

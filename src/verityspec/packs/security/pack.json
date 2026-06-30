@@ -25,7 +25,8 @@
       ],
       "minItems": {
         "references": 1
-      }
+      },
+      "requireVerifiedForRisk": ["critical"]
     }
   ],
   "referenceRules": [

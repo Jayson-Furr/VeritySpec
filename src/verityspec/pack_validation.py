@@ -163,6 +163,36 @@ def validate_pack_declarations_for_pack(pack: Pack) -> list[Issue]:
                 )
             )
 
+        declared_risks = gate.get("requireVerifiedForRisk", [])
+        if isinstance(declared_risks, list):
+            risk_schema = pack.schemas.get(kind, None)
+            risk_enum = (
+                risk_schema.schema.get("properties", {}).get("riskLevel", {}).get("enum")
+                if risk_schema is not None
+                else None
+            )
+            if isinstance(risk_enum, list):
+                allowed = set(str(value) for value in risk_enum)
+                for value in declared_risks:
+                    if not isinstance(value, str) or value not in allowed:
+                        issues.append(
+                            Issue(
+                                "error",
+                                "pack.readiness.invalid_risk",
+                                f"Readiness gate 'requireVerifiedForRisk' value '{value}' is not a 'riskLevel' of kind '{kind}'.",
+                                str(manifest_path),
+                            )
+                        )
+            elif not all(isinstance(value, str) and value for value in declared_risks):
+                issues.append(
+                    Issue(
+                        "error",
+                        "pack.readiness.invalid_risk",
+                        "Readiness gate 'requireVerifiedForRisk' must be a list of non-empty strings.",
+                        str(manifest_path),
+                    )
+                )
+
     for generator in manifest.get("generators", []):
         if generator not in KNOWN_GENERATORS:
             issues.append(

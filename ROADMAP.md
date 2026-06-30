@@ -140,6 +140,7 @@ The `v0.5.0` milestone is released.
 |---:|---|---|
 | 19 | Complete | Security pack foundation and security report generation |
 | 20 | Complete | v0.5.0 release preparation |
+| 21 | Complete | Security readiness hardening for unverified critical controls |
 
 ## Sprint 19 Priorities
 
@@ -165,6 +166,24 @@ Sprint 20 should release the completed `v0.5.0` scope:
 - Tag and publish the v0.5.0 GitHub release when checks pass.
 - Close the v0.5.0 milestone after release verification.
 
+## Sprint 21 Priorities
+
+Sprint 21 should harden security-control readiness so critical unverified
+controls fail release readiness instead of only appearing in generated reports:
+
+- Add pack-manifest support for the `requireVerifiedForRisk` readiness gate
+  field, validated against the kind's `riskLevel` enum.
+- Gate `security.control` records with `riskLevel: critical` on the standard
+  verification predicate (`coverage: verified`, non-`not-verified` method,
+  non-empty evidence).
+- Emit the `readiness.unverified_critical` issue code from
+  `verity readiness --strict` for critical unverified controls.
+- Reuse the shared `is_control_verified` predicate in the security report
+  generator so verification semantics live in one place.
+- Add the `tests/fixtures/security_unverified` fixture and tests covering the
+  new failure and the verified security example still passing.
+- Update README, changelog, roadmap, security-pack docs, and SECURITY notes.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -185,7 +204,8 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a security-readiness hardening pass for unverified critical controls.
+1. Extend `requireVerifiedForRisk` to high-risk controls once example
+   coverage data exists, with a migration note for downstream workspaces.
 2. Add a compatibility test matrix for fixture workspaces across supported
    workspace spec versions.
 3. Improve validation issue locations for nested schema, readiness, and

@@ -68,6 +68,14 @@
               "type": "integer",
               "minimum": 0
             }
+          },
+          "requireVerifiedForRisk": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "default": []
           }
         }
       }

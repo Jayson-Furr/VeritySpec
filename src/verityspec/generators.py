@@ -10,6 +10,7 @@ from typing import Any
 from . import __version__
 from .issues import Issue, issue_count
 from .packs import PackRegistry
+from .readiness import is_control_verified
 from .workspace import Record, Workspace
 
 
@@ -571,15 +572,7 @@ def security_control_targets(record: Record, records_by_id: dict[str, Record]) -
 
 
 def is_security_control_verified(record: Record) -> bool:
-    verification = record.data.get("verification")
-    if not isinstance(verification, dict):
-        return False
-    return (
-        record.data.get("coverage") == "verified"
-        and verification.get("method") != "not-verified"
-        and isinstance(verification.get("evidence"), str)
-        and bool(verification.get("evidence", "").strip())
-    )
+    return is_control_verified(record)
 
 
 def generate_security_report(workspace: Workspace) -> dict:

@@ -1,0 +1,10 @@
+{
+  "id": "product.unverified_critical",
+  "kind": "product",
+  "name": "Unverified Critical Fixture",
+  "description": "Workspace fixture exercising the critical-unverified readiness gate.",
+  "status": "draft",
+  "owner": "platform-security",
+  "version": "0.1.0",
+  "references": []
+}

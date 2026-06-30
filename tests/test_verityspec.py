@@ -121,6 +121,27 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertTrue(any(issue.code == "readiness.required" for issue in issues))
 
+    def test_security_example_passes_readiness(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "security")
+        registry = load_pack_registry(workspace.pack_ids)
+
+        issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertEqual([], issues)
+
+    def test_critical_unverified_control_fails_readiness(self) -> None:
+        workspace = load_workspace(ROOT / "tests" / "fixtures" / "security_unverified")
+        registry = load_pack_registry(workspace.pack_ids)
+
+        issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertTrue(
+            any(issue.code == "readiness.unverified_critical" for issue in issues)
+        )
+        self.assertTrue(
+            all(issue.severity == "error" for issue in issues if issue.code == "readiness.unverified_critical")
+        )
+
     def test_broken_semantic_fixture_reports_graph_and_reference_issues(self) -> None:
         workspace = load_workspace(ROOT / "tests" / "fixtures" / "broken_semantics")
         registry = load_pack_registry(workspace.pack_ids)
