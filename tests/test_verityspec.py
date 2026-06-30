@@ -10,6 +10,7 @@ from verityspec.generators import (
     generate_accessibility_report,
     generate_asyncapi,
     generate_compliance_matrix,
+    generate_coverage_dashboard,
     generate_deployment_report,
     generate_observability_report,
     generate_openapi,
@@ -37,6 +38,10 @@ GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
+COVERAGE_DASHBOARD_GOLDEN = (
+    ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
+)
+COVERAGE_FIXTURE = ROOT / "tests" / "fixtures" / "cross_pack_coverage"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 
 
@@ -57,6 +62,14 @@ def normalize_observability_report_for_golden(report: dict) -> dict:
 
 
 def normalize_deployment_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_coverage_dashboard_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -948,6 +961,60 @@ class VeritySpecTests(unittest.TestCase):
             "deployment.runtime.checkout_api",
             report["targets"][0]["runtime"]["id"],
         )
+
+    def test_coverage_dashboard_summarizes_cross_pack_surfaces(self) -> None:
+        workspace = load_workspace(COVERAGE_FIXTURE)
+
+        report = generate_coverage_dashboard(workspace)
+
+        self.assertEqual("coverage_dashboard", report["type"])
+        self.assertEqual(14, report["recordCount"])
+        self.assertEqual(1, report["productCount"])
+        self.assertEqual(8, report["summary"]["trackedSurfaces"])
+        self.assertEqual(8, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(8, report["summary"]["coveredSurfaces"])
+        self.assertEqual(100.0, report["summary"]["coveragePercent"])
+        self.assertEqual(
+            {
+                "accessibility": 1,
+                "api": 1,
+                "cli": 1,
+                "compliance": 1,
+                "deployment": 2,
+                "events": 1,
+                "observability": 4,
+                "security": 1,
+            },
+            report["summary"]["bySurface"],
+        )
+        self.assertEqual(
+            {
+                "missingSurfaceRecords": [],
+                "loadedPacksWithoutSurfaceRecords": [],
+                "productsWithoutSurfaceReferences": [],
+                "productSurfaceGaps": [],
+            },
+            report["summary"]["releaseGaps"],
+        )
+        surfaces = {surface["id"]: surface for surface in report["surfaces"]}
+        self.assertEqual("verity.pack.api", surfaces["api"]["packId"])
+        self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
+        self.assertEqual(
+            ["deployment.runtime.coverage_api", "deployment.target.coverage_production"],
+            [record["id"] for record in surfaces["deployment"]["records"]],
+        )
+        self.assertEqual([], report["products"][0]["missingSurfaces"])
+
+    def test_coverage_dashboard_matches_golden_file(self) -> None:
+        workspace = load_workspace(COVERAGE_FIXTURE)
+        expected = json.loads(COVERAGE_DASHBOARD_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_coverage_dashboard(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(COVERAGE_FIXTURE), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_coverage_dashboard_for_golden(report))
 
     def test_deployment_report_matches_golden_file(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "deployment")

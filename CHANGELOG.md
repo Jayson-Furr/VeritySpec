@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added `verity generate coverage-dashboard` for cross-pack product-surface
+  coverage summaries across API, CLI, events, security, accessibility,
+  observability, compliance, and deployment records.
+
 ## 0.28.0
 
 - Added the first deployment-target pack with runtime and deployment target

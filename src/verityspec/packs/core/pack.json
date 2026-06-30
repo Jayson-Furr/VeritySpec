@@ -55,6 +55,14 @@
       "artifactType": "schema-bundle",
       "outputFormats": ["json"],
       "recordKinds": ["product", "schema.object"]
+    },
+    {
+      "id": "coverage-dashboard",
+      "name": "Coverage Dashboard",
+      "description": "Summarize cross-pack product-surface coverage for release review.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["product", "schema.object"]
     }
   ]
 }

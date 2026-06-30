@@ -17,6 +17,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
@@ -90,6 +91,18 @@ Deployment reports include:
   health checks, rollback plans, and owners
 - Per-runtime and per-target release-review detail
 
+Coverage dashboards include:
+
+- Workspace and VeritySpec version metadata
+- Loaded pack IDs and total product-contract record count
+- Tracked product-surface coverage for API, CLI, events, security,
+  accessibility, observability, compliance, and deployment records
+- Counts by product surface and record kind
+- Release gaps for missing surface records, loaded surface packs without
+  records, products without surface references, and product-specific missing
+  surface references
+- Per-surface records and product relationship targets for release review
+
 Roadmap reports include:
 
 - Roadmap path and VeritySpec version metadata
@@ -156,6 +169,15 @@ Deployment report output includes:
 - Runtime links from target `runtimeRef` fields
 - Release gap summaries for production controls and target ownership
 
+Coverage dashboard output includes:
+
+- Product-surface records from all currently supported built-in packs
+- Product-level references through `exposes`, `ships`, `emits`, `securedBy`,
+  `accessibilityCoveredBy`, `observes`, `complianceMappedBy`, and `deploysTo`
+- Summary coverage percentages based on the supported non-core product
+  surfaces
+- Golden fixture coverage through `tests/fixtures/cross_pack_coverage`
+
 TypeScript and Python model generators support:
 
 - `$ref` values that point at `#/components/schemas/...`
@@ -170,10 +192,11 @@ TypeScript and Python model generators support:
 - Field descriptions in generated comments
 
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
-is covered by golden-file tests. The `examples/security` security report and
-the `examples/observability` observability report and schema bundle are also
-covered by committed golden fixtures. Changes to those generators should update
-the golden files only when the output contract intentionally changes.
+is covered by golden-file tests. The `examples/security` security report,
+`examples/observability` observability report and schema bundle, deployment
+report, and cross-pack coverage dashboard are also covered by committed golden
+fixtures. Changes to those generators should update the golden files only when
+the output contract intentionally changes.
 
 Known limits:
 
