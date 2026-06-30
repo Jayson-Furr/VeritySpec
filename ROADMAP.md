@@ -921,11 +921,12 @@ Sprint 61 should release the completed `v0.22.0` scope:
 
 ## v0.23.0
 
-The `v0.23.0` milestone is in progress.
+The `v0.23.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 62 | In Progress | CI annotation output for contract failures |
+| 62 | Complete | CI annotation output for contract failures |
+| 63 | Complete | v0.23.0 release preparation |
 
 ## Sprint 62 Priorities
 
@@ -942,6 +943,22 @@ Actions:
 - Update README, changelog, roadmap, CI docs, downstream CI docs, and workflow
   templates.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 63 Priorities
+
+Sprint 63 should release the completed `v0.23.0` scope:
+
+- Promote Unreleased changelog entries into `0.23.0`.
+- Bump package metadata to `0.23.0`.
+- Add v0.23.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.23.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.23.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.23.0 GitHub release when checks pass.
+- Close the v0.23.0 milestone after release verification.
 
 ## Later Candidates
 
