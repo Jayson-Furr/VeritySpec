@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added README command smoke tests that execute safe local CLI examples with
+  temporary output paths and explicit install/setup skips.
+
 ## 0.21.0
 
 - Added structured issue `locationDetails` fields for JSON diagnostics while

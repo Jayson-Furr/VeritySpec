@@ -880,6 +880,28 @@ Sprint 59 should release the completed `v0.21.0` scope:
 - Tag and publish the v0.21.0 GitHub release when checks pass.
 - Close the v0.21.0 milestone after release verification.
 
+## v0.22.0
+
+The `v0.22.0` milestone is in progress.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 60 | In Progress | README command smoke tests |
+
+## Sprint 60 Priorities
+
+Sprint 60 should keep public command documentation executable:
+
+- Parse README bash command examples in tests.
+- Execute safe local `verity` examples in documented order.
+- Rewrite `build/` output paths to temporary directories during smoke tests.
+- Treat install, virtual environment, and full test-suite commands as explicit
+  documentation-only skips.
+- Add test coverage that fails when new README command examples are neither
+  executable nor intentionally skipped.
+- Update README, changelog, roadmap, and CI docs.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -900,47 +922,47 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add documentation command smoke tests that execute README examples to
-   prevent public command drift.
-2. Add CI annotation output for readiness and validation failures in GitHub
+1. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-3. Add observability example golden fixtures for schema bundles and future
+2. Add observability example golden fixtures for schema bundles and future
    report output.
-4. Add report timestamp controls for deterministic golden snapshot generation.
-5. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+3. Add report timestamp controls for deterministic golden snapshot generation.
+4. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-6. Add product-contract profiles for release, strict, regulated, public API,
+5. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
-7. Add a first deployment-target pack for runtime, hosting, and release
+6. Add a first deployment-target pack for runtime, hosting, and release
    environment contracts.
-8. Add cross-pack coverage dashboards that summarize which product surfaces
+7. Add cross-pack coverage dashboards that summarize which product surfaces
    have API, CLI, event, security, accessibility, observability, and compliance
    records.
-9. Add a product-impact report that expands changed records into affected
+8. Add a product-impact report that expands changed records into affected
    upstream and downstream records for release review.
-10. Define a local-only cross-workspace dependency design note covering
+9. Define a local-only cross-workspace dependency design note covering
    workspace dependencies, exported records, reference resolution, and lockfile
    boundaries before implementation.
-11. Add a pack capability index report that summarizes schemas, readiness
+10. Add a pack capability index report that summarizes schemas, readiness
    gates, reference rules, and generators across built-in and external packs.
-12. Add pack scaffold documentation fixtures that show a complete generated
+11. Add pack scaffold documentation fixtures that show a complete generated
    pack plus consuming workspace layout for external pack authors.
-13. Add downstream CI templates for monorepos with multiple VeritySpec
+12. Add downstream CI templates for monorepos with multiple VeritySpec
    workspaces and shared local packs.
-14. Add golden fixtures for accessibility and compliance report outputs after
+13. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-15. Add a maintainer review checklist for accepting external packs once public
+14. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-16. Add release-integrity consistency checks across package metadata, README,
+15. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-17. Add roadmap-report human-readable Markdown output for maintainer release
+16. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-18. Add security-report release gaps for stale evidence and missing
+17. Add security-report release gaps for stale evidence and missing
    verification dates.
-19. Add workspace migration impact summaries that call out record, pack, and
+18. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-20. Add machine-readable issue-code catalog generation from `verity explain`
+19. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
+20. Add an agent-context generation design note for bounded AI handoff
+   artifacts before implementing generator behavior.
 
 ## Working Rule
 
