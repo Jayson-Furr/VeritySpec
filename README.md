@@ -27,7 +27,8 @@ This implementation provides:
   controls, observability signals, accessibility claims, and compliance
   mappings.
 - Pack listing, validation, and scaffolding through `verity pack`, including
-  local external packs and structured generator metadata.
+  local external packs, structured generator metadata, and starter reference
+  rules that make generated packs usable from sample workspaces immediately.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
@@ -187,7 +188,8 @@ verity pack validate verity.pack.features --path tests/fixtures/custom_pack
 ```
 
 See [docs/packs.md](docs/packs.md) for the pack manifest contract and pack
-standard.
+standard, including the generated `product` to starter-kind `uses` reference
+rule for sample workspaces.
 
 Run tests:
 

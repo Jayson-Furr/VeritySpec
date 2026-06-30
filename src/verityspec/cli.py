@@ -483,7 +483,13 @@ def cmd_pack_init(args: argparse.Namespace) -> int:
                 "required": ["owner", "name", "description"],
             }
         ],
-        "referenceRules": [],
+        "referenceRules": [
+            {
+                "sourceKind": "product",
+                "relationship": "uses",
+                "targetKind": kind,
+            }
+        ],
         "generators": [
             {
                 "id": "schema-bundle",

@@ -84,6 +84,8 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
 - `schemas/<kind>.schema.json`
 - one strict starter record schema
 - one readiness gate for the starter kind
+- one `product` to starter-kind reference rule using the `uses`
+  relationship
 - `schema-bundle` generator metadata
 
 The generated pack can be validated immediately:
@@ -91,6 +93,11 @@ The generated pack can be validated immediately:
 ```bash
 verity pack validate verity.pack.features --path build/packs/features
 ```
+
+It can also be loaded by a workspace immediately through `packPaths`. A sample
+workspace should include the generated pack ID in `packs`, point `packPaths` at
+the generated pack directory, and connect a `product` record to the generated
+record kind with a `uses` reference.
 
 ## External Packs
 

@@ -708,6 +708,16 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("verity.pack.features", manifest["id"])
         self.assertEqual("feature.flag", manifest["schemas"][0]["kind"])
         self.assertEqual("schemas/feature-flag.schema.json", manifest["schemas"][0]["path"])
+        self.assertEqual(
+            [
+                {
+                    "sourceKind": "product",
+                    "relationship": "uses",
+                    "targetKind": "feature.flag",
+                }
+            ],
+            manifest["referenceRules"],
+        )
         self.assertEqual("schema-bundle", manifest["generators"][0]["id"])
         self.assertEqual("schema-bundle", manifest["generators"][0]["artifactType"])
         self.assertEqual(["feature.flag"], manifest["generators"][0]["recordKinds"])
@@ -716,6 +726,110 @@ class VerityCliTests(unittest.TestCase):
         self.assertTrue(json.loads(validate_result.stdout)["passed"])
         pack_ids = {pack["id"] for pack in json.loads(list_result.stdout)["packs"]}
         self.assertIn("verity.pack.features", pack_ids)
+
+    def test_pack_init_scaffold_supports_sample_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pack_path = root / "packs" / "features"
+            workspace_path = root / "workspace"
+            records_path = workspace_path / "records"
+            records_path.mkdir(parents=True)
+            bundle_path = root / "schema-bundle.json"
+
+            init_result = verity_command(
+                "pack",
+                "init",
+                "verity.pack.features",
+                "--out",
+                str(pack_path),
+                "--kind",
+                "feature.flag",
+                "--name",
+                "Feature Pack",
+            )
+            (workspace_path / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "pack.scaffold.sample",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.features"],
+                        "packPaths": ["../packs/features"],
+                        "records": ["records/*.json"],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            (records_path / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.flags",
+                        "kind": "product",
+                        "name": "Feature Flag Product",
+                        "description": "A product fixture using a generated external pack.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [{"type": "uses", "target": "feature.checkout"}],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            (records_path / "feature.checkout.json").write_text(
+                json.dumps(
+                    {
+                        "id": "feature.checkout",
+                        "kind": "feature.flag",
+                        "name": "Checkout Feature",
+                        "description": "Controls access to the checkout flow.",
+                        "status": "ready",
+                        "owner": "growth",
+                        "references": [],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            pack_validate_result = verity_command(
+                "pack",
+                "validate",
+                "verity.pack.features",
+                "--path",
+                str(pack_path),
+                "--format",
+                "json",
+            )
+            validate_result = verity_command("validate", str(workspace_path), "--format", "json")
+            lint_result = verity_command("lint", str(workspace_path), "--strict", "--format", "json")
+            readiness_result = verity_command(
+                "readiness",
+                str(workspace_path),
+                "--strict",
+                "--format",
+                "json",
+            )
+            generate_result = verity_command(
+                "generate",
+                "schema-bundle",
+                str(workspace_path),
+                "--out",
+                str(bundle_path),
+            )
+            bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, init_result.returncode)
+        self.assertEqual(0, pack_validate_result.returncode)
+        self.assertEqual(0, validate_result.returncode)
+        self.assertEqual(0, lint_result.returncode)
+        self.assertEqual(0, readiness_result.returncode)
+        self.assertEqual(0, generate_result.returncode)
+        self.assertTrue(json.loads(pack_validate_result.stdout)["passed"])
+        self.assertTrue(json.loads(validate_result.stdout)["passed"])
+        self.assertTrue(json.loads(lint_result.stdout)["passed"])
+        self.assertTrue(json.loads(readiness_result.stdout)["passed"])
+        self.assertIn("feature.flag", bundle["schemas"])
 
     def test_pack_validate_unknown_generator_metadata_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
