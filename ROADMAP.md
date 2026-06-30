@@ -1205,6 +1205,32 @@ Sprint 75 should release the completed `v0.29.0` scope:
 - Tag and publish the v0.29.0 GitHub release when checks pass.
 - Close the v0.29.0 milestone after release verification.
 
+## v0.30.0
+
+The `v0.30.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 76 | Complete | Product-impact report for release-review graph analysis |
+
+## Sprint 76 Priorities
+
+Sprint 76 should add product-impact reports:
+
+- Add `verity generate product-impact OLD NEW` for JSON release-review impact
+  summaries.
+- Compare baseline and current workspaces using the existing diff
+  classification model.
+- Expand changed, added, and removed records into upstream dependents and
+  downstream dependencies through the workspace reference graph.
+- Include missing-reference evidence from baseline and current graph edges.
+- Include release-review summary fields for risk level, review focus, changed
+  record count, impacted record count, and severity counts.
+- Add deterministic baseline/current fixtures and committed golden output.
+- Update CI, release checklist, generator docs, README, AGENTS, changelog, and
+  roadmap bookkeeping.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Next 20 Roadmap Points
 
 These points define the next backlog once the active roadmap is caught up. They
@@ -1217,48 +1243,48 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a product-impact report that expands changed records into affected
-   upstream and downstream records for release review.
-2. Define a local-only cross-workspace dependency design note covering
+1. Define a local-only cross-workspace dependency design note covering
    workspace dependencies, exported records, reference resolution, and lockfile
    boundaries before implementation.
-3. Add a pack capability index report that summarizes schemas, readiness
+2. Add a pack capability index report that summarizes schemas, readiness
    gates, reference rules, and generators across built-in and external packs.
-4. Add pack scaffold documentation fixtures that show a complete generated
+3. Add pack scaffold documentation fixtures that show a complete generated
    pack plus consuming workspace layout for external pack authors.
-5. Add downstream CI templates for monorepos with multiple VeritySpec
+4. Add downstream CI templates for monorepos with multiple VeritySpec
    workspaces and shared local packs.
-6. Add golden fixtures for accessibility and compliance report outputs after
+5. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-7. Add a maintainer review checklist for accepting external packs once public
+6. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-8. Add release-integrity consistency checks across package metadata, README,
+7. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-9. Add roadmap-report human-readable Markdown output for maintainer release
+8. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-10. Add security-report release gaps for stale evidence and missing
+9. Add security-report release gaps for stale evidence and missing
    verification dates.
-11. Add workspace migration impact summaries that call out record, pack, and
+10. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-12. Add machine-readable issue-code catalog generation from `verity explain`
+11. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-13. Add an agent-context generation design note for bounded AI handoff
+12. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-14. Add a Unity full-lifecycle support design note covering game workspaces,
+13. Add a Unity full-lifecycle support design note covering game workspaces,
    shared Unity library workspaces, lifecycle readiness profiles, evidence,
    liveops, decommissioning, archive records, and portfolio examples.
-15. Add a portfolio-level validation design note for multi-workspace product,
+14. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-16. Add fixture refresh documentation for regenerating golden report outputs
+15. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-17. Add a public architecture decision record template for future major pack,
+16. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-18. Add profile-aware downstream CI template examples for release, regulated,
+17. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-19. Add deployment-target release evidence links that connect deployment
+18. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-20. Add coverage-dashboard Markdown output for maintainers who need a
+19. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
+20. Add product-impact Markdown output for maintainers who need a
+   human-readable change-impact review artifact.
 
 ## Working Rule
 

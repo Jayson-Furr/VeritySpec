@@ -40,12 +40,19 @@ verity validate tests/fixtures/generator_maturity
 verity validate tests/fixtures/cross_pack_coverage
 verity lint tests/fixtures/cross_pack_coverage --strict
 verity readiness tests/fixtures/cross_pack_coverage --strict
+verity validate tests/fixtures/product_impact/baseline
+verity lint tests/fixtures/product_impact/baseline --strict
+verity readiness tests/fixtures/product_impact/baseline --strict
+verity validate tests/fixtures/product_impact/current
+verity lint tests/fixtures/product_impact/current --strict
+verity readiness tests/fixtures/product_impact/current --strict
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json

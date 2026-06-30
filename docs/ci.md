@@ -13,6 +13,7 @@ verity diff examples/basic examples/basic --format json > build/diff.json
 verity migrate examples/basic --dry-run --format json > build/migration.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 ```
 
 For repositories with multiple workspaces, run the contract checks for each
@@ -97,6 +98,16 @@ verity validate tests/fixtures/cross_pack_coverage
 verity lint tests/fixtures/cross_pack_coverage --strict
 verity readiness tests/fixtures/cross_pack_coverage --strict
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+```
+
+For release reviews that compare two workspace snapshots, generate a
+product-impact report:
+
+```bash
+verity validate tests/fixtures/product_impact/current
+verity lint tests/fixtures/product_impact/current --strict
+verity readiness tests/fixtures/product_impact/current --strict
+verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 ```
 
 For workspaces with local external packs:

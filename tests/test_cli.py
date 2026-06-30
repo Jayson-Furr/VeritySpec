@@ -24,6 +24,9 @@ COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
 COVERAGE_FIXTURE = "tests/fixtures/cross_pack_coverage"
+PRODUCT_IMPACT_BASELINE = "tests/fixtures/product_impact/baseline"
+PRODUCT_IMPACT_CURRENT = "tests/fixtures/product_impact/current"
+PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
@@ -88,6 +91,17 @@ def normalize_coverage_dashboard_for_golden(report: dict) -> dict:
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_product_impact_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["oldWorkspace"] = dict(report["oldWorkspace"])
+    normalized["newWorkspace"] = dict(report["newWorkspace"])
+    normalized["oldWorkspace"]["workspacePath"] = "<oldWorkspacePath>"
+    normalized["newWorkspace"]["workspacePath"] = "<newWorkspacePath>"
     return normalized
 
 
@@ -1545,6 +1559,73 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(str(ROOT / COVERAGE_FIXTURE), payload["workspacePath"])
         self.assertIsInstance(payload["verityVersion"], str)
         self.assertEqual(expected, normalize_coverage_dashboard_for_golden(payload))
+
+    def test_product_impact_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "product-impact.json"
+            result = verity_command(
+                "generate",
+                "product-impact",
+                PRODUCT_IMPACT_BASELINE,
+                PRODUCT_IMPACT_CURRENT,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated product-impact", result.stdout)
+        self.assertEqual("product_impact_report", payload["type"])
+        self.assertEqual(6, payload["summary"]["changedRecordCount"])
+        self.assertEqual(6, payload["summary"]["impactedRecordCount"])
+        self.assertEqual(0, payload["summary"]["missingReferenceCount"])
+        self.assertEqual("high", payload["summary"]["releaseReview"]["riskLevel"])
+        self.assertTrue(payload["validation"]["old"]["passed"])
+        self.assertTrue(payload["validation"]["new"]["passed"])
+
+    def test_product_impact_generator_requires_comparison_workspace(self) -> None:
+        result = verity_command(
+            "generate",
+            "product-impact",
+            PRODUCT_IMPACT_BASELINE,
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("requires OLD and NEW workspace paths", result.stderr)
+
+    def test_single_workspace_generator_rejects_extra_comparison_workspace(self) -> None:
+        result = verity_command(
+            "generate",
+            "coverage-dashboard",
+            COVERAGE_FIXTURE,
+            PRODUCT_IMPACT_CURRENT,
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("accepts one workspace path", result.stderr)
+
+    def test_product_impact_generator_matches_golden_file(self) -> None:
+        expected = json.loads(PRODUCT_IMPACT_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "product-impact.json"
+            result = verity_command(
+                "generate",
+                "product-impact",
+                PRODUCT_IMPACT_BASELINE,
+                PRODUCT_IMPACT_CURRENT,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / PRODUCT_IMPACT_BASELINE), payload["oldWorkspace"]["workspacePath"])
+        self.assertEqual(str(ROOT / PRODUCT_IMPACT_CURRENT), payload["newWorkspace"]["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_product_impact_for_golden(payload))
 
     def test_explain_deployment_issue_code_json_output(self) -> None:
         result = verity_command(

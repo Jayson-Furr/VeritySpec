@@ -81,6 +81,12 @@ jobs:
           verity validate tests/fixtures/cross_pack_coverage --format json > build/cross-pack-coverage-validate.json
           verity lint tests/fixtures/cross_pack_coverage --strict --format json > build/cross-pack-coverage-lint.json
           verity readiness tests/fixtures/cross_pack_coverage --strict --format json > build/cross-pack-coverage-readiness.json
+          verity validate tests/fixtures/product_impact/baseline --format json > build/product-impact-baseline-validate.json
+          verity lint tests/fixtures/product_impact/baseline --strict --format json > build/product-impact-baseline-lint.json
+          verity readiness tests/fixtures/product_impact/baseline --strict --format json > build/product-impact-baseline-readiness.json
+          verity validate tests/fixtures/product_impact/current --format json > build/product-impact-current-validate.json
+          verity lint tests/fixtures/product_impact/current --strict --format json > build/product-impact-current-lint.json
+          verity readiness tests/fixtures/product_impact/current --strict --format json > build/product-impact-current-readiness.json
           verity doctor examples/basic --format json > build/doctor.json
           verity explain reference.missing --format json > build/explain-reference-missing.json
           verity diff examples/basic examples/basic --format json > build/diff.json
@@ -120,6 +126,12 @@ jobs:
           python -m json.tool build/cross-pack-coverage-validate.json >/dev/null
           python -m json.tool build/cross-pack-coverage-lint.json >/dev/null
           python -m json.tool build/cross-pack-coverage-readiness.json >/dev/null
+          python -m json.tool build/product-impact-baseline-validate.json >/dev/null
+          python -m json.tool build/product-impact-baseline-lint.json >/dev/null
+          python -m json.tool build/product-impact-baseline-readiness.json >/dev/null
+          python -m json.tool build/product-impact-current-validate.json >/dev/null
+          python -m json.tool build/product-impact-current-lint.json >/dev/null
+          python -m json.tool build/product-impact-current-readiness.json >/dev/null
           python -m json.tool build/doctor.json >/dev/null
           python -m json.tool build/explain-reference-missing.json >/dev/null
           python -m json.tool build/diff.json >/dev/null
@@ -152,6 +164,7 @@ jobs:
           verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
           verity generate deployment-report examples/deployment --out build/deployment-report.json
           verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+          verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
           verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
           verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
@@ -177,6 +190,7 @@ jobs:
           python -m json.tool build/compliance-matrix.json >/dev/null
           python -m json.tool build/deployment-report.json >/dev/null
           python -m json.tool build/coverage-dashboard.json >/dev/null
+          python -m json.tool build/product-impact.json >/dev/null
           python -m py_compile build/models.py
           python -m py_compile build/generator-maturity.py
 

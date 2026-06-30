@@ -1,0 +1,718 @@
+{
+  "type": "product_impact_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "oldWorkspace": {
+    "workspace": "tests.product_impact.baseline",
+    "workspacePath": "<oldWorkspacePath>",
+    "specVersion": "v0.2.0",
+    "packs": [
+      "verity.core",
+      "verity.pack.api",
+      "verity.pack.cli",
+      "verity.pack.events",
+      "verity.pack.security"
+    ],
+    "recordCount": 5
+  },
+  "newWorkspace": {
+    "workspace": "tests.product_impact.current",
+    "workspacePath": "<newWorkspacePath>",
+    "specVersion": "v0.2.0",
+    "packs": [
+      "verity.core",
+      "verity.pack.api",
+      "verity.pack.cli",
+      "verity.pack.events",
+      "verity.pack.security"
+    ],
+    "recordCount": 6
+  },
+  "diff": {
+    "versions": {
+      "old": "v0.2.0",
+      "new": "v0.2.0",
+      "changed": false
+    },
+    "packs": {
+      "added": [],
+      "removed": []
+    },
+    "added": [
+      "event.orders.exported",
+      "schema.order_event"
+    ],
+    "removed": [
+      "cli.orders.export"
+    ],
+    "changed": [
+      "api.orders.list",
+      "product.orders",
+      "schema.order_list"
+    ],
+    "summary": {
+      "totalChanges": 6,
+      "breakingChanges": 3,
+      "hasBreakingChanges": true,
+      "bySeverity": {
+        "info": 2,
+        "warning": 1,
+        "error": 3
+      }
+    },
+    "changes": [
+      {
+        "type": "record.added",
+        "severity": "info",
+        "breaking": false,
+        "reasons": [
+          "Record added to workspace."
+        ],
+        "recordId": "event.orders.exported",
+        "kind": "event.message"
+      },
+      {
+        "type": "record.added",
+        "severity": "info",
+        "breaking": false,
+        "reasons": [
+          "Record added to workspace."
+        ],
+        "recordId": "schema.order_event",
+        "kind": "schema.object"
+      },
+      {
+        "type": "record.removed",
+        "severity": "error",
+        "breaking": true,
+        "reasons": [
+          "Record removed from workspace."
+        ],
+        "recordId": "cli.orders.export",
+        "kind": "cli.command"
+      },
+      {
+        "type": "record.changed",
+        "severity": "error",
+        "breaking": true,
+        "reasons": [
+          "API endpoint path changed from '/orders' to '/v2/orders'.",
+          "API endpoint responses removed status code(s): 410."
+        ],
+        "recordId": "api.orders.list",
+        "kind": "api.endpoint",
+        "fields": [
+          "path",
+          "references",
+          "responses"
+        ]
+      },
+      {
+        "type": "record.changed",
+        "severity": "warning",
+        "breaking": false,
+        "reasons": [
+          "Record fields changed."
+        ],
+        "recordId": "product.orders",
+        "kind": "product",
+        "fields": [
+          "references",
+          "version"
+        ]
+      },
+      {
+        "type": "record.changed",
+        "severity": "error",
+        "breaking": true,
+        "reasons": [
+          "jsonSchema.required removed 'legacyNote'.",
+          "jsonSchema.properties removed 'legacyNote'."
+        ],
+        "recordId": "schema.order_list",
+        "kind": "schema.object",
+        "fields": [
+          "jsonSchema"
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "changedRecordCount": 6,
+    "impactedRecordCount": 6,
+    "upstreamImpactCount": 13,
+    "downstreamImpactCount": 10,
+    "missingReferenceCount": 0,
+    "bySeverity": {
+      "info": 2,
+      "warning": 1,
+      "error": 3
+    },
+    "releaseReview": {
+      "requiresReview": true,
+      "riskLevel": "high",
+      "focus": [
+        "breaking changes",
+        "removed records",
+        "upstream and downstream impacted records"
+      ]
+    }
+  },
+  "changedRecords": [
+    {
+      "id": "api.orders.list",
+      "kind": "api.endpoint",
+      "name": "List Orders",
+      "status": "ready",
+      "owner": "commerce-api",
+      "changeType": "record.changed",
+      "severity": "error",
+      "breaking": true,
+      "fields": [
+        "path",
+        "references",
+        "responses"
+      ],
+      "reasons": [
+        "API endpoint path changed from '/orders' to '/v2/orders'.",
+        "API endpoint responses removed status code(s): 410."
+      ],
+      "graphSource": "current",
+      "upstream": {
+        "directRecordIds": [
+          "product.orders",
+          "security.control.order_access"
+        ],
+        "transitiveRecordIds": [],
+        "recordIds": [
+          "product.orders",
+          "security.control.order_access"
+        ],
+        "records": [
+          {
+            "id": "product.orders",
+            "kind": "product",
+            "name": "Orders Product",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "security.control.order_access",
+            "kind": "security.control",
+            "name": "Order Access Control",
+            "status": "ready",
+            "owner": "security"
+          }
+        ]
+      },
+      "downstream": {
+        "directRecordIds": [
+          "event.orders.exported",
+          "schema.order_list"
+        ],
+        "transitiveRecordIds": [
+          "schema.order_event"
+        ],
+        "recordIds": [
+          "event.orders.exported",
+          "schema.order_event",
+          "schema.order_list"
+        ],
+        "records": [
+          {
+            "id": "event.orders.exported",
+            "kind": "event.message",
+            "name": "Orders Exported",
+            "status": "ready",
+            "owner": "commerce-events"
+          },
+          {
+            "id": "schema.order_event",
+            "kind": "schema.object",
+            "name": "Order Event",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "schema.order_list",
+            "kind": "schema.object",
+            "name": "Order List",
+            "status": "ready",
+            "owner": "commerce"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cli.orders.export",
+      "kind": "cli.command",
+      "name": "Export Orders",
+      "status": "ready",
+      "owner": "commerce-tools",
+      "changeType": "record.removed",
+      "severity": "error",
+      "breaking": true,
+      "fields": [],
+      "reasons": [
+        "Record removed from workspace."
+      ],
+      "graphSource": "baseline",
+      "upstream": {
+        "directRecordIds": [
+          "product.orders"
+        ],
+        "transitiveRecordIds": [],
+        "recordIds": [
+          "product.orders"
+        ],
+        "records": [
+          {
+            "id": "product.orders",
+            "kind": "product",
+            "name": "Orders Product",
+            "status": "ready",
+            "owner": "commerce"
+          }
+        ]
+      },
+      "downstream": {
+        "directRecordIds": [
+          "schema.order_list"
+        ],
+        "transitiveRecordIds": [],
+        "recordIds": [
+          "schema.order_list"
+        ],
+        "records": [
+          {
+            "id": "schema.order_list",
+            "kind": "schema.object",
+            "name": "Order List",
+            "status": "ready",
+            "owner": "commerce"
+          }
+        ]
+      }
+    },
+    {
+      "id": "event.orders.exported",
+      "kind": "event.message",
+      "name": "Orders Exported",
+      "status": "ready",
+      "owner": "commerce-events",
+      "changeType": "record.added",
+      "severity": "info",
+      "breaking": false,
+      "fields": [],
+      "reasons": [
+        "Record added to workspace."
+      ],
+      "graphSource": "current",
+      "upstream": {
+        "directRecordIds": [
+          "api.orders.list",
+          "product.orders"
+        ],
+        "transitiveRecordIds": [
+          "security.control.order_access"
+        ],
+        "recordIds": [
+          "api.orders.list",
+          "product.orders",
+          "security.control.order_access"
+        ],
+        "records": [
+          {
+            "id": "api.orders.list",
+            "kind": "api.endpoint",
+            "name": "List Orders",
+            "status": "ready",
+            "owner": "commerce-api"
+          },
+          {
+            "id": "product.orders",
+            "kind": "product",
+            "name": "Orders Product",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "security.control.order_access",
+            "kind": "security.control",
+            "name": "Order Access Control",
+            "status": "ready",
+            "owner": "security"
+          }
+        ]
+      },
+      "downstream": {
+        "directRecordIds": [
+          "schema.order_event"
+        ],
+        "transitiveRecordIds": [],
+        "recordIds": [
+          "schema.order_event"
+        ],
+        "records": [
+          {
+            "id": "schema.order_event",
+            "kind": "schema.object",
+            "name": "Order Event",
+            "status": "ready",
+            "owner": "commerce"
+          }
+        ]
+      }
+    },
+    {
+      "id": "product.orders",
+      "kind": "product",
+      "name": "Orders Product",
+      "status": "ready",
+      "owner": "commerce",
+      "changeType": "record.changed",
+      "severity": "warning",
+      "breaking": false,
+      "fields": [
+        "references",
+        "version"
+      ],
+      "reasons": [
+        "Record fields changed."
+      ],
+      "graphSource": "current",
+      "upstream": {
+        "directRecordIds": [],
+        "transitiveRecordIds": [],
+        "recordIds": [],
+        "records": []
+      },
+      "downstream": {
+        "directRecordIds": [
+          "api.orders.list",
+          "event.orders.exported",
+          "security.control.order_access"
+        ],
+        "transitiveRecordIds": [
+          "schema.order_event",
+          "schema.order_list"
+        ],
+        "recordIds": [
+          "api.orders.list",
+          "event.orders.exported",
+          "schema.order_event",
+          "schema.order_list",
+          "security.control.order_access"
+        ],
+        "records": [
+          {
+            "id": "api.orders.list",
+            "kind": "api.endpoint",
+            "name": "List Orders",
+            "status": "ready",
+            "owner": "commerce-api"
+          },
+          {
+            "id": "event.orders.exported",
+            "kind": "event.message",
+            "name": "Orders Exported",
+            "status": "ready",
+            "owner": "commerce-events"
+          },
+          {
+            "id": "schema.order_event",
+            "kind": "schema.object",
+            "name": "Order Event",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "schema.order_list",
+            "kind": "schema.object",
+            "name": "Order List",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "security.control.order_access",
+            "kind": "security.control",
+            "name": "Order Access Control",
+            "status": "ready",
+            "owner": "security"
+          }
+        ]
+      }
+    },
+    {
+      "id": "schema.order_event",
+      "kind": "schema.object",
+      "name": "Order Event",
+      "status": "ready",
+      "owner": "commerce",
+      "changeType": "record.added",
+      "severity": "info",
+      "breaking": false,
+      "fields": [],
+      "reasons": [
+        "Record added to workspace."
+      ],
+      "graphSource": "current",
+      "upstream": {
+        "directRecordIds": [
+          "event.orders.exported"
+        ],
+        "transitiveRecordIds": [
+          "api.orders.list",
+          "product.orders",
+          "security.control.order_access"
+        ],
+        "recordIds": [
+          "api.orders.list",
+          "event.orders.exported",
+          "product.orders",
+          "security.control.order_access"
+        ],
+        "records": [
+          {
+            "id": "api.orders.list",
+            "kind": "api.endpoint",
+            "name": "List Orders",
+            "status": "ready",
+            "owner": "commerce-api"
+          },
+          {
+            "id": "event.orders.exported",
+            "kind": "event.message",
+            "name": "Orders Exported",
+            "status": "ready",
+            "owner": "commerce-events"
+          },
+          {
+            "id": "product.orders",
+            "kind": "product",
+            "name": "Orders Product",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "security.control.order_access",
+            "kind": "security.control",
+            "name": "Order Access Control",
+            "status": "ready",
+            "owner": "security"
+          }
+        ]
+      },
+      "downstream": {
+        "directRecordIds": [],
+        "transitiveRecordIds": [],
+        "recordIds": [],
+        "records": []
+      }
+    },
+    {
+      "id": "schema.order_list",
+      "kind": "schema.object",
+      "name": "Order List",
+      "status": "ready",
+      "owner": "commerce",
+      "changeType": "record.changed",
+      "severity": "error",
+      "breaking": true,
+      "fields": [
+        "jsonSchema"
+      ],
+      "reasons": [
+        "jsonSchema.required removed 'legacyNote'.",
+        "jsonSchema.properties removed 'legacyNote'."
+      ],
+      "graphSource": "current",
+      "upstream": {
+        "directRecordIds": [
+          "api.orders.list",
+          "security.control.order_access"
+        ],
+        "transitiveRecordIds": [
+          "product.orders"
+        ],
+        "recordIds": [
+          "api.orders.list",
+          "product.orders",
+          "security.control.order_access"
+        ],
+        "records": [
+          {
+            "id": "api.orders.list",
+            "kind": "api.endpoint",
+            "name": "List Orders",
+            "status": "ready",
+            "owner": "commerce-api"
+          },
+          {
+            "id": "product.orders",
+            "kind": "product",
+            "name": "Orders Product",
+            "status": "ready",
+            "owner": "commerce"
+          },
+          {
+            "id": "security.control.order_access",
+            "kind": "security.control",
+            "name": "Order Access Control",
+            "status": "ready",
+            "owner": "security"
+          }
+        ]
+      },
+      "downstream": {
+        "directRecordIds": [],
+        "transitiveRecordIds": [],
+        "recordIds": [],
+        "records": []
+      }
+    }
+  ],
+  "impactedRecords": [
+    {
+      "id": "api.orders.list",
+      "kind": "api.endpoint",
+      "name": "List Orders",
+      "status": "ready",
+      "owner": "commerce-api",
+      "directions": [
+        "downstream",
+        "upstream"
+      ],
+      "changedRecordIds": [
+        "event.orders.exported",
+        "product.orders",
+        "schema.order_event",
+        "schema.order_list"
+      ],
+      "graphSources": [
+        "current"
+      ]
+    },
+    {
+      "id": "event.orders.exported",
+      "kind": "event.message",
+      "name": "Orders Exported",
+      "status": "ready",
+      "owner": "commerce-events",
+      "directions": [
+        "downstream",
+        "upstream"
+      ],
+      "changedRecordIds": [
+        "api.orders.list",
+        "product.orders",
+        "schema.order_event"
+      ],
+      "graphSources": [
+        "current"
+      ]
+    },
+    {
+      "id": "product.orders",
+      "kind": "product",
+      "name": "Orders Product",
+      "status": "ready",
+      "owner": "commerce",
+      "directions": [
+        "upstream"
+      ],
+      "changedRecordIds": [
+        "api.orders.list",
+        "cli.orders.export",
+        "event.orders.exported",
+        "schema.order_event",
+        "schema.order_list"
+      ],
+      "graphSources": [
+        "baseline",
+        "current"
+      ]
+    },
+    {
+      "id": "schema.order_event",
+      "kind": "schema.object",
+      "name": "Order Event",
+      "status": "ready",
+      "owner": "commerce",
+      "directions": [
+        "downstream"
+      ],
+      "changedRecordIds": [
+        "api.orders.list",
+        "event.orders.exported",
+        "product.orders"
+      ],
+      "graphSources": [
+        "current"
+      ]
+    },
+    {
+      "id": "schema.order_list",
+      "kind": "schema.object",
+      "name": "Order List",
+      "status": "ready",
+      "owner": "commerce",
+      "directions": [
+        "downstream"
+      ],
+      "changedRecordIds": [
+        "api.orders.list",
+        "cli.orders.export",
+        "product.orders"
+      ],
+      "graphSources": [
+        "baseline",
+        "current"
+      ]
+    },
+    {
+      "id": "security.control.order_access",
+      "kind": "security.control",
+      "name": "Order Access Control",
+      "status": "ready",
+      "owner": "security",
+      "directions": [
+        "downstream",
+        "upstream"
+      ],
+      "changedRecordIds": [
+        "api.orders.list",
+        "event.orders.exported",
+        "product.orders",
+        "schema.order_event",
+        "schema.order_list"
+      ],
+      "graphSources": [
+        "current"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "validation": {
+    "old": {
+      "command": "generate.product-impact.old",
+      "passed": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "issues": 0
+      },
+      "issues": []
+    },
+    "new": {
+      "command": "generate.product-impact.new",
+      "passed": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "issues": 0
+      },
+      "issues": []
+    }
+  }
+}

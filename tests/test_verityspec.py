@@ -14,6 +14,7 @@ from verityspec.generators import (
     generate_deployment_report,
     generate_observability_report,
     generate_openapi,
+    generate_product_impact_report,
     generate_python_models,
     generate_roadmap_report,
     generate_schema_bundle,
@@ -42,6 +43,9 @@ COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
 COVERAGE_FIXTURE = ROOT / "tests" / "fixtures" / "cross_pack_coverage"
+PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
+PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
+PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 
 
@@ -74,6 +78,17 @@ def normalize_coverage_dashboard_for_golden(report: dict) -> dict:
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_product_impact_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["oldWorkspace"] = dict(report["oldWorkspace"])
+    normalized["newWorkspace"] = dict(report["newWorkspace"])
+    normalized["oldWorkspace"]["workspacePath"] = "<oldWorkspacePath>"
+    normalized["newWorkspace"]["workspacePath"] = "<newWorkspacePath>"
     return normalized
 
 
@@ -746,6 +761,14 @@ class VeritySpecTests(unittest.TestCase):
                 generated_at=FIXED_GENERATED_AT,
             )["generatedAt"],
         )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_product_impact_report(
+                load_workspace(PRODUCT_IMPACT_BASELINE),
+                load_workspace(PRODUCT_IMPACT_CURRENT),
+                generated_at=FIXED_GENERATED_AT,
+            )["generatedAt"],
+        )
 
     def test_generated_at_value_rejects_invalid_datetime(self) -> None:
         with self.assertRaisesRegex(ValueError, "ISO 8601"):
@@ -1015,6 +1038,100 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(str(COVERAGE_FIXTURE), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_coverage_dashboard_for_golden(report))
+
+    def test_product_impact_report_expands_changed_record_graph(self) -> None:
+        old_workspace = load_workspace(PRODUCT_IMPACT_BASELINE)
+        new_workspace = load_workspace(PRODUCT_IMPACT_CURRENT)
+
+        report = generate_product_impact_report(old_workspace, new_workspace)
+
+        self.assertEqual("product_impact_report", report["type"])
+        self.assertEqual(6, report["summary"]["changedRecordCount"])
+        self.assertEqual(6, report["summary"]["impactedRecordCount"])
+        self.assertEqual(0, report["summary"]["missingReferenceCount"])
+        self.assertEqual("high", report["summary"]["releaseReview"]["riskLevel"])
+        self.assertIn("breaking changes", report["summary"]["releaseReview"]["focus"])
+        changed = {record["id"]: record for record in report["changedRecords"]}
+        self.assertEqual("record.changed", changed["api.orders.list"]["changeType"])
+        self.assertTrue(changed["api.orders.list"]["breaking"])
+        self.assertEqual(
+            ["product.orders", "security.control.order_access"],
+            changed["api.orders.list"]["upstream"]["directRecordIds"],
+        )
+        self.assertEqual(
+            ["event.orders.exported", "schema.order_list"],
+            changed["api.orders.list"]["downstream"]["directRecordIds"],
+        )
+        self.assertEqual(
+            ["api.orders.list", "product.orders", "security.control.order_access"],
+            changed["schema.order_list"]["upstream"]["recordIds"],
+        )
+        self.assertEqual("baseline", changed["cli.orders.export"]["graphSource"])
+        self.assertEqual(["product.orders"], changed["cli.orders.export"]["upstream"]["recordIds"])
+        impacted = {record["id"]: record for record in report["impactedRecords"]}
+        self.assertEqual(["upstream"], impacted["product.orders"]["directions"])
+        self.assertIn("schema.order_list", impacted["product.orders"]["changedRecordIds"])
+
+    def test_product_impact_report_detects_missing_references(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            old = root / "old"
+            new = root / "new"
+            (old / "records").mkdir(parents=True)
+            (new / "records").mkdir(parents=True)
+            config = {
+                "workspace": "missing-reference-impact",
+                "specVersion": "v0.2.0",
+                "packs": ["verity.core"],
+                "records": ["records/*.json"],
+            }
+            (old / "verityspec.json").write_text(json.dumps(config), encoding="utf-8")
+            (new / "verityspec.json").write_text(json.dumps(config), encoding="utf-8")
+            base_product = {
+                "id": "product.missing_reference",
+                "kind": "product",
+                "name": "Missing Reference Product",
+                "description": "Baseline product.",
+                "status": "ready",
+                "owner": "platform",
+                "version": "0.1.0",
+                "references": [],
+            }
+            current_product = {
+                **base_product,
+                "version": "0.2.0",
+                "references": [{"type": "uses", "target": "schema.missing"}],
+            }
+            (old / "records" / "product.json").write_text(json.dumps(base_product), encoding="utf-8")
+            (new / "records" / "product.json").write_text(json.dumps(current_product), encoding="utf-8")
+
+            report = generate_product_impact_report(load_workspace(old), load_workspace(new))
+
+        self.assertEqual(1, report["summary"]["missingReferenceCount"])
+        self.assertEqual(
+            {
+                "source": "product.missing_reference",
+                "target": "schema.missing",
+                "relationship": "uses",
+                "field": "references[0].target",
+                "graphSource": "current",
+            },
+            report["missingReferences"][0],
+        )
+
+    def test_product_impact_report_matches_golden_file(self) -> None:
+        old_workspace = load_workspace(PRODUCT_IMPACT_BASELINE)
+        new_workspace = load_workspace(PRODUCT_IMPACT_CURRENT)
+        expected = json.loads(PRODUCT_IMPACT_GOLDEN.read_text(encoding="utf-8"))
+        expected.pop("validation", None)
+
+        report = generate_product_impact_report(old_workspace, new_workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(PRODUCT_IMPACT_BASELINE), report["oldWorkspace"]["workspacePath"])
+        self.assertEqual(str(PRODUCT_IMPACT_CURRENT), report["newWorkspace"]["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_product_impact_for_golden(report))
 
     def test_deployment_report_matches_golden_file(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "deployment")

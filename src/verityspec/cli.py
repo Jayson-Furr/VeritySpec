@@ -18,6 +18,7 @@ from .generators import (
     generate_coverage_dashboard,
     generate_deployment_report,
     generate_openapi,
+    generate_product_impact_report,
     generate_observability_report,
     generate_python_models,
     generate_roadmap_report,
@@ -672,6 +673,13 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(str(exc), file=sys.stderr)
         return EXIT_USAGE_ERROR
 
+    if args.artifact != "product-impact" and args.comparison_workspace:
+        print(
+            f"generate {args.artifact} accepts one workspace path.",
+            file=sys.stderr,
+        )
+        return EXIT_USAGE_ERROR
+
     if args.artifact == "roadmap-report":
         report = generate_roadmap_report(args.workspace, generated_at=generated_at)
         text = write_generated(report, args.out)
@@ -680,6 +688,33 @@ def cmd_generate(args: argparse.Namespace) -> int:
         else:
             print(f"Generated roadmap-report: {args.out}")
         return EXIT_SUCCESS
+
+    if args.artifact == "product-impact":
+        if not args.comparison_workspace:
+            print(
+                "generate product-impact requires OLD and NEW workspace paths.",
+                file=sys.stderr,
+            )
+            return EXIT_USAGE_ERROR
+        old_workspace, old_registry = load_context(args.workspace, args.pack_path)
+        new_workspace, new_registry = load_context(args.comparison_workspace, args.pack_path)
+        old_issues = validate_workspace(old_workspace, old_registry, strict=args.strict)
+        new_issues = validate_workspace(new_workspace, new_registry, strict=args.strict)
+        report = generate_product_impact_report(
+            old_workspace,
+            new_workspace,
+            generated_at=generated_at,
+        )
+        report["validation"] = {
+            "old": issue_result("generate.product-impact.old", old_issues),
+            "new": issue_result("generate.product-impact.new", new_issues),
+        }
+        text = write_generated(report, args.out)
+        if not args.out:
+            print(text, end="" if text.endswith("\n") else "\n")
+        else:
+            print(f"Generated product-impact: {args.out}")
+        return issue_exit(old_issues + new_issues)
 
     workspace, registry = load_context(args.workspace, args.pack_path)
     if args.artifact == "validation-report":
@@ -964,10 +999,12 @@ def build_parser() -> argparse.ArgumentParser:
             "compliance-matrix",
             "coverage-dashboard",
             "deployment-report",
+            "product-impact",
             "roadmap-report",
         ],
     )
     generate_parser.add_argument("workspace")
+    generate_parser.add_argument("comparison_workspace", nargs="?")
     generate_parser.add_argument("--out")
     generate_parser.add_argument("--strict", action="store_true")
     generate_parser.add_argument(
