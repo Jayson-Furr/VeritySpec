@@ -2,16 +2,18 @@
 
 VeritySpec workspaces declare a `specVersion` in `verityspec.json`.
 
-The current supported workspace format is:
+The current workspace format is:
 
 ```json
 {
-  "specVersion": "v0.1.0"
+  "specVersion": "v0.2.0",
+  "packPaths": []
 }
 ```
 
 The CLI validates this version before treating a workspace as an executable
-contract.
+contract. VeritySpec currently supports both `v0.1.0` and `v0.2.0`; `v0.2.0`
+is the current format.
 
 ## Version Checks
 
@@ -23,22 +25,35 @@ Validation reports workspace version problems as normal issues:
 | `workspace.version.invalid` | `specVersion` is not `vMAJOR.MINOR.PATCH`. |
 | `workspace.version.unsupported` | The version is older or otherwise unsupported by this CLI. |
 | `workspace.version.future` | The version is newer than this CLI supports. |
+| `workspace.packPaths.missing` | A `v0.2.0` workspace does not declare `packPaths`. |
+| `workspace.packPaths.invalid` | A `v0.2.0` workspace declares `packPaths` in the wrong shape. |
 
 Future versions fail validation instead of being interpreted optimistically.
 That keeps CI honest when a workspace requires a newer VeritySpec release.
 
 ## Migrate
 
-`verity migrate` rewrites a workspace to a supported target version. The first
-supported target is `v0.1.0`.
+`verity migrate` rewrites a workspace to a supported target version. By
+default, it migrates to the current format, `v0.2.0`.
 
 ```bash
+verity migrate --list --format json
 verity migrate ./workspace --dry-run --format json
 verity migrate ./workspace --report-out build/migration-report.json
 verity validate ./workspace
 ```
 
-Dry-run mode reports the changes without writing files.
+Dry-run mode reports the changes without writing files. `--list` reports the
+supported workspace versions and migration steps without requiring a workspace.
+
+The current migration path from legacy workspaces is:
+
+```text
+legacy -> v0.1.0 -> v0.2.0
+```
+
+Use `--to v0.1.0` when a legacy workspace must be rewritten only to the initial
+supported format.
 
 ## Current Rewrite Rules
 
@@ -57,6 +72,11 @@ The `v0.1.0` migration normalizes conservative, common legacy shapes:
 Every rewrite appears in the migration report. Placeholder owners and draft
 statuses are also listed as manual follow-up items.
 
+The `v0.2.0` migration makes external pack resolution explicit:
+
+- `specVersion` becomes `v0.2.0`.
+- Missing or invalid `packPaths` becomes `[]`.
+
 ## Diffing
 
 `verity diff` includes workspace-level version and pack metadata alongside
@@ -68,4 +88,3 @@ verity diff old-workspace new-workspace --format json
 
 This makes migration review easier because a single diff shows both record
 movement and contract-environment changes.
-

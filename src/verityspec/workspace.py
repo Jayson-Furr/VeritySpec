@@ -80,6 +80,7 @@ def default_config(base_path: Path) -> dict[str, Any]:
         "workspace": base_path.name,
         "specVersion": CURRENT_SPEC_VERSION,
         "packs": DEFAULT_PACKS,
+        "packPaths": [],
         "records": DEFAULT_RECORD_GLOBS,
     }
 

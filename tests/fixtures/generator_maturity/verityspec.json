@@ -1,6 +1,7 @@
 {
   "workspace": "fixtures.generator_maturity",
-  "specVersion": "v0.1.0",
+  "specVersion": "v0.2.0",
   "packs": ["verity.core", "verity.pack.api", "verity.pack.events"],
+  "packPaths": [],
   "records": ["records/*.json"]
 }

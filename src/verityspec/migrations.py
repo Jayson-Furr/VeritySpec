@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import copy
 import json
+from collections import deque
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from .versions import (
     CURRENT_SPEC_VERSION,
+    SUPPORTED_SPEC_VERSIONS,
     classify_spec_version,
     normalize_spec_version,
 )
@@ -36,6 +39,120 @@ STATUS_ALIASES = {
     "deprecated": "deprecated",
     "removed": "removed",
 }
+
+LEGACY_SOURCE_VERSION = "legacy"
+
+
+@dataclass(frozen=True)
+class MigrationStep:
+    id: str
+    from_version: str
+    to_version: str
+    description: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "id": self.id,
+            "fromVersion": self.from_version,
+            "toVersion": self.to_version,
+            "description": self.description,
+        }
+
+
+MIGRATION_STEPS = [
+    MigrationStep(
+        id="legacy-to-v0.1.0",
+        from_version=LEGACY_SOURCE_VERSION,
+        to_version="v0.1.0",
+        description="Normalize legacy VeritySpec workspace and record shapes into v0.1.0.",
+    ),
+    MigrationStep(
+        id="v0.1.0-to-v0.2.0",
+        from_version="v0.1.0",
+        to_version="v0.2.0",
+        description="Promote workspaces to v0.2.0 by making external pack paths explicit.",
+    ),
+]
+
+
+def supported_version_entries() -> list[dict[str, str]]:
+    return [
+        {
+            "id": version.id,
+            "status": version.status,
+            "description": version.description,
+        }
+        for version in sorted(SUPPORTED_SPEC_VERSIONS.values(), key=lambda item: item.id)
+    ]
+
+
+def migration_capabilities() -> dict[str, Any]:
+    return {
+        "type": "verityspec_migration_capabilities",
+        "currentVersion": CURRENT_SPEC_VERSION,
+        "legacySource": LEGACY_SOURCE_VERSION,
+        "supportedVersions": supported_version_entries(),
+        "steps": [step.to_dict() for step in MIGRATION_STEPS],
+    }
+
+
+def migration_capabilities_to_text(capabilities: dict[str, Any]) -> str:
+    lines = [
+        f"Current workspace version: {capabilities.get('currentVersion')}",
+        "Supported versions:",
+    ]
+    for version in capabilities.get("supportedVersions", []):
+        lines.append(f"  {version.get('id')} ({version.get('status')}): {version.get('description')}")
+    lines.append("Migration steps:")
+    for step in capabilities.get("steps", []):
+        lines.append(
+            f"  {step.get('fromVersion')} -> {step.get('toVersion')} ({step.get('id')}): "
+            f"{step.get('description')}"
+        )
+    return "\n".join(lines)
+
+
+def migration_source_key(source_version: object) -> str:
+    normalized = normalize_spec_version(source_version)
+    if normalized in SUPPORTED_SPEC_VERSIONS:
+        return normalized
+    return LEGACY_SOURCE_VERSION
+
+
+def reachable_migration_targets(source_key: str) -> list[str]:
+    targets: set[str] = set()
+    queue: deque[str] = deque([source_key])
+    visited: set[str] = {source_key}
+    while queue:
+        current = queue.popleft()
+        for step in MIGRATION_STEPS:
+            if step.from_version != current:
+                continue
+            targets.add(step.to_version)
+            if step.to_version not in visited:
+                visited.add(step.to_version)
+                queue.append(step.to_version)
+    return sorted(targets)
+
+
+def plan_migration_path(source_key: str, target_version: str) -> list[MigrationStep] | None:
+    if source_key == target_version:
+        return []
+
+    queue: deque[tuple[str, list[MigrationStep]]] = deque([(source_key, [])])
+    visited: set[str] = {source_key}
+    while queue:
+        current, path = queue.popleft()
+        for step in MIGRATION_STEPS:
+            if step.from_version != current:
+                continue
+            next_path = path + [step]
+            if step.to_version == target_version:
+                return next_path
+            if step.to_version not in visited:
+                visited.add(step.to_version)
+                queue.append((step.to_version, next_path))
+    return None
 
 
 def clone_json(value: Any) -> Any:
@@ -116,6 +233,29 @@ def migrate_workspace_config(
     return config_path, config
 
 
+def migrate_workspace_config_to_v0_2_0(
+    config_path: Path,
+    config: dict[str, Any],
+    changes: list[dict[str, Any]],
+) -> dict[str, Any]:
+    migrated = copy.deepcopy(config)
+
+    if migrated.get("specVersion") != "v0.2.0":
+        before = migrated.get("specVersion")
+        migrated["specVersion"] = "v0.2.0"
+        add_change(changes, config_path, "upgrade", "specVersion", before, "v0.2.0")
+
+    pack_paths = migrated.get("packPaths")
+    if "packPaths" not in migrated:
+        migrated["packPaths"] = []
+        add_change(changes, config_path, "set", "packPaths", None, [])
+    elif not isinstance(pack_paths, list) or not all(isinstance(item, str) for item in pack_paths):
+        migrated["packPaths"] = []
+        add_change(changes, config_path, "set", "packPaths", pack_paths, [])
+
+    return migrated
+
+
 def migrate_record_data(record: dict[str, Any], path: Path, changes: list[dict[str, Any]]) -> dict[str, Any]:
     data = copy.deepcopy(record)
     record_id = data.get("id") if isinstance(data.get("id"), str) else None
@@ -188,7 +328,7 @@ def migrate_workspace(
     dry_run: bool = False,
 ) -> dict[str, Any]:
     normalized_target = normalize_spec_version(target_version)
-    if normalized_target != CURRENT_SPEC_VERSION:
+    if normalized_target not in SUPPORTED_SPEC_VERSIONS:
         return {
             "type": "verityspec_migration_report",
             "source": str(Path(path).resolve()),
@@ -198,13 +338,21 @@ def migrate_workspace(
             "blocked": True,
             "changes": [],
             "filesWritten": [],
-            "manualFollowUp": [f"Target version '{target_version}' is not supported by this VeritySpec release."],
+            "migrationPath": [],
+            "availableTargets": [],
+            "manualFollowUp": [
+                f"Target version '{target_version}' is not supported by this VeritySpec release.",
+                f"Supported target versions: {', '.join(sorted(SUPPORTED_SPEC_VERSIONS))}.",
+            ],
         }
 
     requested = Path(path).resolve()
     workspace = load_workspace(requested)
-    source_version = workspace.config.get("specVersion") or workspace.config.get("version")
-    source_classification = classify_spec_version(source_version)
+    declared_spec_version = workspace.config.get("specVersion")
+    legacy_version = workspace.config.get("version")
+    source_version = declared_spec_version if declared_spec_version is not None else legacy_version
+    source_classification = classify_spec_version(declared_spec_version)
+    source_key = migration_source_key(declared_spec_version)
     changes: list[dict[str, Any]] = []
     files_written: list[str] = []
     manual_follow_up: list[str] = []
@@ -220,19 +368,52 @@ def migrate_workspace(
             "blocked": True,
             "changes": [],
             "filesWritten": [],
+            "migrationPath": [],
+            "availableTargets": [],
             "manualFollowUp": [
                 "This workspace declares a future specVersion. Install a newer VeritySpec CLI before migrating."
             ],
         }
 
-    config_path, migrated_config = migrate_workspace_config(workspace, normalized_target, changes)
-    record_paths = sorted({record.path for record in workspace.records})
+    migration_path = plan_migration_path(source_key, normalized_target)
+    available_targets = reachable_migration_targets(source_key)
+    if migration_path is None:
+        return {
+            "type": "verityspec_migration_report",
+            "source": str(workspace.base_path),
+            "fromVersion": source_version,
+            "fromVersionKey": source_key,
+            "targetVersion": normalized_target,
+            "dryRun": dry_run,
+            "changed": False,
+            "blocked": True,
+            "changes": [],
+            "filesWritten": [],
+            "migrationPath": [],
+            "availableTargets": available_targets,
+            "manualFollowUp": [
+                f"No migration path is available from {source_key} to {normalized_target}."
+            ],
+        }
+
+    config_path = workspace.config_path or workspace.base_path / "verityspec.json"
+    migrated_config = copy.deepcopy(workspace.config if isinstance(workspace.config, dict) else {})
     migrated_payloads: list[tuple[Path, Any]] = []
-    for record_path in record_paths:
-        record_changes_before = len(changes)
-        migrated_payload, payload_changed = migrate_payload_records(record_path, changes)
-        if payload_changed or len(changes) != record_changes_before:
-            migrated_payloads.append((record_path, migrated_payload))
+
+    for step in migration_path:
+        if step.id == "legacy-to-v0.1.0":
+            config_path, migrated_config = migrate_workspace_config(workspace, step.to_version, changes)
+            record_paths = sorted({record.path for record in workspace.records})
+            for record_path in record_paths:
+                record_changes_before = len(changes)
+                migrated_payload, payload_changed = migrate_payload_records(record_path, changes)
+                if payload_changed or len(changes) != record_changes_before:
+                    migrated_payloads.append((record_path, migrated_payload))
+        elif step.id == "v0.1.0-to-v0.2.0":
+            migrated_config = migrate_workspace_config_to_v0_2_0(config_path, migrated_config, changes)
+
+    if source_key == normalized_target and normalized_target == "v0.2.0":
+        migrated_config = migrate_workspace_config_to_v0_2_0(config_path, migrated_config, changes)
 
     config_changed = workspace.config_path is None or migrated_config != workspace.config
     if not dry_run:
@@ -252,10 +433,13 @@ def migrate_workspace(
         "type": "verityspec_migration_report",
         "source": str(workspace.base_path),
         "fromVersion": source_version,
+        "fromVersionKey": source_key,
         "targetVersion": normalized_target,
         "dryRun": dry_run,
         "changed": bool(changes) or config_changed,
         "blocked": False,
+        "migrationPath": [step.to_dict() for step in migration_path],
+        "availableTargets": available_targets,
         "changes": changes,
         "changeCount": len(changes),
         "filesWritten": files_written,
@@ -265,12 +449,22 @@ def migrate_workspace(
 
 def migration_report_to_text(report: dict[str, Any]) -> str:
     lines = [
+        f"Source version: {report.get('fromVersion') or report.get('fromVersionKey')}",
         f"Migration target: {report.get('targetVersion')}",
         f"Source: {report.get('source')}",
         f"Dry run: {str(report.get('dryRun', False)).lower()}",
     ]
     if report.get("blocked"):
         lines.append("Blocked: true")
+    path = report.get("migrationPath", [])
+    if path:
+        lines.append("Migration path:")
+        for step in path:
+            lines.append(
+                f"  {step.get('fromVersion')} -> {step.get('toVersion')} ({step.get('id')})"
+            )
+    else:
+        lines.append("Migration path: none")
     lines.append(f"Changes: {report.get('changeCount', len(report.get('changes', [])))}")
     files = report.get("filesWritten", [])
     lines.append(f"Files written: {len(files)}")

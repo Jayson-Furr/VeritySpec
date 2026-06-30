@@ -25,6 +25,9 @@ The importer writes:
 The generated workspace includes the built-in packs needed by converted record
 kinds. For example, imported endpoints add `verity.pack.api`, imported commands
 add `verity.pack.cli`, and imported telemetry events add `verity.pack.events`.
+The importer targets the conservative `v0.1.0` workspace format; run
+`verity migrate ./verity-workspace` afterward to promote the result to the
+current workspace format.
 
 ## Report Fields
 
@@ -75,8 +78,8 @@ import smoke test:
 
 ```bash
 verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
+verity migrate build/prismspec-import
 python -m json.tool build/prismspec-import/migration-report.json >/dev/null
 verity validate build/prismspec-import --format json > build/prismspec-import-validation.json
 python -m json.tool build/prismspec-import-validation.json >/dev/null
 ```
-
