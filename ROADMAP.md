@@ -47,13 +47,15 @@ from downstream repositories:
 
 ## v0.3.0
 
-The active milestone is `v0.3.0`.
+The `v0.3.0` sprint scope is complete on `main`. The milestone remains
+unreleased until release preparation, tagging, and GitHub release publication
+are explicitly performed.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 13 | Complete | OpenAPI path-parameter extraction and generator precision |
 | 14 | Complete | Python nested-object model generation |
-| 15 | In progress | Pack authoring scaffold |
+| 15 | Complete | Pack authoring scaffold |
 
 ## Sprint 13 Priorities
 

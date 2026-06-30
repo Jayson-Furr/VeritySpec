@@ -16,7 +16,10 @@ artifacts.
 
 ## Current Scope
 
-This initial implementation provides:
+Latest release: `v0.2.0`. Current `main` also contains unreleased `v0.3.0`
+sprint work tracked in [CHANGELOG.md](CHANGELOG.md) and [ROADMAP.md](ROADMAP.md).
+
+This implementation provides:
 
 - An installable Python package with the `verity` CLI.
 - A small core model: workspace, pack, schema, record, reference graph,
@@ -195,6 +198,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 ## Documentation
 
 - [Workspace format](docs/workspace-format.md)
+- [Changelog](CHANGELOG.md)
 - [AI agent entry point](AGENTS.md)
 - [Roadmap](ROADMAP.md)
 - [Record lifecycle](docs/record-lifecycle.md)
