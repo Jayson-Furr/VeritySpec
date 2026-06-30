@@ -39,9 +39,9 @@ This implementation provides:
   for release-blocking policy.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, security reports,
-  observability reports, accessibility reports, and compliance matrices, with
-  OpenAPI path-parameter support and snapshot-tested type/model output
-  including nested Python dataclasses.
+  observability reports, accessibility reports, compliance matrices, and
+  roadmap governance reports, with OpenAPI path-parameter support and
+  snapshot-tested type/model output including nested Python dataclasses.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`.
 - Migration dry-run fixture coverage for each supported workspace version edge.
@@ -112,6 +112,7 @@ verity generate security-report examples/security --out build/security-report.js
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
+verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
@@ -160,6 +161,7 @@ verity readiness examples/basic --strict
 verity diff previous-workspace current-workspace --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate roadmap-report . --out build/roadmap-report.json
 ```
 
 ## Semantic Validation

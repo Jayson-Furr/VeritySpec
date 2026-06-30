@@ -1122,6 +1122,26 @@ class VerityCliTests(unittest.TestCase):
         )
         self.assertEqual("compliance.mapping.checkout_access_review", payload["matrix"][0]["id"])
 
+    def test_roadmap_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "roadmap-report.json"
+            result = verity_command(
+                "generate",
+                "roadmap-report",
+                ".",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated roadmap-report", result.stdout)
+        self.assertEqual("roadmap_report", payload["type"])
+        self.assertEqual(str(ROOT / "ROADMAP.md"), payload["roadmapPath"])
+        self.assertEqual(20, payload["summary"]["nextRoadmapPoints"])
+        self.assertEqual(list(range(1, 21)), [point["number"] for point in payload["nextRoadmapPoints"]])
+
     def test_prismspec_import_reports_migration_details(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "imported"

@@ -18,6 +18,7 @@ from .generators import (
     generate_openapi,
     generate_observability_report,
     generate_python_models,
+    generate_roadmap_report,
     generate_schema_bundle,
     generate_security_report,
     generate_typescript,
@@ -632,6 +633,15 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
+    if args.artifact == "roadmap-report":
+        report = generate_roadmap_report(args.workspace)
+        text = write_generated(report, args.out)
+        if not args.out:
+            print(text, end="" if text.endswith("\n") else "\n")
+        else:
+            print(f"Generated roadmap-report: {args.out}")
+        return EXIT_SUCCESS
+
     workspace, registry = load_context(args.workspace, args.pack_path)
     if args.artifact == "validation-report":
         issues = validate_workspace(workspace, registry, strict=args.strict)
@@ -865,6 +875,7 @@ def build_parser() -> argparse.ArgumentParser:
             "observability-report",
             "accessibility-report",
             "compliance-matrix",
+            "roadmap-report",
         ],
     )
     generate_parser.add_argument("workspace")

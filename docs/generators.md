@@ -15,6 +15,7 @@ verity generate security-report examples/security --out build/security-report.js
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
+verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
@@ -71,6 +72,19 @@ Compliance matrices include:
   mappings, missing mapping owners, and targets without owners
 - Per-mapping framework metadata, verification state, mapped targets, and
   grouped security, accessibility, and observability evidence
+
+Roadmap reports include:
+
+- Roadmap path and VeritySpec version metadata
+- Release milestone sections and their sprint rows
+- Counts for released milestones, active milestones, completed sprints, and
+  in-progress sprints
+- The latest released milestone and currently active milestones
+- The Next 20 roadmap planning points used for project governance
+
+`roadmap-report` reads a repository directory containing `ROADMAP.md` or a
+direct path to a roadmap file. It does not require the path to be a VeritySpec
+workspace.
 
 ## Current Guarantees
 
