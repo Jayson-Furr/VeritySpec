@@ -52,6 +52,14 @@
         {
           "type": "hasUnityProject",
           "target": "unity.project.coverage_adventure"
+        },
+        {
+          "type": "hasGameplay",
+          "target": "game.mechanic.coverage_shards"
+        },
+        {
+          "type": "hasContentManifest",
+          "target": "game.content-manifest.coverage_slice"
         }
       ]
     },
@@ -383,6 +391,26 @@
         {
           "type": "hasVisualIdentity",
           "target": "game.visual-identity.coverage_style"
+        },
+        {
+          "type": "hasMechanic",
+          "target": "game.mechanic.coverage_shards"
+        },
+        {
+          "type": "hasAbility",
+          "target": "game.ability.coverage_dash"
+        },
+        {
+          "type": "hasRule",
+          "target": "game.rule.coverage_collapse"
+        },
+        {
+          "type": "hasEncounter",
+          "target": "game.encounter.coverage_portal"
+        },
+        {
+          "type": "hasContentManifest",
+          "target": "game.content-manifest.coverage_slice"
         }
       ]
     },
@@ -404,6 +432,10 @@
         {
           "type": "usesLoop",
           "target": "game.loop.coverage_status"
+        },
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.coverage_shards"
         }
       ]
     },
@@ -426,7 +458,12 @@
           "description": "Players return shards to the status portal."
         }
       ],
-      "references": []
+      "references": [
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.coverage_shards"
+        }
+      ]
     },
     {
       "id": "game.prototype-scope.coverage_slice",
@@ -451,6 +488,14 @@
         {
           "type": "validatesLoop",
           "target": "game.loop.coverage_status"
+        },
+        {
+          "type": "validatesEncounter",
+          "target": "game.encounter.coverage_portal"
+        },
+        {
+          "type": "includesLevel",
+          "target": "game.level.coverage_zone"
         }
       ]
     },
@@ -545,6 +590,200 @@
       ]
     },
     {
+      "id": "game.mechanic.coverage_shards",
+      "kind": "game.mechanic",
+      "name": "Coverage Shard Collection",
+      "description": "Gameplay mechanic fixture for collecting coverage shards before extraction.",
+      "status": "ready",
+      "owner": "game-design",
+      "mechanicType": "resource",
+      "summary": "Players collect shard resources while the coverage portal timer creates pressure.",
+      "playerFacing": true,
+      "inputs": [
+        "interact with shard node",
+        "collapse timer"
+      ],
+      "outputs": [
+        "carried coverage shards",
+        "banked coverage shards"
+      ],
+      "tuningParameters": [
+        "node yield",
+        "carry capacity"
+      ],
+      "references": [
+        {
+          "type": "enablesAbility",
+          "target": "game.ability.coverage_dash"
+        },
+        {
+          "type": "governedBy",
+          "target": "game.rule.coverage_collapse"
+        }
+      ]
+    },
+    {
+      "id": "game.ability.coverage_dash",
+      "kind": "game.ability",
+      "name": "Coverage Dash",
+      "description": "Gameplay ability fixture for crossing a short coverage gap.",
+      "status": "ready",
+      "owner": "game-design",
+      "abilityType": "movement",
+      "activation": "manual",
+      "effectSummary": "Moves the player across one coverage gap without dropping shards.",
+      "cooldownSeconds": 6,
+      "resourceCost": "none",
+      "references": [
+        {
+          "type": "governedBy",
+          "target": "game.rule.coverage_collapse"
+        }
+      ]
+    },
+    {
+      "id": "game.rule.coverage_collapse",
+      "kind": "game.rule",
+      "name": "Coverage Collapse Rule",
+      "description": "Gameplay rule fixture for collapse failure conditions.",
+      "status": "ready",
+      "owner": "game-design",
+      "ruleType": "failure",
+      "condition": "The coverage timer reaches zero before extraction.",
+      "outcome": "The encounter fails and carried shards are lost.",
+      "priority": 10,
+      "references": []
+    },
+    {
+      "id": "game.encounter.coverage_portal",
+      "kind": "game.encounter",
+      "name": "Coverage Portal Encounter",
+      "description": "Gameplay encounter fixture for the coverage dashboard surface.",
+      "status": "ready",
+      "owner": "level-design",
+      "encounterType": "exploration",
+      "difficulty": "normal",
+      "objective": "Collect shards and extract through the coverage portal.",
+      "location": "Coverage Zone",
+      "participantRefs": [
+        "player.squad",
+        "hazard.coverage-collapse"
+      ],
+      "references": [
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.coverage_shards"
+        },
+        {
+          "type": "includesAbility",
+          "target": "game.ability.coverage_dash"
+        },
+        {
+          "type": "governedBy",
+          "target": "game.rule.coverage_collapse"
+        },
+        {
+          "type": "rewardsLoot",
+          "target": "game.loot-table.coverage_rewards"
+        }
+      ]
+    },
+    {
+      "id": "game.content-item.coverage_shard",
+      "kind": "game.content-item",
+      "name": "Coverage Shard",
+      "description": "Content item fixture for coverage-dashboard content tracking.",
+      "status": "ready",
+      "owner": "content-design",
+      "itemType": "resource",
+      "rarity": "common",
+      "usage": "Prototype reward for completing the coverage portal encounter.",
+      "stackable": true,
+      "tags": [
+        "coverage",
+        "reward"
+      ],
+      "references": []
+    },
+    {
+      "id": "game.level.coverage_zone",
+      "kind": "game.level",
+      "name": "Coverage Zone",
+      "description": "Content level fixture for the coverage dashboard surface.",
+      "status": "ready",
+      "owner": "level-design",
+      "levelType": "prototype",
+      "setting": "A compact zone surrounding the coverage portal.",
+      "objectiveSummary": "Collect coverage shards and return them before collapse.",
+      "estimatedDurationMinutes": 8,
+      "contentTags": [
+        "coverage",
+        "prototype"
+      ],
+      "references": [
+        {
+          "type": "usesEncounter",
+          "target": "game.encounter.coverage_portal"
+        },
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.coverage_shards"
+        }
+      ]
+    },
+    {
+      "id": "game.loot-table.coverage_rewards",
+      "kind": "game.loot-table",
+      "name": "Coverage Rewards",
+      "description": "Content loot-table fixture for coverage reward outputs.",
+      "status": "ready",
+      "owner": "content-design",
+      "tableType": "reward",
+      "entries": [
+        {
+          "itemRef": "game.content-item.coverage_shard",
+          "weight": 1,
+          "quantity": 3
+        }
+      ],
+      "references": [
+        {
+          "type": "dropsItem",
+          "target": "game.content-item.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "game.content-manifest.coverage_slice",
+      "kind": "game.content-manifest",
+      "name": "Coverage Slice Content Manifest",
+      "description": "Content manifest fixture for cross-pack coverage tracking.",
+      "status": "ready",
+      "owner": "production",
+      "manifestType": "vertical-slice",
+      "scope": "One level, one reward item, and one reward table for coverage tests.",
+      "contentVersion": "0.1.0",
+      "contentRefs": [
+        "game.content-item.coverage_shard",
+        "game.level.coverage_zone",
+        "game.loot-table.coverage_rewards"
+      ],
+      "references": [
+        {
+          "type": "includesItem",
+          "target": "game.content-item.coverage_shard"
+        },
+        {
+          "type": "includesLevel",
+          "target": "game.level.coverage_zone"
+        },
+        {
+          "type": "includesLootTable",
+          "target": "game.loot-table.coverage_rewards"
+        }
+      ]
+    },
+    {
       "id": "unity.project.coverage_adventure",
       "kind": "unity.project",
       "name": "Coverage Adventure Unity Project",
@@ -607,6 +846,10 @@
         {
           "type": "usesPackage",
           "target": "unity.package.coverage_input"
+        },
+        {
+          "type": "implementsLevel",
+          "target": "game.level.coverage_zone"
         }
       ]
     },

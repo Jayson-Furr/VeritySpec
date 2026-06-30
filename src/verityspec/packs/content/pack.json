@@ -1,0 +1,155 @@
+{
+  "id": "verity.pack.content",
+  "version": "0.1.0",
+  "name": "VeritySpec Content Pack",
+  "description": "Game content item, level, loot table, and content manifest records for executable content product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "game.content-item",
+      "path": "schemas/game-content-item.schema.json"
+    },
+    {
+      "kind": "game.level",
+      "path": "schemas/game-level.schema.json"
+    },
+    {
+      "kind": "game.loot-table",
+      "path": "schemas/game-loot-table.schema.json"
+    },
+    {
+      "kind": "game.content-manifest",
+      "path": "schemas/game-content-manifest.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "game.content-item.release",
+      "kind": "game.content-item",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "itemType",
+        "rarity",
+        "usage"
+      ]
+    },
+    {
+      "id": "game.level.release",
+      "kind": "game.level",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "levelType",
+        "setting",
+        "objectiveSummary"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "game.loot-table.release",
+      "kind": "game.loot-table",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "tableType"
+      ],
+      "minItems": {
+        "entries": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "game.content-manifest.release",
+      "kind": "game.content-manifest",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "manifestType",
+        "scope",
+        "contentVersion"
+      ],
+      "minItems": {
+        "contentRefs": 1,
+        "references": 3
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasContentManifest",
+      "targetKind": "game.content-manifest"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasContentManifest",
+      "targetKind": "game.content-manifest"
+    },
+    {
+      "sourceKind": "game.content-manifest",
+      "relationship": "includesItem",
+      "targetKind": "game.content-item"
+    },
+    {
+      "sourceKind": "game.content-manifest",
+      "relationship": "includesLevel",
+      "targetKind": "game.level"
+    },
+    {
+      "sourceKind": "game.content-manifest",
+      "relationship": "includesLootTable",
+      "targetKind": "game.loot-table"
+    },
+    {
+      "sourceKind": "game.level",
+      "relationship": "usesEncounter",
+      "targetKind": "game.encounter"
+    },
+    {
+      "sourceKind": "game.level",
+      "relationship": "usesMechanic",
+      "targetKind": "game.mechanic"
+    },
+    {
+      "sourceKind": "game.loot-table",
+      "relationship": "dropsItem",
+      "targetKind": "game.content-item"
+    },
+    {
+      "sourceKind": "game.encounter",
+      "relationship": "rewardsLoot",
+      "targetKind": "game.loot-table"
+    },
+    {
+      "sourceKind": "game.prototype-scope",
+      "relationship": "includesLevel",
+      "targetKind": "game.level"
+    },
+    {
+      "sourceKind": "unity.scene",
+      "relationship": "implementsLevel",
+      "targetKind": "game.level"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for content records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "game.content-item",
+        "game.level",
+        "game.loot-table",
+        "game.content-manifest"
+      ]
+    }
+  ]
+}

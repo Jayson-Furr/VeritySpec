@@ -13,7 +13,9 @@
     "verity.pack.deployment",
     "verity.pack.game-core",
     "verity.pack.game-assets",
-    "verity.pack.unity"
+    "verity.pack.unity",
+    "verity.pack.gameplay",
+    "verity.pack.content"
   ],
   "packPaths": [],
   "records": [

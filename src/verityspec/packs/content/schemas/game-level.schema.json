@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/v0.1/content/game-level.schema.json",
+  "title": "Game Level",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "levelType",
+    "setting",
+    "objectiveSummary",
+    "references"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "game.level"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "ready", "deprecated", "removed"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "levelType": {
+      "type": "string",
+      "enum": ["tutorial", "mission", "arena", "hub", "dungeon", "open-world", "prototype", "other"]
+    },
+    "setting": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objectiveSummary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "estimatedDurationMinutes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "contentTags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "default": []
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

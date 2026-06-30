@@ -17,24 +17,28 @@
     "verity.pack.deployment",
     "verity.pack.game-core",
     "verity.pack.game-assets",
-    "verity.pack.unity"
+    "verity.pack.unity",
+    "verity.pack.gameplay",
+    "verity.pack.content"
   ],
-  "recordCount": 26,
+  "recordCount": 34,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 11,
-    "loadedSurfacePacks": 11,
-    "coveredSurfaces": 11,
+    "trackedSurfaces": 13,
+    "loadedSurfacePacks": 13,
+    "coveredSurfaces": 13,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
       "api": 1,
       "cli": 1,
       "compliance": 1,
+      "content": 4,
       "deployment": 2,
       "events": 1,
       "game-assets": 4,
       "game-core": 4,
+      "gameplay": 4,
       "observability": 4,
       "security": 1,
       "unity": 4
@@ -47,13 +51,21 @@
       "deployment.runtime": 1,
       "deployment.target": 1,
       "event.message": 1,
+      "game.ability": 1,
       "game.concept-art": 1,
+      "game.content-item": 1,
+      "game.content-manifest": 1,
+      "game.encounter": 1,
       "game.gdd-source": 1,
       "game.identity-image": 1,
+      "game.level": 1,
       "game.loop": 1,
+      "game.loot-table": 1,
+      "game.mechanic": 1,
       "game.mode": 1,
       "game.product": 1,
       "game.prototype-scope": 1,
+      "game.rule": 1,
       "game.visual-identity": 1,
       "observability.alert": 1,
       "observability.dashboard": 1,
@@ -560,6 +572,118 @@
           "targetName": "Coverage Adventure Unity Project"
         }
       ]
+    },
+    {
+      "id": "gameplay",
+      "name": "Gameplay",
+      "packId": "verity.pack.gameplay",
+      "packLoaded": true,
+      "recordKinds": [
+        "game.mechanic",
+        "game.ability",
+        "game.rule",
+        "game.encounter"
+      ],
+      "productRelationships": [
+        "hasGameplay"
+      ],
+      "recordCount": 4,
+      "covered": true,
+      "records": [
+        {
+          "id": "game.ability.coverage_dash",
+          "kind": "game.ability",
+          "name": "Coverage Dash",
+          "status": "ready",
+          "owner": "game-design"
+        },
+        {
+          "id": "game.encounter.coverage_portal",
+          "kind": "game.encounter",
+          "name": "Coverage Portal Encounter",
+          "status": "ready",
+          "owner": "level-design"
+        },
+        {
+          "id": "game.mechanic.coverage_shards",
+          "kind": "game.mechanic",
+          "name": "Coverage Shard Collection",
+          "status": "ready",
+          "owner": "game-design"
+        },
+        {
+          "id": "game.rule.coverage_collapse",
+          "kind": "game.rule",
+          "name": "Coverage Collapse Rule",
+          "status": "ready",
+          "owner": "game-design"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasGameplay",
+          "targetId": "game.mechanic.coverage_shards",
+          "targetKind": "game.mechanic",
+          "targetName": "Coverage Shard Collection"
+        }
+      ]
+    },
+    {
+      "id": "content",
+      "name": "Content",
+      "packId": "verity.pack.content",
+      "packLoaded": true,
+      "recordKinds": [
+        "game.content-item",
+        "game.level",
+        "game.loot-table",
+        "game.content-manifest"
+      ],
+      "productRelationships": [
+        "hasContentManifest"
+      ],
+      "recordCount": 4,
+      "covered": true,
+      "records": [
+        {
+          "id": "game.content-item.coverage_shard",
+          "kind": "game.content-item",
+          "name": "Coverage Shard",
+          "status": "ready",
+          "owner": "content-design"
+        },
+        {
+          "id": "game.content-manifest.coverage_slice",
+          "kind": "game.content-manifest",
+          "name": "Coverage Slice Content Manifest",
+          "status": "ready",
+          "owner": "production"
+        },
+        {
+          "id": "game.level.coverage_zone",
+          "kind": "game.level",
+          "name": "Coverage Zone",
+          "status": "ready",
+          "owner": "level-design"
+        },
+        {
+          "id": "game.loot-table.coverage_rewards",
+          "kind": "game.loot-table",
+          "name": "Coverage Rewards",
+          "status": "ready",
+          "owner": "content-design"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasContentManifest",
+          "targetId": "game.content-manifest.coverage_slice",
+          "targetKind": "game.content-manifest",
+          "targetName": "Coverage Slice Content Manifest"
+        }
+      ]
     }
   ],
   "products": [
@@ -666,6 +790,24 @@
             "targetId": "unity.project.coverage_adventure",
             "targetKind": "unity.project",
             "targetName": "Coverage Adventure Unity Project"
+          }
+        ],
+        "gameplay": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasGameplay",
+            "targetId": "game.mechanic.coverage_shards",
+            "targetKind": "game.mechanic",
+            "targetName": "Coverage Shard Collection"
+          }
+        ],
+        "content": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasContentManifest",
+            "targetId": "game.content-manifest.coverage_slice",
+            "targetKind": "game.content-manifest",
+            "targetName": "Coverage Slice Content Manifest"
           }
         ]
       },

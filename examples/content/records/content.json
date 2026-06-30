@@ -1,0 +1,100 @@
+{
+  "records": [
+    {
+      "id": "game.content-item.memory_shard",
+      "kind": "game.content-item",
+      "name": "Memory Shard",
+      "description": "Prototype resource collected inside dream zones and banked after successful extraction.",
+      "status": "ready",
+      "owner": "content-design",
+      "itemType": "resource",
+      "rarity": "common",
+      "usage": "Used as the first prototype reward and upgrade currency placeholder.",
+      "stackable": true,
+      "tags": [
+        "prototype",
+        "reward"
+      ],
+      "references": []
+    },
+    {
+      "id": "game.level.dream_ruins",
+      "kind": "game.level",
+      "name": "Dream Ruins",
+      "description": "First greybox level for proving shard collection and timed extraction.",
+      "status": "ready",
+      "owner": "level-design",
+      "levelType": "prototype",
+      "setting": "Collapsed memory ruins with one route to an extraction portal.",
+      "objectiveSummary": "Collect memory shards and extract before the zone collapses.",
+      "estimatedDurationMinutes": 10,
+      "contentTags": [
+        "greybox",
+        "prototype",
+        "extraction"
+      ],
+      "references": [
+        {
+          "type": "usesEncounter",
+          "target": "game.encounter.prototype_zone_collapse"
+        },
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.memory_shard_extraction"
+        }
+      ]
+    },
+    {
+      "id": "game.loot-table.memory_shard_rewards",
+      "kind": "game.loot-table",
+      "name": "Memory Shard Rewards",
+      "description": "Prototype reward table for successful shard extraction.",
+      "status": "ready",
+      "owner": "content-design",
+      "tableType": "reward",
+      "entries": [
+        {
+          "itemRef": "game.content-item.memory_shard",
+          "weight": 1,
+          "quantity": 3
+        }
+      ],
+      "references": [
+        {
+          "type": "dropsItem",
+          "target": "game.content-item.memory_shard"
+        }
+      ]
+    },
+    {
+      "id": "game.content-manifest.vertical_slice_01",
+      "kind": "game.content-manifest",
+      "name": "Vertical Slice 01 Content Manifest",
+      "description": "Prototype content manifest for the first Dream Extraction playable slice.",
+      "status": "ready",
+      "owner": "production",
+      "manifestType": "vertical-slice",
+      "scope": "One playable dream-zone level with one prototype resource and one reward table.",
+      "contentVersion": "0.1.0",
+      "contentRefs": [
+        "game.content-item.memory_shard",
+        "game.level.dream_ruins",
+        "game.loot-table.memory_shard_rewards"
+      ],
+      "references": [
+        {
+          "type": "includesItem",
+          "target": "game.content-item.memory_shard"
+        },
+        {
+          "type": "includesLevel",
+          "target": "game.level.dream_ruins"
+        },
+        {
+          "type": "includesLootTable",
+          "target": "game.loot-table.memory_shard_rewards"
+        }
+      ]
+    }
+  ]
+}

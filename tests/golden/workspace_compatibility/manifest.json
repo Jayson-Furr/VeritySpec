@@ -355,6 +355,76 @@
       ]
     },
     {
+      "path": "examples/gameplay",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.game-core",
+        "verity.pack.gameplay"
+      ],
+      "recordCount": 9,
+      "recordKinds": {
+        "game.ability": 1,
+        "game.encounter": 1,
+        "game.loop": 1,
+        "game.mechanic": 1,
+        "game.mode": 1,
+        "game.product": 1,
+        "game.prototype-scope": 1,
+        "game.rule": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/content",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.game-core",
+        "verity.pack.gameplay",
+        "verity.pack.content"
+      ],
+      "recordCount": 12,
+      "recordKinds": {
+        "game.content-item": 1,
+        "game.content-manifest": 1,
+        "game.encounter": 1,
+        "game.level": 1,
+        "game.loop": 1,
+        "game.loot-table": 1,
+        "game.mechanic": 1,
+        "game.mode": 1,
+        "game.product": 1,
+        "game.prototype-scope": 1,
+        "game.rule": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "tests/fixtures/generator_maturity",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

@@ -24,6 +24,10 @@ Built-in packs currently include:
   concept art records for creative-source game coverage.
 - `verity.pack.unity`: Unity projects, package dependencies, scenes, and build
   targets for engine-specific implementation coverage.
+- `verity.pack.gameplay`: game mechanics, abilities, rules, and encounters for
+  gameplay implementation handoff coverage.
+- `verity.pack.content`: game content items, levels, loot tables, and content
+  manifests for content implementation and release-review coverage.
 
 ## Manifest
 
@@ -179,7 +183,9 @@ boundary guidance in
 their first schemas are added. The first narrow game and engine scopes now live in
 [`verity.pack.game-core`](game-core-pack.md) and
 [`verity.pack.game-assets`](game-assets-pack.md), with Unity implementation
-coverage in [`verity.pack.unity`](unity-pack.md).
+coverage in [`verity.pack.unity`](unity-pack.md), gameplay coverage in
+[`verity.pack.gameplay`](gameplay-pack.md), and content coverage in
+[`verity.pack.content`](content-pack.md).
 
 That guidance keeps product-surface packs focused on their own domains and
 prevents them from duplicating cross-cutting concerns owned by security,

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.gameplay` with `game.mechanic`,
+  `game.ability`, `game.rule`, and `game.encounter` records, readiness gates,
+  graph reference rules, an executable gameplay example, coverage-dashboard
+  support, schema-bundle generation coverage, and public docs for gameplay
+  implementation contracts.
+- Added built-in `verity.pack.content` with `game.content-item`, `game.level`,
+  `game.loot-table`, and `game.content-manifest` records, readiness gates,
+  graph reference rules, an executable content example, coverage-dashboard
+  support, schema-bundle generation coverage, and public docs for content
+  implementation contracts.
+
 ## 0.37.0
 
 - Added built-in `verity.pack.unity` with `unity.project`,

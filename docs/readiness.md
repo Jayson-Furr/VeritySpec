@@ -77,6 +77,14 @@ Unity records use readiness gates to keep implementation contracts executable.
 A `unity.project` should link to package, scene, and build-target records before
 strict readiness passes.
 
+Gameplay records use readiness gates to keep mechanics and encounters
+implementation-ready. A `game.mechanic` should declare inputs, outputs, and
+graph references before strict readiness passes.
+
+Content records use readiness gates to keep item, level, loot-table, and
+manifest contracts traceable. A `game.content-manifest` should include content
+references and graph links before strict readiness passes.
+
 Run readiness checks:
 
 ```bash
@@ -87,6 +95,8 @@ verity readiness examples/deployment --strict
 verity readiness examples/game-core --strict
 verity readiness examples/game-assets --strict
 verity readiness examples/unity --strict
+verity readiness examples/gameplay --strict
+verity readiness examples/content --strict
 verity readiness examples/basic --strict --format json
 ```
 
