@@ -145,6 +145,9 @@ verity readiness examples/basic --strict
 verity validate examples/security
 verity lint examples/security --strict
 verity readiness examples/security --strict
+verity validate examples/observability
+verity lint examples/observability --strict
+verity readiness examples/observability --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing

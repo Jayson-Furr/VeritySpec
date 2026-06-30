@@ -23,7 +23,8 @@ This implementation provides:
 - An installable Python package with the `verity` CLI.
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
-- Built-in packs for core product records, APIs, CLIs, events, and security controls.
+- Built-in packs for core product records, APIs, CLIs, events, security
+  controls, and observability signals.
 - Pack listing, validation, and scaffolding through `verity pack`, including local external packs.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
 - Structural validation with JSON Schema.
@@ -78,6 +79,7 @@ verity validate tests/fixtures/custom_pack_workspace
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity readiness examples/security --strict
+verity readiness examples/observability --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -213,6 +215,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/cli-tool](examples/cli-tool/verityspec.json): focused CLI workspace.
 - [examples/events](examples/events/verityspec.json): focused event workspace.
 - [examples/security](examples/security/verityspec.json): focused security-control workspace.
+- [examples/observability](examples/observability/verityspec.json): focused observability workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -224,6 +227,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
 - [Security pack](docs/security-pack.md)
+- [Observability pack](docs/observability-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)

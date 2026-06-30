@@ -6,6 +6,8 @@
   JSON file while preserving normal stdout output.
 - Added `verity init --template` starter workspaces for basic, API, CLI,
   events, and security contracts.
+- Added built-in `verity.pack.observability` with telemetry, metric,
+  dashboard, and alert records plus an executable observability example.
 
 ## 0.6.0
 

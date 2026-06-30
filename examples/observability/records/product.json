@@ -1,0 +1,15 @@
+{
+  "id": "product.checkout_observability",
+  "kind": "product",
+  "name": "Checkout Observability",
+  "description": "Observability contract for checkout reliability signals.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "observes",
+      "target": "observability.dashboard.checkout_reliability"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ Built-in packs currently include:
 - `verity.pack.cli`: CLI commands and CLI reference generation.
 - `verity.pack.events`: event messages and AsyncAPI generation.
 - `verity.pack.security`: security controls and security report generation.
+- `verity.pack.observability`: telemetry, metrics, dashboards, and alerts.
 
 ## Manifest
 

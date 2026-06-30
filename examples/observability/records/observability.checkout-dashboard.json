@@ -1,0 +1,20 @@
+{
+  "id": "observability.dashboard.checkout_reliability",
+  "kind": "observability.dashboard",
+  "name": "Checkout Reliability",
+  "description": "Dashboard for checkout health and release readiness.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "url": "https://example.com/dashboards/checkout-reliability",
+  "audience": "engineering",
+  "references": [
+    {
+      "type": "displays",
+      "target": "observability.metric.checkout_success_rate"
+    },
+    {
+      "type": "tracks",
+      "target": "observability.alert.checkout_success_rate_low"
+    }
+  ]
+}

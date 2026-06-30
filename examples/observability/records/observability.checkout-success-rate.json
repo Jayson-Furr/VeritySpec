@@ -1,0 +1,17 @@
+{
+  "id": "observability.metric.checkout_success_rate",
+  "kind": "observability.metric",
+  "name": "Checkout Success Rate",
+  "description": "Rate of successful checkout completions.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "metricName": "checkout.success_rate",
+  "unit": "percent",
+  "aggregation": "rate",
+  "references": [
+    {
+      "type": "derivedFrom",
+      "target": "observability.telemetry.checkout_completed"
+    }
+  ]
+}

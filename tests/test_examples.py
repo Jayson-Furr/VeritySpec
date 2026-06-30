@@ -21,6 +21,7 @@ POSITIVE_EXAMPLES = [
     ROOT / "examples" / "cli-tool",
     ROOT / "examples" / "events",
     ROOT / "examples" / "security",
+    ROOT / "examples" / "observability",
 ]
 COMPATIBILITY_WORKSPACES = POSITIVE_EXAMPLES + [
     ROOT / "tests" / "fixtures" / "generator_maturity",

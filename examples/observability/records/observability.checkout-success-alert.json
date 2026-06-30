@@ -1,0 +1,18 @@
+{
+  "id": "observability.alert.checkout_success_rate_low",
+  "kind": "observability.alert",
+  "name": "Checkout Success Rate Low",
+  "description": "Alerts when checkout success rate drops below the release threshold.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "severity": "critical",
+  "condition": "checkout.success_rate < 0.98 for 10m",
+  "ownerTeam": "checkout-platform",
+  "runbook": "https://example.com/runbooks/checkout-success-rate",
+  "references": [
+    {
+      "type": "firesOn",
+      "target": "observability.metric.checkout_success_rate"
+    }
+  ]
+}
