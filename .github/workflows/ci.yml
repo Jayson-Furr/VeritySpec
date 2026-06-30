@@ -77,6 +77,7 @@ jobs:
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
           verity doctor examples/basic --format json > build/doctor.json
           verity explain reference.missing --format json > build/explain-reference-missing.json
+          verity diff examples/basic examples/basic --format json > build/diff.json
           verity migrate examples/basic --dry-run --format json > build/migrate.json
           verity graph examples/basic --focus api.users.create --format json > build/graph-focus.json
           verity graph tests/fixtures/broken_semantics --cycles --format json > build/graph-cycles.json
@@ -109,6 +110,7 @@ jobs:
           python -m json.tool build/custom-pack-readiness.json >/dev/null
           python -m json.tool build/doctor.json >/dev/null
           python -m json.tool build/explain-reference-missing.json >/dev/null
+          python -m json.tool build/diff.json >/dev/null
           python -m json.tool build/migrate.json >/dev/null
           python -m json.tool build/graph-focus.json >/dev/null
           python -m json.tool build/graph-cycles.json >/dev/null

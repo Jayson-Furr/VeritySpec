@@ -158,6 +158,7 @@ verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
 verity graph examples/basic
+verity diff examples/basic examples/basic --format json
 verity migrate --list --format json
 verity migrate examples/basic --dry-run --format json
 verity generate openapi examples/basic --out build/openapi.json
