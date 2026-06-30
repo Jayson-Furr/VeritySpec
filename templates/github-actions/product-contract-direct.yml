@@ -1,0 +1,38 @@
+name: Product Contract
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  product-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install VeritySpec
+        run: pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.13.0"
+
+      - name: Check product contract
+        shell: bash
+        run: |
+          mkdir -p build
+          verity --version
+          verity validate .
+          verity lint . --strict
+          verity readiness . --strict
+          verity doctor . --format json > build/verity-doctor.json
+          verity generate validation-report . --out build/verity-validation-report.json
+          python -m json.tool build/verity-doctor.json >/dev/null
+          python -m json.tool build/verity-validation-report.json >/dev/null

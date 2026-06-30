@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added maintained downstream GitHub Actions templates for reusable-workflow,
+  local-pack, and direct-install product-contract checks.
+- Added tests that keep downstream template and reusable-workflow release tags
+  aligned with the package version.
 
 ## 0.13.0
 
