@@ -8,6 +8,8 @@
   controls, coverage, risk levels, verification state, and target records.
 - Added the next 20 roadmap points for future fixes, improvements,
   continuation work, and project expansion.
+- Added an AI-agent rule requiring up to 20 future roadmap points when the
+  active roadmap is caught up.
 
 ## 0.4.0
 

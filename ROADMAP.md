@@ -166,6 +166,12 @@ These points define the next backlog once the active roadmap is caught up. They
 are planning inputs, not release commitments. Convert each point into a GitHub
 issue and milestone before implementation begins.
 
+AI agents must keep this section populated with up to 20 concrete points when
+the active roadmap is caught up. The points should balance fixes,
+improvements, continuation work, and expansion. When points are converted into
+sprint issues or milestones, replace them with new future planning inputs so
+the roadmap does not drift into an empty backlog.
+
 1. Release `v0.5.0` after Sprint 19 security-pack verification is complete.
 2. Add a security-readiness hardening pass for unverified critical controls.
 3. Add a compatibility test matrix for fixture workspaces across supported
@@ -210,3 +216,6 @@ No sprint is complete unless:
 - CI passes.
 - Documentation and examples match the implemented behavior.
 - New behavior has at least one executable test or CLI smoke check.
+- When the active roadmap has been caught up, `ROADMAP.md` keeps up to 20
+  future planning points for fixing, improving, continuing, and expanding the
+  project.
