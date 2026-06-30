@@ -1688,11 +1688,12 @@ Sprint 98 releases the completed `v0.40.0` scope:
 
 ## v0.41.0
 
-The `v0.41.0` milestone is active.
+The `v0.41.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 99 | In Progress | Godot engine and game workspace pack foundation |
+| 99 | Complete | Godot engine and game workspace pack foundation |
+| 100 | Complete | v0.41.0 release preparation |
 
 ## Sprint 99 Priorities
 
@@ -1720,6 +1721,22 @@ foundation:
 - Keep the next-20 planning backlog populated after converting the Godot item.
 - Avoid commercial, legal, marketplace-readiness, certification, or similar
   claims.
+
+## Sprint 100 Priorities
+
+Sprint 100 releases the completed `v0.41.0` scope:
+
+- Promote Unreleased changelog entries into `0.41.0`.
+- Bump package metadata to `0.41.0`.
+- Add v0.41.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.41.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.41.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.41.0 GitHub release when checks pass.
+- Close the v0.41.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 
