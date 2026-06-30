@@ -10,6 +10,8 @@ import unittest
 from datetime import datetime
 from pathlib import Path
 
+from verityspec import __version__
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CUSTOM_PACK = "tests/fixtures/custom_pack"
@@ -63,7 +65,7 @@ class VerityCliTests(unittest.TestCase):
         result = verity_command("--version")
 
         self.assertEqual(0, result.returncode)
-        self.assertIn("verity 0.21.0", result.stdout)
+        self.assertIn(f"verity {__version__}", result.stdout)
 
     def test_validate_json_output(self) -> None:
         result = verity_command("validate", "examples/basic", "--format", "json")

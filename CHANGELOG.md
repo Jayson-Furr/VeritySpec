@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.22.0
+
 - Added README command smoke tests that execute safe local CLI examples with
   temporary output paths and explicit install/setup skips.
+- Added v0.22.0 release notes and roadmap closeout.
 
 ## 0.21.0
 
