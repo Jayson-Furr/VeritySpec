@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 
 from verityspec.generators import (
@@ -25,6 +26,15 @@ from verityspec.workspace import load_workspace
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
 GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
+SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
+
+
+def normalize_security_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
 
 
 class VeritySpecTests(unittest.TestCase):
@@ -504,6 +514,17 @@ class VeritySpecTests(unittest.TestCase):
             ["api.accounts.get", "schema.account"],
             [target["id"] for target in control["targets"]],
         )
+
+    def test_security_report_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "security")
+        expected = json.loads(SECURITY_REPORT_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_security_report(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "security"), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_security_report_for_golden(report))
 
     def test_accessibility_report_summarizes_accessibility_claims(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "accessibility")
