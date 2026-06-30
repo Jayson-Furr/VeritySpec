@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.28.0
+
 - Added the first deployment-target pack with runtime and deployment target
   schemas, production readiness controls, an executable deployment example,
   and deployment report generation.
+- Added v0.28.0 release notes and roadmap closeout.
 
 ## 0.27.0
 
