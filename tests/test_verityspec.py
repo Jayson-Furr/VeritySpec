@@ -149,12 +149,55 @@ class VeritySpecTests(unittest.TestCase):
         operation = openapi["paths"]["/accounts/{accountId}"]["get"]
         self.assertEqual("api.accounts.get", operation["x-verity-id"])
         self.assertEqual(["platform"], operation["tags"])
+        self.assertEqual(
+            [
+                {
+                    "name": "accountId",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string"},
+                }
+            ],
+            operation["parameters"],
+        )
+        members_operation = openapi["paths"]["/accounts/{accountId}/members/{memberId}"]["get"]
+        self.assertEqual(
+            [
+                {
+                    "name": "accountId",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                    "description": "Account identifier.",
+                },
+                {
+                    "name": "memberId",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string"},
+                },
+                {
+                    "name": "includeInactive",
+                    "in": "query",
+                    "required": False,
+                    "schema": {"type": "boolean"},
+                    "description": "Include inactive members.",
+                },
+            ],
+            members_operation["parameters"],
+        )
         message = asyncapi["components"]["messages"]["EventAccountChanged"]
         self.assertEqual("event.account.changed", message["x-verity-id"])
         self.assertEqual(
             "subscribe_event_account_changed",
             asyncapi["channels"]["account.changed"]["subscribe"]["operationId"],
         )
+
+    def test_openapi_generator_matches_golden_file(self) -> None:
+        workspace = load_workspace(GENERATOR_FIXTURE)
+        expected = json.loads((GENERATOR_GOLDEN / "openapi.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(expected, generate_openapi(workspace))
 
     def test_typescript_generator_matches_golden_file(self) -> None:
         workspace = load_workspace(GENERATOR_FIXTURE)

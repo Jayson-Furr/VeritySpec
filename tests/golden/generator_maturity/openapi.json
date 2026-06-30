@@ -1,0 +1,183 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Generator Maturity Product",
+    "version": "0.1.0",
+    "description": "A fixture for stable generator output tests."
+  },
+  "paths": {
+    "/accounts/{accountId}": {
+      "get": {
+        "operationId": "api_accounts_get",
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get account.",
+        "description": "Returns account details.",
+        "deprecated": false,
+        "x-verity-id": "api.accounts.get",
+        "x-verity-owner": "platform",
+        "x-verity-status": "ready",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}/members/{memberId}": {
+      "get": {
+        "operationId": "api_accounts_members_list",
+        "tags": [
+          "platform"
+        ],
+        "summary": "List account members.",
+        "description": "Lists members for an account.",
+        "deprecated": false,
+        "x-verity-id": "api.accounts.members.list",
+        "x-verity-owner": "platform",
+        "x-verity-status": "ready",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Account identifier."
+          },
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Include inactive members."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account members returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "plan",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stable account identifier."
+          },
+          "plan": {
+            "$ref": "#/components/schemas/Plan",
+            "description": "Current subscription plan."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "suspended"
+            ],
+            "description": "Operational account status."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Searchable account labels."
+          },
+          "profile": {
+            "type": "object",
+            "required": [
+              "displayName"
+            ],
+            "properties": {
+              "displayName": {
+                "type": "string"
+              },
+              "age": {
+                "type": "integer"
+              }
+            },
+            "description": "Public profile details."
+          },
+          "nickname": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional display nickname."
+          }
+        }
+      },
+      "Plan": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tier"
+        ],
+        "properties": {
+          "tier": {
+            "type": "string",
+            "enum": [
+              "free",
+              "pro"
+            ],
+            "description": "Commercial plan tier."
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "platform"
+    }
+  ]
+}

@@ -29,7 +29,8 @@ This initial implementation provides:
   records, unused schemas, reference cycles, and workspace spec versions.
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
-  bundles, and CLI reference docs, with snapshot-tested type/model output.
+  bundles, and CLI reference docs, with OpenAPI path-parameter support and
+  snapshot-tested type/model output.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration reporting through `verity migrate`.
 
@@ -204,6 +205,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [PrismSpec migration](docs/prismspec-migration.md)
 - [CI](docs/ci.md)
 - [Downstream CI](docs/downstream-ci.md)
+- [Branching strategy](docs/branching.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)
 

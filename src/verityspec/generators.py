@@ -74,6 +74,99 @@ def openapi_schema_ref(schema_id: str, id_to_component: dict[str, str]) -> dict[
     return {"$ref": f"#/components/schemas/{name}"}
 
 
+PATH_PARAMETER_PATTERN = re.compile(r"\{([^{}]+)\}")
+OPENAPI_PARAMETER_LOCATIONS = {"path", "query", "header", "cookie"}
+
+
+def path_parameter_names(path: str) -> list[str]:
+    names: list[str] = []
+    for match in PATH_PARAMETER_PATTERN.finditer(path):
+        name = match.group(1).strip()
+        if name and name not in names:
+            names.append(name)
+    return names
+
+
+def openapi_parameter_schema(value: Any, id_to_component: dict[str, str]) -> dict[str, Any]:
+    if isinstance(value, dict) and value:
+        return dict(value)
+    if isinstance(value, str):
+        ref = openapi_schema_ref(value, id_to_component)
+        if ref:
+            return ref
+    return {"type": "string"}
+
+
+def normalize_openapi_parameter(
+    value: Any,
+    id_to_component: dict[str, str],
+) -> dict[str, Any] | None:
+    if not isinstance(value, dict):
+        return None
+    name = value.get("name")
+    location = value.get("in")
+    if not isinstance(name, str) or not name:
+        return None
+    if not isinstance(location, str) or location not in OPENAPI_PARAMETER_LOCATIONS:
+        return None
+
+    parameter: dict[str, Any] = {
+        "name": name,
+        "in": location,
+        "required": True if location == "path" else bool(value.get("required", False)),
+        "schema": openapi_parameter_schema(value.get("schema"), id_to_component),
+    }
+    description = value.get("description")
+    if isinstance(description, str) and description:
+        parameter["description"] = description
+    return parameter
+
+
+def openapi_parameters(record: Record, path: str, id_to_component: dict[str, str]) -> list[dict[str, Any]]:
+    explicit_parameters: list[dict[str, Any]] = []
+    seen_explicit: set[tuple[str, str]] = set()
+    for item in record.data.get("parameters", []):
+        parameter = normalize_openapi_parameter(item, id_to_component)
+        if not parameter:
+            continue
+        key = (parameter["in"], parameter["name"])
+        if key in seen_explicit:
+            continue
+        seen_explicit.add(key)
+        explicit_parameters.append(parameter)
+
+    explicit_by_key = {
+        (parameter["in"], parameter["name"]): parameter
+        for parameter in explicit_parameters
+    }
+    parameters: list[dict[str, Any]] = []
+    emitted: set[tuple[str, str]] = set()
+
+    for name in path_parameter_names(path):
+        key = ("path", name)
+        parameter = explicit_by_key.get(
+            key,
+            {
+                "name": name,
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string"},
+            },
+        )
+        parameter = {**parameter, "required": True}
+        parameters.append(parameter)
+        emitted.add(key)
+
+    for parameter in explicit_parameters:
+        key = (parameter["in"], parameter["name"])
+        if key in emitted:
+            continue
+        parameters.append(parameter)
+        emitted.add(key)
+
+    return parameters
+
+
 def schema_ref_name(ref: str) -> str | None:
     if ref.startswith("#/components/schemas/"):
         return ref.rsplit("/", 1)[-1]
@@ -119,8 +212,11 @@ def generate_openapi(workspace: Workspace) -> dict:
             "x-verity-id": record.id,
             "x-verity-owner": owner,
             "x-verity-status": record.data.get("status"),
-            "responses": {},
         }
+        parameters = openapi_parameters(record, path, id_to_component)
+        if parameters:
+            operation["parameters"] = parameters
+        operation["responses"] = {}
 
         request_schema = record.data.get("requestSchema")
         if isinstance(request_schema, str):

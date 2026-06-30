@@ -45,6 +45,9 @@ fixtures.
 - Update tests, examples, docs, CI, and roadmap entries with behavior changes.
 - Keep `README.md` aligned with `CHANGELOG.md`, `ROADMAP.md`, release notes,
   install instructions, version references, and other public bookkeeping.
+- Follow the repository branching strategy in `docs/branching.md`; do feature
+  and sprint work on branches, keep `main` releasable, and avoid direct pushes
+  to `main` except for explicitly approved release or bookkeeping work.
 - After each commit, refresh agent context by re-reading this file and checking
   the latest repository state before continuing work.
 - At the entry point, determine whether commands should run under `zsh`,
@@ -59,6 +62,10 @@ fixtures.
 - Preserve user changes. Do not revert unrelated dirty files.
 - Use structured JSON parsing/writing for JSON artifacts.
 - Keep documentation command examples executable from a clean checkout.
+- If GitHub workflow checks cannot run or fail because of billing, credits,
+  quota, runner availability, or another platform issue, verify the equivalent
+  checks locally, record that CI was unavailable for external reasons, and
+  continue work from the local evidence.
 
 ## Shell Discipline
 
@@ -175,6 +182,9 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 ## Sprint Discipline
 
 The project is managed in public sprints through GitHub issues and milestones.
+Sprint implementation work should happen on `sprint/<number>-<topic>` branches
+and merge back to `main` only after local checks and, when available, GitHub
+Actions checks pass.
 
 When completing sprint work:
 
@@ -182,9 +192,11 @@ When completing sprint work:
 2. Keep the relevant GitHub issue and milestone state current.
 3. Add or update tests for every new behavior.
 4. Run local checks.
-5. Commit with a message that closes the sprint issue when appropriate.
+5. Commit on the appropriate sprint or feature branch.
 6. Refresh agent context from `AGENTS.md`, `git status`, and the latest commit.
-7. Push and verify GitHub Actions passes.
+7. Push the branch and verify GitHub Actions passes, or document the local verification if
+   GitHub Actions is unavailable for external platform reasons.
+8. Merge to `main` using the approved repository flow, then verify `main`.
 
 ## Testing Expectations
 
@@ -207,6 +219,7 @@ Update the closest documentation file with behavior changes:
 - Packs: `docs/packs.md`
 - Generators: `docs/generators.md`
 - Workspace format: `docs/workspace-format.md`
+- Branching and merge flow: `docs/branching.md`
 - Releases: `CHANGELOG.md`, `docs/release-checklist.md`, release notes docs
 - AI-agent guidance: `AGENTS.md`
 

@@ -12,6 +12,10 @@
       "target": "api.accounts.get"
     },
     {
+      "type": "exposes",
+      "target": "api.accounts.members.list"
+    },
+    {
       "type": "emits",
       "target": "event.account.changed"
     }

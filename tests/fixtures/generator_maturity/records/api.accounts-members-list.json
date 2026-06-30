@@ -1,0 +1,37 @@
+{
+  "id": "api.accounts.members.list",
+  "kind": "api.endpoint",
+  "name": "List Account Members",
+  "description": "Lists members for an account.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "GET",
+  "path": "/accounts/{accountId}/members/{memberId}",
+  "summary": "List account members.",
+  "parameters": [
+    {
+      "name": "accountId",
+      "in": "path",
+      "description": "Account identifier.",
+      "schema": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    {
+      "name": "includeInactive",
+      "in": "query",
+      "description": "Include inactive members.",
+      "schema": {
+        "type": "boolean"
+      }
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Account members returned.",
+      "schema": "schema.account"
+    }
+  ]
+}
