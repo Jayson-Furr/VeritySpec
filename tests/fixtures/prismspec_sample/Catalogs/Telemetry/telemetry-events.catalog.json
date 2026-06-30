@@ -1,0 +1,19 @@
+{
+  "catalogId": "catalog.telemetry.events",
+  "type": "catalog",
+  "specificationVersion": "v1.0.0",
+  "records": [
+    {
+      "id": "telemetry.sample.created",
+      "type": "telemetry_event",
+      "specificationVersion": "v1.0.0",
+      "displayName": "Sample Created Telemetry",
+      "description": "A PrismSpec telemetry fixture.",
+      "status": "approved",
+      "owner": "analytics",
+      "category": "sample.created",
+      "privacyClass": "anonymous"
+    }
+  ]
+}
+

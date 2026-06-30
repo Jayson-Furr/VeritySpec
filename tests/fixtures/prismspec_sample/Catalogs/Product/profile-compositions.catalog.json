@@ -1,0 +1,19 @@
+{
+  "catalogId": "catalog.product.profile_compositions",
+  "type": "catalog",
+  "specificationVersion": "v1.0.0",
+  "records": [
+    {
+      "id": "composition.sample",
+      "type": "profile_composition",
+      "specificationVersion": "v1.0.0",
+      "displayName": "Sample Composition",
+      "status": "draft",
+      "profiles": ["profile.service"],
+      "interfaces": ["interface.api"],
+      "targets": ["target.python"],
+      "capabilities": ["capability.observability"]
+    }
+  ]
+}
+

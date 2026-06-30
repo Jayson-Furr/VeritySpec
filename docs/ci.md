@@ -14,6 +14,13 @@ verity generate validation-report examples/basic --out build/validation-report.j
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
 
+For migration coverage, smoke test any committed PrismSpec fixtures:
+
+```bash
+verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
+verity validate build/prismspec-import --format json > build/prismspec-import-validation.json
+```
+
 Broken examples can be checked by expecting a non-zero validation exit:
 
 ```bash

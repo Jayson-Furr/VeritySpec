@@ -1,0 +1,17 @@
+{
+  "catalogId": "catalog.assets.assets",
+  "type": "catalog",
+  "specificationVersion": "v1.0.0",
+  "records": [
+    {
+      "id": "asset.logo",
+      "type": "asset",
+      "specificationVersion": "v1.0.0",
+      "displayName": "Logo",
+      "description": "A PrismSpec asset fixture.",
+      "status": "approved",
+      "assetType": "logo"
+    }
+  ]
+}
+

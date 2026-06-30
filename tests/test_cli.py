@@ -231,6 +231,30 @@ class VerityCliTests(unittest.TestCase):
         self.assertGreater(payload["summary"]["errors"], 0)
         self.assertTrue(any(issue["code"] == "reference.disallowed" for issue in payload["issues"]))
 
+    def test_prismspec_import_reports_migration_details(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "imported"
+            result = verity_command(
+                "import",
+                "prismspec",
+                "tests/fixtures/prismspec_sample",
+                "--out",
+                str(out_path),
+            )
+            report = json.loads((out_path / "migration-report.json").read_text(encoding="utf-8"))
+            workspace = json.loads((out_path / "verityspec.json").read_text(encoding="utf-8"))
+            validation = verity_command("validate", str(out_path), "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual(0, validation.returncode)
+        self.assertEqual("not_wire_compatible", report["compatibility"])
+        self.assertGreaterEqual(report["convertedRecordCount"], 5)
+        self.assertGreaterEqual(report["skippedRecordCount"], 1)
+        self.assertTrue(report["defaultsApplied"])
+        self.assertIn("verity.pack.api", workspace["packs"])
+        self.assertIn("verity.pack.cli", workspace["packs"])
+        self.assertIn("verity.pack.events", workspace["packs"])
+
 
 if __name__ == "__main__":
     unittest.main()

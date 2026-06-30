@@ -1,0 +1,20 @@
+{
+  "catalogId": "catalog.product.products",
+  "type": "catalog",
+  "specificationVersion": "v1.0.0",
+  "records": [
+    {
+      "id": "product.sample",
+      "type": "product",
+      "specificationVersion": "v1.0.0",
+      "displayName": "Sample Product",
+      "description": "A PrismSpec product fixture.",
+      "status": "approved",
+      "owner": "platform",
+      "introducedIn": "0.1.0",
+      "productKind": "service",
+      "audiences": ["developer"]
+    }
+  ]
+}
+

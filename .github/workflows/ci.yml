@@ -65,6 +65,8 @@ jobs:
           verity explain reference.missing --format json > build/explain-reference-missing.json
           verity graph examples/basic --focus api.users.create --format json > build/graph-focus.json
           verity graph tests/fixtures/broken_semantics --cycles --format json > build/graph-cycles.json
+          verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import > build/prismspec-import-report.json
+          verity validate build/prismspec-import --format json > build/prismspec-import-validation.json
           python -m json.tool build/packs.json >/dev/null
           python -m json.tool build/pack-validation.json >/dev/null
           python -m json.tool build/validate.json >/dev/null
@@ -74,6 +76,9 @@ jobs:
           python -m json.tool build/explain-reference-missing.json >/dev/null
           python -m json.tool build/graph-focus.json >/dev/null
           python -m json.tool build/graph-cycles.json >/dev/null
+          python -m json.tool build/prismspec-import-report.json >/dev/null
+          python -m json.tool build/prismspec-import/migration-report.json >/dev/null
+          python -m json.tool build/prismspec-import-validation.json >/dev/null
 
       - name: Check generators
         run: |

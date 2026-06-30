@@ -30,7 +30,7 @@ This initial implementation provides:
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, and CLI reference docs.
-- A starter PrismSpec importer that produces a migration report.
+- A PrismSpec importer that produces a converted workspace and migration report.
 
 ## Quick Start
 
@@ -71,6 +71,7 @@ verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate cli-reference examples/basic --out build/cli-reference.md
 verity generate validation-report examples/basic --out build/validation-report.json
+verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
 ```
 
 Without installation, run the package directly:
@@ -186,6 +187,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)
 - [Contract intelligence](docs/contract-intelligence.md)
+- [PrismSpec migration](docs/prismspec-migration.md)
 - [CI](docs/ci.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)

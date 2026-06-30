@@ -13,3 +13,4 @@
 - Added Sprint 5 release automation: package build checks, tag-driven GitHub releases, PyPI publishing preparation, and release checklist.
 - Added Sprint 6 public package polish: README badges, install guidance, PyPI setup docs, and GitHub `pypi` environment preparation.
 - Added Sprint 7 contract intelligence: `doctor`, `explain`, `--fail-on`, graph filters, richer validation report metadata, and CI coverage.
+- Added Sprint 8 PrismSpec migration: richer PrismSpec import mappings, migration report fields, fixture coverage, migration docs, and CI smoke testing.

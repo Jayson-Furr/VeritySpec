@@ -1,0 +1,19 @@
+{
+  "catalogId": "catalog.interfaces.commands",
+  "type": "catalog",
+  "specificationVersion": "v1.0.0",
+  "records": [
+    {
+      "id": "command.sample.list",
+      "type": "command",
+      "specificationVersion": "v1.0.0",
+      "displayName": "List Samples Command",
+      "description": "A PrismSpec command fixture.",
+      "status": "approved",
+      "owner": "developer-experience",
+      "commandName": "sample list",
+      "arguments": []
+    }
+  ]
+}
+

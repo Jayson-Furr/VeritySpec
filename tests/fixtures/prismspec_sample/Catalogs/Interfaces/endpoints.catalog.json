@@ -1,0 +1,19 @@
+{
+  "catalogId": "catalog.interfaces.endpoints",
+  "type": "catalog",
+  "specificationVersion": "v1.0.0",
+  "records": [
+    {
+      "id": "endpoint.sample.list",
+      "type": "endpoint",
+      "specificationVersion": "v1.0.0",
+      "displayName": "List Samples",
+      "description": "A PrismSpec endpoint fixture.",
+      "status": "approved",
+      "owner": "platform",
+      "method": "GET",
+      "path": "/samples"
+    }
+  ]
+}
+
