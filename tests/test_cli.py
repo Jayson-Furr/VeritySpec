@@ -62,6 +62,44 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("doctor", payload["command"])
         self.assertEqual(8, payload["records"])
 
+    def test_doctor_report_out_writes_json_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "reports" / "doctor-report.json"
+            result = verity_command(
+                "doctor",
+                "examples/basic",
+                "--report-out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Doctor passed.", result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("doctor", payload["command"])
+        self.assertEqual(8, payload["records"])
+        self.assertEqual({"errors": 0, "warnings": 0, "issues": 0}, payload["summary"])
+
+    def test_doctor_report_out_preserves_json_stdout(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "doctor-report.json"
+            result = verity_command(
+                "doctor",
+                "examples/basic",
+                "--format",
+                "json",
+                "--report-out",
+                str(out_path),
+            )
+
+            stdout_payload = json.loads(result.stdout)
+            file_payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual(stdout_payload, file_payload)
+        self.assertTrue(file_payload["passed"])
+
     def test_explain_issue_code_json_output(self) -> None:
         result = verity_command("explain", "reference.missing", "--format", "json")
 
