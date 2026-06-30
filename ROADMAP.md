@@ -1453,12 +1453,12 @@ Sprint 87 should release the completed `v0.35.0` scope:
 
 ## v0.36.0
 
-The `v0.36.0` milestone is active.
+The `v0.36.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 88 | In Progress | Game-assets pack foundation |
-| 89 | Planned | v0.36.0 release preparation |
+| 88 | Complete | Game-assets pack foundation |
+| 89 | Complete | v0.36.0 release preparation |
 
 ## Sprint 88 Priorities
 
