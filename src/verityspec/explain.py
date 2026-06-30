@@ -110,6 +110,18 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A record does not satisfy the JSON Schema for its kind.",
         "resolution": "Update the record to match its pack schema.",
     },
+    "workspace.packPaths.invalid": {
+        "title": "Invalid workspace pack paths",
+        "severity": "error",
+        "description": "A v0.2.0 workspace declares packPaths, but it is not an array of strings.",
+        "resolution": "Set packPaths to an array of local pack paths, or [] when no external packs are used.",
+    },
+    "workspace.packPaths.missing": {
+        "title": "Missing workspace pack paths",
+        "severity": "error",
+        "description": "A v0.2.0 workspace must declare packPaths explicitly.",
+        "resolution": "Run `verity migrate` or add `\"packPaths\": []` to verityspec.json.",
+    },
     "workspace.version.future": {
         "title": "Future workspace version",
         "severity": "error",
@@ -120,7 +132,7 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "title": "Invalid workspace version",
         "severity": "error",
         "description": "The workspace specVersion does not use vMAJOR.MINOR.PATCH format.",
-        "resolution": "Set specVersion to a supported value such as v0.1.0.",
+        "resolution": "Set specVersion to a supported value such as v0.2.0.",
     },
     "workspace.version.missing": {
         "title": "Missing workspace version",

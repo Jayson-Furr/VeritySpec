@@ -23,7 +23,12 @@ from .generators import (
 from .graph import build_graph, graph_to_text
 from .importers.prismspec import import_prismspec
 from .issues import dedupe_issues, has_errors, issue_count, print_issues, should_fail
-from .migrations import migrate_workspace, migration_report_to_text
+from .migrations import (
+    migrate_workspace,
+    migration_capabilities,
+    migration_capabilities_to_text,
+    migration_report_to_text,
+)
 from .pack_validation import list_pack_summaries, validate_packs
 from .packs import load_pack_registry
 from .readiness import evaluate_readiness
@@ -103,6 +108,7 @@ def cmd_init(args: argparse.Namespace) -> int:
         "workspace": args.name or target.name,
         "specVersion": CURRENT_SPEC_VERSION,
         "packs": DEFAULT_PACKS,
+        "packPaths": [],
         "records": ["records/*.json"],
     }
     product = {
@@ -334,6 +340,18 @@ def cmd_diff(args: argparse.Namespace) -> int:
 
 
 def cmd_migrate(args: argparse.Namespace) -> int:
+    if args.list:
+        capabilities = migration_capabilities()
+        if args.format == "json":
+            print(json.dumps(capabilities, indent=2))
+        else:
+            print(migration_capabilities_to_text(capabilities))
+        return EXIT_SUCCESS
+
+    if not args.workspace:
+        print("migrate requires a workspace unless --list is used.", file=sys.stderr)
+        return EXIT_USAGE_ERROR
+
     report = migrate_workspace(args.workspace, target_version=args.to, dry_run=args.dry_run)
     if args.report_out:
         Path(args.report_out).parent.mkdir(parents=True, exist_ok=True)
@@ -543,7 +561,8 @@ def build_parser() -> argparse.ArgumentParser:
     diff_parser.set_defaults(func=cmd_diff)
 
     migrate_parser = subparsers.add_parser("migrate", help="Migrate a workspace to a supported spec version.")
-    migrate_parser.add_argument("workspace")
+    migrate_parser.add_argument("workspace", nargs="?")
+    migrate_parser.add_argument("--list", action="store_true", help="List supported migration versions and steps.")
     migrate_parser.add_argument("--to", default=CURRENT_SPEC_VERSION)
     migrate_parser.add_argument("--dry-run", action="store_true")
     migrate_parser.add_argument("--format", choices=["text", "json"], default="text")

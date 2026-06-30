@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .workspace import Workspace
 
 
-CURRENT_SPEC_VERSION = "v0.1.0"
+CURRENT_SPEC_VERSION = "v0.2.0"
 VERSION_PATTERN = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
 
 
@@ -22,10 +22,15 @@ class SpecVersion:
 
 
 SUPPORTED_SPEC_VERSIONS: dict[str, SpecVersion] = {
+    "v0.1.0": SpecVersion(
+        id="v0.1.0",
+        status="supported",
+        description="Initial executable VeritySpec workspace format.",
+    ),
     CURRENT_SPEC_VERSION: SpecVersion(
         id=CURRENT_SPEC_VERSION,
         status="current",
-        description="Initial executable VeritySpec workspace format.",
+        description="Explicit external-pack path workspace format.",
     )
 }
 
@@ -79,7 +84,29 @@ def validate_workspace_version(workspace: Workspace) -> list[Issue]:
     location = str(workspace.config_path or workspace.base_path)
 
     if classification == "supported":
-        return []
+        issues: list[Issue] = []
+        normalized = normalize_spec_version(value)
+        if normalized == "v0.2.0":
+            pack_paths = workspace.config.get("packPaths")
+            if "packPaths" not in workspace.config:
+                issues.append(
+                    Issue(
+                        "error",
+                        "workspace.packPaths.missing",
+                        "Workspace specVersion v0.2.0 requires an explicit packPaths array.",
+                        location,
+                    )
+                )
+            elif not isinstance(pack_paths, list) or not all(isinstance(item, str) for item in pack_paths):
+                issues.append(
+                    Issue(
+                        "error",
+                        "workspace.packPaths.invalid",
+                        "Workspace packPaths must be an array of strings.",
+                        location,
+                    )
+                )
+        return issues
     if classification == "missing":
         return [
             Issue(

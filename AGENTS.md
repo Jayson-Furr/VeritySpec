@@ -140,6 +140,7 @@ verity readiness examples/basic --strict
 verity doctor examples/basic
 verity explain reference.missing
 verity graph examples/basic
+verity migrate --list --format json
 verity migrate examples/basic --dry-run --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate asyncapi examples/basic --out build/asyncapi.json

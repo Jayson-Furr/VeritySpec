@@ -1,14 +1,14 @@
 {
   "workspace": "examples.basic",
-  "specVersion": "v0.1.0",
+  "specVersion": "v0.2.0",
   "packs": [
     "verity.core",
     "verity.pack.api",
     "verity.pack.cli",
     "verity.pack.events"
   ],
+  "packPaths": [],
   "records": [
     "records/*.json"
   ]
 }
-

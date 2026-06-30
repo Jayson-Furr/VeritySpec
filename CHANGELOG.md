@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added workspace format `v0.2.0` with explicit `packPaths` declarations.
+- Added migration-chain planning for `legacy -> v0.1.0 -> v0.2.0`.
+- Added `verity migrate --list` to inspect supported workspace versions and migration steps.
+- Kept `v0.1.0` workspaces supported while making `v0.2.0` the current format for new examples and workspaces.
 
 ## 0.3.0
 

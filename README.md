@@ -15,8 +15,9 @@ artifacts.
 
 ## Current Scope
 
-Latest release: `v0.3.0`. Release history is tracked in
-[CHANGELOG.md](CHANGELOG.md) and [ROADMAP.md](ROADMAP.md).
+Latest release: `v0.3.0`. Current `main` also contains unreleased `v0.4.0`
+migration-chain work tracked in [CHANGELOG.md](CHANGELOG.md) and
+[ROADMAP.md](ROADMAP.md).
 
 This implementation provides:
 
@@ -34,7 +35,7 @@ This implementation provides:
   bundles, and CLI reference docs, with OpenAPI path-parameter support and
   snapshot-tested type/model output including nested Python dataclasses.
 - A PrismSpec importer that produces a converted workspace and migration report.
-- Workspace migration reporting through `verity migrate`.
+- Workspace migration-chain planning and reporting through `verity migrate`.
 
 ## Quick Start
 
@@ -72,6 +73,7 @@ verity readiness examples/basic --strict
 verity doctor examples/basic
 verity explain reference.missing
 verity graph examples/basic
+verity migrate --list --format json
 verity migrate examples/basic --dry-run --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate asyncapi examples/basic --out build/asyncapi.json
@@ -164,12 +166,14 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 ## Workspace Shape
 
 Package releases and workspace format versions are intentionally separate.
-VeritySpec package `v0.3.0` currently supports workspace format `v0.1.0`.
+Current `main` supports workspace formats `v0.1.0` and `v0.2.0`; `v0.2.0`
+is the current workspace format. The published package release `v0.3.0`
+supports workspace format `v0.1.0`.
 
 ```json
 {
   "workspace": "examples.basic",
-  "specVersion": "v0.1.0",
+  "specVersion": "v0.2.0",
   "packs": [
     "verity.core",
     "verity.pack.api",
