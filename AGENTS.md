@@ -133,6 +133,7 @@ CLI smoke checks from `README.md`, `docs/ci.md`, and `docs/release-checklist.md`
 verity --version
 verity pack list
 verity pack validate
+verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Callable
@@ -35,6 +36,8 @@ EXIT_SUCCESS = 0
 EXIT_CONTRACT_FAILED = 1
 EXIT_USAGE_ERROR = 2
 EXIT_INTERNAL_ERROR = 3
+PACK_ID_PATTERN = re.compile(r"^verity(?:\.pack)?\.[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
+KIND_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
 
 
 def load_context(path: str, pack_paths: list[str] | None = None):
@@ -115,6 +118,123 @@ def cmd_init(args: argparse.Namespace) -> int:
     config_path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
     (records_path / "product.json").write_text(json.dumps(product, indent=2) + "\n", encoding="utf-8")
     print(f"Created VeritySpec workspace at {target}")
+    return EXIT_SUCCESS
+
+
+def title_from_identifier(value: str) -> str:
+    return " ".join(part.capitalize() for part in re.split(r"[._-]+", value) if part)
+
+
+def default_pack_kind(pack_id: str) -> str:
+    suffix = pack_id.removeprefix("verity.pack.").removeprefix("verity.")
+    return f"{suffix}.example"
+
+
+def schema_file_name(kind: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9]+", "-", kind).strip("-").lower() + ".schema.json"
+
+
+def starter_pack_schema(kind: str, title: str) -> dict:
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": title,
+        "type": "object",
+        "additionalProperties": False,
+        "required": ["id", "kind", "name", "status", "owner", "description"],
+        "properties": {
+            "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+            },
+            "kind": {
+                "type": "string",
+                "const": kind,
+            },
+            "name": {
+                "type": "string",
+                "minLength": 1,
+            },
+            "description": {
+                "type": "string",
+                "minLength": 1,
+            },
+            "status": {
+                "type": "string",
+                "enum": ["draft", "review", "ready", "deprecated", "removed"],
+            },
+            "owner": {
+                "type": "string",
+                "minLength": 1,
+            },
+            "references": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": ["type", "target"],
+                    "properties": {
+                        "type": {"type": "string"},
+                        "target": {"type": "string"},
+                        "required": {"type": "boolean", "default": True},
+                    },
+                },
+                "default": [],
+            },
+        },
+    }
+
+
+def cmd_pack_init(args: argparse.Namespace) -> int:
+    pack_id = args.pack_id
+    if not PACK_ID_PATTERN.match(pack_id):
+        print(f"Invalid pack id: {pack_id}", file=sys.stderr)
+        return EXIT_USAGE_ERROR
+
+    target = Path(args.out).resolve()
+    if target.exists() and not target.is_dir():
+        print(f"Pack output path is not a directory: {target}", file=sys.stderr)
+        return EXIT_USAGE_ERROR
+    if target.exists() and any(target.iterdir()) and not args.force:
+        print(f"Pack directory is not empty: {target}", file=sys.stderr)
+        return EXIT_USAGE_ERROR
+
+    kind = args.kind or default_pack_kind(pack_id)
+    if not KIND_PATTERN.match(kind):
+        print(f"Invalid starter kind: {kind}", file=sys.stderr)
+        return EXIT_USAGE_ERROR
+    name = args.name or f"{title_from_identifier(pack_id)} Pack"
+    description = args.description or f"{name} extension records."
+    schema_path = f"schemas/{schema_file_name(kind)}"
+    schema_title = title_from_identifier(kind)
+    manifest = {
+        "id": pack_id,
+        "version": "0.1.0",
+        "name": name,
+        "description": description,
+        "schemas": [
+            {
+                "kind": kind,
+                "path": schema_path,
+            }
+        ],
+        "readinessGates": [
+            {
+                "id": f"{kind}.release",
+                "kind": kind,
+                "required": ["owner", "name", "description"],
+            }
+        ],
+        "referenceRules": [],
+        "generators": ["schema-bundle"],
+    }
+
+    (target / "schemas").mkdir(parents=True, exist_ok=True)
+    (target / "pack.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    (target / schema_path).write_text(
+        json.dumps(starter_pack_schema(kind, schema_title), indent=2) + "\n",
+        encoding="utf-8",
+    )
+    print(f"Created VeritySpec pack at {target}")
     return EXIT_SUCCESS
 
 
@@ -468,6 +588,15 @@ def build_parser() -> argparse.ArgumentParser:
     pack_validate_parser.add_argument("--format", choices=["text", "json"], default="text")
     pack_validate_parser.add_argument("--path", action="append", default=[], help="Local pack directory or pack.json path.")
     pack_validate_parser.set_defaults(func=cmd_pack_validate)
+
+    pack_init_parser = pack_subparsers.add_parser("init", help="Create a local pack scaffold.")
+    pack_init_parser.add_argument("pack_id")
+    pack_init_parser.add_argument("--out", required=True, help="Output directory for the pack scaffold.")
+    pack_init_parser.add_argument("--kind", help="Starter record kind. Defaults to a kind derived from the pack id.")
+    pack_init_parser.add_argument("--name", help="Pack display name.")
+    pack_init_parser.add_argument("--description", help="Pack description.")
+    pack_init_parser.add_argument("--force", action="store_true", help="Write into a non-empty directory.")
+    pack_init_parser.set_defaults(func=cmd_pack_init)
 
     return parser
 

@@ -52,7 +52,8 @@ The active milestone is `v0.3.0`.
 | Sprint | Status | Focus |
 |---:|---|---|
 | 13 | Complete | OpenAPI path-parameter extraction and generator precision |
-| 14 | In progress | Python nested-object model generation |
+| 14 | Complete | Python nested-object model generation |
+| 15 | In progress | Pack authoring scaffold |
 
 ## Sprint 13 Priorities
 
@@ -77,12 +78,20 @@ Sprint 14 should make generated Python models more useful:
 - Update generator maturity fixtures and golden Python model output.
 - Keep README, changelog, roadmap, generator docs, and issue state aligned.
 
+## Sprint 15 Priorities
+
+Sprint 15 should make extension pack authoring easier:
+
+- Add a CLI command for creating a local pack scaffold.
+- Generate a valid pack manifest and starter schema directory.
+- Include validation coverage for the generated scaffold.
+- Update README, changelog, roadmap, and pack docs.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
 is complete:
 
-- Pack authoring scaffolds.
 - Migration chains beyond `v0.1.0`.
 - UI, security, observability, accessibility, deployment, and compliance packs.
 - Downstream project templates and examples.

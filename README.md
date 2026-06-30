@@ -22,7 +22,7 @@ This initial implementation provides:
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, and events.
-- Pack listing and validation through `verity pack`, including local external packs.
+- Pack listing, validation, and scaffolding through `verity pack`, including local external packs.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
@@ -61,6 +61,7 @@ pip install -e .
 verity --version
 verity pack list
 verity pack validate
+verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
 verity validate examples/basic
 verity validate tests/fixtures/custom_pack_workspace
@@ -143,6 +144,7 @@ Built-in packs can be inspected and validated:
 verity pack list
 verity pack list --format json
 verity pack validate
+verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity pack validate verity.pack.api --format json
 verity pack list --path tests/fixtures/custom_pack
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack

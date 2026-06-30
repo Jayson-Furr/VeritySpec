@@ -8,7 +8,8 @@
 - Added a repository branching strategy and AI-agent requirements for branch selection and merge discipline.
 - Added OpenAPI path-parameter inference, explicit endpoint parameter emission, and OpenAPI golden output coverage.
 - Added Python nested dataclass generation for inline object schemas and inline object array items.
-- Opened the v0.3.0 roadmap line with Sprint 13 and Sprint 14 generator improvements.
+- Added `verity pack init` for creating validating starter pack scaffolds.
+- Opened the v0.3.0 roadmap line with Sprint 13, Sprint 14, and Sprint 15 improvements.
 
 ## 0.2.0
 

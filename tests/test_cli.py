@@ -325,6 +325,43 @@ class VerityCliTests(unittest.TestCase):
         self.assertFalse(payload["passed"])
         self.assertEqual("pack.unknown", payload["issues"][0]["code"])
 
+    def test_pack_init_creates_valid_external_pack(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pack_path = Path(tmp) / "features"
+            init_result = verity_command(
+                "pack",
+                "init",
+                "verity.pack.features",
+                "--out",
+                str(pack_path),
+                "--kind",
+                "feature.flag",
+                "--name",
+                "Feature Pack",
+            )
+            manifest = json.loads((pack_path / "pack.json").read_text(encoding="utf-8"))
+            schema = json.loads((pack_path / "schemas" / "feature-flag.schema.json").read_text(encoding="utf-8"))
+            validate_result = verity_command(
+                "pack",
+                "validate",
+                "verity.pack.features",
+                "--path",
+                str(pack_path),
+                "--format",
+                "json",
+            )
+            list_result = verity_command("pack", "list", "--path", str(pack_path), "--format", "json")
+
+        self.assertEqual(0, init_result.returncode)
+        self.assertEqual("verity.pack.features", manifest["id"])
+        self.assertEqual("feature.flag", manifest["schemas"][0]["kind"])
+        self.assertEqual("schemas/feature-flag.schema.json", manifest["schemas"][0]["path"])
+        self.assertEqual("feature.flag", schema["properties"]["kind"]["const"])
+        self.assertEqual(0, validate_result.returncode)
+        self.assertTrue(json.loads(validate_result.stdout)["passed"])
+        pack_ids = {pack["id"] for pack in json.loads(list_result.stdout)["packs"]}
+        self.assertIn("verity.pack.features", pack_ids)
+
     def test_external_pack_workspace_from_config(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             bundle_path = Path(tmp) / "schema-bundle.json"
