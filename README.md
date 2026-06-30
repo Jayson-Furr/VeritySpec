@@ -53,6 +53,8 @@ This implementation provides:
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 - Public contribution guidance and issue templates for pack proposals and
   schema changes.
+- PyPI trusted-publishing readiness guidance, with GitHub release installation
+  retained as the canonical public install path until publishing is enabled.
 
 ## Quick Start
 
