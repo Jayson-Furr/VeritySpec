@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.35.0
+
 - Added built-in `verity.pack.game-core` with `game.product`, `game.mode`,
   `game.loop`, and `game.prototype-scope` records, readiness gates, graph
   reference rules, an executable game-core example, coverage-dashboard support,
   and schema-bundle generation coverage.
+- Added v0.35.0 release notes and roadmap closeout.
 
 ## 0.34.0
 
