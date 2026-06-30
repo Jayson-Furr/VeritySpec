@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added golden workspace compatibility manifests for supported workspace
+  format coverage.
+
 ## 0.19.0
 
 - Added security-control evidence freshness readiness checks based on

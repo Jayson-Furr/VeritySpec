@@ -45,7 +45,8 @@ This implementation provides:
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`.
 - Migration dry-run fixture coverage for each supported workspace version edge.
-- Fixture compatibility coverage across supported workspace format versions.
+- Fixture compatibility coverage and golden compatibility manifests across
+  supported workspace format versions.
 - Doctor diagnostics that can be printed to stdout or written as JSON reports.
 - Downstream GitHub Actions templates and a reusable workflow for product-contract enforcement.
 - Golden security-report fixture coverage for stable report-shape review.
