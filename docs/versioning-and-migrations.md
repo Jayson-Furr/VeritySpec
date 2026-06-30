@@ -31,6 +31,13 @@ Validation reports workspace version problems as normal issues:
 Future versions fail validation instead of being interpreted optimistically.
 That keeps CI honest when a workspace requires a newer VeritySpec release.
 
+## Compatibility Matrix
+
+The test suite rewrites positive fixture workspaces across every supported
+workspace `specVersion` and runs validation, lint, and readiness checks. This
+guards against accidental drift when the current workspace format changes while
+older supported formats remain valid.
+
 ## Migrate
 
 `verity migrate` rewrites a workspace to a supported target version. By
