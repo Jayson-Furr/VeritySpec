@@ -13,6 +13,7 @@ Built-in packs currently include:
 - `verity.pack.security`: security controls and security report generation.
 - `verity.pack.observability`: telemetry, metrics, dashboards, and alerts.
 - `verity.pack.accessibility`: accessibility claims, checks, and evidence.
+- `verity.pack.compliance`: compliance mappings to framework requirements.
 
 ## Manifest
 

@@ -1,0 +1,117 @@
+{
+  "id": "verity.pack.compliance",
+  "version": "0.1.0",
+  "name": "VeritySpec Compliance Pack",
+  "description": "Compliance mapping records for traceability without legal attestation claims.",
+  "schemas": [
+    {
+      "kind": "compliance.mapping",
+      "path": "schemas/compliance-mapping.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "compliance.mapping.release",
+      "kind": "compliance.mapping",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "framework.name",
+        "framework.requirementId",
+        "mappingType",
+        "coverage",
+        "attestation",
+        "verification.method",
+        "verification.evidence"
+      ],
+      "minItems": {
+        "references": 1
+      },
+      "rules": [
+        {
+          "id": "compliance.mapping.reviewed-verified",
+          "code": "compliance.mapping.reviewed_unverified",
+          "when": {
+            "field": "coverage",
+            "equals": "reviewed"
+          },
+          "must": [
+            {
+              "field": "verification.method",
+              "notEquals": "not-verified"
+            },
+            {
+              "field": "verification.evidence",
+              "present": true
+            }
+          ],
+          "message": "Reviewed compliance mappings must include verification evidence."
+        }
+      ]
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "complianceMappedBy",
+      "targetKind": "compliance.mapping"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "product"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "api.endpoint"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "cli.command"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "event.message"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "schema.object"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "security.control"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "accessibility.claim"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "observability.telemetry"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "observability.metric"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "observability.dashboard"
+    },
+    {
+      "sourceKind": "compliance.mapping",
+      "relationship": "covers",
+      "targetKind": "observability.alert"
+    }
+  ],
+  "generators": ["schema-bundle"]
+}

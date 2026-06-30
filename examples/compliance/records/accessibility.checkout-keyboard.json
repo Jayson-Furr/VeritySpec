@@ -1,0 +1,31 @@
+{
+  "id": "accessibility.claim.checkout_keyboard",
+  "kind": "accessibility.claim",
+  "name": "Checkout Keyboard Operation",
+  "description": "Checkout can be completed using keyboard navigation without requiring pointer input.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "standard": "wcag-2.2",
+  "criterion": "2.1.1 Keyboard",
+  "level": "a",
+  "userNeed": "Keyboard and switch-control users can complete checkout without pointer-only interactions.",
+  "surface": "checkout flow",
+  "impact": "high",
+  "coverage": "verified",
+  "verification": {
+    "method": "assistive-technology-test",
+    "evidence": "tests/accessibility/test_checkout_keyboard.py::test_checkout_keyboard_only",
+    "lastVerified": "2026-06-30"
+  },
+  "assistiveTechnologies": ["keyboard", "screen-reader"],
+  "acceptanceCriteria": [
+    "All checkout controls can receive visible focus.",
+    "Checkout can be completed without mouse, touch, or pointer input."
+  ],
+  "references": [
+    {
+      "type": "appliesTo",
+      "target": "product.checkout_compliance"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "product.checkout_compliance",
+  "kind": "product",
+  "name": "Checkout Compliance Mapping",
+  "description": "Traceability contract for checkout compliance evidence.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "version": "0.1.0",
+  "references": []
+}
