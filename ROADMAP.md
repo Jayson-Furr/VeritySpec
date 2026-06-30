@@ -62,6 +62,8 @@ Sprint 13 should improve generated contract accuracy:
 - Avoid duplicate parameters when endpoint records already define explicit parameters.
 - Add or update fixtures and golden expectations for generator output.
 - Keep README, changelog, roadmap, release notes, version references, and issue or milestone state aligned.
+- Add local-verification fallback guidance for GitHub Actions billing, credit, quota, or runner outages.
+- Adopt a repository branching strategy and require AI agents to follow it.
 - Update generator documentation and roadmap notes.
 
 ## Later Candidates

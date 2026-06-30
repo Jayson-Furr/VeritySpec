@@ -35,6 +35,8 @@ OpenAPI output includes:
 - Product title, version, and description in `info`
 - Component schemas from `schema.object` records
 - Request and response schema references where records declare them
+- Inferred path parameters from templated paths such as `/users/{userId}`
+- Explicit endpoint parameters for path, query, header, and cookie locations
 - Operation tags, VeritySpec IDs, owners, statuses, and deprecation metadata
 
 AsyncAPI output includes:
@@ -54,12 +56,11 @@ TypeScript and Python model generators support:
 - Inline nested object shapes for TypeScript
 - Field descriptions in generated comments
 
-TypeScript and Python output for `tests/fixtures/generator_maturity` is covered
-by golden-file tests. Changes to those generators should update the golden files
-only when the output contract intentionally changes.
+OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
+is covered by golden-file tests. Changes to those generators should update the
+golden files only when the output contract intentionally changes.
 
 Known limits:
 
 - Python nested object fields currently emit `dict[str, Any]`.
 - Generators do not yet emit client/server stubs.
-- OpenAPI parameter extraction from templated paths is not implemented yet.
