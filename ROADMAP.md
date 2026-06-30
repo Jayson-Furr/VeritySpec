@@ -520,11 +520,12 @@ Sprint 41 should release the completed `v0.12.0` scope:
 
 ## v0.13.0
 
-The `v0.13.0` milestone is active.
+The `v0.13.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 42 | Complete | Pack authoring scaffold workspace tests |
+| 43 | Complete | v0.13.0 release preparation |
 
 ## Sprint 42 Priorities
 
@@ -541,6 +542,19 @@ Sprint 42 should prove generated pack scaffolds can be used immediately:
   to the workspace product contract.
 - Update README, changelog, roadmap, and pack docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 43 Priorities
+
+Sprint 43 should release the completed `v0.13.0` scope:
+
+- Promote Unreleased changelog entries into `0.13.0`.
+- Bump package metadata to `0.13.0`.
+- Add v0.13.0 release notes.
+- Update README badge, latest-release text, install references, and release
+  notes link to `v0.13.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.13.0 GitHub release when checks pass.
+- Close the v0.13.0 milestone after release verification.
 
 ## Later Candidates
 
