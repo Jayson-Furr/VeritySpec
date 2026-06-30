@@ -116,6 +116,12 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A critical security control is release-relevant but is not marked as verified.",
         "resolution": "Set coverage to verified and provide a verification method other than not-verified with evidence.",
     },
+    "security.control.evidence_stale": {
+        "title": "Security verification evidence stale",
+        "severity": "warning",
+        "description": "A security control declares a review cadence, but its verification date is missing or older than that cadence.",
+        "resolution": "Update verification.lastVerified after reviewing the evidence, or adjust verification.reviewCadenceDays to the accepted cadence.",
+    },
     "accessibility.claim.critical_unverified": {
         "title": "Critical accessibility claim not verified",
         "severity": "warning",

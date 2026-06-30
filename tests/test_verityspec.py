@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from verityspec.generators import (
@@ -36,6 +36,67 @@ def normalize_security_report_for_golden(report: dict) -> dict:
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
     return normalized
+
+
+def write_security_freshness_workspace(root: Path, last_verified: str | None, cadence_days: int = 30) -> None:
+    (root / "records").mkdir()
+    (root / "verityspec.json").write_text(
+        json.dumps(
+            {
+                "workspace": "security-freshness",
+                "specVersion": "v0.1.0",
+                "packs": ["verity.core", "verity.pack.security"],
+                "records": ["records/*.json"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (root / "records" / "product.json").write_text(
+        json.dumps(
+            {
+                "id": "product.security_freshness",
+                "kind": "product",
+                "name": "Security Freshness Product",
+                "status": "ready",
+                "owner": "platform",
+                "version": "0.1.0",
+                "references": [{"type": "securedBy", "target": "security.control.session_review"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    verification = {
+        "method": "manual-review",
+        "evidence": "docs/security/session-review.md",
+        "reviewCadenceDays": cadence_days,
+    }
+    if last_verified is not None:
+        verification["lastVerified"] = last_verified
+    (root / "records" / "security.json").write_text(
+        json.dumps(
+            {
+                "id": "security.control.session_review",
+                "kind": "security.control",
+                "name": "Session Review",
+                "status": "ready",
+                "owner": "platform-security",
+                "description": "Review session handling controls.",
+                "category": "authentication",
+                "controlType": "detective",
+                "riskLevel": "high",
+                "objective": "Keep session security evidence current.",
+                "coverage": "verified",
+                "verification": verification,
+                "references": [
+                    {
+                        "type": "appliesTo",
+                        "target": "product.security_freshness",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
 
 
 class VeritySpecTests(unittest.TestCase):
@@ -247,6 +308,45 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(1, len(matching))
         self.assertEqual("error", matching[0].severity)
         self.assertEqual("security.control.mfa", matching[0].record_id)
+
+    def test_readiness_accepts_fresh_security_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            last_verified = date.today().isoformat()
+            write_security_freshness_workspace(root, last_verified)
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertFalse(any(issue.code == "security.control.evidence_stale" for issue in issues))
+
+    def test_readiness_fails_stale_security_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            last_verified = (date.today() - timedelta(days=31)).isoformat()
+            write_security_freshness_workspace(root, last_verified, cadence_days=30)
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        matching = [issue for issue in issues if issue.code == "security.control.evidence_stale"]
+        self.assertEqual(1, len(matching))
+        self.assertEqual("error", matching[0].severity)
+        self.assertEqual("security.control.session_review", matching[0].record_id)
+        self.assertTrue(matching[0].location.endswith("records/security.json:verification.lastVerified"))
+
+    def test_readiness_fails_security_evidence_missing_last_verified_when_cadence_declared(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_security_freshness_workspace(root, None, cadence_days=30)
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertTrue(any(issue.code == "security.control.evidence_stale" for issue in issues))
 
     def test_readiness_fails_critical_unverified_accessibility_claim(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

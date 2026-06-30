@@ -12,7 +12,9 @@
       "anyOf": [
         {"required": ["equals"]},
         {"required": ["notEquals"]},
-        {"required": ["present"]}
+        {"required": ["present"]},
+        {"required": ["dateWithinDays"]},
+        {"required": ["dateWithinDaysField"]}
       ],
       "properties": {
         "field": {
@@ -23,6 +25,14 @@
         "notEquals": {},
         "present": {
           "type": "boolean"
+        },
+        "dateWithinDays": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dateWithinDaysField": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },

@@ -49,6 +49,21 @@
             }
           ],
           "message": "Critical security controls must be verified before release."
+        },
+        {
+          "id": "security.control.evidence-fresh",
+          "code": "security.control.evidence_stale",
+          "when": {
+            "field": "verification.reviewCadenceDays",
+            "present": true
+          },
+          "must": [
+            {
+              "field": "verification.lastVerified",
+              "dateWithinDaysField": "verification.reviewCadenceDays"
+            }
+          ],
+          "message": "Security control verification evidence is older than its review cadence."
         }
       ]
     }
