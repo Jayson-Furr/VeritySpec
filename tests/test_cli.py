@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -12,6 +13,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CUSTOM_PACK = "tests/fixtures/custom_pack"
 CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
+MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
+DEFAULT_BUILTIN_PACKS = [
+    "verity.core",
+    "verity.pack.api",
+    "verity.pack.cli",
+    "verity.pack.events",
+]
 
 
 def verity_command(*args: str) -> subprocess.CompletedProcess:
@@ -26,6 +34,18 @@ def verity_command(*args: str) -> subprocess.CompletedProcess:
         stderr=subprocess.PIPE,
         check=False,
     )
+
+
+def snapshot_files(path: Path) -> dict[str, str]:
+    return {
+        str(item.relative_to(path)): item.read_text(encoding="utf-8")
+        for item in sorted(path.rglob("*"))
+        if item.is_file()
+    }
+
+
+def canonical_json(value: object) -> str:
+    return json.dumps(value, sort_keys=True)
 
 
 class VerityCliTests(unittest.TestCase):
@@ -354,43 +374,96 @@ class VerityCliTests(unittest.TestCase):
             [step["id"] for step in payload["steps"]],
         )
 
-    def test_migrate_dry_run_reports_without_writing(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / "records").mkdir()
-            config_path = root / "verityspec.json"
-            record_path = root / "records" / "product.json"
-            config_path.write_text(
-                json.dumps({"workspace": "legacy", "version": "0.1.0", "records": ["records/*.json"]}),
-                encoding="utf-8",
-            )
-            record_path.write_text(
-                json.dumps(
-                    {
-                        "id": "product.legacy",
-                        "type": "product",
-                        "displayName": "Legacy Product",
-                        "status": "approved",
-                    }
-                ),
-                encoding="utf-8",
-            )
+    def test_migrate_dry_run_edge_fixtures_report_without_writing(self) -> None:
+        cases = [
+            {
+                "fixture": "legacy_workspace",
+                "target": "v0.1.0",
+                "path": ["legacy-to-v0.1.0"],
+                "changes": [
+                    ("verityspec.json", "rename", "version -> specVersion", "0.1.0", "v0.1.0"),
+                    ("verityspec.json", "remove", "version", "0.1.0", None),
+                    ("verityspec.json", "set", "packs", None, DEFAULT_BUILTIN_PACKS),
+                    ("records/product.json", "rename", "type -> kind", "product", "product"),
+                    ("records/product.json", "remove", "type", "product", None),
+                    (
+                        "records/product.json",
+                        "rename",
+                        "displayName -> name",
+                        "Legacy Product",
+                        "Legacy Product",
+                    ),
+                    ("records/product.json", "remove", "displayName", "Legacy Product", None),
+                    ("records/product.json", "normalize", "status", "approved", "ready"),
+                    ("records/product.json", "set", "owner", None, "unknown"),
+                    ("records/product.json", "set", "version", None, "0.1.0"),
+                ],
+            },
+            {
+                "fixture": "v0_1_0_workspace",
+                "target": "v0.2.0",
+                "path": ["v0.1.0-to-v0.2.0"],
+                "changes": [
+                    ("verityspec.json", "upgrade", "specVersion", "v0.1.0", "v0.2.0"),
+                    ("verityspec.json", "set", "packPaths", None, []),
+                ],
+            },
+            {
+                "fixture": "legacy_workspace",
+                "target": "v0.2.0",
+                "path": ["legacy-to-v0.1.0", "v0.1.0-to-v0.2.0"],
+                "changes": [
+                    ("verityspec.json", "rename", "version -> specVersion", "0.1.0", "v0.1.0"),
+                    ("verityspec.json", "remove", "version", "0.1.0", None),
+                    ("verityspec.json", "set", "packs", None, DEFAULT_BUILTIN_PACKS),
+                    ("verityspec.json", "upgrade", "specVersion", "v0.1.0", "v0.2.0"),
+                    ("verityspec.json", "set", "packPaths", None, []),
+                ],
+            },
+        ]
+        for case in cases:
+            with self.subTest(fixture=case["fixture"], target=case["target"]):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp) / str(case["fixture"])
+                    shutil.copytree(MIGRATION_FIXTURES / str(case["fixture"]), root)
+                    resolved_root = root.resolve()
+                    before = snapshot_files(root)
 
-            result = verity_command("migrate", str(root), "--dry-run", "--format", "json")
-            report = json.loads(result.stdout)
-            config = json.loads(config_path.read_text(encoding="utf-8"))
-            record = json.loads(record_path.read_text(encoding="utf-8"))
+                    result = verity_command(
+                        "migrate",
+                        str(root),
+                        "--to",
+                        str(case["target"]),
+                        "--dry-run",
+                        "--format",
+                        "json",
+                    )
+                    report = json.loads(result.stdout)
+                    after = snapshot_files(root)
 
-        self.assertEqual(0, result.returncode)
-        self.assertTrue(report["changed"])
-        self.assertEqual("v0.2.0", report["targetVersion"])
-        self.assertEqual(
-            ["legacy-to-v0.1.0", "v0.1.0-to-v0.2.0"],
-            [step["id"] for step in report["migrationPath"]],
-        )
-        self.assertEqual([], report["filesWritten"])
-        self.assertNotIn("specVersion", config)
-        self.assertEqual("product", record["type"])
+                self.assertEqual(0, result.returncode, result.stderr)
+                self.assertEqual(before, after)
+                self.assertTrue(report["changed"])
+                self.assertEqual(case["target"], report["targetVersion"])
+                self.assertEqual(case["path"], [step["id"] for step in report["migrationPath"]])
+                self.assertEqual([], report["filesWritten"])
+                self.assertEqual(str(resolved_root), report["source"])
+
+                normalized_changes = {
+                    (
+                        str(Path(change["path"]).relative_to(resolved_root)),
+                        change["action"],
+                        change["field"],
+                        canonical_json(change["before"]),
+                        canonical_json(change["after"]),
+                    )
+                    for change in report["changes"]
+                }
+                expected_changes = {
+                    (path, action, field, canonical_json(before), canonical_json(after))
+                    for path, action, field, before, after in case["changes"]
+                }
+                self.assertEqual(set(), expected_changes - normalized_changes)
 
     def test_migrate_rewrites_legacy_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

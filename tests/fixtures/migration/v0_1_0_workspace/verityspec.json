@@ -1,0 +1,10 @@
+{
+  "workspace": "v0-1-fixture",
+  "specVersion": "v0.1.0",
+  "packs": [
+    "verity.core"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}

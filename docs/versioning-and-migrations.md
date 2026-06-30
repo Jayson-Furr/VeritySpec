@@ -52,6 +52,9 @@ verity validate ./workspace
 
 Dry-run mode reports the changes without writing files. `--list` reports the
 supported workspace versions and migration steps without requiring a workspace.
+The test suite includes committed dry-run fixtures for each supported migration
+edge so migration reports and non-mutating behavior stay stable as the format
+registry grows.
 
 The current migration path from legacy workspaces is:
 
