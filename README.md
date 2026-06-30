@@ -25,6 +25,7 @@ This implementation provides:
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, events, and security controls.
 - Pack listing, validation, and scaffolding through `verity pack`, including local external packs.
+- Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
@@ -66,6 +67,8 @@ python -m pip install --upgrade pip setuptools
 pip install -e .
 
 verity --version
+verity init build/init-api --template api --owner platform --force
+verity validate build/init-api
 verity pack list
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
@@ -112,6 +115,9 @@ verity doctor examples/basic --report-out build/doctor-report.json
 
 `verity doctor --report-out` writes the same structured JSON diagnostics used
 by `--format json` while preserving the selected stdout format.
+
+Starter workspaces can be created with `verity init --template`. Supported
+templates are `basic`, `api`, `cli`, `events`, and `security`.
 
 Stable exit codes:
 

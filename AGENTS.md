@@ -135,6 +135,7 @@ CLI smoke checks from `README.md`, `docs/ci.md`, and `docs/release-checklist.md`
 
 ```bash
 verity --version
+verity init build/init-api --template api --owner platform --force
 verity pack list
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force

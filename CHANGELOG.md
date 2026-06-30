@@ -4,6 +4,8 @@
 
 - Added `verity doctor --report-out` for writing structured diagnostics to a
   JSON file while preserving normal stdout output.
+- Added `verity init --template` starter workspaces for basic, API, CLI,
+  events, and security contracts.
 
 ## 0.6.0
 

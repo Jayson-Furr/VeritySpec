@@ -44,6 +44,7 @@ EXIT_USAGE_ERROR = 2
 EXIT_INTERNAL_ERROR = 3
 PACK_ID_PATTERN = re.compile(r"^verity(?:\.pack)?\.[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
 KIND_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
+INIT_TEMPLATE_CHOICES = ("basic", "api", "cli", "events", "security")
 
 
 def load_context(path: str, pack_paths: list[str] | None = None):
@@ -94,37 +95,285 @@ def print_issue_result(label: str, command_name: str, issues, output_format: str
     print_issue_summary(label, issues)
 
 
+def init_product(name: str, owner: str, references: list[dict] | None = None) -> dict:
+    return {
+        "id": "product.example",
+        "kind": "product",
+        "name": name,
+        "description": "A starter VeritySpec product contract.",
+        "status": "ready",
+        "owner": owner,
+        "version": "0.1.0",
+        "references": references or [],
+    }
+
+
+def init_schema_object(record_id: str, name: str, owner: str, json_schema: dict) -> dict:
+    return {
+        "id": record_id,
+        "kind": "schema.object",
+        "name": name,
+        "description": f"{name} schema.",
+        "status": "ready",
+        "owner": owner,
+        "jsonSchema": json_schema,
+        "references": [],
+    }
+
+
+def starter_list_schema(property_name: str, item_required: list[str], item_properties: dict) -> dict:
+    return {
+        "type": "object",
+        "additionalProperties": False,
+        "required": [property_name],
+        "properties": {
+            property_name: {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": item_required,
+                    "properties": item_properties,
+                },
+            }
+        },
+    }
+
+
+def init_template(template: str, name: str, owner: str) -> tuple[list[str], dict[str, dict]]:
+    if template == "api":
+        return (
+            ["verity.core", "verity.pack.api"],
+            {
+                "product.json": init_product(
+                    name,
+                    owner,
+                    [{"type": "exposes", "target": "api.example.list"}],
+                ),
+                "schema.example-list.json": init_schema_object(
+                    "schema.example_list",
+                    "Example List",
+                    owner,
+                    starter_list_schema(
+                        "items",
+                        ["id", "name"],
+                        {"id": {"type": "string"}, "name": {"type": "string"}},
+                    ),
+                ),
+                "api.example-list.json": {
+                    "id": "api.example.list",
+                    "kind": "api.endpoint",
+                    "name": "List Examples",
+                    "description": "Lists example resources.",
+                    "status": "ready",
+                    "owner": owner,
+                    "method": "GET",
+                    "path": "/examples",
+                    "summary": "List example resources.",
+                    "responses": [
+                        {
+                            "statusCode": 200,
+                            "description": "Example resources returned.",
+                            "schema": "schema.example_list",
+                        }
+                    ],
+                    "references": [],
+                },
+            },
+        )
+    if template == "cli":
+        return (
+            ["verity.core", "verity.pack.cli"],
+            {
+                "product.json": init_product(
+                    name,
+                    owner,
+                    [{"type": "ships", "target": "cli.example.list"}],
+                ),
+                "schema.example-list.json": init_schema_object(
+                    "schema.example_list",
+                    "Example List",
+                    owner,
+                    starter_list_schema(
+                        "items",
+                        ["id", "name"],
+                        {"id": {"type": "string"}, "name": {"type": "string"}},
+                    ),
+                ),
+                "cli.example-list.json": {
+                    "id": "cli.example.list",
+                    "kind": "cli.command",
+                    "name": "List Examples",
+                    "description": "Lists example resources.",
+                    "status": "ready",
+                    "owner": owner,
+                    "command": "example list",
+                    "options": [
+                        {
+                            "name": "--json",
+                            "type": "boolean",
+                            "description": "Emit JSON output.",
+                        }
+                    ],
+                    "outputSchema": "schema.example_list",
+                    "exitCodes": [
+                        {"code": 0, "description": "Examples were listed."},
+                        {"code": 1, "description": "The command failed."},
+                    ],
+                    "references": [],
+                },
+            },
+        )
+    if template == "events":
+        return (
+            ["verity.core", "verity.pack.events"],
+            {
+                "product.json": init_product(
+                    name,
+                    owner,
+                    [{"type": "emits", "target": "event.example.created"}],
+                ),
+                "schema.example.json": init_schema_object(
+                    "schema.example",
+                    "Example Event",
+                    owner,
+                    {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "required": ["id", "createdAt"],
+                        "properties": {
+                            "id": {"type": "string"},
+                            "createdAt": {"type": "string", "format": "date-time"},
+                        },
+                    },
+                ),
+                "event.example-created.json": {
+                    "id": "event.example.created",
+                    "kind": "event.message",
+                    "name": "Example Created",
+                    "description": "Published after an example resource is created.",
+                    "status": "ready",
+                    "owner": owner,
+                    "topic": "example.created",
+                    "payloadSchema": "schema.example",
+                    "references": [],
+                },
+            },
+        )
+    if template == "security":
+        return (
+            ["verity.core", "verity.pack.api", "verity.pack.security"],
+            {
+                "product.json": init_product(
+                    name,
+                    owner,
+                    [
+                        {"type": "exposes", "target": "api.example.get"},
+                        {"type": "securedBy", "target": "security.control.example_access"},
+                    ],
+                ),
+                "schema.example.json": init_schema_object(
+                    "schema.example",
+                    "Example Resource",
+                    owner,
+                    {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "required": ["id", "name"],
+                        "properties": {
+                            "id": {"type": "string"},
+                            "name": {"type": "string"},
+                        },
+                    },
+                ),
+                "api.example-get.json": {
+                    "id": "api.example.get",
+                    "kind": "api.endpoint",
+                    "name": "Get Example",
+                    "description": "Returns an example resource after access-control checks.",
+                    "status": "ready",
+                    "owner": owner,
+                    "method": "GET",
+                    "path": "/examples/{exampleId}",
+                    "summary": "Get an example resource.",
+                    "parameters": [
+                        {
+                            "name": "exampleId",
+                            "in": "path",
+                            "required": True,
+                            "description": "Example resource identifier.",
+                            "schema": {"type": "string"},
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "statusCode": 200,
+                            "description": "Example resource returned.",
+                            "schema": "schema.example",
+                        },
+                        {"statusCode": 403, "description": "Caller is not authorized."},
+                    ],
+                    "references": [],
+                },
+                "security.example-access.json": {
+                    "id": "security.control.example_access",
+                    "kind": "security.control",
+                    "name": "Example Access Control",
+                    "description": "Requires example resource access to be limited to authorized callers.",
+                    "status": "ready",
+                    "owner": owner,
+                    "category": "authorization",
+                    "controlType": "preventive",
+                    "riskLevel": "high",
+                    "objective": "Prevent unauthorized access to example resources.",
+                    "coverage": "verified",
+                    "verification": {
+                        "method": "automated-test",
+                        "evidence": "tests/security/test_example_access.py::test_authorized_callers_only",
+                    },
+                    "references": [
+                        {"type": "appliesTo", "target": "api.example.get"},
+                        {"type": "appliesTo", "target": "schema.example"},
+                    ],
+                },
+            },
+        )
+    return (
+        DEFAULT_PACKS,
+        {
+            "product.json": init_product(name, owner),
+        },
+    )
+
+
 def cmd_init(args: argparse.Namespace) -> int:
     target = Path(args.path).resolve()
-    target.mkdir(parents=True, exist_ok=True)
     config_path = target / "verityspec.json"
     records_path = target / "records"
-    records_path.mkdir(exist_ok=True)
+    product_name = args.name or "Example Product"
+    packs, records = init_template(args.template, product_name, args.owner)
 
     if config_path.exists() and not args.force:
         print(f"Workspace already exists: {config_path}", file=sys.stderr)
         return EXIT_USAGE_ERROR
+    if records_path.exists() and any(records_path.glob("*.json")) and not args.force:
+        print(f"Record directory already contains JSON records: {records_path}", file=sys.stderr)
+        return EXIT_USAGE_ERROR
+
+    target.mkdir(parents=True, exist_ok=True)
+    records_path.mkdir(exist_ok=True)
 
     config = {
         "workspace": args.name or target.name,
         "specVersion": CURRENT_SPEC_VERSION,
-        "packs": DEFAULT_PACKS,
+        "packs": packs,
         "packPaths": [],
         "records": ["records/*.json"],
     }
-    product = {
-        "id": "product.example",
-        "kind": "product",
-        "name": args.name or "Example Product",
-        "description": "Describe the product contract.",
-        "status": "draft",
-        "owner": args.owner,
-        "version": "0.1.0",
-        "references": [],
-    }
     config_path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
-    (records_path / "product.json").write_text(json.dumps(product, indent=2) + "\n", encoding="utf-8")
-    print(f"Created VeritySpec workspace at {target}")
+    for file_name, record in records.items():
+        (records_path / file_name).write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    print(f"Created VeritySpec {args.template} workspace at {target}")
     return EXIT_SUCCESS
 
 
@@ -510,6 +759,12 @@ def build_parser() -> argparse.ArgumentParser:
     init_parser.add_argument("path")
     init_parser.add_argument("--name")
     init_parser.add_argument("--owner", default="unknown")
+    init_parser.add_argument(
+        "--template",
+        choices=INIT_TEMPLATE_CHOICES,
+        default="basic",
+        help="Starter workspace template.",
+    )
     init_parser.add_argument("--force", action="store_true")
     init_parser.set_defaults(func=cmd_init)
 

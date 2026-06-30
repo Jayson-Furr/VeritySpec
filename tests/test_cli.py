@@ -480,6 +480,62 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual([], report["migrationPath"])
         self.assertTrue(report["changed"])
 
+    def test_init_templates_create_executable_workspaces(self) -> None:
+        expected_packs = {
+            "basic": ["verity.core", "verity.pack.api", "verity.pack.cli", "verity.pack.events"],
+            "api": ["verity.core", "verity.pack.api"],
+            "cli": ["verity.core", "verity.pack.cli"],
+            "events": ["verity.core", "verity.pack.events"],
+            "security": ["verity.core", "verity.pack.api", "verity.pack.security"],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for template, packs in expected_packs.items():
+                with self.subTest(template=template):
+                    workspace_path = root / template
+                    init_result = verity_command(
+                        "init",
+                        str(workspace_path),
+                        "--template",
+                        template,
+                        "--name",
+                        f"starter_{template}",
+                        "--owner",
+                        "platform",
+                    )
+                    config = json.loads((workspace_path / "verityspec.json").read_text(encoding="utf-8"))
+                    validate_result = verity_command("validate", str(workspace_path), "--format", "json")
+                    lint_result = verity_command("lint", str(workspace_path), "--strict", "--format", "json")
+                    readiness_result = verity_command(
+                        "readiness",
+                        str(workspace_path),
+                        "--strict",
+                        "--format",
+                        "json",
+                    )
+
+                    self.assertEqual(0, init_result.returncode)
+                    self.assertEqual(packs, config["packs"])
+                    self.assertEqual([], config["packPaths"])
+                    self.assertEqual(0, validate_result.returncode)
+                    self.assertEqual(0, lint_result.returncode)
+                    self.assertEqual(0, readiness_result.returncode)
+                    self.assertTrue(json.loads(validate_result.stdout)["passed"])
+                    self.assertTrue(json.loads(lint_result.stdout)["passed"])
+                    self.assertTrue(json.loads(readiness_result.stdout)["passed"])
+
+    def test_init_refuses_existing_json_records_without_force(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace_path = Path(tmp) / "existing"
+            records_path = workspace_path / "records"
+            records_path.mkdir(parents=True)
+            (records_path / "existing.json").write_text("{}", encoding="utf-8")
+
+            result = verity_command("init", str(workspace_path), "--template", "api")
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("Record directory already contains JSON records", result.stderr)
+
     def test_pack_list_json_output(self) -> None:
         result = verity_command("pack", "list", "--format", "json")
 
