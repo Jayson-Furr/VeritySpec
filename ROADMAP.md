@@ -305,12 +305,13 @@ Sprint 29 should release the completed `v0.7.0` scope:
 
 ## v0.8.0
 
-The `v0.8.0` milestone is active.
+The `v0.8.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 30 | Complete | Accessibility pack foundation |
 | 31 | Complete | Accessibility report generator |
+| 32 | Complete | v0.8.0 release preparation |
 
 ## Sprint 30 Priorities
 
@@ -341,6 +342,18 @@ Sprint 31 should make accessibility contracts reportable:
 - Update README, changelog, roadmap, generator docs, accessibility docs, CI,
   release checks, and AI-agent command examples.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 32 Priorities
+
+Sprint 32 should release the completed `v0.8.0` scope:
+
+- Promote Unreleased changelog entries into `0.8.0`.
+- Bump package metadata to `0.8.0`.
+- Add v0.8.0 release notes.
+- Update README and install references to `v0.8.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.8.0 GitHub release when checks pass.
+- Close the v0.8.0 milestone after release verification.
 
 ## Later Candidates
 

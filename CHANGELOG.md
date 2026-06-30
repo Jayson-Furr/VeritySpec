@@ -2,11 +2,16 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.8.0
+
 - Added built-in `verity.pack.accessibility` with `accessibility.claim`
   records, readiness gates, reference rules, documentation, CI coverage, and
   an executable accessibility example.
 - Added `verity generate accessibility-report` for accessibility claim,
   ownership, verification, impact, and release-gap summaries.
+- Added v0.8.0 release notes and roadmap closeout.
 
 ## 0.7.0
 
