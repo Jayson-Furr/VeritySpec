@@ -121,6 +121,19 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("security.control.critical_unverified", payload["code"])
         self.assertEqual("Critical security control not verified", payload["title"])
 
+    def test_explain_accessibility_issue_code_json_output(self) -> None:
+        result = verity_command(
+            "explain",
+            "accessibility.claim.critical_unverified",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("accessibility.claim.critical_unverified", payload["code"])
+        self.assertEqual("Critical accessibility claim not verified", payload["title"])
+
     def test_graph_focus_json_output(self) -> None:
         result = verity_command("graph", "examples/basic", "--focus", "api.users.create", "--format", "json")
 
@@ -544,6 +557,7 @@ class VerityCliTests(unittest.TestCase):
         pack_ids = {pack["id"] for pack in payload["packs"]}
         self.assertIn("verity.core", pack_ids)
         self.assertIn("verity.pack.api", pack_ids)
+        self.assertIn("verity.pack.accessibility", pack_ids)
         self.assertIn("verity.pack.observability", pack_ids)
         self.assertIn("verity.pack.security", pack_ids)
 

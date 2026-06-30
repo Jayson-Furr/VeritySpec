@@ -36,6 +36,16 @@ verity generate observability-report examples/observability --out build/observab
 verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.accessibility`, include the usual
+contract checks and keep a schema bundle for downstream tooling:
+
+```bash
+verity validate examples/accessibility
+verity lint examples/accessibility --strict
+verity readiness examples/accessibility --strict
+verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
+```
+
 For workspaces with local external packs:
 
 ```bash

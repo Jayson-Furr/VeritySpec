@@ -13,6 +13,7 @@ verity generate schema-bundle examples/basic --out build/schema-bundle.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
+verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
 verity generate python-models tests/fixtures/generator_maturity --out build/generator-maturity.py
 ```
