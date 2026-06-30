@@ -1,0 +1,78 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      publish_pypi:
+        description: "Publish built distributions to PyPI using trusted publishing"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: python -m pip install --upgrade pip build twine
+
+      - name: Build distributions
+        run: python -m build
+
+      - name: Check distributions
+        run: twine check dist/*
+
+      - name: Install wheel smoke test
+        run: |
+          python -m venv /tmp/verityspec-wheel
+          /tmp/verityspec-wheel/bin/python -m pip install --upgrade pip
+          /tmp/verityspec-wheel/bin/pip install dist/*.whl
+          /tmp/verityspec-wheel/bin/verity --version
+          /tmp/verityspec-wheel/bin/verity pack validate
+          /tmp/verityspec-wheel/bin/verity validate examples/basic
+
+      - name: Upload distribution artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+      - name: Create GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+
+  publish-pypi:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_pypi
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download distribution artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+

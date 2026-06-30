@@ -161,6 +161,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)
 - [CI](docs/ci.md)
+- [Release checklist](docs/release-checklist.md)
 
 ## Supersession
 

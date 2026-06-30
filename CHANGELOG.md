@@ -10,3 +10,4 @@
 - Added Sprint 2 contract semantics: shared record envelope assertions, pack-declared reference rules, graph checks, semantic broken fixtures, and validation-report generation.
 - Added Sprint 3 pack system foundation: pack manifest schema, `verity pack list`, `verity pack validate`, pack validation tests, and pack-standard docs.
 - Added Sprint 4 examples and documentation: focused API, CLI, events, and broken workspaces plus docs for workspace format, lifecycle, readiness, generators, graph checks, and CI.
+- Added Sprint 5 release automation: package build checks, tag-driven GitHub releases, PyPI publishing preparation, and release checklist.
