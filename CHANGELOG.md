@@ -2,11 +2,14 @@
 
 ## Unreleased
 
+## 0.37.0
+
 - Added built-in `verity.pack.unity` with `unity.project`,
   `unity.package-dependency`, `unity.scene`, and `unity.build-target` records,
   readiness gates, graph reference rules, an executable Unity example,
   coverage-dashboard support, schema-bundle generation coverage, and public
   docs for Unity implementation contracts.
+- Added v0.37.0 release notes and roadmap closeout.
 
 ## 0.36.0
 
