@@ -49,6 +49,21 @@ verity pack list
 verity pack list --format json
 verity pack validate
 verity pack validate verity.pack.api --format json
+verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
+```
+
+`verity pack init` creates a local starter pack with:
+
+- `pack.json`
+- `schemas/<kind>.schema.json`
+- one strict starter record schema
+- one readiness gate for the starter kind
+- `schema-bundle` generator support
+
+The generated pack can be validated immediately:
+
+```bash
+verity pack validate verity.pack.features --path build/packs/features
 ```
 
 ## External Packs
