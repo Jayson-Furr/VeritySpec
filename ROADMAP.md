@@ -39,6 +39,7 @@ from downstream repositories:
 - Add a reusable or copy-paste CI workflow for product-contract checks.
 - Add a canonical AI-agent entry point for coding agents.
 - Add a post-commit context refresh rule for AI agents.
+- Add shell-discipline guidance for `zsh`, `bash`, and PowerShell command use.
 - Add v0.2.0 release notes.
 - Review GitHub Actions version warnings.
 - Run final package build, wheel install, examples, importer, generator, and docs checks.

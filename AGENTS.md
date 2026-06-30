@@ -45,6 +45,8 @@ fixtures.
 - Update tests, examples, docs, CI, and roadmap entries with behavior changes.
 - After each commit, refresh agent context by re-reading this file and checking
   the latest repository state before continuing work.
+- At the entry point, determine whether commands should run under `zsh`,
+  `bash`, or PowerShell, then keep command syntax consistent with that shell.
 - Prefer small, executable increments over broad speculative architecture.
 - Preserve the pack-based architecture: core stays small; product surfaces
   belong in packs.
@@ -55,6 +57,45 @@ fixtures.
 - Preserve user changes. Do not revert unrelated dirty files.
 - Use structured JSON parsing/writing for JSON artifacts.
 - Keep documentation command examples executable from a clean checkout.
+
+## Shell Discipline
+
+At the start of work, determine the command shell before running repository
+commands. Use the host OS, current shell, CI workflow shell, and command syntax
+requirements to choose one of:
+
+- `zsh`: normal local shell on macOS developer machines.
+- `bash`: normal shell for GitHub Actions and portable Unix-like scripts.
+- PowerShell: Windows or explicitly PowerShell-based automation.
+
+Maintain that shell discipline until there is a concrete reason to switch. Do
+not mix activation commands, environment-variable syntax, path separators, or
+control-flow syntax across shells in the same command sequence.
+
+When switching shells:
+
+1. State why the switch is necessary.
+2. Rewrite the full command for the new shell.
+3. Re-check paths, quoting, virtualenv activation, and environment variables.
+
+Shell-specific examples:
+
+```bash
+# zsh/bash
+. .venv/bin/activate
+PYTHONPATH=src python -m unittest discover -s tests -v
+```
+
+```powershell
+# PowerShell
+. .venv\Scripts\Activate.ps1
+$env:PYTHONPATH = "src"
+python -m unittest discover -s tests -v
+```
+
+In GitHub Actions, prefer explicit `shell: bash` for multi-line Unix command
+steps. Use PowerShell in workflows only when the job targets Windows or needs
+PowerShell-specific behavior.
 
 ## Standard Local Checks
 
