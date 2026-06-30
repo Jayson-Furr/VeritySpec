@@ -17,6 +17,8 @@ from verityspec.generators import (
     generate_schema_bundle,
     generate_security_report,
     generate_typescript,
+    generate_validation_report,
+    generated_at_value,
 )
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
 from verityspec.issues import Issue, escape_github_property, parse_issue_location
@@ -32,6 +34,7 @@ GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
 GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
+FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 
 
 def normalize_security_report_for_golden(report: dict) -> dict:
@@ -673,6 +676,40 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(list(range(1, 21)), [point["number"] for point in report["nextRoadmapPoints"]])
         milestone_versions = {milestone["version"] for milestone in report["milestones"]}
         self.assertIn(report["latestReleasedMilestone"], milestone_versions)
+
+    def test_report_generators_accept_explicit_generated_at(self) -> None:
+        security_workspace = load_workspace(ROOT / "examples" / "security")
+        observability_workspace = load_workspace(ROOT / "examples" / "observability")
+        registry = load_pack_registry(security_workspace.pack_ids, security_workspace.pack_paths)
+
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_security_report(security_workspace, generated_at=FIXED_GENERATED_AT)["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_observability_report(
+                observability_workspace,
+                generated_at=FIXED_GENERATED_AT,
+            )["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_validation_report(
+                security_workspace,
+                registry,
+                [],
+                generated_at=FIXED_GENERATED_AT,
+            )["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_roadmap_report(ROOT, generated_at=FIXED_GENERATED_AT)["generatedAt"],
+        )
+
+    def test_generated_at_value_rejects_invalid_datetime(self) -> None:
+        with self.assertRaisesRegex(ValueError, "ISO 8601"):
+            generated_at_value("not-a-datetime")
 
     def test_security_report_matches_golden_file(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "security")

@@ -19,6 +19,7 @@ CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
 MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
+FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
     "verity.pack.api",
@@ -1137,6 +1138,41 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(1, payload["controlCount"])
         self.assertEqual({"verified": 1}, payload["summary"]["byCoverage"])
         self.assertEqual("security.control.account_access", payload["controls"][0]["id"])
+
+    def test_generate_report_accepts_explicit_generated_at(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "security-report.json"
+            result = verity_command(
+                "generate",
+                "security-report",
+                "examples/security",
+                "--generated-at",
+                FIXED_GENERATED_AT,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual(FIXED_GENERATED_AT, payload["generatedAt"])
+
+    def test_generate_report_rejects_invalid_generated_at(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "security-report.json"
+            result = verity_command(
+                "generate",
+                "security-report",
+                "examples/security",
+                "--generated-at",
+                "not-a-datetime",
+                "--out",
+                str(out_path),
+            )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("--generated-at must be an ISO 8601 datetime.", result.stderr)
+        self.assertFalse(out_path.exists())
 
     def test_security_report_generator_matches_golden_file(self) -> None:
         expected = json.loads(SECURITY_REPORT_GOLDEN.read_text(encoding="utf-8"))

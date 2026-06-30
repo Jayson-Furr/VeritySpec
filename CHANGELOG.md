@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added `--generated-at` for deterministic JSON report timestamps and golden
+  snapshot regeneration.
+
 ## 0.24.0
 
 - Added observability report and schema-bundle golden fixtures for stable
