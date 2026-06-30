@@ -17,6 +17,11 @@ verity generate validation-report examples/basic --out build/validation-report.j
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
 
+VeritySpec's own CI also executes safe local command examples from `README.md`.
+Install and environment-setup snippets remain documentation-only, while local
+`verity` examples are smoke-tested with temporary `build/` output paths so
+public command snippets do not drift from the CLI.
+
 For workspaces that load `verity.pack.security`, include the security report:
 
 ```bash

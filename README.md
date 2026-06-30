@@ -51,6 +51,8 @@ This implementation provides:
 - Doctor diagnostics that can be printed to stdout or written as JSON reports.
 - Downstream GitHub Actions templates and a reusable workflow for product-contract enforcement.
 - Golden security-report fixture coverage for stable report-shape review.
+- README command smoke tests that execute safe local CLI examples and keep
+  public command snippets from drifting.
 - A canonical AI agent entry point with shell discipline, branch/PR/release
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 - Public contribution guidance and issue templates for pack proposals and
