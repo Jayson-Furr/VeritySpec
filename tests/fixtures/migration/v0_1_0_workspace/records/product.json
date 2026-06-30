@@ -1,0 +1,8 @@
+{
+  "id": "product.v0_1",
+  "kind": "product",
+  "name": "Version 0.1 Fixture",
+  "status": "ready",
+  "owner": "platform",
+  "version": "1.0.0"
+}
