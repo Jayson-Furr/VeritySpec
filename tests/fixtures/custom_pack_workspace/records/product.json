@@ -1,0 +1,15 @@
+{
+  "id": "product.flags",
+  "kind": "product",
+  "name": "Feature Flag Product",
+  "description": "A product fixture that loads an external pack.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "configures",
+      "target": "feature.checkout"
+    }
+  ]
+}

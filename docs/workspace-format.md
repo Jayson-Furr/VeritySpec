@@ -8,6 +8,7 @@ more JSON record files.
   "workspace": "examples.api_service",
   "specVersion": "v0.1.0",
   "packs": ["verity.core", "verity.pack.api"],
+  "packPaths": [],
   "records": ["records/*.json"]
 }
 ```
@@ -18,6 +19,8 @@ more JSON record files.
 - `specVersion`: VeritySpec workspace format version. The current supported
   value is `v0.1.0`; unknown future versions fail validation.
 - `packs`: built-in pack IDs to load.
+- `packPaths`: optional local pack directories or `pack.json` files. Relative
+  paths resolve from the workspace root.
 - `records`: glob patterns, relative to the workspace root.
 
 Records may be stored as individual JSON objects, arrays of objects, or catalog

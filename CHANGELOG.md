@@ -15,3 +15,4 @@
 - Added Sprint 7 contract intelligence: `doctor`, `explain`, `--fail-on`, graph filters, richer validation report metadata, and CI coverage.
 - Added Sprint 8 PrismSpec migration: richer PrismSpec import mappings, migration report fields, fixture coverage, migration docs, and CI smoke testing.
 - Added Sprint 9 versioning and migrations: supported spec-version registry, workspace version validation issues, `verity migrate`, version-aware diff metadata, migration docs, and CI coverage.
+- Added Sprint 10 external pack loading: workspace `packPaths`, `--pack-path` CLI flags, external pack list/validate support, custom pack fixtures, docs, and CI coverage.

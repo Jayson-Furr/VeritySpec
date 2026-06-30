@@ -10,6 +10,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CUSTOM_PACK = "tests/fixtures/custom_pack"
+CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
 
 
 def verity_command(*args: str) -> subprocess.CompletedProcess:
@@ -322,6 +324,98 @@ class VerityCliTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertFalse(payload["passed"])
         self.assertEqual("pack.unknown", payload["issues"][0]["code"])
+
+    def test_external_pack_workspace_from_config(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            bundle_path = Path(tmp) / "schema-bundle.json"
+            validate_result = verity_command("validate", CUSTOM_PACK_WORKSPACE, "--format", "json")
+            lint_result = verity_command("lint", CUSTOM_PACK_WORKSPACE, "--strict", "--format", "json")
+            readiness_result = verity_command("readiness", CUSTOM_PACK_WORKSPACE, "--strict", "--format", "json")
+            generate_result = verity_command(
+                "generate",
+                "schema-bundle",
+                CUSTOM_PACK_WORKSPACE,
+                "--out",
+                str(bundle_path),
+            )
+            bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, validate_result.returncode)
+        self.assertEqual(0, lint_result.returncode)
+        self.assertEqual(0, readiness_result.returncode)
+        self.assertEqual(0, generate_result.returncode)
+        self.assertIn("feature.flag", bundle["schemas"])
+
+    def test_external_pack_cli_path_for_workspace_and_pack_commands(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "external.cli.path",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.features"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.flags",
+                        "kind": "product",
+                        "name": "Feature Flag Product",
+                        "description": "A product fixture that loads an external pack.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [{"type": "configures", "target": "feature.checkout"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "feature.checkout.json").write_text(
+                json.dumps(
+                    {
+                        "id": "feature.checkout",
+                        "kind": "feature.flag",
+                        "name": "Checkout Feature",
+                        "description": "Controls access to the checkout flow.",
+                        "status": "ready",
+                        "owner": "growth",
+                        "key": "checkout.enabled",
+                        "enabled": True,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            validate_result = verity_command(
+                "validate",
+                str(root),
+                "--pack-path",
+                CUSTOM_PACK,
+                "--format",
+                "json",
+            )
+            pack_list_result = verity_command("pack", "list", "--path", CUSTOM_PACK, "--format", "json")
+            pack_validate_result = verity_command(
+                "pack",
+                "validate",
+                "verity.pack.features",
+                "--path",
+                CUSTOM_PACK,
+                "--format",
+                "json",
+            )
+
+        self.assertEqual(0, validate_result.returncode)
+        self.assertEqual(0, pack_list_result.returncode)
+        self.assertEqual(0, pack_validate_result.returncode)
+        pack_ids = {pack["id"] for pack in json.loads(pack_list_result.stdout)["packs"]}
+        self.assertIn("verity.pack.features", pack_ids)
 
     def test_validation_report_generator_writes_report_for_broken_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

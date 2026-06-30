@@ -22,7 +22,7 @@ This initial implementation provides:
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, and events.
-- Pack listing and validation through `verity pack`.
+- Pack listing and validation through `verity pack`, including local external packs.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
@@ -60,7 +60,9 @@ pip install -e .
 verity --version
 verity pack list
 verity pack validate
+verity pack validate verity.pack.features --path tests/fixtures/custom_pack
 verity validate examples/basic
+verity validate tests/fixtures/custom_pack_workspace
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity doctor examples/basic
@@ -73,6 +75,7 @@ verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate cli-reference examples/basic --out build/cli-reference.md
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
 verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
 ```
 
@@ -140,6 +143,8 @@ verity pack list
 verity pack list --format json
 verity pack validate
 verity pack validate verity.pack.api --format json
+verity pack list --path tests/fixtures/custom_pack
+verity pack validate verity.pack.features --path tests/fixtures/custom_pack
 ```
 
 See [docs/packs.md](docs/packs.md) for the pack manifest contract and pack
@@ -163,6 +168,7 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
     "verity.pack.cli",
     "verity.pack.events"
   ],
+  "packPaths": [],
   "records": [
     "records/*.json"
   ]

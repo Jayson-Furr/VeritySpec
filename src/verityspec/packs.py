@@ -38,6 +38,7 @@ class Pack:
     version: str
     name: str
     description: str
+    path: Path
     schemas: dict[str, SchemaBinding]
     readiness_gates: list[dict[str, Any]]
     generators: list[str]
@@ -83,14 +84,43 @@ def available_builtin_packs() -> dict[str, Path]:
     return packs
 
 
-def load_pack(pack_id: str) -> Pack:
-    builtin = available_builtin_packs()
-    if pack_id not in builtin:
-        available = ", ".join(sorted(builtin)) or "none"
-        raise ValueError(f"Unknown pack '{pack_id}'. Available packs: {available}")
+def normalize_pack_path(path: str | Path, base_path: Path | None = None) -> Path:
+    candidate = Path(path)
+    if not candidate.is_absolute() and base_path is not None:
+        candidate = base_path / candidate
+    candidate = candidate.resolve()
+    if candidate.name == "pack.json":
+        return candidate.parent
+    return candidate
 
-    pack_path = builtin[pack_id]
+
+def available_external_packs(
+    pack_paths: list[str | Path] | None = None,
+    base_path: Path | None = None,
+) -> dict[str, Path]:
+    packs: dict[str, Path] = {}
+    builtin_ids = set(available_builtin_packs())
+    for raw_path in pack_paths or []:
+        pack_path = normalize_pack_path(raw_path, base_path)
+        manifest_path = pack_path / "pack.json"
+        if not manifest_path.exists():
+            raise ValueError(f"External pack path does not contain pack.json: {pack_path}")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        pack_id = manifest.get("id")
+        if not isinstance(pack_id, str):
+            raise ValueError(f"External pack manifest is missing string id: {manifest_path}")
+        if pack_id in builtin_ids:
+            raise ValueError(f"External pack '{pack_id}' collides with a built-in pack id.")
+        if pack_id in packs and packs[pack_id] != pack_path:
+            raise ValueError(f"External pack '{pack_id}' is declared by multiple paths.")
+        packs[pack_id] = pack_path
+    return packs
+
+
+def load_pack_from_path(pack_path: str | Path) -> Pack:
+    pack_path = normalize_pack_path(pack_path)
     manifest = json.loads((pack_path / "pack.json").read_text(encoding="utf-8"))
+    pack_id = manifest["id"]
     schemas: dict[str, SchemaBinding] = {}
     for schema_decl in manifest.get("schemas", []):
         kind = schema_decl.get("kind")
@@ -98,7 +128,7 @@ def load_pack(pack_id: str) -> Pack:
         if not isinstance(kind, str) or not isinstance(rel_path, str):
             continue
         schema_path = pack_path / rel_path
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        schema = json.loads(schema_path.read_text(encoding="utf-8")) if schema_path.exists() else {}
         schemas[kind] = SchemaBinding(kind=kind, schema=schema, path=schema_path, pack_id=pack_id)
 
     reference_rules: list[ReferenceRule] = []
@@ -122,6 +152,7 @@ def load_pack(pack_id: str) -> Pack:
         version=manifest.get("version", "0.0.0"),
         name=manifest.get("name", manifest["id"]),
         description=manifest.get("description", ""),
+        path=pack_path,
         schemas=schemas,
         readiness_gates=manifest.get("readinessGates", []),
         generators=manifest.get("generators", []),
@@ -129,12 +160,36 @@ def load_pack(pack_id: str) -> Pack:
     )
 
 
-def load_pack_registry(pack_ids: list[str]) -> PackRegistry:
+def load_pack(
+    pack_id: str,
+    external_pack_paths: list[str | Path] | None = None,
+    base_path: Path | None = None,
+) -> Pack:
+    builtin = available_builtin_packs()
+    external = available_external_packs(external_pack_paths, base_path)
+    if pack_id in external:
+        return load_pack_from_path(external[pack_id])
+    if pack_id not in builtin:
+        available = ", ".join(sorted(set(builtin) | set(external))) or "none"
+        raise ValueError(f"Unknown pack '{pack_id}'. Available packs: {available}")
+
+    return load_pack_from_path(builtin[pack_id])
+
+
+def load_pack_registry(
+    pack_ids: list[str],
+    external_pack_paths: list[str | Path] | None = None,
+    base_path: Path | None = None,
+) -> PackRegistry:
     packs: dict[str, Pack] = {}
     schemas: dict[str, SchemaBinding] = {}
     reference_rules: list[ReferenceRule] = []
+    external = available_external_packs(external_pack_paths, base_path)
     for pack_id in pack_ids:
-        pack = load_pack(pack_id)
+        if pack_id in external:
+            pack = load_pack_from_path(external[pack_id])
+        else:
+            pack = load_pack(pack_id, external_pack_paths, base_path)
         packs[pack.id] = pack
         reference_rules.extend(pack.reference_rules)
         for kind, binding in pack.schemas.items():

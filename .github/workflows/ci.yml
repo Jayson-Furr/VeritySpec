@@ -58,9 +58,14 @@ jobs:
           verity --version
           verity pack list --format json > build/packs.json
           verity pack validate --format json > build/pack-validation.json
+          verity pack list --path tests/fixtures/custom_pack --format json > build/packs-with-external.json
+          verity pack validate verity.pack.features --path tests/fixtures/custom_pack --format json > build/custom-pack-validation.json
           verity validate examples/basic --format json > build/validate.json
           verity lint examples/basic --strict --format json > build/lint.json
           verity readiness examples/basic --strict --format json > build/readiness.json
+          verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
+          verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
+          verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
           verity doctor examples/basic --format json > build/doctor.json
           verity explain reference.missing --format json > build/explain-reference-missing.json
           verity migrate examples/basic --dry-run --format json > build/migrate.json
@@ -70,9 +75,14 @@ jobs:
           verity validate build/prismspec-import --format json > build/prismspec-import-validation.json
           python -m json.tool build/packs.json >/dev/null
           python -m json.tool build/pack-validation.json >/dev/null
+          python -m json.tool build/packs-with-external.json >/dev/null
+          python -m json.tool build/custom-pack-validation.json >/dev/null
           python -m json.tool build/validate.json >/dev/null
           python -m json.tool build/lint.json >/dev/null
           python -m json.tool build/readiness.json >/dev/null
+          python -m json.tool build/custom-pack-validate.json >/dev/null
+          python -m json.tool build/custom-pack-lint.json >/dev/null
+          python -m json.tool build/custom-pack-readiness.json >/dev/null
           python -m json.tool build/doctor.json >/dev/null
           python -m json.tool build/explain-reference-missing.json >/dev/null
           python -m json.tool build/migrate.json >/dev/null
@@ -91,6 +101,7 @@ jobs:
           verity generate schema-bundle examples/basic --out build/schema-bundle.json
           verity generate cli-reference examples/basic --out build/cli-reference.md
           verity generate validation-report examples/basic --out build/validation-report.json
+          verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate openapi examples/api-service --out build/api-service.openapi.json
           verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
           verity generate asyncapi examples/events --out build/events.asyncapi.json
@@ -99,6 +110,7 @@ jobs:
           python -m json.tool build/api-service.openapi.json >/dev/null
           python -m json.tool build/events.asyncapi.json >/dev/null
           python -m json.tool build/schema-bundle.json >/dev/null
+          python -m json.tool build/custom-pack-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m py_compile build/models.py
 

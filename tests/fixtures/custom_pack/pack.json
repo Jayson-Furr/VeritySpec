@@ -1,0 +1,27 @@
+{
+  "id": "verity.pack.features",
+  "version": "0.1.0",
+  "name": "VeritySpec Feature Flags Pack",
+  "description": "Feature flag records for external pack loading tests.",
+  "schemas": [
+    {
+      "kind": "feature.flag",
+      "path": "schemas/feature-flag.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "feature.flag.release",
+      "kind": "feature.flag",
+      "required": ["owner", "name", "description", "key"]
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "configures",
+      "targetKind": "feature.flag"
+    }
+  ],
+  "generators": ["schema-bundle"]
+}

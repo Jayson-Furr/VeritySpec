@@ -8,7 +8,15 @@ from jsonschema import Draft202012Validator, SchemaError
 
 from .envelope import RECORD_ENVELOPE_REQUIRED
 from .issues import Issue
-from .packs import PackRegistry, available_builtin_packs, load_pack, load_pack_registry
+from .packs import (
+    Pack,
+    PackRegistry,
+    available_builtin_packs,
+    available_external_packs,
+    load_pack,
+    load_pack_from_path,
+    load_pack_registry,
+)
 
 
 KNOWN_GENERATORS = {
@@ -28,21 +36,36 @@ def load_pack_manifest_schema() -> dict[str, Any]:
     return json.loads(PACK_MANIFEST_SCHEMA_PATH.read_text(encoding="utf-8"))
 
 
-def pack_summary(pack_id: str) -> dict[str, Any]:
-    pack = load_pack(pack_id)
+def pack_summary_from_pack(pack: Pack) -> dict[str, Any]:
     return {
         "id": pack.id,
         "version": pack.version,
         "name": pack.name,
         "description": pack.description,
+        "path": str(pack.path),
         "kinds": sorted(pack.schemas),
         "readinessGates": [gate.get("id") for gate in pack.readiness_gates],
         "generators": pack.generators,
     }
 
 
+def pack_summary(pack_id: str) -> dict[str, Any]:
+    return pack_summary_from_pack(load_pack(pack_id))
+
+
 def list_builtin_pack_summaries() -> list[dict[str, Any]]:
     return [pack_summary(pack_id) for pack_id in sorted(available_builtin_packs())]
+
+
+def list_pack_summaries(
+    external_pack_paths: list[str | Path] | None = None,
+    base_path: Path | None = None,
+) -> list[dict[str, Any]]:
+    summaries = list_builtin_pack_summaries()
+    external = available_external_packs(external_pack_paths, base_path)
+    for pack_id in sorted(external):
+        summaries.append(pack_summary_from_pack(load_pack_from_path(external[pack_id])))
+    return summaries
 
 
 def validate_pack_manifest(path: Path) -> list[Issue]:
@@ -57,9 +80,8 @@ def validate_pack_manifest(path: Path) -> list[Issue]:
     return issues
 
 
-def validate_pack_schemas(pack_id: str) -> list[Issue]:
+def validate_pack_schemas_for_pack(pack: Pack) -> list[Issue]:
     issues: list[Issue] = []
-    pack = load_pack(pack_id)
     for kind, binding in pack.schemas.items():
         schema = binding.schema
         try:
@@ -114,12 +136,11 @@ def validate_pack_schemas(pack_id: str) -> list[Issue]:
     return issues
 
 
-def validate_pack_declarations(pack_id: str) -> list[Issue]:
+def validate_pack_declarations_for_pack(pack: Pack) -> list[Issue]:
     issues: list[Issue] = []
-    pack_path = available_builtin_packs()[pack_id]
-    manifest_path = pack_path / "pack.json"
+    pack_path = pack.path
+    manifest_path = pack.path / "pack.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    pack = load_pack(pack_id)
     own_kinds = set(pack.schemas)
 
     for schema_decl in manifest.get("schemas", []):
@@ -155,14 +176,32 @@ def validate_pack_declarations(pack_id: str) -> list[Issue]:
     return issues
 
 
-def validate_single_pack(pack_id: str) -> list[Issue]:
-    builtin = available_builtin_packs()
-    if pack_id not in builtin:
-        return [Issue("error", "pack.unknown", f"Unknown pack '{pack_id}'.")]
-    manifest_path = builtin[pack_id] / "pack.json"
+def validate_pack_object(pack: Pack) -> list[Issue]:
+    manifest_path = pack.path / "pack.json"
     issues = validate_pack_manifest(manifest_path)
-    issues.extend(validate_pack_schemas(pack_id))
-    issues.extend(validate_pack_declarations(pack_id))
+    issues.extend(validate_pack_schemas_for_pack(pack))
+    issues.extend(validate_pack_declarations_for_pack(pack))
+    return issues
+
+
+def validate_single_pack(
+    pack_id: str,
+    external_pack_paths: list[str | Path] | None = None,
+    base_path: Path | None = None,
+) -> list[Issue]:
+    try:
+        pack = load_pack(pack_id, external_pack_paths, base_path)
+    except ValueError:
+        return [Issue("error", "pack.unknown", f"Unknown pack '{pack_id}'.")]
+    issues = validate_pack_object(pack)
+    registry_ids = sorted(available_builtin_packs())
+    if pack_id not in registry_ids:
+        registry_ids.append(pack_id)
+    try:
+        registry = load_pack_registry(registry_ids, external_pack_paths, base_path)
+        issues.extend(validate_pack_registry_semantics(registry))
+    except ValueError as exc:
+        issues.append(Issue("error", "pack.kind.collision", str(exc)))
     return issues
 
 
@@ -207,20 +246,32 @@ def validate_pack_registry_semantics(registry: PackRegistry) -> list[Issue]:
 
 
 def validate_builtin_packs(pack_id: str | None = None) -> list[Issue]:
+    return validate_packs(pack_id)
+
+
+def validate_packs(
+    pack_id: str | None = None,
+    external_pack_paths: list[str | Path] | None = None,
+    base_path: Path | None = None,
+) -> list[Issue]:
     if pack_id:
-        return validate_single_pack(pack_id)
+        return validate_single_pack(pack_id, external_pack_paths, base_path)
 
     pack_ids = sorted(available_builtin_packs())
+    try:
+        external = available_external_packs(external_pack_paths, base_path)
+    except ValueError as exc:
+        return [Issue("error", "pack.path.invalid", str(exc))]
+    pack_ids.extend(sorted(external))
     issues: list[Issue] = []
     for candidate in pack_ids:
-        issues.extend(validate_single_pack(candidate))
+        issues.extend(validate_single_pack(candidate, external_pack_paths, base_path))
 
     try:
-        registry = load_pack_registry(pack_ids)
+        registry = load_pack_registry(pack_ids, external_pack_paths, base_path)
     except ValueError as exc:
         issues.append(Issue("error", "pack.kind.collision", str(exc)))
         return issues
 
     issues.extend(validate_pack_registry_semantics(registry))
     return issues
-

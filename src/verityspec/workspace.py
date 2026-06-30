@@ -55,6 +55,13 @@ class Workspace:
             return DEFAULT_PACKS
         return [pack for pack in packs if isinstance(pack, str)]
 
+    @property
+    def pack_paths(self) -> list[str]:
+        paths = self.config.get("packPaths", [])
+        if not isinstance(paths, list):
+            return []
+        return [path for path in paths if isinstance(path, str)]
+
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))

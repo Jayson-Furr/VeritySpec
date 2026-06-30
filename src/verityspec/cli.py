@@ -23,7 +23,7 @@ from .graph import build_graph, graph_to_text
 from .importers.prismspec import import_prismspec
 from .issues import dedupe_issues, has_errors, issue_count, print_issues, should_fail
 from .migrations import migrate_workspace, migration_report_to_text
-from .pack_validation import list_builtin_pack_summaries, validate_builtin_packs
+from .pack_validation import list_pack_summaries, validate_packs
 from .packs import load_pack_registry
 from .readiness import evaluate_readiness
 from .validation import lint_workspace, validate_workspace
@@ -37,9 +37,11 @@ EXIT_USAGE_ERROR = 2
 EXIT_INTERNAL_ERROR = 3
 
 
-def load_context(path: str):
+def load_context(path: str, pack_paths: list[str] | None = None):
     workspace = load_workspace(path)
-    registry = load_pack_registry(workspace.pack_ids)
+    cli_pack_paths = [str(Path(pack_path).resolve()) for pack_path in pack_paths or []]
+    external_paths = workspace.pack_paths + cli_pack_paths
+    registry = load_pack_registry(workspace.pack_ids, external_paths, workspace.base_path)
     return workspace, registry
 
 
@@ -117,21 +119,21 @@ def cmd_init(args: argparse.Namespace) -> int:
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
-    workspace, registry = load_context(args.workspace)
+    workspace, registry = load_context(args.workspace, args.pack_path)
     issues = validate_workspace(workspace, registry, strict=args.strict)
     print_issue_result("Validation", "validate", issues, args.format)
     return issue_exit_with_fail_on(issues, args.fail_on)
 
 
 def cmd_lint(args: argparse.Namespace) -> int:
-    workspace, registry = load_context(args.workspace)
+    workspace, registry = load_context(args.workspace, args.pack_path)
     issues = lint_workspace(workspace, registry, strict=args.strict)
     print_issue_result("Lint", "lint", issues, args.format)
     return issue_exit_with_fail_on(issues, args.fail_on)
 
 
 def cmd_readiness(args: argparse.Namespace) -> int:
-    workspace, registry = load_context(args.workspace)
+    workspace, registry = load_context(args.workspace, args.pack_path)
     validation_issues = validate_workspace(workspace, registry, strict=args.strict)
     readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
     issues = validation_issues + readiness_issues
@@ -224,7 +226,7 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
-    workspace, registry = load_context(args.workspace)
+    workspace, registry = load_context(args.workspace, args.pack_path)
     if args.artifact == "validation-report":
         issues = validate_workspace(workspace, registry, strict=args.strict)
         report = generate_validation_report(workspace, registry, issues)
@@ -268,7 +270,7 @@ def cmd_import(args: argparse.Namespace) -> int:
 
 
 def cmd_doctor(args: argparse.Namespace) -> int:
-    workspace, registry = load_context(args.workspace)
+    workspace, registry = load_context(args.workspace, args.pack_path)
     validation_issues = validate_workspace(workspace, registry, strict=args.strict)
     lint_issues = lint_workspace(workspace, registry, strict=args.strict)
     readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
@@ -333,7 +335,7 @@ def cmd_explain(args: argparse.Namespace) -> int:
 
 
 def cmd_pack_list(args: argparse.Namespace) -> int:
-    packs = list_builtin_pack_summaries()
+    packs = list_pack_summaries(args.path)
     if args.format == "json":
         print(json.dumps({"packs": packs}, indent=2))
     else:
@@ -344,7 +346,7 @@ def cmd_pack_list(args: argparse.Namespace) -> int:
 
 
 def cmd_pack_validate(args: argparse.Namespace) -> int:
-    issues = validate_builtin_packs(args.pack_id)
+    issues = validate_packs(args.pack_id, args.path)
     print_issue_result("Pack validation", "pack.validate", issues, args.format)
     return issue_exit(issues)
 
@@ -353,6 +355,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="verity", description="VeritySpec product-contract CLI.")
     parser.add_argument("--version", action="version", version=f"verity {__version__}")
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    def add_pack_path_argument(command_parser: argparse.ArgumentParser) -> None:
+        command_parser.add_argument(
+            "--pack-path",
+            action="append",
+            default=[],
+            help="Additional local pack directory or pack.json path.",
+        )
 
     init_parser = subparsers.add_parser("init", help="Create a VeritySpec workspace.")
     init_parser.add_argument("path")
@@ -366,6 +376,7 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--strict", action="store_true")
     validate_parser.add_argument("--format", choices=["text", "json"], default="text")
     validate_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    add_pack_path_argument(validate_parser)
     validate_parser.set_defaults(func=cmd_validate)
 
     lint_parser = subparsers.add_parser("lint", help="Lint a workspace.")
@@ -373,6 +384,7 @@ def build_parser() -> argparse.ArgumentParser:
     lint_parser.add_argument("--strict", action="store_true")
     lint_parser.add_argument("--format", choices=["text", "json"], default="text")
     lint_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    add_pack_path_argument(lint_parser)
     lint_parser.set_defaults(func=cmd_lint)
 
     readiness_parser = subparsers.add_parser("readiness", help="Evaluate release readiness gates.")
@@ -380,6 +392,7 @@ def build_parser() -> argparse.ArgumentParser:
     readiness_parser.add_argument("--strict", action="store_true")
     readiness_parser.add_argument("--format", choices=["text", "json"], default="text")
     readiness_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    add_pack_path_argument(readiness_parser)
     readiness_parser.set_defaults(func=cmd_readiness)
 
     doctor_parser = subparsers.add_parser("doctor", help="Run diagnostics for a workspace.")
@@ -387,6 +400,7 @@ def build_parser() -> argparse.ArgumentParser:
     doctor_parser.add_argument("--strict", action="store_true")
     doctor_parser.add_argument("--format", choices=["text", "json"], default="text")
     doctor_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    add_pack_path_argument(doctor_parser)
     doctor_parser.set_defaults(func=cmd_doctor)
 
     explain_parser = subparsers.add_parser("explain", help="Explain a validation issue code.")
@@ -432,6 +446,7 @@ def build_parser() -> argparse.ArgumentParser:
     generate_parser.add_argument("workspace")
     generate_parser.add_argument("--out")
     generate_parser.add_argument("--strict", action="store_true")
+    add_pack_path_argument(generate_parser)
     generate_parser.set_defaults(func=cmd_generate)
 
     import_parser = subparsers.add_parser("import", help="Import a predecessor specification.")
@@ -445,11 +460,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     pack_list_parser = pack_subparsers.add_parser("list", help="List built-in packs.")
     pack_list_parser.add_argument("--format", choices=["text", "json"], default="text")
+    pack_list_parser.add_argument("--path", action="append", default=[], help="Local pack directory or pack.json path.")
     pack_list_parser.set_defaults(func=cmd_pack_list)
 
     pack_validate_parser = pack_subparsers.add_parser("validate", help="Validate built-in packs.")
     pack_validate_parser.add_argument("pack_id", nargs="?")
     pack_validate_parser.add_argument("--format", choices=["text", "json"], default="text")
+    pack_validate_parser.add_argument("--path", action="append", default=[], help="Local pack directory or pack.json path.")
     pack_validate_parser.set_defaults(func=cmd_pack_validate)
 
     return parser

@@ -15,6 +15,16 @@ verity generate validation-report examples/basic --out build/validation-report.j
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
 
+For workspaces with local external packs:
+
+```bash
+verity pack validate verity.pack.features --path tests/fixtures/custom_pack
+verity validate tests/fixtures/custom_pack_workspace
+verity lint tests/fixtures/custom_pack_workspace --strict
+verity readiness tests/fixtures/custom_pack_workspace --strict
+verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
+```
+
 For migration coverage, smoke test any committed PrismSpec fixtures:
 
 ```bash

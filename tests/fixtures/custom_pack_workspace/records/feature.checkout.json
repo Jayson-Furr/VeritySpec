@@ -1,0 +1,10 @@
+{
+  "id": "feature.checkout",
+  "kind": "feature.flag",
+  "name": "Checkout Feature",
+  "description": "Controls access to the checkout flow.",
+  "status": "ready",
+  "owner": "growth",
+  "key": "checkout.enabled",
+  "enabled": true
+}

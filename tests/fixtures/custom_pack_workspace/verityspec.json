@@ -1,0 +1,7 @@
+{
+  "workspace": "fixtures.custom_pack_workspace",
+  "specVersion": "v0.1.0",
+  "packs": ["verity.core", "verity.pack.features"],
+  "packPaths": ["../custom_pack"],
+  "records": ["records/*.json"]
+}

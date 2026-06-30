@@ -51,3 +51,32 @@ verity pack validate
 verity pack validate verity.pack.api --format json
 ```
 
+## External Packs
+
+Workspaces can load local packs with `packPaths`:
+
+```json
+{
+  "packs": ["verity.core", "verity.pack.features"],
+  "packPaths": ["../custom_pack"]
+}
+```
+
+`packPaths` entries may point to a pack directory or directly to `pack.json`.
+Relative paths in workspace config resolve from the workspace root.
+
+CLI flags can also provide local packs. CLI paths resolve from the current
+working directory:
+
+```bash
+verity validate ./workspace --pack-path ./packs/features
+verity readiness ./workspace --strict --pack-path ./packs/features
+verity generate schema-bundle ./workspace --pack-path ./packs/features --out build/schema-bundle.json
+verity pack list --path ./packs/features
+verity pack validate verity.pack.features --path ./packs/features
+```
+
+External packs use the same manifest schema, strict JSON Schema checks, shared
+record envelope requirements, readiness gate checks, reference rule checks, and
+registry collision checks as built-in packs. External pack IDs cannot shadow
+built-in pack IDs.
