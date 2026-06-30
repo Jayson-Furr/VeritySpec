@@ -22,7 +22,7 @@ repository-level summary.
 
 ## v0.2.0
 
-The active milestone is `v0.2.0`.
+The `v0.2.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
@@ -45,12 +45,30 @@ from downstream repositories:
 - Run final package build, wheel install, examples, importer, generator, and docs checks.
 - Tag and publish the v0.2.0 release when the scope is complete.
 
+## v0.3.0
+
+The active milestone is `v0.3.0`.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 13 | In progress | OpenAPI path-parameter extraction and generator precision |
+
+## Sprint 13 Priorities
+
+Sprint 13 should improve generated contract accuracy:
+
+- Parse path parameters from API endpoint paths such as `/users/{userId}`.
+- Emit OpenAPI path parameters with stable names, `required: true`, and schema metadata.
+- Avoid duplicate parameters when endpoint records already define explicit parameters.
+- Add or update fixtures and golden expectations for generator output.
+- Keep README, changelog, roadmap, release notes, version references, and issue or milestone state aligned.
+- Update generator documentation and roadmap notes.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
 is complete:
 
-- OpenAPI path-parameter extraction.
 - More complete Python nested-object model generation.
 - Pack authoring scaffolds.
 - Migration chains beyond `v0.1.0`.

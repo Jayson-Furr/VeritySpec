@@ -158,6 +158,9 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 
 ## Workspace Shape
 
+Package releases and workspace format versions are intentionally separate.
+VeritySpec package `v0.2.0` currently supports workspace format `v0.1.0`.
+
 ```json
 {
   "workspace": "examples.basic",

@@ -25,8 +25,9 @@ twine check dist/*
 ## Tag
 
 ```bash
-git tag -a v0.2.0 -m "VeritySpec v0.2.0"
-git push origin v0.2.0
+VERSION=v0.3.0
+git tag -a "$VERSION" -m "VeritySpec $VERSION"
+git push origin "$VERSION"
 ```
 
 Pushing a `v*` tag runs the release workflow, builds the distributions, checks

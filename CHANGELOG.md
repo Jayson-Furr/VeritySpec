@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Clarified the README distinction between package release versions and workspace format versions.
+- Added AI-agent bookkeeping rules to keep README, changelog, roadmap, release notes, install instructions, and issue or milestone state aligned.
+- Opened the v0.3.0 roadmap line with Sprint 13 focused on OpenAPI path parameters and generator precision.
+
 ## 0.2.0
 
 - Added Sprint 6 public package polish: README badges, install guidance, PyPI setup docs, and GitHub `pypi` environment preparation.

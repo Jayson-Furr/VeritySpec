@@ -43,6 +43,8 @@ fixtures.
 
 - Keep the repository releasable after every sprint.
 - Update tests, examples, docs, CI, and roadmap entries with behavior changes.
+- Keep `README.md` aligned with `CHANGELOG.md`, `ROADMAP.md`, release notes,
+  install instructions, version references, and other public bookkeeping.
 - After each commit, refresh agent context by re-reading this file and checking
   the latest repository state before continuing work.
 - At the entry point, determine whether commands should run under `zsh`,
@@ -207,6 +209,10 @@ Update the closest documentation file with behavior changes:
 - Workspace format: `docs/workspace-format.md`
 - Releases: `CHANGELOG.md`, `docs/release-checklist.md`, release notes docs
 - AI-agent guidance: `AGENTS.md`
+
+For public-facing changes, also review `README.md` in the same change. The
+README should not lag the changelog, roadmap, release status, install tags,
+package version, supported workspace format, or active sprint direction.
 
 ## Release Rules
 
