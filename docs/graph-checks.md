@@ -14,6 +14,10 @@ Current graph and reference checks:
 - `schema.unused`: schema record has no incoming references.
 - `graph.cycle`: directed reference cycle detected.
 
+Reference issue locations include the nested field path when VeritySpec can
+identify it, such as `records/api.json:responses[0].schema` or
+`records/product.json:references[0].target`.
+
 Run graph output:
 
 ```bash

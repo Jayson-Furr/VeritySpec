@@ -61,14 +61,13 @@ def extract_reference_edges(record: Record) -> list[ReferenceEdge]:
                 child_path = f"{path}.{key}" if path else key
                 if key in REFERENCE_FIELD_NAMES and key != "schema":
                     add(child, key, child_path)
-                elif key == "schema" and path.endswith("responses[]"):
+                elif key == "schema" and path.rsplit(".", 1)[-1].startswith("responses["):
                     add(child, "responseSchema", child_path)
                 elif key != "jsonSchema":
                     visit(child, child_path)
         elif isinstance(value, list):
-            for child in value:
-                visit(child, f"{path}[]")
+            for index, child in enumerate(value):
+                visit(child, f"{path}[{index}]")
 
     visit(record.data, "")
     return edges
-

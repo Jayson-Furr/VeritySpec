@@ -33,6 +33,32 @@ class Issue:
         return f"{' '.join(parts)}: {self.message}"
 
 
+def format_issue_path(path: Iterable[object] | str | None) -> str:
+    if path is None:
+        return ""
+    if isinstance(path, str):
+        return path
+
+    result = ""
+    for part in path:
+        if isinstance(part, int):
+            result = f"{result}[{part}]"
+        elif result:
+            result = f"{result}.{part}"
+        else:
+            result = str(part)
+    return result
+
+
+def location_at(base_location: str | None, path: Iterable[object] | str | None) -> str | None:
+    formatted = format_issue_path(path)
+    if not formatted:
+        return base_location
+    if not base_location:
+        return formatted
+    return f"{base_location}:{formatted}"
+
+
 def issue_count(issues: Iterable[Issue], severity: str) -> int:
     return sum(1 for issue in issues if issue.severity == severity)
 

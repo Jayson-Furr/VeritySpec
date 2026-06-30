@@ -27,7 +27,8 @@ Validation reports include:
 - Workspace path
 - Loaded pack versions
 - Known record kinds
-- Issue summary and full issue list
+- Issue summary and full issue list, including nested issue locations when
+  available
 
 Security reports include:
 

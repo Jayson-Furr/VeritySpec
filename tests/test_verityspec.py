@@ -82,7 +82,48 @@ class VeritySpecTests(unittest.TestCase):
             registry = load_pack_registry(workspace.pack_ids)
             issues = validate_workspace(workspace, registry)
 
-        self.assertTrue(any(issue.code == "reference.missing" for issue in issues))
+        matching = [issue for issue in issues if issue.code == "reference.missing"]
+        self.assertEqual(1, len(matching))
+        self.assertTrue(matching[0].location.endswith("records/product.json:references[0].target"))
+
+    def test_schema_validation_location_includes_nested_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "schema-location",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.pack.api"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "endpoint.json").write_text(
+                json.dumps(
+                    {
+                        "id": "api.users.list",
+                        "kind": "api.endpoint",
+                        "name": "List Users",
+                        "status": "ready",
+                        "owner": "platform",
+                        "method": "GET",
+                        "path": "/users",
+                        "responses": [{"statusCode": "OK", "description": "OK"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = validate_workspace(workspace, registry)
+
+        matching = [issue for issue in issues if issue.code == "schema.validation"]
+        self.assertEqual(1, len(matching))
+        self.assertTrue(matching[0].location.endswith("records/endpoint.json:responses[0].statusCode"))
 
     def test_readiness_catches_missing_release_fields(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -119,7 +160,9 @@ class VeritySpecTests(unittest.TestCase):
             registry = load_pack_registry(workspace.pack_ids)
             issues = evaluate_readiness(workspace, registry, strict=True)
 
-        self.assertTrue(any(issue.code == "readiness.required" for issue in issues))
+        matching = [issue for issue in issues if issue.code == "readiness.required"]
+        self.assertEqual(1, len(matching))
+        self.assertTrue(matching[0].location.endswith("records/endpoint.json:summary"))
 
     def test_readiness_fails_critical_unverified_security_control(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

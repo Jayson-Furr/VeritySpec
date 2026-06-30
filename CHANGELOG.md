@@ -7,6 +7,7 @@
   `security.control` records emit `security.control.critical_unverified`.
 - Added a fixture compatibility matrix across supported workspace spec
   versions.
+- Improved nested issue locations for schema, readiness, and reference errors.
 
 ## 0.5.0
 

@@ -144,6 +144,9 @@ class VerityCliTests(unittest.TestCase):
         self.assertFalse(payload["passed"])
         self.assertEqual(1, payload["summary"]["errors"])
         self.assertEqual("reference.missing", payload["issues"][0]["code"])
+        self.assertTrue(
+            payload["issues"][0]["location"].endswith("records/product.json:references[0].target")
+        )
 
     def test_fail_on_warning_exit_code(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
