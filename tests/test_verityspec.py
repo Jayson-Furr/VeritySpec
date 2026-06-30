@@ -24,6 +24,7 @@ from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
 from verityspec.issues import Issue, escape_github_property, parse_issue_location
 from verityspec.pack_validation import validate_builtin_packs
 from verityspec.packs import load_pack_registry
+from verityspec.profiles import PROFILES, profile_issues
 from verityspec.readiness import evaluate_readiness
 from verityspec.validation import validate_workspace
 from verityspec.workspace import load_workspace
@@ -168,6 +169,14 @@ class VeritySpecTests(unittest.TestCase):
         issues = validate_workspace(workspace, registry, strict=True)
 
         self.assertEqual([], issues)
+
+    def test_regulated_profile_reports_missing_governance_packs(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "basic")
+
+        issues = profile_issues(workspace, PROFILES["regulated"])
+
+        self.assertEqual(["profile.required_pack"] * 3, [issue.code for issue in issues])
+        self.assertTrue(all(issue.severity == "error" for issue in issues))
 
     def test_missing_reference_is_an_error(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

@@ -66,11 +66,17 @@ Run readiness checks:
 ```bash
 verity readiness examples/basic
 verity readiness examples/basic --strict
+verity readiness examples/basic --profile release
 verity readiness examples/basic --strict --format json
 ```
 
 Readiness is intentionally separate from schema validation. A record can be
 structurally valid but not ready for release.
+
+Product-contract profiles can set the effective strictness for readiness. For
+example, `--profile release`, `--profile strict`, `--profile regulated`, and
+`--profile public-api` run readiness with strict enforcement, while
+`--profile internal-tool` leaves warnings advisory.
 
 Readiness issue locations point at the relevant field when possible, such as
 `records/api.json:summary` for a missing required field or

@@ -95,6 +95,95 @@ class VerityCliTests(unittest.TestCase):
         self.assertTrue(payload["passed"])
         self.assertEqual("readiness", payload["command"])
 
+    def test_validate_release_profile_json_output(self) -> None:
+        result = verity_command("validate", "examples/basic", "--profile", "release", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("release", payload["profile"]["id"])
+        self.assertTrue(payload["profile"]["effectiveStrict"])
+        self.assertEqual("error", payload["profile"]["effectiveFailOn"])
+
+    def test_regulated_profile_requires_governance_packs(self) -> None:
+        result = verity_command("validate", "examples/basic", "--profile", "regulated", "--format", "json")
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        issue_codes = [issue["code"] for issue in payload["issues"]]
+        self.assertEqual("regulated", payload["profile"]["id"])
+        self.assertEqual(3, issue_codes.count("profile.required_pack"))
+        for pack_id in [
+            "verity.pack.security",
+            "verity.pack.accessibility",
+            "verity.pack.compliance",
+        ]:
+            with self.subTest(pack_id=pack_id):
+                self.assertIn(pack_id, canonical_json(payload["issues"]))
+
+    def test_public_api_profile_requires_api_scope(self) -> None:
+        result = verity_command("validate", "examples/cli-tool", "--profile", "public-api", "--format", "json")
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        issue_codes = {issue["code"] for issue in payload["issues"]}
+        self.assertEqual("public-api", payload["profile"]["id"])
+        self.assertIn("profile.required_pack", issue_codes)
+        self.assertIn("profile.required_record_kind", issue_codes)
+
+    def test_internal_tool_profile_keeps_warnings_advisory(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "internal-tool",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.internal_tool",
+                        "kind": "product",
+                        "name": "Internal Tool",
+                        "description": "A small internal tool contract.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "schema.json").write_text(
+                json.dumps(
+                    {
+                        "id": "schema.unused",
+                        "kind": "schema.object",
+                        "name": "Unused Schema",
+                        "description": "Unused by design.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "jsonSchema": {"type": "object", "properties": {}},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command("validate", str(root), "--profile", "internal-tool", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("internal-tool", payload["profile"]["id"])
+        self.assertFalse(payload["profile"]["effectiveStrict"])
+        self.assertEqual(1, payload["summary"]["warnings"])
+
     def test_doctor_json_output(self) -> None:
         result = verity_command("doctor", "examples/basic", "--format", "json")
 
@@ -103,6 +192,15 @@ class VerityCliTests(unittest.TestCase):
         self.assertTrue(payload["passed"])
         self.assertEqual("doctor", payload["command"])
         self.assertEqual(8, payload["records"])
+
+    def test_doctor_profile_json_output(self) -> None:
+        result = verity_command("doctor", "examples/basic", "--profile", "public-api", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("doctor", payload["command"])
+        self.assertEqual("public-api", payload["profile"]["id"])
 
     def test_doctor_report_out_writes_json_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -175,6 +273,14 @@ class VerityCliTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual("security.control.evidence_stale", payload["code"])
         self.assertEqual("Security verification evidence stale", payload["title"])
+
+    def test_explain_profile_issue_code_json_output(self) -> None:
+        result = verity_command("explain", "profile.required_pack", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("profile.required_pack", payload["code"])
+        self.assertEqual("error", payload["severity"])
 
     def test_explain_accessibility_issue_code_json_output(self) -> None:
         result = verity_command(
