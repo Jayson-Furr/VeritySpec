@@ -70,6 +70,19 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("reference.missing", payload["code"])
         self.assertEqual("Missing reference target", payload["title"])
 
+    def test_explain_security_issue_code_json_output(self) -> None:
+        result = verity_command(
+            "explain",
+            "security.control.critical_unverified",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("security.control.critical_unverified", payload["code"])
+        self.assertEqual("Critical security control not verified", payload["title"])
+
     def test_graph_focus_json_output(self) -> None:
         result = verity_command("graph", "examples/basic", "--focus", "api.users.create", "--format", "json")
 

@@ -110,6 +110,12 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A record does not satisfy the JSON Schema for its kind.",
         "resolution": "Update the record to match its pack schema.",
     },
+    "security.control.critical_unverified": {
+        "title": "Critical security control not verified",
+        "severity": "warning",
+        "description": "A critical security control is release-relevant but is not marked as verified.",
+        "resolution": "Set coverage to verified and provide a verification method other than not-verified with evidence.",
+    },
     "workspace.packPaths.invalid": {
         "title": "Invalid workspace pack paths",
         "severity": "error",

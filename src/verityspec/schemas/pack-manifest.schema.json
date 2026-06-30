@@ -4,6 +4,29 @@
   "title": "VeritySpec Pack Manifest",
   "type": "object",
   "additionalProperties": false,
+  "$defs": {
+    "fieldCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field"],
+      "anyOf": [
+        {"required": ["equals"]},
+        {"required": ["notEquals"]},
+        {"required": ["present"]}
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "equals": {},
+        "notEquals": {},
+        "present": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
   "required": ["id", "version", "name", "description", "schemas", "readinessGates", "generators"],
   "properties": {
     "id": {
@@ -68,6 +91,38 @@
               "type": "integer",
               "minimum": 0
             }
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "code", "when", "must", "message"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "when": {
+                  "$ref": "#/$defs/fieldCondition"
+                },
+                "must": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/fieldCondition"
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
           }
         }
       }
@@ -104,4 +159,3 @@
     }
   }
 }
-

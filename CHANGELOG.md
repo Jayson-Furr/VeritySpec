@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added conditional readiness rules to pack manifests.
+- Added security readiness hardening so critical unverified
+  `security.control` records emit `security.control.critical_unverified`.
 
 ## 0.5.0
 

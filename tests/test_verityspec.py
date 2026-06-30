@@ -121,6 +121,77 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertTrue(any(issue.code == "readiness.required" for issue in issues))
 
+    def test_readiness_fails_critical_unverified_security_control(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "critical-security",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.security"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.critical_security",
+                        "kind": "product",
+                        "name": "Critical Security Product",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [{"type": "securedBy", "target": "security.control.mfa"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "security.json").write_text(
+                json.dumps(
+                    {
+                        "id": "security.control.mfa",
+                        "kind": "security.control",
+                        "name": "MFA Enforcement",
+                        "status": "ready",
+                        "owner": "platform-security",
+                        "description": "Require MFA for privileged access.",
+                        "category": "authentication",
+                        "controlType": "preventive",
+                        "riskLevel": "critical",
+                        "objective": "Prevent account takeover for privileged users.",
+                        "coverage": "implemented",
+                        "verification": {
+                            "method": "not-verified",
+                            "evidence": "MFA implementation exists but has not been verified.",
+                        },
+                        "references": [
+                            {
+                                "type": "appliesTo",
+                                "target": "product.critical_security",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        matching = [
+            issue
+            for issue in issues
+            if issue.code == "security.control.critical_unverified"
+        ]
+        self.assertEqual(1, len(matching))
+        self.assertEqual("error", matching[0].severity)
+        self.assertEqual("security.control.mfa", matching[0].record_id)
+
     def test_broken_semantic_fixture_reports_graph_and_reference_issues(self) -> None:
         workspace = load_workspace(ROOT / "tests" / "fixtures" / "broken_semantics")
         registry = load_pack_registry(workspace.pack_ids)

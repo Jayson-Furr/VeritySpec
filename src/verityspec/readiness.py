@@ -8,6 +8,8 @@ from .workspace import Workspace
 
 
 def is_missing(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip() == ""
     return value is None or value == "" or value == [] or value == {}
 
 
@@ -18,6 +20,46 @@ def get_field(data: dict[str, Any], path: str) -> Any:
             return None
         current = current.get(part)
     return current
+
+
+def condition_matches(data: dict[str, Any], condition: dict[str, Any]) -> bool:
+    field = condition.get("field")
+    if not isinstance(field, str):
+        return False
+
+    value = get_field(data, field)
+    matched = True
+    evaluated = False
+
+    if "equals" in condition:
+        matched = matched and value == condition["equals"]
+        evaluated = True
+    if "notEquals" in condition:
+        matched = matched and value != condition["notEquals"]
+        evaluated = True
+    if "present" in condition:
+        should_be_present = bool(condition["present"])
+        presence_matches = not is_missing(value) if should_be_present else is_missing(value)
+        matched = matched and presence_matches
+        evaluated = True
+
+    return evaluated and matched
+
+
+def evaluate_rule(record_data: dict[str, Any], rule: dict[str, Any]) -> bool:
+    when = rule.get("when")
+    if isinstance(when, dict) and not condition_matches(record_data, when):
+        return True
+
+    requirements = rule.get("must", [])
+    if not isinstance(requirements, list):
+        return True
+
+    return all(
+        condition_matches(record_data, requirement)
+        for requirement in requirements
+        if isinstance(requirement, dict)
+    )
 
 
 def evaluate_readiness(
@@ -32,6 +74,7 @@ def evaluate_readiness(
             continue
         required = [field for field in gate.get("required", []) if isinstance(field, str)]
         min_items = gate.get("minItems", {})
+        rules = gate.get("rules", [])
         gate_id = gate.get("id", "readiness.gate")
 
         for record in workspace.records:
@@ -74,5 +117,23 @@ def evaluate_readiness(
                             )
                         )
 
-    return issues
+            if isinstance(rules, list):
+                for rule in rules:
+                    if not isinstance(rule, dict) or evaluate_rule(record.data, rule):
+                        continue
+                    issues.append(
+                        Issue(
+                            severity,
+                            str(rule.get("code", "readiness.rule")),
+                            str(
+                                rule.get(
+                                    "message",
+                                    f"Readiness gate {gate_id} rule failed.",
+                                )
+                            ),
+                            record.location,
+                            record.id,
+                        )
+                    )
 
+    return issues
