@@ -56,7 +56,9 @@ jobs:
           verity generate python-models examples/basic --out build/models.py
           verity generate schema-bundle examples/basic --out build/schema-bundle.json
           verity generate cli-reference examples/basic --out build/cli-reference.md
+          verity generate validation-report examples/basic --out build/validation-report.json
           python -m json.tool build/openapi.json >/dev/null
           python -m json.tool build/asyncapi.json >/dev/null
           python -m json.tool build/schema-bundle.json >/dev/null
+          python -m json.tool build/validation-report.json >/dev/null
           python -m py_compile build/models.py

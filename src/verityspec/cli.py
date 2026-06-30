@@ -15,6 +15,7 @@ from .generators import (
     generate_python_models,
     generate_schema_bundle,
     generate_typescript,
+    generate_validation_report,
     write_generated,
 )
 from .graph import build_graph, graph_to_text
@@ -153,6 +154,16 @@ def cmd_diff(args: argparse.Namespace) -> int:
 
 def cmd_generate(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace)
+    if args.artifact == "validation-report":
+        issues = validate_workspace(workspace, registry, strict=args.strict)
+        report = generate_validation_report(workspace, registry, issues)
+        text = write_generated(report, args.out)
+        if not args.out:
+            print(text, end="" if text.endswith("\n") else "\n")
+        else:
+            print(f"Generated validation-report: {args.out}")
+        return issue_exit(issues)
+
     issues = validate_workspace(workspace, registry)
     if has_errors(issues):
         print_issues(issues, sys.stdout)
@@ -236,10 +247,12 @@ def build_parser() -> argparse.ArgumentParser:
             "python-models",
             "schema-bundle",
             "cli-reference",
+            "validation-report",
         ],
     )
     generate_parser.add_argument("workspace")
     generate_parser.add_argument("--out")
+    generate_parser.add_argument("--strict", action="store_true")
     generate_parser.set_defaults(func=cmd_generate)
 
     import_parser = subparsers.add_parser("import", help="Import a predecessor specification.")

@@ -1,0 +1,16 @@
+{
+  "id": "cli.orphan",
+  "kind": "cli.command",
+  "name": "Orphan Command",
+  "description": "A command disconnected from the product graph.",
+  "status": "ready",
+  "owner": "platform",
+  "command": "broken orphan",
+  "exitCodes": [
+    {
+      "code": 0,
+      "description": "Done."
+    }
+  ]
+}
+

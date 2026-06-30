@@ -25,6 +25,27 @@
       "required": ["owner", "name", "jsonSchema"]
     }
   ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "exposes",
+      "targetKind": "api.endpoint"
+    },
+    {
+      "sourceKind": "product",
+      "relationship": "emits",
+      "targetKind": "event.message"
+    },
+    {
+      "sourceKind": "product",
+      "relationship": "ships",
+      "targetKind": "cli.command"
+    },
+    {
+      "sourceKind": "schema.object",
+      "relationship": "contains",
+      "targetKind": "schema.object"
+    }
+  ],
   "generators": ["schema-bundle"]
 }
-

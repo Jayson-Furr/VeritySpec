@@ -18,7 +18,8 @@ This initial implementation provides:
 - Built-in packs for core product records, APIs, CLIs, and events.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
-  deprecated references, and removed references.
+  disallowed relationships, deprecated references, removed references, orphan
+  records, unused schemas, and reference cycles.
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, and CLI reference docs.
@@ -42,6 +43,7 @@ verity generate asyncapi examples/basic --out build/asyncapi.json
 verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate cli-reference examples/basic --out build/cli-reference.md
+verity generate validation-report examples/basic --out build/validation-report.json
 ```
 
 Without installation, run the package directly:
@@ -76,6 +78,26 @@ verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity generate openapi examples/basic --out build/openapi.json
+verity generate validation-report examples/basic --out build/validation-report.json
+```
+
+## Semantic Validation
+
+VeritySpec validates more than JSON shape. Built-in packs declare allowed
+reference relationships between record kinds, and validation checks whether the
+workspace graph is coherent. Current semantic checks include:
+
+- Missing references
+- Disallowed source/relationship/target-kind combinations
+- References to deprecated or removed records
+- Orphan records
+- Unused schemas
+- Reference cycles
+
+Validation reports can be generated as JSON:
+
+```bash
+verity generate validation-report examples/basic --out build/validation-report.json
 ```
 
 Run tests:

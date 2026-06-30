@@ -1,0 +1,26 @@
+{
+  "id": "api.bad",
+  "kind": "api.endpoint",
+  "name": "Bad Endpoint",
+  "description": "Endpoint with missing, deprecated, and removed references.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "POST",
+  "path": "/bad",
+  "summary": "Bad endpoint.",
+  "requestSchema": "schema.missing",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Deprecated response.",
+      "schema": "schema.deprecated"
+    }
+  ],
+  "references": [
+    {
+      "type": "emits",
+      "target": "event.removed_payload"
+    }
+  ]
+}
+

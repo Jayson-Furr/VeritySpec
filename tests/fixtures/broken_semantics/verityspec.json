@@ -1,0 +1,14 @@
+{
+  "workspace": "tests.broken_semantics",
+  "specVersion": "v0.1.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.api",
+    "verity.pack.cli",
+    "verity.pack.events"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}
+

@@ -19,6 +19,12 @@
       }
     }
   ],
+  "referenceRules": [
+    {
+      "sourceKind": "cli.command",
+      "relationship": "outputSchema",
+      "targetKind": "schema.object"
+    }
+  ],
   "generators": ["cli-reference"]
 }
-

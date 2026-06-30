@@ -1,0 +1,14 @@
+{
+  "id": "schema.unused",
+  "kind": "schema.object",
+  "name": "Unused Schema",
+  "description": "Schema that is not referenced by any record.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
+

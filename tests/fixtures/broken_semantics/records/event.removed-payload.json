@@ -1,0 +1,11 @@
+{
+  "id": "event.removed_payload",
+  "kind": "event.message",
+  "name": "Removed Payload Event",
+  "description": "A removed event referenced by an active endpoint.",
+  "status": "removed",
+  "owner": "platform",
+  "topic": "broken.removed",
+  "payloadSchema": "schema.removed"
+}
+

@@ -1,0 +1,14 @@
+{
+  "id": "schema.deprecated",
+  "kind": "schema.object",
+  "name": "Deprecated Schema",
+  "description": "Deprecated schema referenced by an active endpoint.",
+  "status": "deprecated",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
+

@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from .issues import Issue, issue_count
 from .packs import PackRegistry
 from .workspace import Record, Workspace
 
@@ -278,6 +279,28 @@ def generate_schema_bundle(registry: PackRegistry) -> dict:
     }
 
 
+def generate_validation_report(
+    workspace: Workspace, registry: PackRegistry, issues: list[Issue]
+) -> dict:
+    errors = issue_count(issues, "error")
+    warnings = issue_count(issues, "warning")
+    return {
+        "type": "validation_report",
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "knownKinds": registry.known_kinds,
+        "recordCount": len(workspace.records),
+        "passed": errors == 0,
+        "summary": {
+            "errors": errors,
+            "warnings": warnings,
+            "issues": errors + warnings,
+        },
+        "issues": [issue.to_dict() for issue in issues],
+    }
+
+
 def generate_cli_reference(workspace: Workspace) -> str:
     lines = ["# CLI Reference", ""]
     commands = [record for record in workspace.records if record.kind == "cli.command"]
@@ -303,4 +326,3 @@ def generate_cli_reference(workspace: Workspace) -> str:
                 lines.append(f"| {exit_code['code']} | {exit_code['description']} |")
             lines.append("")
     return "\n".join(lines)
-

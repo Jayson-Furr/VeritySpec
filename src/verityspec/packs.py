@@ -18,6 +18,21 @@ class SchemaBinding:
 
 
 @dataclass(frozen=True)
+class ReferenceRule:
+    source_kind: str
+    relationship: str
+    target_kind: str
+    pack_id: str
+
+    def matches(self, source_kind: str, relationship: str, target_kind: str) -> bool:
+        return (
+            self.source_kind == source_kind
+            and self.relationship == relationship
+            and self.target_kind == target_kind
+        )
+
+
+@dataclass(frozen=True)
 class Pack:
     id: str
     version: str
@@ -26,15 +41,23 @@ class Pack:
     schemas: dict[str, SchemaBinding]
     readiness_gates: list[dict[str, Any]]
     generators: list[str]
+    reference_rules: list[ReferenceRule]
 
 
 @dataclass(frozen=True)
 class PackRegistry:
     packs: dict[str, Pack]
     schemas: dict[str, SchemaBinding]
+    reference_rules: list[ReferenceRule]
 
     def schema_for_kind(self, kind: str) -> Optional[SchemaBinding]:
         return self.schemas.get(kind)
+
+    def allows_reference(self, source_kind: str, relationship: str, target_kind: str) -> bool:
+        return any(
+            rule.matches(source_kind, relationship, target_kind)
+            for rule in self.reference_rules
+        )
 
     @property
     def readiness_gates(self) -> list[dict[str, Any]]:
@@ -78,6 +101,22 @@ def load_pack(pack_id: str) -> Pack:
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         schemas[kind] = SchemaBinding(kind=kind, schema=schema, path=schema_path, pack_id=pack_id)
 
+    reference_rules: list[ReferenceRule] = []
+    for rule in manifest.get("referenceRules", []):
+        source_kind = rule.get("sourceKind")
+        relationship = rule.get("relationship")
+        target_kind = rule.get("targetKind")
+        if not all(isinstance(value, str) for value in [source_kind, relationship, target_kind]):
+            continue
+        reference_rules.append(
+            ReferenceRule(
+                source_kind=source_kind,
+                relationship=relationship,
+                target_kind=target_kind,
+                pack_id=pack_id,
+            )
+        )
+
     return Pack(
         id=manifest["id"],
         version=manifest.get("version", "0.0.0"),
@@ -86,20 +125,22 @@ def load_pack(pack_id: str) -> Pack:
         schemas=schemas,
         readiness_gates=manifest.get("readinessGates", []),
         generators=manifest.get("generators", []),
+        reference_rules=reference_rules,
     )
 
 
 def load_pack_registry(pack_ids: list[str]) -> PackRegistry:
     packs: dict[str, Pack] = {}
     schemas: dict[str, SchemaBinding] = {}
+    reference_rules: list[ReferenceRule] = []
     for pack_id in pack_ids:
         pack = load_pack(pack_id)
         packs[pack.id] = pack
+        reference_rules.extend(pack.reference_rules)
         for kind, binding in pack.schemas.items():
             if kind in schemas:
                 raise ValueError(
                     f"Kind '{kind}' is declared by both {schemas[kind].pack_id} and {pack.id}"
                 )
             schemas[kind] = binding
-    return PackRegistry(packs=packs, schemas=schemas)
-
+    return PackRegistry(packs=packs, schemas=schemas, reference_rules=reference_rules)

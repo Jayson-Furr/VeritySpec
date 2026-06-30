@@ -102,6 +102,24 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(2, result.returncode)
         self.assertIn("invalid choice", result.stderr)
 
+    def test_validation_report_generator_writes_report_for_broken_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "validation-report.json"
+            result = verity_command(
+                "generate",
+                "validation-report",
+                "tests/fixtures/broken_semantics",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(1, result.returncode)
+        self.assertFalse(payload["passed"])
+        self.assertGreater(payload["summary"]["errors"], 0)
+        self.assertTrue(any(issue["code"] == "reference.disallowed" for issue in payload["issues"]))
+
 
 if __name__ == "__main__":
     unittest.main()

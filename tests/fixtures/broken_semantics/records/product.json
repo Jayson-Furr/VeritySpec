@@ -1,0 +1,16 @@
+{
+  "id": "product.broken_semantics",
+  "kind": "product",
+  "name": "Broken Semantics Product",
+  "description": "A fixture with intentionally broken semantic relationships.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "uses",
+      "target": "api.bad"
+    }
+  ]
+}
+

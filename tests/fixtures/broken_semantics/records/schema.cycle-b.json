@@ -1,0 +1,20 @@
+{
+  "id": "schema.cycle_b",
+  "kind": "schema.object",
+  "name": "Cycle B",
+  "description": "Second schema in a reference cycle.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "references": [
+    {
+      "type": "contains",
+      "target": "schema.cycle_a"
+    }
+  ]
+}
+

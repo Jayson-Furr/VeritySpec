@@ -19,6 +19,22 @@
       }
     }
   ],
+  "referenceRules": [
+    {
+      "sourceKind": "api.endpoint",
+      "relationship": "requestSchema",
+      "targetKind": "schema.object"
+    },
+    {
+      "sourceKind": "api.endpoint",
+      "relationship": "responseSchema",
+      "targetKind": "schema.object"
+    },
+    {
+      "sourceKind": "api.endpoint",
+      "relationship": "emits",
+      "targetKind": "event.message"
+    }
+  ],
   "generators": ["openapi"]
 }
-

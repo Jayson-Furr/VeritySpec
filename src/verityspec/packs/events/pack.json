@@ -16,6 +16,12 @@
       "required": ["owner", "name", "topic", "payloadSchema", "description"]
     }
   ],
+  "referenceRules": [
+    {
+      "sourceKind": "event.message",
+      "relationship": "payloadSchema",
+      "targetKind": "schema.object"
+    }
+  ],
   "generators": ["asyncapi"]
 }
-

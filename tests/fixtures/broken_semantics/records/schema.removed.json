@@ -1,0 +1,14 @@
+{
+  "id": "schema.removed",
+  "kind": "schema.object",
+  "name": "Removed Schema",
+  "description": "Removed schema referenced by an event.",
+  "status": "removed",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
+
