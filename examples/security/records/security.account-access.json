@@ -1,0 +1,28 @@
+{
+  "id": "security.control.account_access",
+  "kind": "security.control",
+  "name": "Account Access Control",
+  "description": "Requires account profile access to be limited to account owners and authorized support operators.",
+  "status": "ready",
+  "owner": "platform-security",
+  "category": "authorization",
+  "controlType": "preventive",
+  "riskLevel": "high",
+  "objective": "Prevent unauthorized access to account profile data.",
+  "coverage": "verified",
+  "verification": {
+    "method": "automated-test",
+    "evidence": "tests/security/test_account_access.py::test_owner_or_support_required",
+    "lastVerified": "2026-06-30"
+  },
+  "references": [
+    {
+      "type": "appliesTo",
+      "target": "api.accounts.get"
+    },
+    {
+      "type": "appliesTo",
+      "target": "schema.account"
+    }
+  ]
+}

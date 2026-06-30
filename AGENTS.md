@@ -137,6 +137,9 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity validate examples/security
+verity lint examples/security --strict
+verity readiness examples/security --strict
 verity doctor examples/basic
 verity explain reference.missing
 verity graph examples/basic
@@ -147,6 +150,7 @@ verity generate asyncapi examples/basic --out build/asyncapi.json
 verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate security-report examples/security --out build/security-report.json
 ```
 
 External pack checks:
@@ -175,6 +179,7 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `src/verityspec/validation.py`: structural and semantic validation.
 - `src/verityspec/packs.py`: pack registry and loading.
 - `src/verityspec/generators.py`: generated artifacts.
+- `docs/security-pack.md`: built-in security pack and security report behavior.
 - `tests/`: executable behavior coverage.
 - `.github/workflows/ci.yml`: required CI contract.
 - `.github/workflows/release.yml`: release automation.

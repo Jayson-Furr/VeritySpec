@@ -1,0 +1,26 @@
+{
+  "id": "schema.account",
+  "kind": "schema.object",
+  "name": "Account",
+  "description": "Account profile response data.",
+  "status": "ready",
+  "owner": "accounts",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "email"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Account identifier."
+      },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "description": "Account email address."
+      }
+    }
+  },
+  "references": []
+}

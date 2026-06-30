@@ -1,0 +1,35 @@
+{
+  "id": "api.accounts.get",
+  "kind": "api.endpoint",
+  "name": "Get Account",
+  "description": "Returns account profile data after access-control checks.",
+  "status": "ready",
+  "owner": "accounts",
+  "method": "GET",
+  "path": "/accounts/{accountId}",
+  "summary": "Get account profile",
+  "parameters": [
+    {
+      "name": "accountId",
+      "in": "path",
+      "required": true,
+      "description": "Account identifier.",
+      "schema": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Account profile.",
+      "schema": "schema.account"
+    },
+    {
+      "statusCode": 403,
+      "description": "Caller is not authorized to view this account."
+    }
+  ],
+  "references": []
+}

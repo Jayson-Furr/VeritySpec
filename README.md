@@ -15,15 +15,16 @@ artifacts.
 
 ## Current Scope
 
-Latest release: `v0.4.0`. Release history is tracked in
-[CHANGELOG.md](CHANGELOG.md) and [ROADMAP.md](ROADMAP.md).
+Latest release: `v0.4.0`. Current `main` also contains unreleased `v0.5.0`
+security-pack work tracked in [CHANGELOG.md](CHANGELOG.md) and
+[ROADMAP.md](ROADMAP.md).
 
 This implementation provides:
 
 - An installable Python package with the `verity` CLI.
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
-- Built-in packs for core product records, APIs, CLIs, and events.
+- Built-in packs for core product records, APIs, CLIs, events, and security controls.
 - Pack listing, validation, and scaffolding through `verity pack`, including local external packs.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
@@ -31,8 +32,9 @@ This implementation provides:
   records, unused schemas, reference cycles, and workspace spec versions.
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
-  bundles, and CLI reference docs, with OpenAPI path-parameter support and
-  snapshot-tested type/model output including nested Python dataclasses.
+  bundles, CLI reference docs, validation reports, and security reports, with
+  OpenAPI path-parameter support and snapshot-tested type/model output
+  including nested Python dataclasses.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`.
 
@@ -80,6 +82,7 @@ verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate cli-reference examples/basic --out build/cli-reference.md
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate security-report examples/security --out build/security-report.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
 verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
 ```
@@ -194,6 +197,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/api-service](examples/api-service/verityspec.json): focused API workspace.
 - [examples/cli-tool](examples/cli-tool/verityspec.json): focused CLI workspace.
 - [examples/events](examples/events/verityspec.json): focused event workspace.
+- [examples/security](examples/security/verityspec.json): focused security-control workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -204,6 +208,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Roadmap](ROADMAP.md)
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
+- [Security pack](docs/security-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)

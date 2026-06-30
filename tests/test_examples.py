@@ -16,6 +16,7 @@ POSITIVE_EXAMPLES = [
     ROOT / "examples" / "api-service",
     ROOT / "examples" / "cli-tool",
     ROOT / "examples" / "events",
+    ROOT / "examples" / "security",
 ]
 
 
@@ -43,4 +44,3 @@ class ExampleWorkspaceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

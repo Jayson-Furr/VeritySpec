@@ -15,6 +15,15 @@ verity generate validation-report examples/basic --out build/validation-report.j
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
 
+For workspaces that load `verity.pack.security`, include the security report:
+
+```bash
+verity validate examples/security
+verity lint examples/security --strict
+verity readiness examples/security --strict
+verity generate security-report examples/security --out build/security-report.json
+```
+
 For workspaces with local external packs:
 
 ```bash

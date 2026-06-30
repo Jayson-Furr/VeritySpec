@@ -434,6 +434,7 @@ class VerityCliTests(unittest.TestCase):
         pack_ids = {pack["id"] for pack in payload["packs"]}
         self.assertIn("verity.core", pack_ids)
         self.assertIn("verity.pack.api", pack_ids)
+        self.assertIn("verity.pack.security", pack_ids)
 
     def test_pack_validate_json_output(self) -> None:
         result = verity_command("pack", "validate", "--format", "json")
@@ -597,6 +598,25 @@ class VerityCliTests(unittest.TestCase):
         self.assertFalse(payload["passed"])
         self.assertGreater(payload["summary"]["errors"], 0)
         self.assertTrue(any(issue["code"] == "reference.disallowed" for issue in payload["issues"]))
+
+    def test_security_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "security-report.json"
+            result = verity_command(
+                "generate",
+                "security-report",
+                "examples/security",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("security_report", payload["type"])
+        self.assertEqual(1, payload["controlCount"])
+        self.assertEqual({"verified": 1}, payload["summary"]["byCoverage"])
+        self.assertEqual("security.control.account_access", payload["controls"][0]["id"])
 
     def test_prismspec_import_reports_migration_details(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

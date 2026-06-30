@@ -1,0 +1,19 @@
+{
+  "id": "product.secure_accounts",
+  "kind": "product",
+  "name": "Secure Accounts",
+  "description": "A security-focused account profile API contract.",
+  "status": "ready",
+  "owner": "platform-security",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "exposes",
+      "target": "api.accounts.get"
+    },
+    {
+      "type": "securedBy",
+      "target": "security.control.account_access"
+    }
+  ]
+}

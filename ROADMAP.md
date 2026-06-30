@@ -132,12 +132,32 @@ Sprint 18 should release the completed `v0.4.0` scope:
 - Tag and publish the v0.4.0 GitHub release when checks pass.
 - Close the v0.4.0 milestone after release verification.
 
+## v0.5.0
+
+The active milestone is `v0.5.0`.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 19 | Complete | Security pack foundation and security report generation |
+
+## Sprint 19 Priorities
+
+Sprint 19 should add the first security surface as a pack, not as core bloat:
+
+- Add built-in `verity.pack.security`.
+- Add a strict `security.control` record schema.
+- Add security-control readiness gates and reference rules.
+- Add `verity generate security-report`.
+- Add an executable security example workspace.
+- Update tests, CI, README, changelog, roadmap, generator docs, pack docs, and
+  AI-agent guidance.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
 is complete:
 
-- UI, security, observability, accessibility, deployment, and compliance packs.
+- UI, observability, accessibility, deployment, and compliance packs.
 - Downstream project templates and examples.
 
 ## Working Rule

@@ -1,0 +1,64 @@
+{
+  "id": "verity.pack.security",
+  "version": "0.1.0",
+  "name": "VeritySpec Security Pack",
+  "description": "Security control records and security report generation support.",
+  "schemas": [
+    {
+      "kind": "security.control",
+      "path": "schemas/security-control.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "security.control.release",
+      "kind": "security.control",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "category",
+        "objective",
+        "coverage",
+        "verification.method",
+        "verification.evidence"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "securedBy",
+      "targetKind": "security.control"
+    },
+    {
+      "sourceKind": "security.control",
+      "relationship": "appliesTo",
+      "targetKind": "product"
+    },
+    {
+      "sourceKind": "security.control",
+      "relationship": "appliesTo",
+      "targetKind": "api.endpoint"
+    },
+    {
+      "sourceKind": "security.control",
+      "relationship": "appliesTo",
+      "targetKind": "cli.command"
+    },
+    {
+      "sourceKind": "security.control",
+      "relationship": "appliesTo",
+      "targetKind": "event.message"
+    },
+    {
+      "sourceKind": "security.control",
+      "relationship": "appliesTo",
+      "targetKind": "schema.object"
+    }
+  ],
+  "generators": ["security-report"]
+}

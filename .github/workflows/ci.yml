@@ -39,7 +39,7 @@ jobs:
 
       - name: Check all example workspaces
         run: |
-          for workspace in examples/basic examples/api-service examples/cli-tool examples/events; do
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security; do
             verity validate "$workspace"
             verity lint "$workspace" --strict
             verity readiness "$workspace" --strict
@@ -63,6 +63,9 @@ jobs:
           verity validate examples/basic --format json > build/validate.json
           verity lint examples/basic --strict --format json > build/lint.json
           verity readiness examples/basic --strict --format json > build/readiness.json
+          verity validate examples/security --format json > build/security-validate.json
+          verity lint examples/security --strict --format json > build/security-lint.json
+          verity readiness examples/security --strict --format json > build/security-readiness.json
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
@@ -80,6 +83,9 @@ jobs:
           python -m json.tool build/validate.json >/dev/null
           python -m json.tool build/lint.json >/dev/null
           python -m json.tool build/readiness.json >/dev/null
+          python -m json.tool build/security-validate.json >/dev/null
+          python -m json.tool build/security-lint.json >/dev/null
+          python -m json.tool build/security-readiness.json >/dev/null
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
@@ -103,6 +109,7 @@ jobs:
           verity generate schema-bundle examples/basic --out build/schema-bundle.json
           verity generate cli-reference examples/basic --out build/cli-reference.md
           verity generate validation-report examples/basic --out build/validation-report.json
+          verity generate security-report examples/security --out build/security-report.json
           verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate openapi examples/api-service --out build/api-service.openapi.json
           verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
@@ -114,6 +121,7 @@ jobs:
           python -m json.tool build/schema-bundle.json >/dev/null
           python -m json.tool build/custom-pack-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
+          python -m json.tool build/security-report.json >/dev/null
           python -m py_compile build/models.py
           python -m py_compile build/generator-maturity.py
 
