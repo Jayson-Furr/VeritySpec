@@ -1,8 +1,10 @@
 # VeritySpec Sprint Roadmap
 
-VeritySpec matures through small, shippable sprints. Each sprint should leave
-the repository in a releasable state with tests, examples, documentation, and CI
-checks updated alongside code.
+VeritySpec matures through shippable sprints. Starting after the current
+`v0.38.0` sprint, plan sprints as cohesive bundles of related work sized up to
+roughly one week of development effort, while still leaving the repository in a
+releasable state with tests, examples, documentation, and CI checks updated
+alongside code.
 
 The GitHub issues and milestones are the operational roadmap. This file is the
 repository-level summary.
@@ -1542,8 +1544,8 @@ The `v0.38.0` milestone is active.
 
 ## Sprint 92 Priorities
 
-Sprint 92 is a larger bundled implementation sprint for the next game-domain
-expansion:
+Sprint 92 is the first larger bundled implementation sprint for the next
+game-domain expansion:
 
 - Add built-in `verity.pack.gameplay`.
 - Add strict schemas for `game.mechanic`, `game.ability`, `game.rule`, and

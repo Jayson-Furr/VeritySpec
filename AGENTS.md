@@ -294,9 +294,11 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 ## Sprint Discipline
 
 The project is managed in public sprints through GitHub issues and milestones.
-Sprint implementation work should happen on `sprint/<number>-<topic>` branches
-and merge back to `main` only after local checks and, when available, GitHub
-Actions checks pass.
+Starting after the current `v0.38.0` sprint, plan sprints as cohesive bundles of
+related work sized up to roughly one week of development effort instead of many
+tiny release slices. Sprint implementation work should happen on
+`sprint/<number>-<topic>` branches and merge back to `main` only after local
+checks and, when available, GitHub Actions checks pass.
 
 When completing sprint work:
 
