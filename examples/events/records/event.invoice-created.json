@@ -1,0 +1,11 @@
+{
+  "id": "event.invoice.created",
+  "kind": "event.message",
+  "name": "Invoice Created",
+  "description": "Published after an invoice is created.",
+  "status": "ready",
+  "owner": "billing",
+  "topic": "billing.invoice.created",
+  "payloadSchema": "schema.invoice"
+}
+

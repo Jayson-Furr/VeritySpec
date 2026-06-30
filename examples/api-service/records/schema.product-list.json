@@ -1,0 +1,32 @@
+{
+  "id": "schema.product_list",
+  "kind": "schema.object",
+  "name": "Product List",
+  "description": "A list of catalog products.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["products"],
+    "properties": {
+      "products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "name"],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

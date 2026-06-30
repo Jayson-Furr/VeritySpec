@@ -1,0 +1,16 @@
+{
+  "id": "product.billing_events",
+  "kind": "product",
+  "name": "Billing Events",
+  "description": "An event contract for billing account changes.",
+  "status": "ready",
+  "owner": "billing",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "emits",
+      "target": "event.invoice.created"
+    }
+  ]
+}
+

@@ -37,6 +37,21 @@ jobs:
       - name: Check example readiness
         run: verity readiness examples/basic --strict
 
+      - name: Check all example workspaces
+        run: |
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events; do
+            verity validate "$workspace"
+            verity lint "$workspace" --strict
+            verity readiness "$workspace" --strict
+          done
+          mkdir -p build
+          set +e
+          verity validate examples/broken --format json > build/broken-validation.json
+          exit_status=$?
+          set -e
+          test "$exit_status" -eq 1
+          python -m json.tool build/broken-validation.json >/dev/null
+
       - name: Check CLI contract
         run: |
           mkdir -p build
@@ -61,8 +76,13 @@ jobs:
           verity generate schema-bundle examples/basic --out build/schema-bundle.json
           verity generate cli-reference examples/basic --out build/cli-reference.md
           verity generate validation-report examples/basic --out build/validation-report.json
+          verity generate openapi examples/api-service --out build/api-service.openapi.json
+          verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
+          verity generate asyncapi examples/events --out build/events.asyncapi.json
           python -m json.tool build/openapi.json >/dev/null
           python -m json.tool build/asyncapi.json >/dev/null
+          python -m json.tool build/api-service.openapi.json >/dev/null
+          python -m json.tool build/events.asyncapi.json >/dev/null
           python -m json.tool build/schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m py_compile build/models.py

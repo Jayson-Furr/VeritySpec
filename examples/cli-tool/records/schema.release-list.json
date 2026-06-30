@@ -1,0 +1,32 @@
+{
+  "id": "schema.release_list",
+  "kind": "schema.object",
+  "name": "Release List",
+  "description": "Machine-readable release listing output.",
+  "status": "ready",
+  "owner": "developer-experience",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["releases"],
+    "properties": {
+      "releases": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "date"],
+          "properties": {
+            "version": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

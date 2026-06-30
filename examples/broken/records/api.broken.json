@@ -1,0 +1,19 @@
+{
+  "id": "api.broken",
+  "kind": "api.endpoint",
+  "name": "Broken Endpoint",
+  "description": "Endpoint with a missing request schema.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "POST",
+  "path": "/broken",
+  "summary": "Broken endpoint.",
+  "requestSchema": "schema.missing",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Unexpected success."
+    }
+  ]
+}
+

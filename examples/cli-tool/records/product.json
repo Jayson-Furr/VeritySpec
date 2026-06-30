@@ -1,0 +1,16 @@
+{
+  "id": "product.release_cli",
+  "kind": "product",
+  "name": "Release CLI",
+  "description": "A command-line product contract for listing releases.",
+  "status": "ready",
+  "owner": "developer-experience",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "ships",
+      "target": "cli.releases.list"
+    }
+  ]
+}
+

@@ -1,0 +1,16 @@
+{
+  "id": "product.catalog_api",
+  "kind": "product",
+  "name": "Catalog API",
+  "description": "A small HTTP API contract for a product catalog.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "exposes",
+      "target": "api.products.list"
+    }
+  ]
+}
+

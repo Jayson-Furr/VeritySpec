@@ -1,0 +1,16 @@
+{
+  "id": "product.broken",
+  "kind": "product",
+  "name": "Broken Product",
+  "description": "A public example of a product contract that should fail validation.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "uses",
+      "target": "api.broken"
+    }
+  ]
+}
+

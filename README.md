@@ -144,6 +144,24 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 `status`, and `owner`, plus fields defined by its pack.
 
+## Examples
+
+- [examples/basic](examples/basic/verityspec.json): combined API, CLI, and events workspace.
+- [examples/api-service](examples/api-service/verityspec.json): focused API workspace.
+- [examples/cli-tool](examples/cli-tool/verityspec.json): focused CLI workspace.
+- [examples/events](examples/events/verityspec.json): focused event workspace.
+- [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
+
+## Documentation
+
+- [Workspace format](docs/workspace-format.md)
+- [Record lifecycle](docs/record-lifecycle.md)
+- [Packs](docs/packs.md)
+- [Readiness](docs/readiness.md)
+- [Generators](docs/generators.md)
+- [Graph checks](docs/graph-checks.md)
+- [CI](docs/ci.md)
+
 ## Supersession
 
 PrismSpec established the initial product-specification vocabulary. VeritySpec

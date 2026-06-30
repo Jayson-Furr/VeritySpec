@@ -1,0 +1,12 @@
+{
+  "workspace": "examples.broken",
+  "specVersion": "v0.1.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.api"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}
+

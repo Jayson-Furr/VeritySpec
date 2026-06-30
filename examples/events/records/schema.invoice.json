@@ -1,0 +1,23 @@
+{
+  "id": "schema.invoice",
+  "kind": "schema.object",
+  "name": "Invoice",
+  "description": "Invoice event payload.",
+  "status": "ready",
+  "owner": "billing",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "amountCents"],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "amountCents": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  }
+}
+

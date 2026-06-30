@@ -1,0 +1,28 @@
+{
+  "id": "cli.releases.list",
+  "kind": "cli.command",
+  "name": "List Releases",
+  "description": "Lists available releases.",
+  "status": "ready",
+  "owner": "developer-experience",
+  "command": "release list",
+  "options": [
+    {
+      "name": "--json",
+      "type": "boolean",
+      "description": "Emit JSON output."
+    }
+  ],
+  "outputSchema": "schema.release_list",
+  "exitCodes": [
+    {
+      "code": 0,
+      "description": "Releases were listed."
+    },
+    {
+      "code": 1,
+      "description": "The command failed."
+    }
+  ]
+}
+

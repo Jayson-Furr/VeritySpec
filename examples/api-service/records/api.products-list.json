@@ -1,0 +1,19 @@
+{
+  "id": "api.products.list",
+  "kind": "api.endpoint",
+  "name": "List Products",
+  "description": "Lists products visible to the caller.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "GET",
+  "path": "/products",
+  "summary": "List products.",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Products returned.",
+      "schema": "schema.product_list"
+    }
+  ]
+}
+

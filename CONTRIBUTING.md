@@ -23,6 +23,9 @@ PYTHONPATH=src python3 -m verityspec lint examples/basic --strict
 PYTHONPATH=src python3 -m verityspec readiness examples/basic --strict
 PYTHONPATH=src python3 -m verityspec validate examples/basic --format json
 PYTHONPATH=src python3 -m verityspec generate validation-report examples/basic --out build/validation-report.json
+PYTHONPATH=src python3 -m verityspec validate examples/api-service
+PYTHONPATH=src python3 -m verityspec validate examples/cli-tool
+PYTHONPATH=src python3 -m verityspec validate examples/events
 ```
 
 ## Pack Standard

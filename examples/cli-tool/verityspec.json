@@ -1,0 +1,12 @@
+{
+  "workspace": "examples.cli_tool",
+  "specVersion": "v0.1.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.cli"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}
+
