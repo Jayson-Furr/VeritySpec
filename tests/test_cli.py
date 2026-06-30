@@ -53,7 +53,7 @@ class VerityCliTests(unittest.TestCase):
         result = verity_command("--version")
 
         self.assertEqual(0, result.returncode)
-        self.assertIn("verity 0.13.0", result.stdout)
+        self.assertIn("verity 0.14.0", result.stdout)
 
     def test_validate_json_output(self) -> None:
         result = verity_command("validate", "examples/basic", "--format", "json")

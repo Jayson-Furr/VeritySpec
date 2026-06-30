@@ -558,11 +558,12 @@ Sprint 43 should release the completed `v0.13.0` scope:
 
 ## v0.14.0
 
-The `v0.14.0` milestone is active.
+The `v0.14.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 44 | Complete | Downstream GitHub Actions templates |
+| 45 | Complete | v0.14.0 release preparation |
 
 ## Sprint 44 Priorities
 
@@ -579,6 +580,21 @@ Sprint 44 should make downstream CI adoption copyable and maintained:
   VeritySpec release tags.
 - Update README, changelog, roadmap, and downstream CI docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 45 Priorities
+
+Sprint 45 should release the completed `v0.14.0` scope:
+
+- Promote Unreleased changelog entries into `0.14.0`.
+- Bump package metadata to `0.14.0`.
+- Add v0.14.0 release notes.
+- Update README badge, latest-release text, install references, workspace
+  package-version text, and release-notes link to `v0.14.0`.
+- Update downstream CI templates, docs, and reusable workflow release pins to
+  `v0.14.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.14.0 GitHub release when checks pass.
+- Close the v0.14.0 milestone after release verification.
 
 ## Later Candidates
 
