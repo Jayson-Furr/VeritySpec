@@ -26,5 +26,14 @@
       "targetKind": "schema.object"
     }
   ],
-  "generators": ["cli-reference"]
+  "generators": [
+    {
+      "id": "cli-reference",
+      "name": "CLI Reference",
+      "description": "Emit Markdown reference documentation from CLI command records.",
+      "artifactType": "documentation",
+      "outputFormats": ["markdown"],
+      "recordKinds": ["cli.command"]
+    }
+  ]
 }

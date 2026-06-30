@@ -42,6 +42,7 @@ class Pack:
     schemas: dict[str, SchemaBinding]
     readiness_gates: list[dict[str, Any]]
     generators: list[str]
+    generator_metadata: list[dict[str, Any]]
     reference_rules: list[ReferenceRule]
 
 
@@ -92,6 +93,37 @@ def normalize_pack_path(path: str | Path, base_path: Path | None = None) -> Path
     if candidate.name == "pack.json":
         return candidate.parent
     return candidate
+
+
+def generator_id(generator: Any) -> str | None:
+    if isinstance(generator, str):
+        return generator
+    if isinstance(generator, dict) and isinstance(generator.get("id"), str):
+        return generator["id"]
+    return None
+
+
+def normalize_generator_metadata(generators: Any) -> list[dict[str, Any]]:
+    if not isinstance(generators, list):
+        return []
+    metadata: list[dict[str, Any]] = []
+    for generator in generators:
+        if isinstance(generator, str):
+            metadata.append({"id": generator})
+        elif isinstance(generator, dict):
+            generator_id_value = generator_id(generator)
+            if generator_id_value:
+                metadata.append(dict(generator))
+    return metadata
+
+
+def normalize_generator_ids(generators: Any) -> list[str]:
+    ids: list[str] = []
+    for metadata in normalize_generator_metadata(generators):
+        generator_id_value = metadata.get("id")
+        if isinstance(generator_id_value, str):
+            ids.append(generator_id_value)
+    return ids
 
 
 def available_external_packs(
@@ -155,7 +187,8 @@ def load_pack_from_path(pack_path: str | Path) -> Pack:
         path=pack_path,
         schemas=schemas,
         readiness_gates=manifest.get("readinessGates", []),
-        generators=manifest.get("generators", []),
+        generators=normalize_generator_ids(manifest.get("generators", [])),
+        generator_metadata=normalize_generator_metadata(manifest.get("generators", [])),
         reference_rules=reference_rules,
     )
 

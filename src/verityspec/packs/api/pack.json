@@ -36,5 +36,14 @@
       "targetKind": "event.message"
     }
   ],
-  "generators": ["openapi"]
+  "generators": [
+    {
+      "id": "openapi",
+      "name": "OpenAPI",
+      "description": "Emit an OpenAPI document from API endpoint and schema records.",
+      "artifactType": "api-description",
+      "outputFormats": ["json"],
+      "recordKinds": ["api.endpoint"]
+    }
+  ]
 }

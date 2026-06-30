@@ -113,5 +113,22 @@
       "targetKind": "observability.alert"
     }
   ],
-  "generators": ["schema-bundle", "compliance-matrix"]
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for compliance mapping records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": ["compliance.mapping"]
+    },
+    {
+      "id": "compliance-matrix",
+      "name": "Compliance Matrix",
+      "description": "Summarize compliance mappings, verification coverage, and release gaps.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["compliance.mapping"]
+    }
+  ]
 }

@@ -89,5 +89,22 @@
       "targetKind": "schema.object"
     }
   ],
-  "generators": ["schema-bundle", "accessibility-report"]
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for accessibility claim records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": ["accessibility.claim"]
+    },
+    {
+      "id": "accessibility-report",
+      "name": "Accessibility Report",
+      "description": "Summarize accessibility claims, verification coverage, and release gaps.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["accessibility.claim"]
+    }
+  ]
 }
