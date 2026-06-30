@@ -45,6 +45,10 @@ fixtures.
 - Update tests, examples, docs, CI, and roadmap entries with behavior changes.
 - Keep `README.md` aligned with `CHANGELOG.md`, `ROADMAP.md`, release notes,
   install instructions, version references, and other public bookkeeping.
+- When the active roadmap is caught up, plan up to the next 20 roadmap points
+  for fixing, improving, continuing, and expanding the project. Keep those
+  points in `ROADMAP.md` as planning inputs until they are converted into
+  GitHub issues and milestones.
 - Follow the repository branching strategy in `docs/branching.md`; do feature
   and sprint work on branches, keep `main` releasable, and avoid direct pushes
   to `main` except for explicitly approved release or bookkeeping work.
