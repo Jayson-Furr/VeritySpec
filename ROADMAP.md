@@ -1125,11 +1125,12 @@ Sprint 71 should release the completed `v0.27.0` scope:
 
 ## v0.28.0
 
-The `v0.28.0` milestone is active.
+The `v0.28.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 72 | In Progress | Deployment-target pack |
+| 72 | Complete | Deployment-target pack |
+| 73 | Complete | v0.28.0 release preparation |
 
 ## Sprint 72 Priorities
 
@@ -1145,6 +1146,22 @@ Sprint 72 should add the first deployment-target pack:
 - Document the deployment pack and CI usage.
 - Update README, changelog, and roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 73 Priorities
+
+Sprint 73 should release the completed `v0.28.0` scope:
+
+- Promote Unreleased changelog entries into `0.28.0`.
+- Bump package metadata to `0.28.0`.
+- Add v0.28.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.28.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.28.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.28.0 GitHub release when checks pass.
+- Close the v0.28.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 
