@@ -4,6 +4,14 @@ VeritySpec grows through packs. A pack contributes record kinds, JSON Schemas,
 readiness gates, reference rules, and generator support without expanding the
 core kernel.
 
+Built-in packs currently include:
+
+- `verity.core`: products and reusable object schemas.
+- `verity.pack.api`: API endpoints and OpenAPI generation.
+- `verity.pack.cli`: CLI commands and CLI reference generation.
+- `verity.pack.events`: event messages and AsyncAPI generation.
+- `verity.pack.security`: security controls and security report generation.
+
 ## Manifest
 
 Each built-in pack has a `pack.json` manifest:

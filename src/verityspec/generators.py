@@ -542,6 +542,95 @@ def generate_validation_report(
     }
 
 
+def count_by_field(records: list[Record], field: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for record in records:
+        value = record.data.get(field)
+        key = value if isinstance(value, str) and value else "unspecified"
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items(), key=lambda item: item[0]))
+
+
+def security_control_targets(record: Record, records_by_id: dict[str, Record]) -> list[dict[str, str]]:
+    targets: list[dict[str, str]] = []
+    for item in record.data.get("references", []):
+        if not isinstance(item, dict) or item.get("type") != "appliesTo":
+            continue
+        target_id = item.get("target")
+        if not isinstance(target_id, str) or not target_id:
+            continue
+        target = records_by_id.get(target_id)
+        targets.append(
+            {
+                "id": target_id,
+                "kind": target.kind if target and target.kind else "unknown",
+                "name": target.data.get("name", "") if target else "",
+            }
+        )
+    return targets
+
+
+def is_security_control_verified(record: Record) -> bool:
+    verification = record.data.get("verification")
+    if not isinstance(verification, dict):
+        return False
+    return (
+        record.data.get("coverage") == "verified"
+        and verification.get("method") != "not-verified"
+        and isinstance(verification.get("evidence"), str)
+        and bool(verification.get("evidence", "").strip())
+    )
+
+
+def generate_security_report(workspace: Workspace) -> dict:
+    controls = [record for record in workspace.records if record.kind == "security.control"]
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    control_entries: list[dict[str, Any]] = []
+    verified_control_count = 0
+    critical_unverified: list[str] = []
+
+    for record in controls:
+        verified = is_security_control_verified(record)
+        if verified:
+            verified_control_count += 1
+        if record.data.get("riskLevel") == "critical" and not verified and record.id:
+            critical_unverified.append(record.id)
+
+        control_entries.append(
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "status": record.data.get("status"),
+                "owner": record.data.get("owner"),
+                "category": record.data.get("category"),
+                "controlType": record.data.get("controlType"),
+                "riskLevel": record.data.get("riskLevel"),
+                "coverage": record.data.get("coverage"),
+                "objective": record.data.get("objective"),
+                "verified": verified,
+                "verification": record.data.get("verification", {}),
+                "targets": security_control_targets(record, records_by_id),
+            }
+        )
+
+    return {
+        "type": "security_report",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "controlCount": len(controls),
+        "summary": {
+            "byCoverage": count_by_field(controls, "coverage"),
+            "byRiskLevel": count_by_field(controls, "riskLevel"),
+            "verifiedControls": verified_control_count,
+            "criticalUnverified": critical_unverified,
+        },
+        "controls": control_entries,
+    }
+
+
 def generate_cli_reference(workspace: Workspace) -> str:
     lines = ["# CLI Reference", ""]
     commands = [record for record in workspace.records if record.kind == "cli.command"]

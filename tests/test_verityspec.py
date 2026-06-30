@@ -5,7 +5,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from verityspec.generators import generate_asyncapi, generate_openapi, generate_python_models, generate_typescript
+from verityspec.generators import (
+    generate_asyncapi,
+    generate_openapi,
+    generate_python_models,
+    generate_security_report,
+    generate_typescript,
+)
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
 from verityspec.pack_validation import validate_builtin_packs
 from verityspec.packs import load_pack_registry
@@ -210,6 +216,25 @@ class VeritySpecTests(unittest.TestCase):
         expected = (GENERATOR_GOLDEN / "python_models.py").read_text(encoding="utf-8")
 
         self.assertEqual(expected, generate_python_models(workspace))
+
+    def test_security_report_summarizes_security_controls(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "security")
+
+        report = generate_security_report(workspace)
+
+        self.assertEqual("security_report", report["type"])
+        self.assertEqual(1, report["controlCount"])
+        self.assertEqual({"verified": 1}, report["summary"]["byCoverage"])
+        self.assertEqual({"high": 1}, report["summary"]["byRiskLevel"])
+        self.assertEqual(1, report["summary"]["verifiedControls"])
+        self.assertEqual([], report["summary"]["criticalUnverified"])
+        control = report["controls"][0]
+        self.assertEqual("security.control.account_access", control["id"])
+        self.assertTrue(control["verified"])
+        self.assertEqual(
+            ["api.accounts.get", "schema.account"],
+            [target["id"] for target in control["targets"]],
+        )
 
 
 if __name__ == "__main__":

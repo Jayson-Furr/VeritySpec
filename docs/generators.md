@@ -11,6 +11,7 @@ verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate schema-bundle examples/basic --out build/schema-bundle.json
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate security-report examples/security --out build/security-report.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
 verity generate python-models tests/fixtures/generator_maturity --out build/generator-maturity.py
 ```
@@ -28,6 +29,15 @@ Validation reports include:
 - Known record kinds
 - Issue summary and full issue list
 
+Security reports include:
+
+- Workspace and VeritySpec version metadata
+- Security-control count
+- Control counts by coverage and risk level
+- Verified-control count
+- Critical unverified control IDs
+- Per-control owner, category, objective, verification evidence, and target records
+
 ## Current Guarantees
 
 OpenAPI output includes:
@@ -44,6 +54,13 @@ AsyncAPI output includes:
 - Product title, version, and description in `info`
 - Component schemas and message components
 - Message IDs, channel subscriptions, payload references, and VeritySpec metadata
+
+Security report output includes:
+
+- `security.control` records from workspaces that load `verity.pack.security`
+- Verification status based on `coverage`, `verification.method`, and
+  `verification.evidence`
+- Target records from explicit `appliesTo` references
 
 TypeScript and Python model generators support:
 

@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added built-in `verity.pack.security` with `security.control` records,
+  readiness gates, reference rules, and an executable security example.
+- Added `verity generate security-report` for JSON summaries of security
+  controls, coverage, risk levels, verification state, and target records.
 
 ## 0.4.0
 
