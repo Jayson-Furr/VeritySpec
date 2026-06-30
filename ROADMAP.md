@@ -486,11 +486,12 @@ Sprint 39 should release the completed `v0.11.0` scope:
 
 ## v0.12.0
 
-The `v0.12.0` milestone is active.
+The `v0.12.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 40 | Complete | Generator metadata in pack manifests |
+| 41 | Complete | v0.12.0 release preparation |
 
 ## Sprint 40 Priorities
 
@@ -504,6 +505,18 @@ Sprint 40 should make pack generator capabilities more explicit:
 - Update built-in pack manifests, pack scaffolding, tests, README, changelog,
   roadmap, and generator/pack docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 41 Priorities
+
+Sprint 41 should release the completed `v0.12.0` scope:
+
+- Promote Unreleased changelog entries into `0.12.0`.
+- Bump package metadata to `0.12.0`.
+- Add v0.12.0 release notes.
+- Update README and install references to `v0.12.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.12.0 GitHub release when checks pass.
+- Close the v0.12.0 milestone after release verification.
 
 ## Later Candidates
 
