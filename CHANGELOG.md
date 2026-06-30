@@ -2,16 +2,19 @@
 
 ## Unreleased
 
-- Clarified the README distinction between package release versions and workspace format versions.
-- Added AI-agent bookkeeping rules to keep README, changelog, roadmap, release notes, install instructions, and issue or milestone state aligned.
-- Added AI-agent fallback guidance for local verification when GitHub Actions is unavailable for billing, credit, quota, or runner reasons.
-- Added a repository branching strategy and AI-agent requirements for branch selection and merge discipline.
+- No changes yet.
+
+## 0.3.0
+
 - Added OpenAPI path-parameter inference, explicit endpoint parameter emission, and OpenAPI golden output coverage.
 - Added Python nested dataclass generation for inline object schemas and inline object array items.
 - Added `verity pack init` for creating validating starter pack scaffolds.
-- Opened the v0.3.0 roadmap line with Sprint 13, Sprint 14, and Sprint 15 improvements.
-- Marked the v0.3.0 sprint scope complete while leaving release publication as an explicit later action.
+- Added AI-agent bookkeeping rules to keep README, changelog, roadmap, release notes, install instructions, and issue or milestone state aligned.
+- Added AI-agent fallback guidance for local verification when GitHub Actions is unavailable for billing, credit, quota, or runner reasons.
+- Added a repository branching strategy and AI-agent requirements for branch selection and merge discipline.
+- Clarified the README distinction between package release versions and workspace format versions.
 - Removed PyPI-dependent README badges until the `verityspec` PyPI project is published.
+- Added v0.3.0 release notes and roadmap closeout.
 
 ## 0.2.0
 

@@ -47,15 +47,14 @@ from downstream repositories:
 
 ## v0.3.0
 
-The `v0.3.0` sprint scope is complete on `main`. The milestone remains
-unreleased until release preparation, tagging, and GitHub release publication
-are explicitly performed.
+The `v0.3.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 13 | Complete | OpenAPI path-parameter extraction and generator precision |
 | 14 | Complete | Python nested-object model generation |
 | 15 | Complete | Pack authoring scaffold |
+| 16 | Complete | v0.3.0 release preparation |
 
 ## Sprint 13 Priorities
 
@@ -88,6 +87,18 @@ Sprint 15 should make extension pack authoring easier:
 - Generate a valid pack manifest and starter schema directory.
 - Include validation coverage for the generated scaffold.
 - Update README, changelog, roadmap, and pack docs.
+
+## Sprint 16 Priorities
+
+Sprint 16 should release the completed `v0.3.0` scope:
+
+- Promote Unreleased changelog entries into `0.3.0`.
+- Bump package metadata to `0.3.0`.
+- Add v0.3.0 release notes.
+- Update README and install references to `v0.3.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.3.0 GitHub release when checks pass.
+- Close the v0.3.0 milestone after release verification.
 
 ## Later Candidates
 
