@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Run tests
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+
+      - name: Validate example workspace
+        run: verity validate examples/basic
+
+      - name: Lint example workspace
+        run: verity lint examples/basic --strict
+
+      - name: Check example readiness
+        run: verity readiness examples/basic --strict
+
+      - name: Check generators
+        run: |
+          verity generate openapi examples/basic --out build/openapi.json
+          verity generate asyncapi examples/basic --out build/asyncapi.json
+          verity generate typescript examples/basic --out build/types.ts
+          verity generate python-models examples/basic --out build/models.py
+          verity generate schema-bundle examples/basic --out build/schema-bundle.json
+          verity generate cli-reference examples/basic --out build/cli-reference.md
+          python -m json.tool build/openapi.json >/dev/null
+          python -m json.tool build/asyncapi.json >/dev/null
+          python -m json.tool build/schema-bundle.json >/dev/null
+          python -m py_compile build/models.py
+

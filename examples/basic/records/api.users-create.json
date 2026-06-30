@@ -1,0 +1,30 @@
+{
+  "id": "api.users.create",
+  "kind": "api.endpoint",
+  "name": "Create User",
+  "description": "Creates a user and emits a user-created event.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "POST",
+  "path": "/users",
+  "summary": "Create a user.",
+  "requestSchema": "schema.create_user_request",
+  "responses": [
+    {
+      "statusCode": 201,
+      "description": "User created.",
+      "schema": "schema.user"
+    },
+    {
+      "statusCode": 400,
+      "description": "Invalid request."
+    }
+  ],
+  "references": [
+    {
+      "type": "emits",
+      "target": "event.user.created"
+    }
+  ]
+}
+

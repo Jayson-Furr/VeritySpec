@@ -1,0 +1,26 @@
+{
+  "id": "schema.user",
+  "kind": "schema.object",
+  "name": "User",
+  "description": "Public user representation.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "email", "name"],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string",
+        "format": "email"
+      },
+      "name": {
+        "type": "string"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,11 @@
+{
+  "id": "event.user.created",
+  "kind": "event.message",
+  "name": "User Created",
+  "description": "Published after a user is created.",
+  "status": "ready",
+  "owner": "platform",
+  "topic": "identity.user.created",
+  "payloadSchema": "schema.user"
+}
+

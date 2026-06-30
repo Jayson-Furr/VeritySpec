@@ -1,0 +1,29 @@
+{
+  "id": "product.identity_service",
+  "kind": "product",
+  "name": "Identity Service",
+  "description": "A small product contract for user identity APIs, events, and CLI operations.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "tags": ["example", "identity"],
+  "references": [
+    {
+      "type": "exposes",
+      "target": "api.users.list"
+    },
+    {
+      "type": "exposes",
+      "target": "api.users.create"
+    },
+    {
+      "type": "emits",
+      "target": "event.user.created"
+    },
+    {
+      "type": "ships",
+      "target": "cli.users.list"
+    }
+  ]
+}
+

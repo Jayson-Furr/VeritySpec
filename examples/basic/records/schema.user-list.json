@@ -1,0 +1,28 @@
+{
+  "id": "schema.user_list",
+  "kind": "schema.object",
+  "name": "User List",
+  "description": "A paged list of users.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["users"],
+    "properties": {
+      "users": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/User"
+        }
+      }
+    }
+  },
+  "references": [
+    {
+      "type": "contains",
+      "target": "schema.user"
+    }
+  ]
+}
+

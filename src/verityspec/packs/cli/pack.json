@@ -1,0 +1,24 @@
+{
+  "id": "verity.pack.cli",
+  "version": "0.1.0",
+  "name": "VeritySpec CLI Pack",
+  "description": "CLI command records and CLI reference generation support.",
+  "schemas": [
+    {
+      "kind": "cli.command",
+      "path": "schemas/cli-command.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "cli.command.release",
+      "kind": "cli.command",
+      "required": ["owner", "name", "command", "description", "exitCodes"],
+      "minItems": {
+        "exitCodes": 1
+      }
+    }
+  ],
+  "generators": ["cli-reference"]
+}
+

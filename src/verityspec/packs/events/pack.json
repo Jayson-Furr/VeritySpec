@@ -1,0 +1,21 @@
+{
+  "id": "verity.pack.events",
+  "version": "0.1.0",
+  "name": "VeritySpec Events Pack",
+  "description": "Event message records and AsyncAPI generation support.",
+  "schemas": [
+    {
+      "kind": "event.message",
+      "path": "schemas/event-message.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "event.message.release",
+      "kind": "event.message",
+      "required": ["owner", "name", "topic", "payloadSchema", "description"]
+    }
+  ],
+  "generators": ["asyncapi"]
+}
+

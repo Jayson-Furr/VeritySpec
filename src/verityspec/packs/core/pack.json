@@ -1,0 +1,30 @@
+{
+  "id": "verity.core",
+  "version": "0.1.0",
+  "name": "VeritySpec Core",
+  "description": "Core product-contract records shared by every VeritySpec workspace.",
+  "schemas": [
+    {
+      "kind": "product",
+      "path": "schemas/product.schema.json"
+    },
+    {
+      "kind": "schema.object",
+      "path": "schemas/schema-object.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "core.product.release",
+      "kind": "product",
+      "required": ["owner", "name", "version", "description"]
+    },
+    {
+      "id": "core.schema.release",
+      "kind": "schema.object",
+      "required": ["owner", "name", "jsonSchema"]
+    }
+  ],
+  "generators": ["schema-bundle"]
+}
+

@@ -1,0 +1,19 @@
+{
+  "id": "api.users.list",
+  "kind": "api.endpoint",
+  "name": "List Users",
+  "description": "Lists users visible to the caller.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "GET",
+  "path": "/users",
+  "summary": "List users.",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Users returned.",
+      "schema": "schema.user_list"
+    }
+  ]
+}
+

@@ -1,0 +1,24 @@
+{
+  "id": "verity.pack.api",
+  "version": "0.1.0",
+  "name": "VeritySpec API Pack",
+  "description": "API endpoint records and OpenAPI generation support.",
+  "schemas": [
+    {
+      "kind": "api.endpoint",
+      "path": "schemas/api-endpoint.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "api.endpoint.release",
+      "kind": "api.endpoint",
+      "required": ["owner", "name", "method", "path", "summary", "responses"],
+      "minItems": {
+        "responses": 1
+      }
+    }
+  ],
+  "generators": ["openapi"]
+}
+

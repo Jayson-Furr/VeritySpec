@@ -1,0 +1,23 @@
+{
+  "owner": "Jayson-Furr",
+  "repository": "VeritySpec",
+  "visibility": "public",
+  "description": "Executable product contracts for humans, tools, and agents.",
+  "homepage": "",
+  "topics": [
+    "product-specification",
+    "product-contracts",
+    "json-schema",
+    "cli",
+    "developer-tools",
+    "openapi",
+    "asyncapi",
+    "validation",
+    "readiness",
+    "generators",
+    "documentation",
+    "agents",
+    "python"
+  ]
+}
+

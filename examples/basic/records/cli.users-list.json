@@ -1,0 +1,28 @@
+{
+  "id": "cli.users.list",
+  "kind": "cli.command",
+  "name": "List Users Command",
+  "description": "Lists users from the identity service.",
+  "status": "ready",
+  "owner": "platform",
+  "command": "identity users list",
+  "options": [
+    {
+      "name": "--json",
+      "type": "boolean",
+      "description": "Emit machine-readable JSON output."
+    }
+  ],
+  "outputSchema": "schema.user_list",
+  "exitCodes": [
+    {
+      "code": 0,
+      "description": "Users were listed."
+    },
+    {
+      "code": 1,
+      "description": "The command failed."
+    }
+  ]
+}
+

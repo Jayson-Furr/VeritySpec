@@ -1,0 +1,24 @@
+{
+  "id": "schema.create_user_request",
+  "kind": "schema.object",
+  "name": "Create User Request",
+  "description": "Request body for creating a user.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["email", "name"],
+    "properties": {
+      "email": {
+        "type": "string",
+        "format": "email"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}
+
