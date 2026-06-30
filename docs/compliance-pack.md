@@ -83,6 +83,7 @@ that issue is an error.
 verity validate examples/compliance
 verity lint examples/compliance --strict
 verity readiness examples/compliance --strict
+verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 ```
 
@@ -94,8 +95,21 @@ The compliance pack currently provides:
 - readiness gates and reviewed-mapping policy
 - reference rules for products, APIs, CLIs, events, schemas, security controls,
   accessibility claims, and observability records
+- compliance matrix generation
 - schema-bundle generator support
 - an executable example workspace
 
-A dedicated compliance matrix generator is planned as a separate sprint so the
-pack foundation can remain small and verifiable.
+## Compliance Matrix
+
+`compliance-matrix` emits JSON with:
+
+- workspace and VeritySpec version metadata
+- compliance-mapping count
+- owner, framework, requirement, mapping type, and coverage summaries
+- verified-mapping count
+- release gaps for mappings without targets, mappings without evidence,
+  reviewed-but-unverified mappings, missing mapping owners, and referenced
+  targets without owners
+- one row per compliance mapping with framework metadata, verification state,
+  mapped targets, and grouped security, accessibility, and observability
+  evidence

@@ -113,5 +113,5 @@
       "targetKind": "observability.alert"
     }
   ],
-  "generators": ["schema-bundle"]
+  "generators": ["schema-bundle", "compliance-matrix"]
 }

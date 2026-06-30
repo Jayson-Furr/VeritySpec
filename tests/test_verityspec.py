@@ -8,6 +8,7 @@ from pathlib import Path
 from verityspec.generators import (
     generate_accessibility_report,
     generate_asyncapi,
+    generate_compliance_matrix,
     generate_openapi,
     generate_python_models,
     generate_security_report,
@@ -533,6 +534,128 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(
             ["product.accessible_checkout"],
             [target["id"] for target in claim["targets"]],
+        )
+
+    def test_compliance_matrix_summarizes_compliance_mappings(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "compliance")
+
+        matrix = generate_compliance_matrix(workspace)
+
+        self.assertEqual("compliance_matrix", matrix["type"])
+        self.assertEqual(1, matrix["mappingCount"])
+        self.assertEqual({"risk-and-compliance": 1}, matrix["summary"]["byOwner"])
+        self.assertEqual({"internal-access-review": 1}, matrix["summary"]["byFramework"])
+        self.assertEqual({"internal-access-review:IAR-1": 1}, matrix["summary"]["byRequirement"])
+        self.assertEqual({"control": 1}, matrix["summary"]["byMappingType"])
+        self.assertEqual({"reviewed": 1}, matrix["summary"]["byCoverage"])
+        self.assertEqual(1, matrix["summary"]["verifiedMappings"])
+        self.assertEqual(
+            {
+                "mappingsWithoutTargets": [],
+                "mappingsWithoutEvidence": [],
+                "reviewedUnverified": [],
+                "missingOwners": [],
+                "targetsWithoutOwners": [],
+            },
+            matrix["summary"]["releaseGaps"],
+        )
+        row = matrix["matrix"][0]
+        self.assertEqual("compliance.mapping.checkout_access_review", row["id"])
+        self.assertTrue(row["verified"])
+        self.assertFalse(row["attestation"])
+        self.assertEqual(
+            [
+                "security.control.checkout_access",
+                "accessibility.claim.checkout_keyboard",
+                "observability.metric.checkout_success_rate",
+            ],
+            [target["id"] for target in row["targets"]],
+        )
+        self.assertEqual(
+            ["security.control.checkout_access"],
+            [item["id"] for item in row["evidence"]["securityControls"]],
+        )
+        self.assertEqual(
+            ["accessibility.claim.checkout_keyboard"],
+            [item["id"] for item in row["evidence"]["accessibilityClaims"]],
+        )
+        self.assertEqual(
+            ["observability.metric.checkout_success_rate"],
+            [item["id"] for item in row["evidence"]["observabilitySignals"]],
+        )
+
+    def test_compliance_matrix_reports_release_gaps(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "compliance-gaps",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.compliance"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.unowned",
+                        "kind": "product",
+                        "name": "Unowned Product",
+                        "description": "A product with placeholder ownership.",
+                        "status": "ready",
+                        "owner": "todo",
+                        "version": "0.1.0",
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "compliance.json").write_text(
+                json.dumps(
+                    {
+                        "id": "compliance.mapping.unverified",
+                        "kind": "compliance.mapping",
+                        "name": "Unverified Mapping",
+                        "description": "A reviewed mapping that still needs verification.",
+                        "status": "ready",
+                        "owner": "risk",
+                        "framework": {
+                            "name": "internal",
+                            "requirementId": "INT-1",
+                        },
+                        "mappingType": "control",
+                        "coverage": "reviewed",
+                        "attestation": False,
+                        "verification": {
+                            "method": "not-verified",
+                            "evidence": "Review has not run yet.",
+                        },
+                        "references": [
+                            {
+                                "type": "covers",
+                                "target": "product.unowned",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            matrix = generate_compliance_matrix(workspace)
+
+        self.assertEqual(0, matrix["summary"]["verifiedMappings"])
+        self.assertEqual(
+            ["compliance.mapping.unverified"],
+            matrix["summary"]["releaseGaps"]["reviewedUnverified"],
+        )
+        self.assertEqual(
+            ["product.unowned"],
+            matrix["summary"]["releaseGaps"]["targetsWithoutOwners"],
         )
 
 

@@ -54,6 +54,7 @@ checks and keep a schema bundle for downstream tooling:
 verity validate examples/compliance
 verity lint examples/compliance --strict
 verity readiness examples/compliance --strict
+verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 ```
 

@@ -823,6 +823,35 @@ class VerityCliTests(unittest.TestCase):
         )
         self.assertEqual("accessibility.claim.checkout_keyboard", payload["claims"][0]["id"])
 
+    def test_compliance_matrix_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "compliance-matrix.json"
+            result = verity_command(
+                "generate",
+                "compliance-matrix",
+                "examples/compliance",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("compliance_matrix", payload["type"])
+        self.assertEqual(1, payload["mappingCount"])
+        self.assertEqual({"internal-access-review": 1}, payload["summary"]["byFramework"])
+        self.assertEqual(
+            {
+                "mappingsWithoutTargets": [],
+                "mappingsWithoutEvidence": [],
+                "reviewedUnverified": [],
+                "missingOwners": [],
+                "targetsWithoutOwners": [],
+            },
+            payload["summary"]["releaseGaps"],
+        )
+        self.assertEqual("compliance.mapping.checkout_access_review", payload["matrix"][0]["id"])
+
     def test_prismspec_import_reports_migration_details(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "imported"

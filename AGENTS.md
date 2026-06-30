@@ -168,6 +168,7 @@ verity generate validation-report examples/basic --out build/validation-report.j
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
+verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 ```

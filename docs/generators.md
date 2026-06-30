@@ -14,6 +14,7 @@ verity generate validation-report examples/basic --out build/validation-report.j
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
+verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
@@ -54,6 +55,17 @@ Accessibility reports include:
 - Per-claim owner, criterion, user need, surface, verification evidence,
   assistive technologies, acceptance criteria, and target records
 
+Compliance matrices include:
+
+- Workspace and VeritySpec version metadata
+- Compliance-mapping count
+- Mapping counts by owner, framework, requirement, mapping type, and coverage
+- Verified-mapping count
+- Release gaps for missing targets, missing evidence, reviewed-but-unverified
+  mappings, missing mapping owners, and targets without owners
+- Per-mapping framework metadata, verification state, mapped targets, and
+  grouped security, accessibility, and observability evidence
+
 ## Current Guarantees
 
 OpenAPI output includes:
@@ -85,6 +97,16 @@ Accessibility report output includes:
 - Verification status based on `coverage`, `verification.method`, and
   `verification.evidence`
 - Target records from explicit `appliesTo` references
+
+Compliance matrix output includes:
+
+- `compliance.mapping` records from workspaces that load
+  `verity.pack.compliance`
+- Verification status based on `verification.method` and
+  `verification.evidence`
+- Target records from explicit `covers` references
+- Evidence groups for linked `security.control`, `accessibility.claim`, and
+  `observability.*` records
 
 TypeScript and Python model generators support:
 
