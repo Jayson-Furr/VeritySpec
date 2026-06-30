@@ -108,6 +108,11 @@ workspace should include the generated pack ID in `packs`, point `packPaths` at
 the generated pack directory, and connect a `product` record to the generated
 record kind with a `uses` reference.
 
+The executable documentation fixture at
+[`docs/fixtures/pack-scaffold`](fixtures/pack-scaffold/README.md) shows that
+complete layout. It includes a generated `verity.pack.features` pack under
+`packs/features` and a consuming workspace under `workspace`.
+
 ## External Packs
 
 Workspaces can load local packs with `packPaths`:
@@ -132,6 +137,9 @@ verity generate schema-bundle ./workspace --pack-path ./packs/features --out bui
 verity generate pack-capability-index ./workspace --pack-path ./packs/features --out build/pack-capability-index.json
 verity pack list --path ./packs/features
 verity pack validate verity.pack.features --path ./packs/features
+verity validate docs/fixtures/pack-scaffold/workspace
+verity lint docs/fixtures/pack-scaffold/workspace --strict
+verity readiness docs/fixtures/pack-scaffold/workspace --strict
 ```
 
 External packs use the same manifest schema, strict JSON Schema checks, shared

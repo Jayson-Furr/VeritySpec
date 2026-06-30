@@ -1,0 +1,14 @@
+{
+  "workspace": "docs.pack_scaffold",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.features"
+  ],
+  "packPaths": [
+    "../packs/features"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}

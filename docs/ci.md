@@ -122,6 +122,17 @@ verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/c
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 ```
 
+For generated pack scaffold documentation fixtures:
+
+```bash
+verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features
+verity validate docs/fixtures/pack-scaffold/workspace
+verity lint docs/fixtures/pack-scaffold/workspace --strict
+verity readiness docs/fixtures/pack-scaffold/workspace --strict
+verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
+verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
+```
+
 For migration coverage, smoke test any committed PrismSpec fixtures:
 
 ```bash

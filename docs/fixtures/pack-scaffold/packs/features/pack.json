@@ -1,0 +1,44 @@
+{
+  "id": "verity.pack.features",
+  "version": "0.1.0",
+  "name": "Feature Pack",
+  "description": "Feature flag records for pack scaffold documentation.",
+  "schemas": [
+    {
+      "kind": "feature.flag",
+      "path": "schemas/feature-flag.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "feature.flag.release",
+      "kind": "feature.flag",
+      "required": [
+        "owner",
+        "name",
+        "description"
+      ]
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "uses",
+      "targetKind": "feature.flag"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit a JSON Schema bundle for records loaded by this pack.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "feature.flag"
+      ]
+    }
+  ]
+}

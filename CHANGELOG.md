@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added executable pack scaffold documentation fixtures showing a generated
+  external pack and a consuming workspace layout for external pack authors.
+
 ## 0.32.0
 
 - Added `verity generate pack-capability-index` for registry reports that
