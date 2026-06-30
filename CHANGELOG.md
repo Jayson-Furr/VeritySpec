@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added product-contract enforcement profiles for release, strict, regulated,
+  public API, and internal-tool workflows.
+
 ## 0.26.0
 
 - Added product-surface pack boundary guidance for future GUI, desktop, mobile,

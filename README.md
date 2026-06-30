@@ -38,6 +38,8 @@ This implementation provides:
   clients.
 - Readiness gates driven by pack metadata, including conditional pack rules
   for release-blocking policy and security evidence freshness.
+- Product-contract enforcement profiles for release, strict, regulated,
+  public API, and internal-tool workflows.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices, and
@@ -98,9 +100,11 @@ verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
 verity validate examples/basic
+verity validate examples/basic --profile release --format json
 verity validate tests/fixtures/custom_pack_workspace
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity doctor examples/basic --profile public-api --format json
 verity readiness examples/security --strict
 verity readiness examples/observability --strict
 verity readiness examples/accessibility --strict
@@ -146,6 +150,7 @@ verity readiness examples/basic --strict --format json
 verity validate examples/basic --github-annotations
 verity readiness examples/basic --strict --github-annotations
 verity doctor examples/basic --format json
+verity doctor examples/basic --profile public-api --format json
 verity doctor examples/basic --report-out build/doctor-report.json
 ```
 
@@ -267,6 +272,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
+- [Product contract profiles](docs/product-contract-profiles.md)
 - [Security pack](docs/security-pack.md)
 - [Observability pack](docs/observability-pack.md)
 - [Accessibility pack](docs/accessibility-pack.md)

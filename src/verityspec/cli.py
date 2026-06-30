@@ -44,6 +44,7 @@ from .migrations import (
 )
 from .pack_validation import list_pack_summaries, validate_packs
 from .packs import load_pack_registry
+from .profiles import PROFILE_CHOICES, profile_issues, resolve_profile
 from .readiness import evaluate_readiness
 from .validation import lint_workspace, validate_workspace
 from .versions import CURRENT_SPEC_VERSION
@@ -84,10 +85,10 @@ def print_issue_summary(label: str, issues) -> None:
         print(f"{label} completed with {errors} error(s), {warnings} warning(s).")
 
 
-def issue_result(command_name: str, issues) -> dict:
+def issue_result(command_name: str, issues, profile: dict | None = None) -> dict:
     errors = issue_count(issues, "error")
     warnings = issue_count(issues, "warning")
-    return {
+    result = {
         "command": command_name,
         "passed": errors == 0,
         "summary": {
@@ -97,11 +98,20 @@ def issue_result(command_name: str, issues) -> dict:
         },
         "issues": [issue.to_dict() for issue in issues],
     }
+    if profile is not None:
+        result["profile"] = profile
+    return result
 
 
-def print_issue_result(label: str, command_name: str, issues, output_format: str) -> None:
+def print_issue_result(
+    label: str,
+    command_name: str,
+    issues,
+    output_format: str,
+    profile: dict | None = None,
+) -> None:
     if output_format == "json":
-        print(json.dumps(issue_result(command_name, issues), indent=2))
+        print(json.dumps(issue_result(command_name, issues, profile), indent=2))
         return
     print_issues(issues, sys.stdout)
     print_issue_summary(label, issues)
@@ -528,28 +538,33 @@ def cmd_pack_init(args: argparse.Namespace) -> int:
 
 def cmd_validate(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
-    issues = validate_workspace(workspace, registry, strict=args.strict)
-    print_issue_result("Validation", "validate", issues, args.format)
+    effective = resolve_profile(args.profile, strict=args.strict, fail_on=args.fail_on)
+    issues = validate_workspace(workspace, registry, strict=effective.strict)
+    issues.extend(profile_issues(workspace, effective.profile))
+    print_issue_result("Validation", "validate", issues, args.format, effective.to_dict())
     maybe_print_github_annotations(args, issues)
-    return issue_exit_with_fail_on(issues, args.fail_on)
+    return issue_exit_with_fail_on(issues, effective.fail_on)
 
 
 def cmd_lint(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
-    issues = lint_workspace(workspace, registry, strict=args.strict)
-    print_issue_result("Lint", "lint", issues, args.format)
+    effective = resolve_profile(args.profile, strict=args.strict, fail_on=args.fail_on)
+    issues = lint_workspace(workspace, registry, strict=effective.strict)
+    issues.extend(profile_issues(workspace, effective.profile))
+    print_issue_result("Lint", "lint", issues, args.format, effective.to_dict())
     maybe_print_github_annotations(args, issues)
-    return issue_exit_with_fail_on(issues, args.fail_on)
+    return issue_exit_with_fail_on(issues, effective.fail_on)
 
 
 def cmd_readiness(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
-    validation_issues = validate_workspace(workspace, registry, strict=args.strict)
-    readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
-    issues = validation_issues + readiness_issues
-    print_issue_result("Readiness", "readiness", issues, args.format)
+    effective = resolve_profile(args.profile, strict=args.strict, fail_on=args.fail_on)
+    validation_issues = validate_workspace(workspace, registry, strict=effective.strict)
+    readiness_issues = evaluate_readiness(workspace, registry, strict=effective.strict)
+    issues = validation_issues + readiness_issues + profile_issues(workspace, effective.profile)
+    print_issue_result("Readiness", "readiness", issues, args.format, effective.to_dict())
     maybe_print_github_annotations(args, issues)
-    return issue_exit_with_fail_on(issues, args.fail_on)
+    return issue_exit_with_fail_on(issues, effective.fail_on)
 
 
 def cmd_graph(args: argparse.Namespace) -> int:
@@ -724,10 +739,16 @@ def cmd_import(args: argparse.Namespace) -> int:
 
 def cmd_doctor(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
-    validation_issues = validate_workspace(workspace, registry, strict=args.strict)
-    lint_issues = lint_workspace(workspace, registry, strict=args.strict)
-    readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
-    issues = dedupe_issues(validation_issues + lint_issues + readiness_issues)
+    effective = resolve_profile(args.profile, strict=args.strict, fail_on=args.fail_on)
+    validation_issues = validate_workspace(workspace, registry, strict=effective.strict)
+    lint_issues = lint_workspace(workspace, registry, strict=effective.strict)
+    readiness_issues = evaluate_readiness(workspace, registry, strict=effective.strict)
+    issues = dedupe_issues(
+        validation_issues
+        + lint_issues
+        + readiness_issues
+        + profile_issues(workspace, effective.profile)
+    )
     graph = build_graph(workspace)
     result = {
         "command": "doctor",
@@ -738,7 +759,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             "nodes": len(graph["nodes"]),
             "edges": len(graph["edges"]),
         },
-        "passed": not should_fail(issues, args.fail_on),
+        "passed": not should_fail(issues, effective.fail_on),
         "summary": {
             "errors": issue_count(issues, "error"),
             "warnings": issue_count(issues, "warning"),
@@ -746,6 +767,9 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         },
         "issues": [issue.to_dict() for issue in issues],
     }
+    profile = effective.to_dict()
+    if profile is not None:
+        result["profile"] = profile
     if args.report_out:
         write_generated(result, args.report_out)
     if args.format == "json":
@@ -819,6 +843,13 @@ def build_parser() -> argparse.ArgumentParser:
             help="Additional local pack directory or pack.json path.",
         )
 
+    def add_profile_argument(command_parser: argparse.ArgumentParser) -> None:
+        command_parser.add_argument(
+            "--profile",
+            choices=PROFILE_CHOICES,
+            help="Apply a product-contract enforcement profile.",
+        )
+
     init_parser = subparsers.add_parser("init", help="Create a VeritySpec workspace.")
     init_parser.add_argument("path")
     init_parser.add_argument("--name")
@@ -836,7 +867,8 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("workspace")
     validate_parser.add_argument("--strict", action="store_true")
     validate_parser.add_argument("--format", choices=["text", "json"], default="text")
-    validate_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    validate_parser.add_argument("--fail-on", choices=["error", "warning"])
+    add_profile_argument(validate_parser)
     validate_parser.add_argument(
         "--github-annotations",
         action="store_true",
@@ -849,7 +881,8 @@ def build_parser() -> argparse.ArgumentParser:
     lint_parser.add_argument("workspace")
     lint_parser.add_argument("--strict", action="store_true")
     lint_parser.add_argument("--format", choices=["text", "json"], default="text")
-    lint_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    lint_parser.add_argument("--fail-on", choices=["error", "warning"])
+    add_profile_argument(lint_parser)
     lint_parser.add_argument(
         "--github-annotations",
         action="store_true",
@@ -862,7 +895,8 @@ def build_parser() -> argparse.ArgumentParser:
     readiness_parser.add_argument("workspace")
     readiness_parser.add_argument("--strict", action="store_true")
     readiness_parser.add_argument("--format", choices=["text", "json"], default="text")
-    readiness_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    readiness_parser.add_argument("--fail-on", choices=["error", "warning"])
+    add_profile_argument(readiness_parser)
     readiness_parser.add_argument(
         "--github-annotations",
         action="store_true",
@@ -875,7 +909,8 @@ def build_parser() -> argparse.ArgumentParser:
     doctor_parser.add_argument("workspace")
     doctor_parser.add_argument("--strict", action="store_true")
     doctor_parser.add_argument("--format", choices=["text", "json"], default="text")
-    doctor_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    doctor_parser.add_argument("--fail-on", choices=["error", "warning"])
+    add_profile_argument(doctor_parser)
     doctor_parser.add_argument("--report-out", help="Write the structured doctor report JSON to a file.")
     add_pack_path_argument(doctor_parser)
     doctor_parser.set_defaults(func=cmd_doctor)

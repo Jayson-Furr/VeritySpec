@@ -17,6 +17,15 @@ verity generate validation-report examples/basic --out build/validation-report.j
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
 
+Use product-contract profiles when a workspace has a known enforcement posture:
+
+```bash
+verity validate examples/basic --profile release
+verity lint examples/basic --profile strict
+verity readiness examples/basic --profile release
+verity doctor examples/basic --profile public-api --format json
+```
+
 VeritySpec's own CI also executes safe local command examples from `README.md`.
 Install and environment-setup snippets remain documentation-only, while local
 `verity` examples are smoke-tested with temporary `build/` output paths so

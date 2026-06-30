@@ -38,6 +38,18 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "The requested pack ID is not available.",
         "resolution": "Run `verity pack list` and use one of the listed pack IDs.",
     },
+    "profile.required_pack": {
+        "title": "Required profile pack missing",
+        "severity": "error",
+        "description": "The selected product-contract profile requires a pack that is not loaded by the workspace.",
+        "resolution": "Add the required pack to the workspace, or use a profile that matches the workspace scope.",
+    },
+    "profile.required_record_kind": {
+        "title": "Required profile record kind missing",
+        "severity": "error",
+        "description": "The selected product-contract profile requires at least one record of a specific kind.",
+        "resolution": "Add the required record kind, or use a profile that matches the workspace scope.",
+    },
     "readiness.required": {
         "title": "Readiness field missing",
         "severity": "warning",
