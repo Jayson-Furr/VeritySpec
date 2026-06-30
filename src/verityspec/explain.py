@@ -146,6 +146,12 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A compliance mapping marked reviewed is missing verification evidence.",
         "resolution": "Use a verification method other than not-verified and provide evidence, or lower coverage until review is complete.",
     },
+    "deployment.target.production_release_controls_missing": {
+        "title": "Production deployment controls missing",
+        "severity": "warning",
+        "description": "A production deployment target is missing required release approval, rollback, or health-check controls.",
+        "resolution": "Require release approval, declare a rollback plan, and add a production healthCheckUrl.",
+    },
     "workspace.packPaths.invalid": {
         "title": "Invalid workspace pack paths",
         "severity": "error",

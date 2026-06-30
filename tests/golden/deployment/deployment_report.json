@@ -1,0 +1,87 @@
+{
+  "type": "deployment_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.deployment",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "targetCount": 1,
+  "runtimeCount": 1,
+  "summary": {
+    "targets": 1,
+    "runtimes": 1,
+    "byEnvironment": {
+      "production": 1
+    },
+    "byProvider": {
+      "aws": 1
+    },
+    "byPlatform": {
+      "kubernetes": 1
+    },
+    "runtimesByType": {
+      "container": 1
+    },
+    "releaseGaps": {
+      "targetsWithoutRuntime": [],
+      "runtimesWithoutTargets": [],
+      "productionWithoutApproval": [],
+      "productionWithoutHealthChecks": [],
+      "targetsWithoutRollbackPlan": [],
+      "missingOwners": []
+    }
+  },
+  "targets": [
+    {
+      "id": "deployment.target.checkout_production",
+      "name": "Checkout Production",
+      "status": "ready",
+      "owner": "platform-operations",
+      "environment": "production",
+      "provider": "aws",
+      "platform": "kubernetes",
+      "regions": [
+        "us-east-1",
+        "us-west-2"
+      ],
+      "url": "https://checkout.example.com",
+      "healthCheckUrl": "https://checkout.example.com/healthz",
+      "runtime": {
+        "id": "deployment.runtime.checkout_api",
+        "name": "Checkout API Runtime",
+        "owner": "checkout-platform",
+        "runtimeType": "container",
+        "runtimeName": "python",
+        "version": "3.12",
+        "artifactType": "container-image"
+      },
+      "releasePolicy": {
+        "strategy": "rolling",
+        "approvalRequired": true,
+        "owner": "release-management",
+        "changeWindow": "business-hours",
+        "freezePolicy": "holiday-freeze"
+      },
+      "rollbackPlan": "docs/ops/checkout-production-rollback.md",
+      "references": []
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "deployment.runtime.checkout_api",
+      "name": "Checkout API Runtime",
+      "status": "ready",
+      "owner": "checkout-platform",
+      "runtimeType": "container",
+      "runtimeName": "python",
+      "version": "3.12",
+      "artifactType": "container-image",
+      "language": "python",
+      "entrypoint": "verityspec-checkout-api",
+      "dependencies": [
+        "postgres",
+        "redis"
+      ]
+    }
+  ]
+}

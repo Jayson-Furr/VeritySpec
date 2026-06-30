@@ -19,6 +19,7 @@ CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
 MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
+DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
@@ -63,6 +64,14 @@ def normalize_security_report_for_golden(report: dict) -> dict:
 
 
 def normalize_observability_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_deployment_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -1431,6 +1440,73 @@ class VerityCliTests(unittest.TestCase):
             payload["summary"]["releaseGaps"],
         )
         self.assertEqual("compliance.mapping.checkout_access_review", payload["matrix"][0]["id"])
+
+    def test_deployment_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "deployment-report.json"
+            result = verity_command(
+                "generate",
+                "deployment-report",
+                "examples/deployment",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("deployment_report", payload["type"])
+        self.assertEqual(1, payload["targetCount"])
+        self.assertEqual(1, payload["runtimeCount"])
+        self.assertEqual({"production": 1}, payload["summary"]["byEnvironment"])
+        self.assertEqual(
+            {
+                "targetsWithoutRuntime": [],
+                "runtimesWithoutTargets": [],
+                "productionWithoutApproval": [],
+                "productionWithoutHealthChecks": [],
+                "targetsWithoutRollbackPlan": [],
+                "missingOwners": [],
+            },
+            payload["summary"]["releaseGaps"],
+        )
+        self.assertEqual("deployment.target.checkout_production", payload["targets"][0]["id"])
+
+    def test_deployment_report_generator_matches_golden_file(self) -> None:
+        expected = json.loads(DEPLOYMENT_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "deployment-report.json"
+            result = verity_command(
+                "generate",
+                "deployment-report",
+                "examples/deployment",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "deployment"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_deployment_report_for_golden(payload))
+
+    def test_explain_deployment_issue_code_json_output(self) -> None:
+        result = verity_command(
+            "explain",
+            "deployment.target.production_release_controls_missing",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual(
+            "deployment.target.production_release_controls_missing",
+            payload["code"],
+        )
+        self.assertEqual("Production deployment controls missing", payload["title"])
 
     def test_roadmap_report_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

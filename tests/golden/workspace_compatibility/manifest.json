@@ -235,6 +235,32 @@
       ]
     },
     {
+      "path": "examples/deployment",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.deployment"
+      ],
+      "recordCount": 3,
+      "recordKinds": {
+        "deployment.runtime": 1,
+        "deployment.target": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "tests/fixtures/generator_maturity",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

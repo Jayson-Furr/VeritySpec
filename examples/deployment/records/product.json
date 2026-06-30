@@ -1,0 +1,15 @@
+{
+  "id": "product.checkout_delivery",
+  "kind": "product",
+  "name": "Checkout Delivery",
+  "description": "Deployment contract for the checkout service production runtime.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "deploysTo",
+      "target": "deployment.target.checkout_production"
+    }
+  ]
+}

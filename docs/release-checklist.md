@@ -32,14 +32,19 @@ verity readiness examples/accessibility --strict
 verity validate examples/compliance
 verity lint examples/compliance --strict
 verity readiness examples/compliance --strict
+verity validate examples/deployment
+verity lint examples/deployment --strict
+verity readiness examples/deployment --strict
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
+verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
+verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
 python -m build
 twine check dist/*
 ```
@@ -53,6 +58,7 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity --version
 /tmp/verityspec-wheel/bin/verity pack validate
 /tmp/verityspec-wheel/bin/verity validate examples/basic
+/tmp/verityspec-wheel/bin/verity validate examples/deployment
 ```
 
 If `twine` is installed but the console script is not on `PATH`, run

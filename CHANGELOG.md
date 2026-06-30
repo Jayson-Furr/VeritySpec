@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added the first deployment-target pack with runtime and deployment target
+  schemas, production readiness controls, an executable deployment example,
+  and deployment report generation.
+
 ## 0.27.0
 
 - Added product-contract enforcement profiles for release, strict, regulated,

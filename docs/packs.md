@@ -14,6 +14,8 @@ Built-in packs currently include:
 - `verity.pack.observability`: telemetry, metrics, dashboards, and alerts.
 - `verity.pack.accessibility`: accessibility claims, checks, and evidence.
 - `verity.pack.compliance`: compliance mappings and compliance matrix generation.
+- `verity.pack.deployment`: deployment runtimes, targets, release policies,
+  rollback plans, and deployment report generation.
 
 ## Manifest
 

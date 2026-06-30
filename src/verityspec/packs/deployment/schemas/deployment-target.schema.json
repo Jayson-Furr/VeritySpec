@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/v0.1/deployment/deployment-target.schema.json",
+  "title": "Deployment Target",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "environment",
+    "provider",
+    "platform",
+    "runtimeRef",
+    "regions",
+    "releasePolicy",
+    "rollbackPlan",
+    "references"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "deployment.target"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "ready", "deprecated", "removed"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "environment": {
+      "type": "string",
+      "enum": [
+        "development",
+        "test",
+        "staging",
+        "production",
+        "preview",
+        "disaster-recovery",
+        "other"
+      ]
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "kubernetes",
+        "serverless",
+        "vm",
+        "static-hosting",
+        "paas",
+        "mobile-store",
+        "desktop-distribution",
+        "managed-service",
+        "other"
+      ]
+    },
+    "runtimeRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "url": {
+      "type": "string"
+    },
+    "healthCheckUrl": {
+      "type": "string"
+    },
+    "configPath": {
+      "type": "string"
+    },
+    "releasePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "approvalRequired", "owner"],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": ["manual", "rolling", "blue-green", "canary", "feature-flag", "scheduled", "other"]
+        },
+        "approvalRequired": {
+          "type": "boolean"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changeWindow": {
+          "type": "string"
+        },
+        "freezePolicy": {
+          "type": "string"
+        }
+      }
+    },
+    "rollbackPlan": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

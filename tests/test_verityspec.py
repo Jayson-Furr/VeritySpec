@@ -10,6 +10,7 @@ from verityspec.generators import (
     generate_accessibility_report,
     generate_asyncapi,
     generate_compliance_matrix,
+    generate_deployment_report,
     generate_observability_report,
     generate_openapi,
     generate_python_models,
@@ -35,6 +36,7 @@ GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
 GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
+DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 
 
@@ -47,6 +49,14 @@ def normalize_security_report_for_golden(report: dict) -> dict:
 
 
 def normalize_observability_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_deployment_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -689,6 +699,7 @@ class VeritySpecTests(unittest.TestCase):
     def test_report_generators_accept_explicit_generated_at(self) -> None:
         security_workspace = load_workspace(ROOT / "examples" / "security")
         observability_workspace = load_workspace(ROOT / "examples" / "observability")
+        deployment_workspace = load_workspace(ROOT / "examples" / "deployment")
         registry = load_pack_registry(security_workspace.pack_ids, security_workspace.pack_paths)
 
         self.assertEqual(
@@ -714,6 +725,13 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(
             FIXED_GENERATED_AT,
             generate_roadmap_report(ROOT, generated_at=FIXED_GENERATED_AT)["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_deployment_report(
+                deployment_workspace,
+                generated_at=FIXED_GENERATED_AT,
+            )["generatedAt"],
         )
 
     def test_generated_at_value_rejects_invalid_datetime(self) -> None:
@@ -900,6 +918,113 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(
             ["product.unowned"],
             matrix["summary"]["releaseGaps"]["targetsWithoutOwners"],
+        )
+
+    def test_deployment_report_summarizes_targets_and_runtimes(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "deployment")
+
+        report = generate_deployment_report(workspace)
+
+        self.assertEqual("deployment_report", report["type"])
+        self.assertEqual(1, report["targetCount"])
+        self.assertEqual(1, report["runtimeCount"])
+        self.assertEqual({"production": 1}, report["summary"]["byEnvironment"])
+        self.assertEqual({"aws": 1}, report["summary"]["byProvider"])
+        self.assertEqual({"kubernetes": 1}, report["summary"]["byPlatform"])
+        self.assertEqual({"container": 1}, report["summary"]["runtimesByType"])
+        self.assertEqual(
+            {
+                "targetsWithoutRuntime": [],
+                "runtimesWithoutTargets": [],
+                "productionWithoutApproval": [],
+                "productionWithoutHealthChecks": [],
+                "targetsWithoutRollbackPlan": [],
+                "missingOwners": [],
+            },
+            report["summary"]["releaseGaps"],
+        )
+        self.assertEqual("deployment.target.checkout_production", report["targets"][0]["id"])
+        self.assertEqual(
+            "deployment.runtime.checkout_api",
+            report["targets"][0]["runtime"]["id"],
+        )
+
+    def test_deployment_report_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "deployment")
+        expected = json.loads(DEPLOYMENT_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_deployment_report(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "deployment"), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_deployment_report_for_golden(report))
+
+    def test_deployment_readiness_requires_production_controls(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "deployment-gaps",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.deployment"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runtime.json").write_text(
+                json.dumps(
+                    {
+                        "id": "deployment.runtime.api",
+                        "kind": "deployment.runtime",
+                        "name": "API Runtime",
+                        "description": "Runtime under test.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "runtimeType": "container",
+                        "runtimeName": "python",
+                        "version": "3.12",
+                        "artifactType": "container-image",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "target.json").write_text(
+                json.dumps(
+                    {
+                        "id": "deployment.target.production",
+                        "kind": "deployment.target",
+                        "name": "Production",
+                        "description": "Production target missing release controls.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "environment": "production",
+                        "provider": "aws",
+                        "platform": "kubernetes",
+                        "runtimeRef": "deployment.runtime.api",
+                        "regions": ["us-east-1"],
+                        "releasePolicy": {
+                            "strategy": "rolling",
+                            "approvalRequired": False,
+                            "owner": "release-management",
+                        },
+                        "rollbackPlan": "docs/rollback.md",
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn(
+            "deployment.target.production_release_controls_missing",
+            [issue.code for issue in issues],
         )
 
 

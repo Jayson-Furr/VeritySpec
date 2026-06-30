@@ -1135,6 +1135,132 @@ def generate_compliance_matrix(workspace: Workspace, generated_at: str | None = 
     }
 
 
+def deployment_runtime_summary(record: Record | None) -> dict[str, Any]:
+    if record is None:
+        return {}
+    return {
+        "id": record.id,
+        "name": record.data.get("name"),
+        "owner": record.data.get("owner"),
+        "runtimeType": record.data.get("runtimeType"),
+        "runtimeName": record.data.get("runtimeName"),
+        "version": record.data.get("version"),
+        "artifactType": record.data.get("artifactType"),
+    }
+
+
+def generate_deployment_report(workspace: Workspace, generated_at: str | None = None) -> dict:
+    runtimes = [record for record in workspace.records if record.kind == "deployment.runtime"]
+    targets = [record for record in workspace.records if record.kind == "deployment.target"]
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    runtime_target_ids = {
+        record.data.get("runtimeRef")
+        for record in targets
+        if isinstance(record.data.get("runtimeRef"), str)
+    }
+    target_entries: list[dict[str, Any]] = []
+    targets_without_runtime: list[str] = []
+    production_without_approval: list[str] = []
+    production_without_health_checks: list[str] = []
+    targets_without_rollback_plan: list[str] = []
+
+    for record in targets:
+        runtime_ref = record.data.get("runtimeRef")
+        runtime = records_by_id.get(runtime_ref) if isinstance(runtime_ref, str) else None
+        release_policy = record.data.get("releasePolicy", {})
+        approval_required = (
+            release_policy.get("approvalRequired")
+            if isinstance(release_policy, dict)
+            else None
+        )
+        is_production = record.data.get("environment") == "production"
+        has_health_check = bool(str(record.data.get("healthCheckUrl", "")).strip())
+        has_rollback_plan = bool(str(record.data.get("rollbackPlan", "")).strip())
+
+        if record.id and runtime is None:
+            targets_without_runtime.append(record.id)
+        if record.id and is_production and approval_required is not True:
+            production_without_approval.append(record.id)
+        if record.id and is_production and not has_health_check:
+            production_without_health_checks.append(record.id)
+        if record.id and not has_rollback_plan:
+            targets_without_rollback_plan.append(record.id)
+
+        target_entries.append(
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "status": record.data.get("status"),
+                "owner": record.data.get("owner"),
+                "environment": record.data.get("environment"),
+                "provider": record.data.get("provider"),
+                "platform": record.data.get("platform"),
+                "regions": record.data.get("regions", []),
+                "url": record.data.get("url"),
+                "healthCheckUrl": record.data.get("healthCheckUrl"),
+                "runtime": deployment_runtime_summary(runtime),
+                "releasePolicy": release_policy if isinstance(release_policy, dict) else {},
+                "rollbackPlan": record.data.get("rollbackPlan"),
+                "references": record.data.get("references", []),
+            }
+        )
+
+    runtime_entries = [
+        {
+            "id": record.id,
+            "name": record.data.get("name"),
+            "status": record.data.get("status"),
+            "owner": record.data.get("owner"),
+            "runtimeType": record.data.get("runtimeType"),
+            "runtimeName": record.data.get("runtimeName"),
+            "version": record.data.get("version"),
+            "artifactType": record.data.get("artifactType"),
+            "language": record.data.get("language"),
+            "entrypoint": record.data.get("entrypoint"),
+            "dependencies": record.data.get("dependencies", []),
+        }
+        for record in runtimes
+    ]
+    runtimes_without_targets = [
+        record.id
+        for record in runtimes
+        if record.id and record.id not in runtime_target_ids
+    ]
+    deployment_records = runtimes + targets
+    missing_owners = [
+        record.id for record in deployment_records if record.id and owner_missing(record)
+    ]
+
+    return {
+        "type": "deployment_report",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "targetCount": len(targets),
+        "runtimeCount": len(runtimes),
+        "summary": {
+            "targets": len(targets),
+            "runtimes": len(runtimes),
+            "byEnvironment": count_by_field(targets, "environment"),
+            "byProvider": count_by_field(targets, "provider"),
+            "byPlatform": count_by_field(targets, "platform"),
+            "runtimesByType": count_by_field(runtimes, "runtimeType"),
+            "releaseGaps": {
+                "targetsWithoutRuntime": targets_without_runtime,
+                "runtimesWithoutTargets": runtimes_without_targets,
+                "productionWithoutApproval": production_without_approval,
+                "productionWithoutHealthChecks": production_without_health_checks,
+                "targetsWithoutRollbackPlan": targets_without_rollback_plan,
+                "missingOwners": missing_owners,
+            },
+        },
+        "targets": target_entries,
+        "runtimes": runtime_entries,
+    }
+
+
 def has_reference(record: Record, relationship: str) -> bool:
     return bool(reference_targets(record, {}, relationship))
 

@@ -61,12 +61,17 @@ Conditional rules support:
 Security controls use `dateWithinDaysField` to compare
 `verification.lastVerified` against `verification.reviewCadenceDays`.
 
+Deployment targets use conditional readiness rules to require production
+release controls. A `deployment.target` with `environment: "production"` must
+require approval, declare a rollback plan, and expose a health-check URL.
+
 Run readiness checks:
 
 ```bash
 verity readiness examples/basic
 verity readiness examples/basic --strict
 verity readiness examples/basic --profile release
+verity readiness examples/deployment --strict
 verity readiness examples/basic --strict --format json
 ```
 

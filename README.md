@@ -24,8 +24,8 @@ This implementation provides:
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, events, security
-  controls, observability signals, accessibility claims, and compliance
-  mappings.
+  controls, observability signals, accessibility claims, compliance mappings,
+  and deployment targets.
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
@@ -42,8 +42,9 @@ This implementation provides:
   public API, and internal-tool workflows.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, security reports,
-  observability reports, accessibility reports, compliance matrices, and
-  roadmap governance reports, with OpenAPI path-parameter support and
+  observability reports, accessibility reports, compliance matrices,
+  deployment reports, and roadmap governance reports, with OpenAPI
+  path-parameter support and
   snapshot-tested type/model output including nested Python dataclasses and
   deterministic timestamp controls for generated JSON reports.
 - A PrismSpec importer that produces a converted workspace and migration report.
@@ -109,6 +110,7 @@ verity readiness examples/security --strict
 verity readiness examples/observability --strict
 verity readiness examples/accessibility --strict
 verity readiness examples/compliance --strict
+verity readiness examples/deployment --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -126,6 +128,7 @@ verity generate security-report examples/security --out build/security-report.js
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
+verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
@@ -178,6 +181,7 @@ verity readiness examples/basic --strict
 verity diff previous-workspace current-workspace --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate roadmap-report . --out build/roadmap-report.json
 ```
 
@@ -260,6 +264,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/observability](examples/observability/verityspec.json): focused observability workspace.
 - [examples/accessibility](examples/accessibility/verityspec.json): focused accessibility-claim workspace.
 - [examples/compliance](examples/compliance/verityspec.json): focused compliance-mapping workspace.
+- [examples/deployment](examples/deployment/verityspec.json): focused deployment target workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -277,6 +282,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Observability pack](docs/observability-pack.md)
 - [Accessibility pack](docs/accessibility-pack.md)
 - [Compliance pack](docs/compliance-pack.md)
+- [Deployment pack](docs/deployment-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)
