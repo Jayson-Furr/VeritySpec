@@ -289,6 +289,39 @@
       ]
     },
     {
+      "path": "examples/game-assets",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.game-core",
+        "verity.pack.game-assets"
+      ],
+      "recordCount": 9,
+      "recordKinds": {
+        "game.concept-art": 1,
+        "game.gdd-source": 1,
+        "game.identity-image": 1,
+        "game.loop": 1,
+        "game.mode": 1,
+        "game.product": 1,
+        "game.prototype-scope": 1,
+        "game.visual-identity": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "tests/fixtures/generator_maturity",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

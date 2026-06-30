@@ -1,0 +1,14 @@
+{
+  "id": "game.identity-image.key_art",
+  "kind": "game.identity-image",
+  "name": "Dream Extraction Key Art",
+  "description": "Key art image showing a co-op squad at the edge of a collapsing dream zone.",
+  "status": "ready",
+  "owner": "art-direction",
+  "path": "art/identity/key-art.png",
+  "imageType": "key-art",
+  "format": "png",
+  "usage": "Primary game identity image for pitch, prototype handoff, and store-page exploration.",
+  "license": "studio-owned",
+  "references": []
+}

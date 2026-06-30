@@ -1,0 +1,28 @@
+{
+  "id": "game.concept-art.dream_zone_ruins",
+  "kind": "game.concept-art",
+  "name": "Dream Zone Ruins Concept",
+  "description": "Environment concept art for the first unstable dream zone.",
+  "status": "ready",
+  "owner": "art-direction",
+  "path": "art/concept/dream-zone-ruins.png",
+  "conceptType": "environment",
+  "subject": "Collapsing dream-zone ruins with memory-shard focal points.",
+  "format": "png",
+  "styleTags": [
+    "liminal",
+    "ruined",
+    "shard-lit"
+  ],
+  "notes": "Used to keep greybox prototype lighting and silhouette choices aligned with the GDD.",
+  "references": [
+    {
+      "type": "supportsMode",
+      "target": "game.mode.coop_extraction"
+    },
+    {
+      "type": "supportsLoop",
+      "target": "game.loop.extract_escape_upgrade"
+    }
+  ]
+}

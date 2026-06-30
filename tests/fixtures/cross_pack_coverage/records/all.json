@@ -44,6 +44,10 @@
         {
           "type": "describes",
           "target": "game.product.coverage_adventure"
+        },
+        {
+          "type": "hasGameAssets",
+          "target": "game.visual-identity.coverage_style"
         }
       ]
     },
@@ -367,6 +371,14 @@
         {
           "type": "prototypeScope",
           "target": "game.prototype-scope.coverage_slice"
+        },
+        {
+          "type": "derivedFrom",
+          "target": "game.gdd-source.coverage_pitch"
+        },
+        {
+          "type": "hasVisualIdentity",
+          "target": "game.visual-identity.coverage_style"
         }
       ]
     },
@@ -434,6 +446,96 @@
         },
         {
           "type": "validatesLoop",
+          "target": "game.loop.coverage_status"
+        }
+      ]
+    },
+    {
+      "id": "game.gdd-source.coverage_pitch",
+      "kind": "game.gdd-source",
+      "name": "Coverage Adventure GDD",
+      "description": "GDD source fixture for the game-assets coverage surface.",
+      "status": "ready",
+      "owner": "creative-direction",
+      "path": "gdd/coverage-adventure.md",
+      "sourceType": "markdown",
+      "summary": "Two-player coverage adventure concept used by coverage-dashboard tests.",
+      "references": [
+        {
+          "type": "derivesRecord",
+          "target": "game.mode.coverage_coop"
+        },
+        {
+          "type": "derivesRecord",
+          "target": "game.loop.coverage_status"
+        },
+        {
+          "type": "derivesRecord",
+          "target": "game.prototype-scope.coverage_slice"
+        }
+      ]
+    },
+    {
+      "id": "game.visual-identity.coverage_style",
+      "kind": "game.visual-identity",
+      "name": "Coverage Adventure Visual Identity",
+      "description": "Visual identity fixture for the game-assets coverage surface.",
+      "status": "ready",
+      "owner": "art-direction",
+      "tone": "Bright, readable, and operational.",
+      "artDirection": "Simple status-portal imagery with shard-shaped coverage motifs.",
+      "styleKeywords": [
+        "readable",
+        "cooperative",
+        "shard-lit"
+      ],
+      "references": [
+        {
+          "type": "usesIdentityImage",
+          "target": "game.identity-image.coverage_key_art"
+        },
+        {
+          "type": "usesConceptArt",
+          "target": "game.concept-art.coverage_zone"
+        }
+      ]
+    },
+    {
+      "id": "game.identity-image.coverage_key_art",
+      "kind": "game.identity-image",
+      "name": "Coverage Adventure Key Art",
+      "description": "Identity image fixture for the game-assets coverage surface.",
+      "status": "ready",
+      "owner": "art-direction",
+      "path": "art/identity/coverage-key-art.png",
+      "imageType": "key-art",
+      "format": "png",
+      "usage": "Coverage-dashboard fixture identity image.",
+      "references": []
+    },
+    {
+      "id": "game.concept-art.coverage_zone",
+      "kind": "game.concept-art",
+      "name": "Coverage Zone Concept",
+      "description": "Concept art fixture for the game-assets coverage surface.",
+      "status": "ready",
+      "owner": "art-direction",
+      "path": "art/concept/coverage-zone.png",
+      "conceptType": "environment",
+      "subject": "A status portal surrounded by coverage shards.",
+      "format": "png",
+      "styleTags": [
+        "status",
+        "portal",
+        "coverage"
+      ],
+      "references": [
+        {
+          "type": "supportsMode",
+          "target": "game.mode.coverage_coop"
+        },
+        {
+          "type": "supportsLoop",
           "target": "game.loop.coverage_status"
         }
       ]

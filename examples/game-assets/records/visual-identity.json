@@ -1,0 +1,31 @@
+{
+  "id": "game.visual-identity.dream_extraction",
+  "kind": "game.visual-identity",
+  "name": "Dream Extraction Visual Identity",
+  "description": "Primary visual identity for the Dream Extraction game concept.",
+  "status": "ready",
+  "owner": "art-direction",
+  "tone": "Surreal, tense, cooperative, and dangerous.",
+  "artDirection": "High-contrast liminal dream spaces with readable silhouettes and shard-lit focal points.",
+  "styleKeywords": [
+    "surreal",
+    "liminal",
+    "cooperative",
+    "dangerous"
+  ],
+  "palette": [
+    "deep-indigo",
+    "memory-gold",
+    "cold-mist"
+  ],
+  "references": [
+    {
+      "type": "usesIdentityImage",
+      "target": "game.identity-image.key_art"
+    },
+    {
+      "type": "usesConceptArt",
+      "target": "game.concept-art.dream_zone_ruins"
+    }
+  ]
+}

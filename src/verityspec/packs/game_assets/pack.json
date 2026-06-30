@@ -1,0 +1,158 @@
+{
+  "id": "verity.pack.game-assets",
+  "version": "0.1.0",
+  "name": "VeritySpec Game Assets Pack",
+  "description": "Game GDD source, visual identity, identity image, and concept art records for creative-source product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "game.gdd-source",
+      "path": "schemas/game-gdd-source.schema.json"
+    },
+    {
+      "kind": "game.visual-identity",
+      "path": "schemas/game-visual-identity.schema.json"
+    },
+    {
+      "kind": "game.identity-image",
+      "path": "schemas/game-identity-image.schema.json"
+    },
+    {
+      "kind": "game.concept-art",
+      "path": "schemas/game-concept-art.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "game.gdd-source.release",
+      "kind": "game.gdd-source",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "path",
+        "sourceType",
+        "summary"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "game.visual-identity.release",
+      "kind": "game.visual-identity",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "tone",
+        "artDirection"
+      ],
+      "minItems": {
+        "styleKeywords": 1,
+        "references": 2
+      }
+    },
+    {
+      "id": "game.identity-image.release",
+      "kind": "game.identity-image",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "path",
+        "imageType",
+        "format",
+        "usage"
+      ]
+    },
+    {
+      "id": "game.concept-art.release",
+      "kind": "game.concept-art",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "path",
+        "conceptType",
+        "subject",
+        "format"
+      ],
+      "minItems": {
+        "styleTags": 1,
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasGameAssets",
+      "targetKind": "game.visual-identity"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "derivedFrom",
+      "targetKind": "game.gdd-source"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasVisualIdentity",
+      "targetKind": "game.visual-identity"
+    },
+    {
+      "sourceKind": "game.gdd-source",
+      "relationship": "derivesRecord",
+      "targetKind": "game.product"
+    },
+    {
+      "sourceKind": "game.gdd-source",
+      "relationship": "derivesRecord",
+      "targetKind": "game.mode"
+    },
+    {
+      "sourceKind": "game.gdd-source",
+      "relationship": "derivesRecord",
+      "targetKind": "game.loop"
+    },
+    {
+      "sourceKind": "game.gdd-source",
+      "relationship": "derivesRecord",
+      "targetKind": "game.prototype-scope"
+    },
+    {
+      "sourceKind": "game.visual-identity",
+      "relationship": "usesIdentityImage",
+      "targetKind": "game.identity-image"
+    },
+    {
+      "sourceKind": "game.visual-identity",
+      "relationship": "usesConceptArt",
+      "targetKind": "game.concept-art"
+    },
+    {
+      "sourceKind": "game.concept-art",
+      "relationship": "supportsMode",
+      "targetKind": "game.mode"
+    },
+    {
+      "sourceKind": "game.concept-art",
+      "relationship": "supportsLoop",
+      "targetKind": "game.loop"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for game-assets records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "game.gdd-source",
+        "game.visual-identity",
+        "game.identity-image",
+        "game.concept-art"
+      ]
+    }
+  ]
+}

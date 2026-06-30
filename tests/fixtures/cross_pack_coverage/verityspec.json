@@ -11,7 +11,8 @@
     "verity.pack.observability",
     "verity.pack.compliance",
     "verity.pack.deployment",
-    "verity.pack.game-core"
+    "verity.pack.game-core",
+    "verity.pack.game-assets"
   ],
   "packPaths": [],
   "records": [

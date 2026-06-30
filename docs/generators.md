@@ -18,6 +18,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
+verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -101,7 +102,8 @@ Coverage dashboards include:
 - Workspace and VeritySpec version metadata
 - Loaded pack IDs and total product-contract record count
 - Tracked product-surface coverage for API, CLI, events, security,
-  accessibility, observability, compliance, deployment, and game-core records
+  accessibility, observability, compliance, deployment, game-core, and
+  game-assets records
 - Counts by product surface and record kind
 - Release gaps for missing surface records, loaded surface packs without
   records, products without surface references, and product-specific missing
@@ -210,7 +212,7 @@ Coverage dashboard output includes:
 - Product-surface records from all currently supported built-in packs
 - Product-level references through `exposes`, `ships`, `emits`, `securedBy`,
   `accessibilityCoveredBy`, `observes`, `complianceMappedBy`, `deploysTo`,
-  and `describes`
+  `describes`, and `hasGameAssets`
 - Summary coverage percentages based on the supported non-core product
   surfaces
 - Golden fixture coverage through `tests/fixtures/cross_pack_coverage`
@@ -248,9 +250,10 @@ OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
 is covered by golden-file tests. The `examples/security` security report,
 `examples/observability` observability report and schema bundle, deployment
 report, cross-pack coverage dashboard, pack capability index, and
-product-impact report are also covered by committed golden fixtures. Changes
-to those generators should update the golden files only when the output
-contract intentionally changes.
+product-impact report are also covered by committed golden fixtures. Game-core
+and game-assets schema-bundle smoke checks cover bundled schema generation for
+the built-in game packs. Changes to those generators should update the golden
+files only when the output contract intentionally changes.
 
 Known limits:
 
