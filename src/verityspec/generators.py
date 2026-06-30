@@ -732,6 +732,263 @@ def generate_accessibility_report(workspace: Workspace) -> dict:
     }
 
 
+def is_compliance_mapping_verified(record: Record) -> bool:
+    verification = record.data.get("verification")
+    if not isinstance(verification, dict):
+        return False
+    return (
+        verification.get("method") != "not-verified"
+        and isinstance(verification.get("evidence"), str)
+        and bool(verification.get("evidence", "").strip())
+    )
+
+
+def compliance_framework_name(record: Record) -> str:
+    framework = record.data.get("framework")
+    if isinstance(framework, dict):
+        name = framework.get("name")
+        if isinstance(name, str) and name:
+            return name
+    return "unspecified"
+
+
+def compliance_requirement_key(record: Record) -> str:
+    framework = record.data.get("framework")
+    if not isinstance(framework, dict):
+        return "unspecified"
+    name = framework.get("name")
+    requirement_id = framework.get("requirementId")
+    if isinstance(name, str) and name and isinstance(requirement_id, str) and requirement_id:
+        return f"{name}:{requirement_id}"
+    if isinstance(requirement_id, str) and requirement_id:
+        return requirement_id
+    return "unspecified"
+
+
+def count_compliance_field(records: list[Record], field: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for record in records:
+        if field == "framework":
+            key = compliance_framework_name(record)
+        elif field == "requirement":
+            key = compliance_requirement_key(record)
+        else:
+            value = record.data.get(field)
+            key = value if isinstance(value, str) and value else "unspecified"
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items(), key=lambda item: item[0]))
+
+
+def compliance_target_summaries(
+    record: Record,
+    records_by_id: dict[str, Record],
+) -> list[dict[str, Any]]:
+    targets: list[dict[str, Any]] = []
+    for item in record.data.get("references", []):
+        if not isinstance(item, dict) or item.get("type") != "covers":
+            continue
+        target_id = item.get("target")
+        if not isinstance(target_id, str) or not target_id:
+            continue
+        target = records_by_id.get(target_id)
+        targets.append(
+            {
+                "id": target_id,
+                "kind": target.kind if target and target.kind else "unknown",
+                "name": target.data.get("name", "") if target else "",
+                "owner": target.data.get("owner", "") if target else "",
+                "status": target.data.get("status", "") if target else "",
+            }
+        )
+    return targets
+
+
+def compliance_security_evidence(record: Record) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "name": record.data.get("name"),
+        "owner": record.data.get("owner"),
+        "riskLevel": record.data.get("riskLevel"),
+        "coverage": record.data.get("coverage"),
+        "verified": is_security_control_verified(record),
+        "verification": record.data.get("verification", {}),
+    }
+
+
+def compliance_accessibility_evidence(record: Record) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "name": record.data.get("name"),
+        "owner": record.data.get("owner"),
+        "standard": record.data.get("standard"),
+        "criterion": record.data.get("criterion"),
+        "level": record.data.get("level"),
+        "impact": record.data.get("impact"),
+        "coverage": record.data.get("coverage"),
+        "verified": is_accessibility_claim_verified(record),
+        "verification": record.data.get("verification", {}),
+    }
+
+
+def compliance_observability_evidence(
+    record: Record,
+    records_by_id: dict[str, Record],
+) -> dict[str, Any]:
+    evidence: dict[str, Any] = {
+        "id": record.id,
+        "kind": record.kind,
+        "name": record.data.get("name"),
+        "owner": record.data.get("owner"),
+    }
+    if record.kind == "observability.telemetry":
+        evidence.update(
+            {
+                "signalName": record.data.get("signalName"),
+                "emittedBy": record.data.get("emittedBy"),
+                "payloadSchema": record.data.get("payloadSchema"),
+            }
+        )
+    elif record.kind == "observability.metric":
+        evidence.update(
+            {
+                "metricName": record.data.get("metricName"),
+                "unit": record.data.get("unit"),
+                "aggregation": record.data.get("aggregation"),
+                "sources": reference_targets(record, records_by_id, "derivedFrom"),
+            }
+        )
+    elif record.kind == "observability.dashboard":
+        evidence.update(
+            {
+                "url": record.data.get("url"),
+                "audience": record.data.get("audience"),
+                "metrics": reference_targets(record, records_by_id, "displays"),
+                "alerts": reference_targets(record, records_by_id, "tracks"),
+            }
+        )
+    elif record.kind == "observability.alert":
+        evidence.update(
+            {
+                "severity": record.data.get("severity"),
+                "condition": record.data.get("condition"),
+                "runbook": record.data.get("runbook"),
+                "metrics": reference_targets(record, records_by_id, "firesOn"),
+            }
+        )
+    return evidence
+
+
+def compliance_evidence_groups(
+    targets: list[dict[str, Any]],
+    records_by_id: dict[str, Record],
+) -> dict[str, list[dict[str, Any]]]:
+    evidence: dict[str, list[dict[str, Any]]] = {
+        "securityControls": [],
+        "accessibilityClaims": [],
+        "observabilitySignals": [],
+        "otherTargets": [],
+    }
+    for target in targets:
+        record_id = target.get("id")
+        if not isinstance(record_id, str):
+            continue
+        record = records_by_id.get(record_id)
+        if not record:
+            evidence["otherTargets"].append(target)
+            continue
+        if record.kind == "security.control":
+            evidence["securityControls"].append(compliance_security_evidence(record))
+        elif record.kind == "accessibility.claim":
+            evidence["accessibilityClaims"].append(compliance_accessibility_evidence(record))
+        elif record.kind and record.kind.startswith("observability."):
+            evidence["observabilitySignals"].append(
+                compliance_observability_evidence(record, records_by_id)
+            )
+        else:
+            evidence["otherTargets"].append(target)
+    return evidence
+
+
+def generate_compliance_matrix(workspace: Workspace) -> dict:
+    mappings = [record for record in workspace.records if record.kind == "compliance.mapping"]
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    matrix: list[dict[str, Any]] = []
+    verified_mapping_count = 0
+    mappings_without_targets: list[str] = []
+    mappings_without_evidence: list[str] = []
+    reviewed_unverified: list[str] = []
+    targets_without_owners: list[str] = []
+
+    for record in mappings:
+        verified = is_compliance_mapping_verified(record)
+        if verified:
+            verified_mapping_count += 1
+        targets = compliance_target_summaries(record, records_by_id)
+        verification = record.data.get("verification", {})
+        evidence = verification.get("evidence") if isinstance(verification, dict) else None
+        has_evidence = isinstance(evidence, str) and bool(evidence.strip())
+
+        if record.id and not targets:
+            mappings_without_targets.append(record.id)
+        if record.id and not has_evidence:
+            mappings_without_evidence.append(record.id)
+        if record.id and record.data.get("coverage") == "reviewed" and not verified:
+            reviewed_unverified.append(record.id)
+        for target in targets:
+            target_id = target.get("id")
+            target_record = records_by_id.get(target_id) if isinstance(target_id, str) else None
+            if isinstance(target_id, str) and (
+                target_record is None or owner_missing(target_record)
+            ):
+                targets_without_owners.append(target_id)
+
+        matrix.append(
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "status": record.data.get("status"),
+                "owner": record.data.get("owner"),
+                "framework": record.data.get("framework", {}),
+                "requirement": compliance_requirement_key(record),
+                "mappingType": record.data.get("mappingType"),
+                "coverage": record.data.get("coverage"),
+                "attestation": record.data.get("attestation"),
+                "verified": verified,
+                "verification": verification if isinstance(verification, dict) else {},
+                "targets": targets,
+                "evidence": compliance_evidence_groups(targets, records_by_id),
+            }
+        )
+
+    missing_owners = [record.id for record in mappings if record.id and owner_missing(record)]
+
+    return {
+        "type": "compliance_matrix",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "mappingCount": len(mappings),
+        "summary": {
+            "byOwner": count_by_field(mappings, "owner"),
+            "byFramework": count_compliance_field(mappings, "framework"),
+            "byRequirement": count_compliance_field(mappings, "requirement"),
+            "byMappingType": count_by_field(mappings, "mappingType"),
+            "byCoverage": count_by_field(mappings, "coverage"),
+            "verifiedMappings": verified_mapping_count,
+            "releaseGaps": {
+                "mappingsWithoutTargets": mappings_without_targets,
+                "mappingsWithoutEvidence": mappings_without_evidence,
+                "reviewedUnverified": reviewed_unverified,
+                "missingOwners": missing_owners,
+                "targetsWithoutOwners": sorted(set(targets_without_owners)),
+            },
+        },
+        "matrix": matrix,
+    }
+
+
 def has_reference(record: Record, relationship: str) -> bool:
     return bool(reference_targets(record, {}, relationship))
 
