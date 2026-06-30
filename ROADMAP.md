@@ -1047,11 +1047,12 @@ is complete:
 
 ## v0.26.0
 
-The `v0.26.0` milestone is in progress.
+The `v0.26.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 68 | In Progress | Product-surface pack boundary design |
+| 68 | Complete | Product-surface pack boundary design |
+| 69 | Complete | v0.26.0 release preparation |
 
 ## Sprint 68 Priorities
 
@@ -1066,6 +1067,22 @@ schemas:
   commitments.
 - Update changelog and roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 69 Priorities
+
+Sprint 69 should release the completed `v0.26.0` scope:
+
+- Promote Unreleased changelog entries into `0.26.0`.
+- Bump package metadata to `0.26.0`.
+- Add v0.26.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.26.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.26.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.26.0 GitHub release when checks pass.
+- Close the v0.26.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 
