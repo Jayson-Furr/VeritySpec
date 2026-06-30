@@ -23,6 +23,15 @@ def diff_workspaces(old: Workspace, new: Workspace) -> dict:
             changed.append(record_id)
 
     return {
+        "versions": {
+            "old": old.config.get("specVersion"),
+            "new": new.config.get("specVersion"),
+            "changed": old.config.get("specVersion") != new.config.get("specVersion"),
+        },
+        "packs": {
+            "added": sorted(set(new.pack_ids) - set(old.pack_ids)),
+            "removed": sorted(set(old.pack_ids) - set(new.pack_ids)),
+        },
         "added": sorted(new_ids - old_ids),
         "removed": sorted(old_ids - new_ids),
         "changed": changed,
@@ -30,11 +39,17 @@ def diff_workspaces(old: Workspace, new: Workspace) -> dict:
 
 
 def diff_to_text(diff: dict) -> str:
-    lines = ["Added:"]
+    lines = [
+        f"Spec version: {diff.get('versions', {}).get('old')} -> {diff.get('versions', {}).get('new')}",
+        "Packs added:",
+    ]
+    lines.extend(f"  {item}" for item in diff.get("packs", {}).get("added", []))
+    lines.append("Packs removed:")
+    lines.extend(f"  {item}" for item in diff.get("packs", {}).get("removed", []))
+    lines.append("Added:")
     lines.extend(f"  {item}" for item in diff["added"])
     lines.append("Removed:")
     lines.extend(f"  {item}" for item in diff["removed"])
     lines.append("Changed:")
     lines.extend(f"  {item}" for item in diff["changed"])
     return "\n".join(lines)
-

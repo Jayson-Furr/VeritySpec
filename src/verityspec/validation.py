@@ -6,6 +6,7 @@ from .envelope import RECORD_ENVELOPE_REQUIRED
 from .issues import Issue, apply_strict
 from .packs import PackRegistry
 from .references import ReferenceEdge, extract_reference_edges
+from .versions import validate_workspace_version
 from .workspace import Record, Workspace
 
 
@@ -152,7 +153,8 @@ def validate_reference_graph(
 def validate_workspace(
     workspace: Workspace, registry: PackRegistry, strict: bool = False
 ) -> list[Issue]:
-    issues: list[Issue] = validate_builtin_schema_envelope(registry)
+    issues: list[Issue] = validate_workspace_version(workspace)
+    issues.extend(validate_builtin_schema_envelope(registry))
     ids: dict[str, str] = {}
 
     for record in workspace.records:

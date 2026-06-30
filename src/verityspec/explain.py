@@ -110,9 +110,32 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A record does not satisfy the JSON Schema for its kind.",
         "resolution": "Update the record to match its pack schema.",
     },
+    "workspace.version.future": {
+        "title": "Future workspace version",
+        "severity": "error",
+        "description": "The workspace declares a specVersion newer than this VeritySpec CLI supports.",
+        "resolution": "Install a newer VeritySpec CLI before validating or migrating the workspace.",
+    },
+    "workspace.version.invalid": {
+        "title": "Invalid workspace version",
+        "severity": "error",
+        "description": "The workspace specVersion does not use vMAJOR.MINOR.PATCH format.",
+        "resolution": "Set specVersion to a supported value such as v0.1.0.",
+    },
+    "workspace.version.missing": {
+        "title": "Missing workspace version",
+        "severity": "error",
+        "description": "The workspace config does not declare a specVersion.",
+        "resolution": "Run `verity migrate` or add a supported specVersion to verityspec.json.",
+    },
+    "workspace.version.unsupported": {
+        "title": "Unsupported workspace version",
+        "severity": "error",
+        "description": "The workspace declares a version this VeritySpec CLI does not support.",
+        "resolution": "Run `verity migrate` to produce a supported workspace version.",
+    },
 }
 
 
 def explain_issue(code: str) -> dict[str, str] | None:
     return ISSUE_EXPLANATIONS.get(code)
-

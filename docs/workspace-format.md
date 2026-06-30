@@ -15,7 +15,8 @@ more JSON record files.
 ## Fields
 
 - `workspace`: stable workspace identifier.
-- `specVersion`: VeritySpec workspace format version.
+- `specVersion`: VeritySpec workspace format version. The current supported
+  value is `v0.1.0`; unknown future versions fail validation.
 - `packs`: built-in pack IDs to load.
 - `records`: glob patterns, relative to the workspace root.
 
@@ -34,3 +35,5 @@ Every record kind must require:
 
 Pack schemas can add kind-specific fields while keeping this common envelope.
 
+See [Versioning and migrations](versioning-and-migrations.md) for
+`specVersion` validation and `verity migrate` behavior.

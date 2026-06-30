@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
 
+from .versions import CURRENT_SPEC_VERSION
+
 
 WORKSPACE_FILE_NAMES = ("verityspec.json", "verity.json")
 DEFAULT_RECORD_GLOBS = ["records/**/*.json"]
@@ -69,7 +71,7 @@ def find_workspace_file(path: Path) -> Optional[Path]:
 def default_config(base_path: Path) -> dict[str, Any]:
     return {
         "workspace": base_path.name,
-        "specVersion": "v0.1.0",
+        "specVersion": CURRENT_SPEC_VERSION,
         "packs": DEFAULT_PACKS,
         "records": DEFAULT_RECORD_GLOBS,
     }
@@ -124,4 +126,3 @@ def load_records(base_path: Path, config: dict[str, Any]) -> list[Record]:
         elif isinstance(payload, dict):
             records.append(Record(payload, path))
     return records
-

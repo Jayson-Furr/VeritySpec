@@ -188,6 +188,116 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(2, result.returncode)
         self.assertIn("invalid choice", result.stderr)
 
+    def test_future_workspace_version_fails_validation(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "future",
+                        "specVersion": "v99.0.0",
+                        "packs": ["verity.core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.future",
+                        "kind": "product",
+                        "name": "Future Product",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "1.0.0",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command("validate", str(root), "--format", "json")
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(any(issue["code"] == "workspace.version.future" for issue in payload["issues"]))
+
+    def test_migrate_dry_run_reports_without_writing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            config_path = root / "verityspec.json"
+            record_path = root / "records" / "product.json"
+            config_path.write_text(
+                json.dumps({"workspace": "legacy", "version": "0.1.0", "records": ["records/*.json"]}),
+                encoding="utf-8",
+            )
+            record_path.write_text(
+                json.dumps(
+                    {
+                        "id": "product.legacy",
+                        "type": "product",
+                        "displayName": "Legacy Product",
+                        "status": "approved",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command("migrate", str(root), "--dry-run", "--format", "json")
+            report = json.loads(result.stdout)
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertTrue(report["changed"])
+        self.assertEqual([], report["filesWritten"])
+        self.assertNotIn("specVersion", config)
+        self.assertEqual("product", record["type"])
+
+    def test_migrate_rewrites_legacy_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            config_path = root / "verityspec.json"
+            record_path = root / "records" / "product.json"
+            config_path.write_text(
+                json.dumps({"workspace": "legacy", "version": "0.1.0", "records": ["records/*.json"]}),
+                encoding="utf-8",
+            )
+            record_path.write_text(
+                json.dumps(
+                    {
+                        "id": "product.legacy",
+                        "type": "product",
+                        "displayName": "Legacy Product",
+                        "status": "approved",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command("migrate", str(root), "--format", "json")
+            report = json.loads(result.stdout)
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            validation = verity_command("validate", str(root), "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual(0, validation.returncode)
+        self.assertGreater(report["changeCount"], 0)
+        self.assertEqual("v0.1.0", config["specVersion"])
+        self.assertNotIn("version", config)
+        self.assertIn("verity.core", config["packs"])
+        self.assertEqual("product", record["kind"])
+        self.assertEqual("Legacy Product", record["name"])
+        self.assertEqual("ready", record["status"])
+        self.assertEqual("unknown", record["owner"])
+        self.assertEqual("0.1.0", record["version"])
+        self.assertNotIn("type", record)
+        self.assertNotIn("displayName", record)
+
     def test_pack_list_json_output(self) -> None:
         result = verity_command("pack", "list", "--format", "json")
 
@@ -254,6 +364,43 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("verity.pack.api", workspace["packs"])
         self.assertIn("verity.pack.cli", workspace["packs"])
         self.assertIn("verity.pack.events", workspace["packs"])
+
+    def test_diff_reports_workspace_versions(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            old = root / "old"
+            new = root / "new"
+            (old / "records").mkdir(parents=True)
+            (new / "records").mkdir(parents=True)
+            (old / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "old",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (new / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "new",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.api"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command("diff", str(old), str(new), "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("v0.1.0", payload["versions"]["old"])
+        self.assertIn("verity.pack.api", payload["packs"]["added"])
 
 
 if __name__ == "__main__":

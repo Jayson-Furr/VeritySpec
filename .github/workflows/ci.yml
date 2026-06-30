@@ -63,6 +63,7 @@ jobs:
           verity readiness examples/basic --strict --format json > build/readiness.json
           verity doctor examples/basic --format json > build/doctor.json
           verity explain reference.missing --format json > build/explain-reference-missing.json
+          verity migrate examples/basic --dry-run --format json > build/migrate.json
           verity graph examples/basic --focus api.users.create --format json > build/graph-focus.json
           verity graph tests/fixtures/broken_semantics --cycles --format json > build/graph-cycles.json
           verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import > build/prismspec-import-report.json
@@ -74,6 +75,7 @@ jobs:
           python -m json.tool build/readiness.json >/dev/null
           python -m json.tool build/doctor.json >/dev/null
           python -m json.tool build/explain-reference-missing.json >/dev/null
+          python -m json.tool build/migrate.json >/dev/null
           python -m json.tool build/graph-focus.json >/dev/null
           python -m json.tool build/graph-cycles.json >/dev/null
           python -m json.tool build/prismspec-import-report.json >/dev/null

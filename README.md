@@ -26,11 +26,12 @@ This initial implementation provides:
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
-  records, unused schemas, and reference cycles.
+  records, unused schemas, reference cycles, and workspace spec versions.
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, and CLI reference docs.
 - A PrismSpec importer that produces a converted workspace and migration report.
+- Workspace migration reporting through `verity migrate`.
 
 ## Quick Start
 
@@ -65,6 +66,7 @@ verity readiness examples/basic --strict
 verity doctor examples/basic
 verity explain reference.missing
 verity graph examples/basic
+verity migrate examples/basic --dry-run --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate asyncapi examples/basic --out build/asyncapi.json
 verity generate typescript examples/basic --out build/types.ts
@@ -187,6 +189,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)
 - [Contract intelligence](docs/contract-intelligence.md)
+- [Versioning and migrations](docs/versioning-and-migrations.md)
 - [PrismSpec migration](docs/prismspec-migration.md)
 - [CI](docs/ci.md)
 - [PyPI publishing](docs/pypi.md)
