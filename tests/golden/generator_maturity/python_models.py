@@ -4,6 +4,18 @@ from dataclasses import dataclass
 from typing import Any, Literal, Optional
 
 @dataclass
+class AccountProfile:
+    display_name: str
+    age: Optional[int] = None
+
+@dataclass
+class AccountContactsItem:
+    # Contact email address.
+    email: str
+    # Whether this is the primary contact.
+    primary: Optional[bool] = None
+
+@dataclass
 class Account:
     # Stable account identifier.
     id: str
@@ -14,7 +26,9 @@ class Account:
     # Searchable account labels.
     tags: Optional[list[str]] = None
     # Public profile details.
-    profile: Optional[dict[str, Any]] = None
+    profile: Optional[AccountProfile] = None
+    # Account contact methods.
+    contacts: Optional[list[AccountContactsItem]] = None
     # Optional display nickname.
     nickname: Optional[str] = None
 

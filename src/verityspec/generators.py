@@ -370,7 +370,16 @@ def python_literal(value: Any) -> str:
     return repr(value)
 
 
-def python_type(schema: dict[str, Any]) -> str:
+def python_nested_model_name(parent_name: str, prop_name: str) -> str:
+    return f"{parent_name}{pascal_case(prop_name)}"
+
+
+def python_type(
+    schema: dict[str, Any],
+    context_name: str | None = None,
+    model_blocks: list[str] | None = None,
+    seen_models: set[str] | None = None,
+) -> str:
     ref = schema.get("$ref")
     if isinstance(ref, str):
         return schema_ref_name(ref) or "Any"
@@ -383,7 +392,13 @@ def python_type(schema: dict[str, Any]) -> str:
     if isinstance(schema_type, list):
         non_null = [item for item in schema_type if item != "null"]
         if len(non_null) == 1:
-            return f"Optional[{python_type({**schema, 'type': non_null[0]})}]"
+            inner_type = python_type(
+                {**schema, "type": non_null[0]},
+                context_name,
+                model_blocks,
+                seen_models,
+            )
+            return f"Optional[{inner_type}]"
     if schema_type == "string":
         return "str"
     if schema_type == "integer":
@@ -393,14 +408,27 @@ def python_type(schema: dict[str, Any]) -> str:
     if schema_type == "boolean":
         return "bool"
     if schema_type == "array":
-        return f"list[{python_type(schema.get('items', {}))}]"
+        item_context = f"{context_name}Item" if context_name else None
+        item_type = python_type(schema.get("items", {}), item_context, model_blocks, seen_models)
+        return f"list[{item_type}]"
     if schema_type == "object":
+        properties = schema.get("properties", {})
+        if (
+            context_name
+            and isinstance(properties, dict)
+            and properties
+            and model_blocks is not None
+            and seen_models is not None
+        ):
+            append_python_model_block(context_name, schema, model_blocks, seen_models)
+            return context_name
         return "dict[str, Any]"
     return "Any"
 
 
 def python_field_name(name: str) -> str:
-    field = sanitize_identifier(name).lower()
+    snake_name = re.sub(r"(?<!^)(?=[A-Z])", "_", name)
+    field = sanitize_identifier(snake_name).lower()
     if keyword.iskeyword(field):
         return f"{field}_"
     return field
@@ -412,6 +440,47 @@ def optional_python_type(type_name: str) -> str:
     return f"Optional[{type_name}]"
 
 
+def append_python_model_block(
+    name: str,
+    schema: dict[str, Any],
+    model_blocks: list[str],
+    seen_models: set[str],
+) -> None:
+    if name in seen_models:
+        return
+    seen_models.add(name)
+
+    properties = schema.get("properties", {})
+    required = set(schema.get("required", []))
+    lines = ["@dataclass", f"class {name}:"]
+    required_lines: list[str] = []
+    optional_lines: list[str] = []
+    if isinstance(properties, dict):
+        for prop_name, prop_schema in properties.items():
+            description = (
+                prop_schema.get("description") if isinstance(prop_schema, dict) else None
+            )
+            context_name = python_nested_model_name(name, prop_name)
+            field_type = python_type(prop_schema, context_name, model_blocks, seen_models)
+            line = f"    {python_field_name(prop_name)}: {field_type}"
+            if isinstance(description, str) and description:
+                line = f"    # {description}\n{line}"
+            if prop_name in required:
+                required_lines.append(line)
+            else:
+                optional_line = line.replace(
+                    f": {field_type}",
+                    f": {optional_python_type(field_type)}",
+                )
+                optional_lines.append(f"{optional_line} = None")
+    field_lines = required_lines + optional_lines
+    if field_lines:
+        lines.extend(field_lines)
+    else:
+        lines.append("    pass")
+    model_blocks.append("\n".join(lines))
+
+
 def generate_python_models(workspace: Workspace) -> str:
     blocks = [
         "from __future__ import annotations",
@@ -420,35 +489,14 @@ def generate_python_models(workspace: Workspace) -> str:
         "from typing import Any, Literal, Optional",
         "",
     ]
+    model_blocks: list[str] = []
+    seen_models: set[str] = set()
     for record in schema_records(workspace):
         schema = record.data["jsonSchema"]
         name = schema_component_name(record.id or "")
-        properties = schema.get("properties", {})
-        required = set(schema.get("required", []))
-        lines = ["@dataclass", f"class {name}:"]
-        required_lines: list[str] = []
-        optional_lines: list[str] = []
-        if isinstance(properties, dict):
-            for prop_name, prop_schema in properties.items():
-                description = prop_schema.get("description") if isinstance(prop_schema, dict) else None
-                field_type = python_type(prop_schema)
-                line = f"    {python_field_name(prop_name)}: {field_type}"
-                if isinstance(description, str) and description:
-                    line = f"    # {description}\n{line}"
-                if prop_name in required:
-                    required_lines.append(line)
-                else:
-                    optional_line = line.replace(
-                        f": {field_type}",
-                        f": {optional_python_type(field_type)}",
-                    )
-                    optional_lines.append(f"{optional_line} = None")
-        field_lines = required_lines + optional_lines
-        if field_lines:
-            lines.extend(field_lines)
-        else:
-            lines.append("    pass")
-        blocks.append("\n".join(lines))
+        append_python_model_block(name, schema, model_blocks, seen_models)
+    for block in model_blocks:
+        blocks.append(block)
         blocks.append("")
     return "\n".join(blocks)
 

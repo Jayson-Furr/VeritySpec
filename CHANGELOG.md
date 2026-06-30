@@ -7,7 +7,8 @@
 - Added AI-agent fallback guidance for local verification when GitHub Actions is unavailable for billing, credit, quota, or runner reasons.
 - Added a repository branching strategy and AI-agent requirements for branch selection and merge discipline.
 - Added OpenAPI path-parameter inference, explicit endpoint parameter emission, and OpenAPI golden output coverage.
-- Opened the v0.3.0 roadmap line with Sprint 13 focused on OpenAPI path parameters and generator precision.
+- Added Python nested dataclass generation for inline object schemas and inline object array items.
+- Opened the v0.3.0 roadmap line with Sprint 13 and Sprint 14 generator improvements.
 
 ## 0.2.0
 

@@ -51,7 +51,8 @@ The active milestone is `v0.3.0`.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 13 | In progress | OpenAPI path-parameter extraction and generator precision |
+| 13 | Complete | OpenAPI path-parameter extraction and generator precision |
+| 14 | In progress | Python nested-object model generation |
 
 ## Sprint 13 Priorities
 
@@ -66,12 +67,21 @@ Sprint 13 should improve generated contract accuracy:
 - Adopt a repository branching strategy and require AI agents to follow it.
 - Update generator documentation and roadmap notes.
 
+## Sprint 14 Priorities
+
+Sprint 14 should make generated Python models more useful:
+
+- Generate nested dataclasses for inline object properties.
+- Generate nested dataclasses for inline object schemas inside arrays.
+- Preserve required and optional field semantics in nested models.
+- Update generator maturity fixtures and golden Python model output.
+- Keep README, changelog, roadmap, generator docs, and issue state aligned.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
 is complete:
 
-- More complete Python nested-object model generation.
 - Pack authoring scaffolds.
 - Migration chains beyond `v0.1.0`.
 - UI, security, observability, accessibility, deployment, and compliance packs.

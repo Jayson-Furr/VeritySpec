@@ -10,6 +10,8 @@ export interface Account {
   tags?: string[];
   /** Public profile details. */
   profile?: { displayName: string; age?: number };
+  /** Account contact methods. */
+  contacts?: { email: string; primary?: boolean }[];
   /** Optional display nickname. */
   nickname?: string | null;
 }

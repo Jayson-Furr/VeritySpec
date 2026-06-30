@@ -147,6 +147,26 @@
             },
             "description": "Public profile details."
           },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "Contact email address."
+                },
+                "primary": {
+                  "type": "boolean",
+                  "description": "Whether this is the primary contact."
+                }
+              }
+            },
+            "description": "Account contact methods."
+          },
           "nickname": {
             "type": [
               "string",

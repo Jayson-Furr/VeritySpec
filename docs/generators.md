@@ -54,6 +54,8 @@ TypeScript and Python model generators support:
 - Nullable fields
 - Optional fields
 - Inline nested object shapes for TypeScript
+- Inline nested dataclasses for Python object properties
+- Inline nested dataclasses for Python array item objects
 - Field descriptions in generated comments
 
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
@@ -62,5 +64,4 @@ golden files only when the output contract intentionally changes.
 
 Known limits:
 
-- Python nested object fields currently emit `dict[str, Any]`.
 - Generators do not yet emit client/server stubs.
