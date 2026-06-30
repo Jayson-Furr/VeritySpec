@@ -841,6 +841,28 @@ Sprint 57 should release the completed `v0.20.0` scope:
 - Tag and publish the v0.20.0 GitHub release when checks pass.
 - Close the v0.20.0 milestone after release verification.
 
+## v0.21.0
+
+The `v0.21.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 58 | Active | Structured issue location fields |
+
+## Sprint 58 Priorities
+
+Sprint 58 should make JSON diagnostics easier for tools and agents to consume:
+
+- Add structured issue location fields without removing formatted `location`
+  strings.
+- Parse file paths, record fragments, nested field paths, field parts, JSON
+  pointers, and record indexes when available.
+- Keep text output stable for humans.
+- Add tests for CLI JSON diagnostics, validation reports, and location parsing.
+- Update README, changelog, roadmap, contract-intelligence docs, and generator
+  docs.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -861,47 +883,47 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add structured issue location fields for machine clients in addition to
-   formatted location strings.
-2. Add documentation command smoke tests that execute README examples to
+1. Add documentation command smoke tests that execute README examples to
    prevent public command drift.
-3. Add CI annotation output for readiness and validation failures in GitHub
+2. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-4. Add observability example golden fixtures for schema bundles and future
+3. Add observability example golden fixtures for schema bundles and future
    report output.
-5. Add report timestamp controls for deterministic golden snapshot generation.
-6. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+4. Add report timestamp controls for deterministic golden snapshot generation.
+5. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-7. Add product-contract profiles for release, strict, regulated, public API,
+6. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
-8. Add a first deployment-target pack for runtime, hosting, and release
+7. Add a first deployment-target pack for runtime, hosting, and release
    environment contracts.
-9. Add cross-pack coverage dashboards that summarize which product surfaces
+8. Add cross-pack coverage dashboards that summarize which product surfaces
    have API, CLI, event, security, accessibility, observability, and compliance
    records.
-10. Add a product-impact report that expands changed records into affected
+9. Add a product-impact report that expands changed records into affected
    upstream and downstream records for release review.
-11. Define a local-only cross-workspace dependency design note covering
+10. Define a local-only cross-workspace dependency design note covering
    workspace dependencies, exported records, reference resolution, and lockfile
    boundaries before implementation.
-12. Add a pack capability index report that summarizes schemas, readiness
+11. Add a pack capability index report that summarizes schemas, readiness
    gates, reference rules, and generators across built-in and external packs.
-13. Add pack scaffold documentation fixtures that show a complete generated
+12. Add pack scaffold documentation fixtures that show a complete generated
    pack plus consuming workspace layout for external pack authors.
-14. Add downstream CI templates for monorepos with multiple VeritySpec
+13. Add downstream CI templates for monorepos with multiple VeritySpec
    workspaces and shared local packs.
-15. Add golden fixtures for accessibility and compliance report outputs after
+14. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-16. Add a maintainer review checklist for accepting external packs once public
+15. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-17. Add release-integrity consistency checks across package metadata, README,
+16. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-18. Add roadmap-report human-readable Markdown output for maintainer release
+17. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-19. Add security-report release gaps for stale evidence and missing
+18. Add security-report release gaps for stale evidence and missing
    verification dates.
-20. Add workspace migration impact summaries that call out record, pack, and
+19. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
+20. Add machine-readable issue-code catalog generation from `verity explain`
+   metadata for docs sites and CI integrations.
 
 ## Working Rule
 

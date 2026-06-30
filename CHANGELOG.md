@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added structured issue `locationDetails` fields for JSON diagnostics while
+  preserving formatted `location` strings.
+
 ## 0.20.0
 
 - Added golden workspace compatibility manifests for supported workspace

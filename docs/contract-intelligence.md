@@ -42,6 +42,29 @@ verity readiness examples/basic --strict --fail-on warning
 `--fail-on error` is the default. `--fail-on warning` is useful for stricter CI
 environments.
 
+## Issue Locations
+
+JSON diagnostics preserve the human-readable `location` string and add
+`locationDetails` when the location can be parsed into structured fields.
+Machine clients can use these fields instead of parsing display text.
+
+Example shape:
+
+```json
+{
+  "location": "records/product.json:references[0].target",
+  "locationDetails": {
+    "path": "records/product.json",
+    "fieldPath": "references[0].target",
+    "fieldParts": ["references", 0, "target"],
+    "jsonPointer": "/references/0/target"
+  }
+}
+```
+
+For batched record files, `locationDetails` can also include a `fragment` such
+as `records/2` and a numeric `recordIndex`.
+
 ## Graph Filters
 
 ```bash
