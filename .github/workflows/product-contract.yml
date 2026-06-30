@@ -59,16 +59,20 @@ jobs:
           for pack_path in $PACK_PATHS; do
             pack_args+=(--pack-path "$pack_path")
           done
+          annotation_args=()
+          if verity validate --help | grep -q -- "--github-annotations"; then
+            annotation_args+=(--github-annotations)
+          fi
 
           verity --version
-          verity validate "$WORKSPACE" "${pack_args[@]}"
+          verity validate "$WORKSPACE" "${pack_args[@]}" "${annotation_args[@]}"
 
           if [ "$STRICT" = "true" ]; then
-            verity lint "$WORKSPACE" --strict "${pack_args[@]}"
-            verity readiness "$WORKSPACE" --strict "${pack_args[@]}"
+            verity lint "$WORKSPACE" --strict "${pack_args[@]}" "${annotation_args[@]}"
+            verity readiness "$WORKSPACE" --strict "${pack_args[@]}" "${annotation_args[@]}"
           else
-            verity lint "$WORKSPACE" "${pack_args[@]}"
-            verity readiness "$WORKSPACE" "${pack_args[@]}"
+            verity lint "$WORKSPACE" "${pack_args[@]}" "${annotation_args[@]}"
+            verity readiness "$WORKSPACE" "${pack_args[@]}" "${annotation_args[@]}"
           fi
 
           verity doctor "$WORKSPACE" --format json "${pack_args[@]}" > build/verity-doctor.json

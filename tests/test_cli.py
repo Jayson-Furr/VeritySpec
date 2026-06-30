@@ -263,6 +263,101 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(["references", 0, "target"], location_details["fieldParts"])
         self.assertEqual("/references/0/target", location_details["jsonPointer"])
 
+    def test_validation_github_annotations_preserve_json_stdout(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "annotation-validation",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.annotation_validation",
+                        "kind": "product",
+                        "name": "Annotation Validation",
+                        "description": "A workspace with a missing reference.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [{"type": "uses", "target": "schema.missing"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command(
+                "validate",
+                str(root),
+                "--format",
+                "json",
+                "--github-annotations",
+            )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertNotIn("::error", result.stdout)
+        self.assertIn("::error ", result.stderr)
+        self.assertIn("title=reference.missing", result.stderr)
+        self.assertIn("file=", result.stderr)
+        self.assertIn("records/product.json", result.stderr)
+        self.assertIn("product.annotation_validation", result.stderr)
+
+    def test_readiness_github_annotations_preserve_json_stdout(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "annotation-readiness",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.annotation_readiness",
+                        "kind": "product",
+                        "name": "Annotation Readiness",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = verity_command(
+                "readiness",
+                str(root),
+                "--strict",
+                "--format",
+                "json",
+                "--github-annotations",
+            )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertNotIn("::error", result.stdout)
+        self.assertIn("::error ", result.stderr)
+        self.assertIn("title=readiness.required", result.stderr)
+        self.assertIn("description", result.stderr)
+
     def test_fail_on_warning_exit_code(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

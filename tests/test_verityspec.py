@@ -17,7 +17,7 @@ from verityspec.generators import (
     generate_typescript,
 )
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
-from verityspec.issues import parse_issue_location
+from verityspec.issues import Issue, escape_github_property, parse_issue_location
 from verityspec.pack_validation import validate_builtin_packs
 from verityspec.packs import load_pack_registry
 from verityspec.readiness import evaluate_readiness
@@ -115,6 +115,23 @@ class VeritySpecTests(unittest.TestCase):
         details = parse_issue_location("C:\\repo\\workspace\\verityspec.json")
 
         self.assertEqual({"path": "C:\\repo\\workspace\\verityspec.json"}, details)
+
+    def test_github_annotation_escapes_workflow_command_data(self) -> None:
+        issue = Issue(
+            "error",
+            "schema.validation:bad,field",
+            "Message with % percent\nnext line\rcarriage",
+            "records/path:with,chars.json:field",
+            "record.with:colon,comma",
+        )
+
+        annotation = issue.github_annotation()
+
+        self.assertIn("::error ", annotation)
+        self.assertIn("file=records/path%3Awith%2Cchars.json", annotation)
+        self.assertIn("title=schema.validation%3Abad%2Cfield", annotation)
+        self.assertIn("Message with %25 percent%0Anext line%0Dcarriage", annotation)
+        self.assertEqual("a%3Ab%2Cc", escape_github_property("a:b,c"))
 
     def test_builtin_packs_validate(self) -> None:
         self.assertEqual([], validate_builtin_packs())

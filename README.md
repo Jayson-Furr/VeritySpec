@@ -50,6 +50,8 @@ This implementation provides:
   supported workspace format versions.
 - Doctor diagnostics that can be printed to stdout or written as JSON reports.
 - Downstream GitHub Actions templates and a reusable workflow for product-contract enforcement.
+- Opt-in GitHub Actions annotation output for validation, lint, and readiness
+  issues in CI logs.
 - Golden security-report fixture coverage for stable report-shape review.
 - README command smoke tests that execute safe local CLI examples and keep
   public command snippets from drifting.
@@ -137,6 +139,8 @@ The contract-checking commands support text and JSON output:
 verity validate examples/basic --format json
 verity lint examples/basic --strict --format json
 verity readiness examples/basic --strict --format json
+verity validate examples/basic --github-annotations
+verity readiness examples/basic --strict --github-annotations
 verity doctor examples/basic --format json
 verity doctor examples/basic --report-out build/doctor-report.json
 ```
