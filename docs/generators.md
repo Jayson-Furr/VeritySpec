@@ -21,6 +21,7 @@ verity generate schema-bundle examples/game-core --out build/game-core-schema-bu
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
+verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
@@ -108,7 +109,7 @@ Coverage dashboards include:
 - Loaded pack IDs and total product-contract record count
 - Tracked product-surface coverage for API, CLI, events, security,
   accessibility, observability, compliance, deployment, game-core, game-assets,
-  Unity, Godot, gameplay, content, and economy records
+  Unity, Godot, Unreal, gameplay, content, and economy records
 - Counts by product surface and record kind
 - Release gaps for missing surface records, loaded surface packs without
   records, products without surface references, and product-specific missing
@@ -217,8 +218,8 @@ Coverage dashboard output includes:
 - Product-surface records from all currently supported built-in packs
 - Product-level references through `exposes`, `ships`, `emits`, `securedBy`,
   `accessibilityCoveredBy`, `observes`, `complianceMappedBy`, `deploysTo`,
-  `describes`, `hasGameAssets`, `hasUnityProject`, `hasGameplay`,
-  `hasContentManifest`, and `hasEconomy`
+  `describes`, `hasGameAssets`, `hasUnityProject`, `hasGodotProject`,
+  `hasUnrealProject`, `hasGameplay`, `hasContentManifest`, and `hasEconomy`
 - Summary coverage percentages based on the supported non-core product
   surfaces
 - Golden fixture coverage through `tests/fixtures/cross_pack_coverage`
@@ -257,10 +258,10 @@ is covered by golden-file tests. The `examples/security` security report,
 `examples/observability` observability report and schema bundle, deployment
 report, cross-pack coverage dashboard, pack capability index, and
 product-impact report are also covered by committed golden fixtures. Game-core,
-game-assets, Unity, Godot, gameplay, content, and economy schema-bundle smoke
-checks cover bundled schema generation for the built-in game and engine packs.
-Changes to those generators should update the golden files only when the output
-contract intentionally changes.
+game-assets, Unity, Godot, Unreal, gameplay, content, and economy
+schema-bundle smoke checks cover bundled schema generation for the built-in
+game and engine packs. Changes to those generators should update the golden
+files only when the output contract intentionally changes.
 
 Known limits:
 

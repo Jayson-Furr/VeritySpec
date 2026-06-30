@@ -107,41 +107,47 @@ Useful future record kinds include:
 
 ## Unreal Pack
 
-Proposed pack ID: `verity.pack.unreal`.
+Existing pack ID: `verity.pack.unreal`.
 
-The Unreal pack should describe Unreal projects, plugins, modules, assets,
-build targets, editor tools, validation tooling, agent handoff surfaces, and
-the engine-specific contracts needed by games made with Unreal. Its first
-implementation sprint should include an executable Unreal game workspace, not
-only a tooling repository example. Generic game design, gameplay, content,
-economy, progression, liveops, and evidence records should still come from the
-game-oriented packs; the Unreal pack should own the Unreal implementation
-boundary.
+The current Unreal pack describes Unreal game implementation and engine-tooling
+records for games made with Unreal: projects, plugins, modules, targets, maps,
+Blueprints, data assets, gameplay tags, input actions, scanners, validation
+runners, readiness dashboards, and agent-context exporters. Generic game
+design, gameplay, content, economy, progression, liveops, and evidence records
+should still come from the game-oriented packs; the Unreal pack owns the
+Unreal implementation boundary.
 
-Useful future record kinds include:
+Delivered engine-tooling record kinds include:
 
 - `unreal.project`
 - `unreal.plugin`
 - `unreal.module`
 - `unreal.target`
-- `unreal.build-config`
 - `unreal.map`
+- `unreal.blueprint`
+- `unreal.data-asset`
+- `unreal.gameplay-tag`
+- `unreal.input-action`
+- `unreal.scanner`
+- `unreal.validation-runner`
+- `unreal.readiness-dashboard`
+- `unreal.agent-context-exporter`
+
+Useful future record kinds include:
+
+- `unreal.build-config`
 - `unreal.world`
 - `unreal.level`
-- `unreal.blueprint`
 - `unreal.blueprint-interface`
 - `unreal.actor`
 - `unreal.component`
-- `unreal.data-asset`
 - `unreal.primary-asset`
 - `unreal.data-table`
 - `unreal.curve-table`
 - `unreal.material`
 - `unreal.animation-blueprint`
-- `unreal.input-action`
 - `unreal.enhanced-input-mapping`
 - `unreal.game-feature`
-- `unreal.gameplay-tag`
 - `unreal.gameplay-ability`
 - `unreal.gameplay-effect`
 - `unreal.save-game-schema`
@@ -152,10 +158,6 @@ Useful future record kinds include:
 - `unreal.platform-build-target`
 - `unreal.shared-plugin-dependency`
 - `unreal.editor-tool`
-- `unreal.scanner`
-- `unreal.validation-runner`
-- `unreal.readiness-dashboard`
-- `unreal.agent-context-exporter`
 
 ## Product-Delivery Pack
 

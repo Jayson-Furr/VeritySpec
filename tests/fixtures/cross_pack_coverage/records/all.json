@@ -58,6 +58,10 @@
           "target": "godot.project.coverage_adventure"
         },
         {
+          "type": "hasUnrealProject",
+          "target": "unreal.project.coverage_adventure"
+        },
+        {
           "type": "hasGameplay",
           "target": "game.mechanic.coverage_shards"
         },
@@ -1677,6 +1681,413 @@
         {
           "type": "includesScanner",
           "target": "godot.scanner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.project.coverage_adventure",
+      "kind": "unreal.project",
+      "name": "Coverage Adventure Unreal Project",
+      "description": "Unreal project contract for the coverage adventure prototype.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "engineVersion": "5.4",
+      "projectPath": "Unreal/CoverageAdventure/CoverageAdventure.uproject",
+      "projectName": "CoverageAdventure",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "primaryMapRef": "unreal.map.coverage_zone",
+      "pluginRefs": [
+        "unreal.plugin.coverage_tools"
+      ],
+      "moduleRefs": [
+        "unreal.module.coverage_runtime"
+      ],
+      "targetRefs": [
+        "unreal.target.coverage_pc"
+      ],
+      "mapRefs": [
+        "unreal.map.coverage_zone"
+      ],
+      "blueprintRefs": [
+        "unreal.blueprint.coverage_avatar"
+      ],
+      "dataAssetRefs": [
+        "unreal.data-asset.coverage_shard"
+      ],
+      "gameplayTagRefs": [
+        "unreal.gameplay-tag.coverage_shard"
+      ],
+      "inputActionRefs": [
+        "unreal.input-action.coverage_interact"
+      ],
+      "scannerRefs": [
+        "unreal.scanner.coverage_contracts"
+      ],
+      "validationRunnerRefs": [
+        "unreal.validation-runner.coverage_contracts"
+      ],
+      "readinessDashboardRef": "unreal.readiness-dashboard.coverage_prototype",
+      "agentContextExporterRef": "unreal.agent-context-exporter.coverage_context",
+      "references": [
+        {
+          "type": "usesPlugin",
+          "target": "unreal.plugin.coverage_tools"
+        },
+        {
+          "type": "declaresModule",
+          "target": "unreal.module.coverage_runtime"
+        },
+        {
+          "type": "buildsTarget",
+          "target": "unreal.target.coverage_pc"
+        },
+        {
+          "type": "containsMap",
+          "target": "unreal.map.coverage_zone"
+        },
+        {
+          "type": "usesBlueprint",
+          "target": "unreal.blueprint.coverage_avatar"
+        },
+        {
+          "type": "usesDataAsset",
+          "target": "unreal.data-asset.coverage_shard"
+        },
+        {
+          "type": "usesGameplayTag",
+          "target": "unreal.gameplay-tag.coverage_shard"
+        },
+        {
+          "type": "usesInputAction",
+          "target": "unreal.input-action.coverage_interact"
+        }
+      ]
+    },
+    {
+      "id": "unreal.plugin.coverage_tools",
+      "kind": "unreal.plugin",
+      "name": "Coverage Tools Plugin",
+      "description": "Unreal plugin contract for coverage validation tools.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "pluginName": "CoverageTools",
+      "version": "0.1.0",
+      "source": "local",
+      "pluginPath": "Plugins/CoverageTools/CoverageTools.uplugin",
+      "purpose": "Expose coverage validation commandlets.",
+      "enabledByDefault": true,
+      "moduleRefs": [
+        "unreal.module.coverage_runtime"
+      ],
+      "capabilities": [
+        "contract scanning"
+      ],
+      "references": []
+    },
+    {
+      "id": "unreal.module.coverage_runtime",
+      "kind": "unreal.module",
+      "name": "Coverage Runtime Module",
+      "description": "Unreal runtime module contract for coverage fixtures.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "moduleName": "CoverageRuntime",
+      "moduleType": "Runtime",
+      "modulePath": "Source/CoverageRuntime/CoverageRuntime.Build.cs",
+      "loadingPhase": "Default",
+      "publicDependencyRefs": [
+        "unreal.plugin.coverage_tools"
+      ],
+      "references": [
+        {
+          "type": "usesPlugin",
+          "target": "unreal.plugin.coverage_tools"
+        }
+      ]
+    },
+    {
+      "id": "unreal.target.coverage_pc",
+      "kind": "unreal.target",
+      "name": "Coverage PC Target",
+      "description": "PC development target for coverage fixtures.",
+      "status": "ready",
+      "owner": "build",
+      "targetName": "CoverageAdventureEditor",
+      "targetType": "Editor",
+      "platform": "Win64",
+      "configuration": "Development",
+      "outputPath": "Builds/CoverageAdventure/PC",
+      "mapRefs": [
+        "unreal.map.coverage_zone"
+      ],
+      "moduleRefs": [
+        "unreal.module.coverage_runtime"
+      ],
+      "pluginRefs": [
+        "unreal.plugin.coverage_tools"
+      ],
+      "references": [
+        {
+          "type": "includesMap",
+          "target": "unreal.map.coverage_zone"
+        },
+        {
+          "type": "usesModule",
+          "target": "unreal.module.coverage_runtime"
+        },
+        {
+          "type": "usesPlugin",
+          "target": "unreal.plugin.coverage_tools"
+        }
+      ]
+    },
+    {
+      "id": "unreal.map.coverage_zone",
+      "kind": "unreal.map",
+      "name": "Coverage Zone Map",
+      "description": "Unreal map contract for coverage fixtures.",
+      "status": "ready",
+      "owner": "level-design",
+      "mapPath": "/Game/Maps/CoverageZone",
+      "mapRole": "prototype-zone",
+      "loadMode": "primary",
+      "includedInBuild": true,
+      "blueprintRefs": [
+        "unreal.blueprint.coverage_avatar"
+      ],
+      "dataAssetRefs": [
+        "unreal.data-asset.coverage_shard"
+      ],
+      "references": [
+        {
+          "type": "usesBlueprint",
+          "target": "unreal.blueprint.coverage_avatar"
+        },
+        {
+          "type": "usesDataAsset",
+          "target": "unreal.data-asset.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "unreal.blueprint.coverage_avatar",
+      "kind": "unreal.blueprint",
+      "name": "Coverage Avatar Blueprint",
+      "description": "Unreal blueprint contract for coverage player avatar.",
+      "status": "ready",
+      "owner": "gameplay-engineering",
+      "blueprintPath": "/Game/Blueprints/BP_CoverageAvatar",
+      "blueprintType": "Pawn",
+      "parentClass": "ACharacter",
+      "purpose": "Prototype movement and interaction actor.",
+      "moduleRef": "unreal.module.coverage_runtime",
+      "dataAssetRefs": [
+        "unreal.data-asset.coverage_shard"
+      ],
+      "inputActionRefs": [
+        "unreal.input-action.coverage_interact"
+      ],
+      "references": [
+        {
+          "type": "implementedByModule",
+          "target": "unreal.module.coverage_runtime"
+        },
+        {
+          "type": "usesDataAsset",
+          "target": "unreal.data-asset.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "unreal.data-asset.coverage_shard",
+      "kind": "unreal.data-asset",
+      "name": "Coverage Shard Data Asset",
+      "description": "Unreal data asset contract for coverage shard metadata.",
+      "status": "ready",
+      "owner": "design",
+      "assetPath": "/Game/Data/DA_CoverageShard",
+      "assetType": "PrimaryDataAsset",
+      "primaryAssetType": "Resource",
+      "purpose": "Defines coverage shard metadata.",
+      "gameplayTagRefs": [
+        "unreal.gameplay-tag.coverage_shard"
+      ],
+      "references": [
+        {
+          "type": "usesGameplayTag",
+          "target": "unreal.gameplay-tag.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "unreal.gameplay-tag.coverage_shard",
+      "kind": "unreal.gameplay-tag",
+      "name": "Coverage Shard Gameplay Tag",
+      "description": "Unreal gameplay tag contract for coverage shard interactions.",
+      "status": "ready",
+      "owner": "design",
+      "tagName": "Coverage.Resource.Shard",
+      "tagDomain": "resource",
+      "purpose": "Classifies coverage shard interactions.",
+      "usedByRefs": [
+        "unreal.blueprint.coverage_avatar",
+        "unreal.data-asset.coverage_shard"
+      ],
+      "references": []
+    },
+    {
+      "id": "unreal.input-action.coverage_interact",
+      "kind": "unreal.input-action",
+      "name": "Coverage Interact Input Action",
+      "description": "Unreal input action contract for coverage interactions.",
+      "status": "ready",
+      "owner": "gameplay-engineering",
+      "actionName": "IA_CoverageInteract",
+      "valueType": "Boolean",
+      "deviceTypes": [
+        "keyboard",
+        "gamepad"
+      ],
+      "mappingContext": "IMC_Coverage",
+      "handledByRefs": [
+        "unreal.blueprint.coverage_avatar"
+      ],
+      "references": [
+        {
+          "type": "handledByBlueprint",
+          "target": "unreal.blueprint.coverage_avatar"
+        }
+      ]
+    },
+    {
+      "id": "unreal.scanner.coverage_contracts",
+      "kind": "unreal.scanner",
+      "name": "Coverage Unreal Contract Scanner",
+      "description": "Unreal scanner contract for coverage project metadata.",
+      "status": "ready",
+      "owner": "tools",
+      "scannerType": "commandlet",
+      "entryPoint": "CoverageContractScanner",
+      "outputPath": "Saved/VeritySpec/coverage-contracts.json",
+      "scannedKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.data-asset"
+      ],
+      "outputFormat": "json",
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "unreal.project.coverage_adventure"
+        },
+        {
+          "type": "scansPlugin",
+          "target": "unreal.plugin.coverage_tools"
+        },
+        {
+          "type": "scansMap",
+          "target": "unreal.map.coverage_zone"
+        },
+        {
+          "type": "scansBlueprint",
+          "target": "unreal.blueprint.coverage_avatar"
+        },
+        {
+          "type": "scansDataAsset",
+          "target": "unreal.data-asset.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "unreal.validation-runner.coverage_contracts",
+      "kind": "unreal.validation-runner",
+      "name": "Coverage Unreal Validation Runner",
+      "description": "Unreal validation runner contract for coverage project metadata.",
+      "status": "ready",
+      "owner": "tools",
+      "runnerType": "commandlet",
+      "command": "UnrealEditor-Cmd.exe CoverageAdventure.uproject -run=CoverageContracts",
+      "scannerRefs": [
+        "unreal.scanner.coverage_contracts"
+      ],
+      "readinessDashboardRef": "unreal.readiness-dashboard.coverage_prototype",
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "unreal.scanner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.readiness-dashboard.coverage_prototype",
+      "kind": "unreal.readiness-dashboard",
+      "name": "Coverage Unreal Readiness Dashboard",
+      "description": "Unreal readiness dashboard contract for coverage fixtures.",
+      "status": "ready",
+      "owner": "production",
+      "dashboardPath": "Docs/CoverageUnrealReadiness.md",
+      "dashboardType": "markdown",
+      "targetAudience": "production",
+      "trackedRecordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.target",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.validation-runner"
+      ],
+      "outputFormat": "markdown",
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "unreal.project.coverage_adventure"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "unreal.validation-runner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.agent-context-exporter.coverage_context",
+      "kind": "unreal.agent-context-exporter",
+      "name": "Coverage Unreal Agent Context Exporter",
+      "description": "Unreal agent-context exporter contract for coverage fixtures.",
+      "status": "ready",
+      "owner": "tools",
+      "exporterType": "markdown",
+      "outputPath": "Build/agent-context/coverage-unreal.md",
+      "exportFormat": "markdown",
+      "includedRecordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.validation-runner",
+        "unreal.readiness-dashboard"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "unreal.project.coverage_adventure"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "unreal.readiness-dashboard.coverage_prototype"
+        },
+        {
+          "type": "includesRunner",
+          "target": "unreal.validation-runner.coverage_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "unreal.scanner.coverage_contracts"
         }
       ]
     }

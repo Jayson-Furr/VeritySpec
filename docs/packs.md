@@ -31,6 +31,10 @@ Built-in packs currently include:
   presets, scanners, validation runners, readiness dashboards, and
   agent-context exporters for Godot game implementation and engine-tooling
   coverage.
+- `verity.pack.unreal`: Unreal projects, plugins, modules, targets, maps,
+  Blueprints, data assets, gameplay tags, input actions, scanners, validation
+  runners, readiness dashboards, and agent-context exporters for Unreal game
+  implementation and engine-tooling coverage.
 - `verity.pack.gameplay`: game mechanics, abilities, rules, and encounters for
   gameplay implementation handoff coverage.
 - `verity.pack.content`: game content items, levels, loot tables, and content
@@ -195,8 +199,10 @@ now live in [`verity.pack.game-core`](game-core-pack.md) and
 [`verity.pack.game-assets`](game-assets-pack.md), with Unity game
 implementation and engine-tooling coverage in
 [`verity.pack.unity`](unity-pack.md), Godot game implementation and
-engine-tooling coverage in [`verity.pack.godot`](godot-pack.md), gameplay
-coverage in [`verity.pack.gameplay`](gameplay-pack.md), content coverage in
+engine-tooling coverage in [`verity.pack.godot`](godot-pack.md), Unreal game
+implementation and engine-tooling coverage in
+[`verity.pack.unreal`](unreal-pack.md), gameplay coverage in
+[`verity.pack.gameplay`](gameplay-pack.md), content coverage in
 [`verity.pack.content`](content-pack.md), and economy coverage in
 [`verity.pack.economy`](economy-pack.md).
 

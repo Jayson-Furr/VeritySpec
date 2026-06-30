@@ -1,0 +1,24 @@
+{
+  "id": "unreal.input-action.interact",
+  "kind": "unreal.input-action",
+  "name": "Interact Input Action",
+  "status": "ready",
+  "owner": "gameplay-engineering",
+  "description": "Enhanced input action for prototype extraction interactions.",
+  "actionName": "IA_Interact",
+  "valueType": "Boolean",
+  "deviceTypes": [
+    "keyboard",
+    "gamepad"
+  ],
+  "mappingContext": "IMC_Player",
+  "handledByRefs": [
+    "unreal.blueprint.player_extractor"
+  ],
+  "references": [
+    {
+      "type": "handledByBlueprint",
+      "target": "unreal.blueprint.player_extractor"
+    }
+  ]
+}

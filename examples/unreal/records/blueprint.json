@@ -1,0 +1,29 @@
+{
+  "id": "unreal.blueprint.player_extractor",
+  "kind": "unreal.blueprint",
+  "name": "Player Extractor Blueprint",
+  "status": "ready",
+  "owner": "gameplay-engineering",
+  "description": "Prototype player pawn blueprint for shard extraction interactions.",
+  "blueprintPath": "/Game/Blueprints/BP_PlayerExtractor",
+  "blueprintType": "Pawn",
+  "parentClass": "ACharacter",
+  "purpose": "Player movement and interaction prototype.",
+  "moduleRef": "unreal.module.dream_runtime",
+  "dataAssetRefs": [
+    "unreal.data-asset.memory_shard"
+  ],
+  "inputActionRefs": [
+    "unreal.input-action.interact"
+  ],
+  "references": [
+    {
+      "type": "implementedByModule",
+      "target": "unreal.module.dream_runtime"
+    },
+    {
+      "type": "usesDataAsset",
+      "target": "unreal.data-asset.memory_shard"
+    }
+  ]
+}

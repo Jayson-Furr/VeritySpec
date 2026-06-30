@@ -212,6 +212,10 @@ verity validate examples/godot
 verity lint examples/godot --strict
 verity readiness examples/godot --strict
 verity graph examples/godot
+verity validate examples/unreal
+verity lint examples/unreal --strict
+verity readiness examples/unreal --strict
+verity graph examples/unreal
 verity validate examples/gameplay
 verity lint examples/gameplay --strict
 verity readiness examples/gameplay --strict
@@ -242,6 +246,7 @@ verity generate schema-bundle examples/game-core --out build/game-core-schema-bu
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
+verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
@@ -292,6 +297,7 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `docs/game-assets-pack.md`: built-in game-assets pack behavior.
 - `docs/unity-pack.md`: built-in Unity pack behavior.
 - `docs/godot-pack.md`: built-in Godot pack behavior.
+- `docs/unreal-pack.md`: built-in Unreal pack behavior.
 - `docs/gameplay-pack.md`: built-in gameplay pack behavior.
 - `docs/content-pack.md`: built-in content pack behavior.
 - `docs/economy-pack.md`: built-in economy pack behavior.

@@ -27,6 +27,7 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
             "verity.pack.gameplay",
             "verity.pack.content",
             "verity.pack.economy",
+            "verity.pack.unreal",
             "verity.pack.gui",
             "verity.pack.desktop",
             "verity.pack.mobile",

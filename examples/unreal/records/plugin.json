@@ -1,0 +1,22 @@
+{
+  "id": "unreal.plugin.verity_runtime",
+  "kind": "unreal.plugin",
+  "name": "Verity Runtime Plugin",
+  "status": "ready",
+  "owner": "unreal-engineering",
+  "description": "Prototype plugin for contract-aware Unreal runtime helpers.",
+  "pluginName": "VerityRuntime",
+  "version": "0.1.0",
+  "source": "local",
+  "pluginPath": "Plugins/VerityRuntime/VerityRuntime.uplugin",
+  "purpose": "Expose contract metadata and prototype helper systems.",
+  "enabledByDefault": true,
+  "moduleRefs": [
+    "unreal.module.dream_runtime"
+  ],
+  "capabilities": [
+    "contract metadata",
+    "prototype helpers"
+  ],
+  "references": []
+}

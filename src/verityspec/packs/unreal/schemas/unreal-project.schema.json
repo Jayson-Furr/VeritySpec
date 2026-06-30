@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.dev/schemas/unreal.project.json",
+  "title": "unreal.project record",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "engineVersion",
+    "projectPath",
+    "targetPlatforms"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "unreal.project"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "ready",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "engineVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectName": {
+      "type": "string"
+    },
+    "targetPlatforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "primaryMapRef": {
+      "type": "string"
+    },
+    "pluginRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "moduleRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mapRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blueprintRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataAssetRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gameplayTagRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputActionRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scannerRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validationRunnerRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "readinessDashboardRef": {
+      "type": "string"
+    },
+    "agentContextExporterRef": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": [
+        "type",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

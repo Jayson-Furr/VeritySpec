@@ -30,6 +30,7 @@ POSITIVE_EXAMPLES = [
     ROOT / "examples" / "game-assets",
     ROOT / "examples" / "unity",
     ROOT / "examples" / "godot",
+    ROOT / "examples" / "unreal",
     ROOT / "examples" / "gameplay",
     ROOT / "examples" / "content",
     ROOT / "examples" / "economy",
