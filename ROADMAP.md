@@ -167,13 +167,14 @@ Sprint 20 should release the completed `v0.5.0` scope:
 
 ## v0.6.0
 
-The `v0.6.0` milestone is active.
+The `v0.6.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 21 | Complete | Security readiness hardening for critical controls |
 | 22 | Complete | Workspace compatibility matrix across supported spec versions |
 | 23 | Complete | Nested issue locations for schema, readiness, and reference errors |
+| 24 | Complete | v0.6.0 release preparation |
 
 ## Sprint 21 Priorities
 
@@ -207,6 +208,18 @@ Sprint 23 should make issue output easier to act on:
 - Point reference issues at the relevant reference field or target entry.
 - Keep validation report output aligned with improved issue locations.
 - Update tests, README, changelog, roadmap, and diagnostics documentation.
+
+## Sprint 24 Priorities
+
+Sprint 24 should release the completed `v0.6.0` scope:
+
+- Promote Unreleased changelog entries into `0.6.0`.
+- Bump package metadata to `0.6.0`.
+- Add v0.6.0 release notes.
+- Update README and install references to `v0.6.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.6.0 GitHub release when checks pass.
+- Close the v0.6.0 milestone after release verification.
 
 ## Later Candidates
 
