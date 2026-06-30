@@ -2,8 +2,7 @@
 
 [![CI](https://github.com/Jayson-Furr/VeritySpec/actions/workflows/ci.yml/badge.svg)](https://github.com/Jayson-Furr/VeritySpec/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jayson-Furr/VeritySpec)](https://github.com/Jayson-Furr/VeritySpec/releases)
-[![PyPI](https://img.shields.io/pypi/v/verityspec)](https://pypi.org/project/verityspec/)
-[![Python](https://img.shields.io/pypi/pyversions/verityspec)](https://pypi.org/project/verityspec/)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml)
 [![License](https://img.shields.io/github/license/Jayson-Furr/VeritySpec)](LICENSE)
 
 Executable product contracts for humans, tools, and agents.
@@ -39,17 +38,17 @@ This implementation provides:
 
 ## Quick Start
 
-Install from PyPI after publishing is enabled:
-
-```bash
-pip install verityspec
-verity --version
-```
-
-Until PyPI publishing is enabled, install from GitHub:
+Install the latest GitHub release:
 
 ```bash
 pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.2.0"
+verity --version
+```
+
+PyPI publishing is prepared but not enabled yet. After publishing is enabled:
+
+```bash
+pip install verityspec
 verity --version
 ```
 
