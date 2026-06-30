@@ -1003,11 +1003,12 @@ Sprint 65 should release the completed `v0.24.0` scope:
 
 ## v0.25.0
 
-The `v0.25.0` milestone is in progress.
+The `v0.25.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 66 | In Progress | Deterministic report timestamp controls |
+| 66 | Complete | Deterministic report timestamp controls |
+| 67 | Complete | v0.25.0 release preparation |
 
 ## Sprint 66 Priorities
 
@@ -1019,6 +1020,22 @@ Sprint 66 should make report fixture generation deterministic:
 - Add library and CLI tests for fixed report timestamps and invalid values.
 - Update README, changelog, roadmap, and generator docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 67 Priorities
+
+Sprint 67 should release the completed `v0.25.0` scope:
+
+- Promote Unreleased changelog entries into `0.25.0`.
+- Bump package metadata to `0.25.0`.
+- Add v0.25.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.25.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.25.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.25.0 GitHub release when checks pass.
+- Close the v0.25.0 milestone after release verification.
 
 ## Later Candidates
 

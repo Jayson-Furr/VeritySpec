@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.25.0
+
 - Added `--generated-at` for deterministic JSON report timestamps and golden
   snapshot regeneration.
+- Added v0.25.0 release notes and roadmap closeout.
 
 ## 0.24.0
 
