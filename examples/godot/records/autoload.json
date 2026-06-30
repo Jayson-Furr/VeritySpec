@@ -1,0 +1,18 @@
+{
+  "id": "godot.autoload.contract_registry",
+  "kind": "godot.autoload",
+  "name": "Contract Registry Autoload",
+  "description": "Godot autoload contract for runtime access to generated product-contract metadata.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "singletonName": "ContractRegistry",
+  "scriptRef": "godot.script.player_controller",
+  "loadOrder": 10,
+  "globalName": "ContractRegistry",
+  "references": [
+    {
+      "type": "usesScript",
+      "target": "godot.script.player_controller"
+    }
+  ]
+}

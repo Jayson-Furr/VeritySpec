@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(47, report["recordCount"])
+        self.assertEqual(61, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(14, report["summary"]["trackedSurfaces"])
-        self.assertEqual(14, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(14, report["summary"]["coveredSurfaces"])
+        self.assertEqual(15, report["summary"]["trackedSurfaces"])
+        self.assertEqual(15, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(15, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1044,6 +1044,7 @@ class VeritySpecTests(unittest.TestCase):
                 "game-assets": 4,
                 "game-core": 4,
                 "gameplay": 4,
+                "godot": 14,
                 "observability": 4,
                 "security": 1,
                 "unity": 12,
@@ -1066,6 +1067,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("verity.pack.game-assets", surfaces["game-assets"]["packId"])
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
+        self.assertEqual("verity.pack.godot", surfaces["godot"]["packId"])
         self.assertEqual("verity.pack.unity", surfaces["unity"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
         self.assertEqual(
@@ -1117,6 +1119,25 @@ class VeritySpecTests(unittest.TestCase):
                 "economy.source.coverage_extract",
             ],
             [record["id"] for record in surfaces["economy"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "godot.addon.coverage_tools",
+                "godot.agent-context-exporter.coverage_context",
+                "godot.autoload.coverage_registry",
+                "godot.export-preset.coverage_pc",
+                "godot.input-action.coverage_interact",
+                "godot.node-contract.coverage_avatar",
+                "godot.project.coverage_adventure",
+                "godot.readiness-dashboard.coverage_prototype",
+                "godot.resource.coverage_shard_icon",
+                "godot.scanner.coverage_contracts",
+                "godot.scene.coverage_zone",
+                "godot.script.coverage_controller",
+                "godot.shared-library.coverage_runtime",
+                "godot.validation-runner.coverage_contracts",
+            ],
+            [record["id"] for record in surfaces["godot"]["records"]],
         )
         self.assertEqual(
             [
@@ -1665,6 +1686,46 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("unity.validation-runner.missing_scanners", [issue.record_id for issue in issues])
+
+    def test_godot_readiness_requires_validation_runner_scanner_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "godot-tooling-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.godot"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runner.json").write_text(
+                json.dumps(
+                    {
+                        "id": "godot.validation-runner.missing_scanners",
+                        "kind": "godot.validation-runner",
+                        "name": "Missing Scanner Links",
+                        "description": "Godot validation runner missing scanner and graph links.",
+                        "status": "ready",
+                        "owner": "godot-engineering",
+                        "runnerType": "ci",
+                        "command": "godot --headless --script addons/contracts/run_validation.gd",
+                        "scannerRefs": [],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("godot.validation-runner.missing_scanners", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

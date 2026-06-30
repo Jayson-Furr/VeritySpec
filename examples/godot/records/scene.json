@@ -1,0 +1,32 @@
+{
+  "id": "godot.scene.prototype_zone",
+  "kind": "godot.scene",
+  "name": "Prototype Zone Scene",
+  "description": "Greybox Godot scene for proving the Dream Extraction loop.",
+  "status": "ready",
+  "owner": "level-design",
+  "scenePath": "res://scenes/prototype_zone.tscn",
+  "sceneRole": "prototype",
+  "rootNode": "PrototypeZone",
+  "loadMode": "main",
+  "includedInExport": true,
+  "notes": "Contains the first timed extraction loop and placeholder shard pickup path.",
+  "references": [
+    {
+      "type": "usesAddon",
+      "target": "godot.addon.contract_tools"
+    },
+    {
+      "type": "containsNode",
+      "target": "godot.node-contract.player_avatar"
+    },
+    {
+      "type": "usesResource",
+      "target": "godot.resource.memory_shard_icon"
+    },
+    {
+      "type": "usesScript",
+      "target": "godot.script.player_controller"
+    }
+  ]
+}

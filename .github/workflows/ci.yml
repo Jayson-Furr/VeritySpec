@@ -39,7 +39,7 @@ jobs:
 
       - name: Check all example workspaces
         run: |
-          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity examples/gameplay examples/content examples/economy; do
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity examples/godot examples/gameplay examples/content examples/economy; do
             verity validate "$workspace"
             verity lint "$workspace" --strict
             verity readiness "$workspace" --strict
@@ -86,6 +86,10 @@ jobs:
           verity lint examples/unity --strict --format json > build/unity-lint.json
           verity readiness examples/unity --strict --format json > build/unity-readiness.json
           verity graph examples/unity --format json > build/unity-graph.json
+          verity validate examples/godot --format json > build/godot-validate.json
+          verity lint examples/godot --strict --format json > build/godot-lint.json
+          verity readiness examples/godot --strict --format json > build/godot-readiness.json
+          verity graph examples/godot --format json > build/godot-graph.json
           verity validate examples/gameplay --format json > build/gameplay-validate.json
           verity lint examples/gameplay --strict --format json > build/gameplay-lint.json
           verity readiness examples/gameplay --strict --format json > build/gameplay-readiness.json
@@ -154,6 +158,10 @@ jobs:
           python -m json.tool build/unity-lint.json >/dev/null
           python -m json.tool build/unity-readiness.json >/dev/null
           python -m json.tool build/unity-graph.json >/dev/null
+          python -m json.tool build/godot-validate.json >/dev/null
+          python -m json.tool build/godot-lint.json >/dev/null
+          python -m json.tool build/godot-readiness.json >/dev/null
+          python -m json.tool build/godot-graph.json >/dev/null
           python -m json.tool build/gameplay-validate.json >/dev/null
           python -m json.tool build/gameplay-lint.json >/dev/null
           python -m json.tool build/gameplay-readiness.json >/dev/null
@@ -222,6 +230,7 @@ jobs:
           verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
           verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
           verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+          verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
           verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
           verity generate schema-bundle examples/content --out build/content-schema-bundle.json
           verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
@@ -241,6 +250,7 @@ jobs:
           python -m json.tool build/game-core-schema-bundle.json >/dev/null
           python -m json.tool build/game-assets-schema-bundle.json >/dev/null
           python -m json.tool build/unity-schema-bundle.json >/dev/null
+          python -m json.tool build/godot-schema-bundle.json >/dev/null
           python -m json.tool build/gameplay-schema-bundle.json >/dev/null
           python -m json.tool build/content-schema-bundle.json >/dev/null
           python -m json.tool build/economy-schema-bundle.json >/dev/null
@@ -275,6 +285,7 @@ jobs:
           /tmp/verityspec-wheel/bin/verity validate examples/game-core
           /tmp/verityspec-wheel/bin/verity validate examples/game-assets
           /tmp/verityspec-wheel/bin/verity validate examples/unity
+          /tmp/verityspec-wheel/bin/verity validate examples/godot
           /tmp/verityspec-wheel/bin/verity validate examples/gameplay
           /tmp/verityspec-wheel/bin/verity validate examples/content
           /tmp/verityspec-wheel/bin/verity validate examples/economy

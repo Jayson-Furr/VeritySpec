@@ -129,6 +129,19 @@ verity graph examples/unity --format json > build/unity-graph.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.godot`, include the usual contract
+checks, graph checks, and a schema bundle for Godot project, addon,
+shared-library, scene, node, resource, script, autoload, input, export,
+scanner, validation-runner, dashboard, and agent handoff tooling:
+
+```bash
+verity validate examples/godot
+verity lint examples/godot --strict
+verity readiness examples/godot --strict
+verity graph examples/godot --format json > build/godot-graph.json
+verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
+```
+
 For workspaces that load `verity.pack.gameplay`, include the usual contract
 checks and keep a schema bundle for mechanic, ability, rule, encounter, and
 agent handoff tooling:

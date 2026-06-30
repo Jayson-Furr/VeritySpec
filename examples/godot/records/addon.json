@@ -1,0 +1,19 @@
+{
+  "id": "godot.addon.contract_tools",
+  "kind": "godot.addon",
+  "name": "Contract Tools Addon",
+  "description": "Godot addon contract for prototype validation and agent-context tooling.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "addonName": "contract_tools",
+  "version": "0.1.0",
+  "source": "local",
+  "addonPath": "addons/contract_tools",
+  "purpose": "Provides editor tooling for contract scans, readiness checks, and agent-context export.",
+  "capabilities": [
+    "contract-scan",
+    "readiness-dashboard",
+    "agent-context-export"
+  ],
+  "references": []
+}

@@ -26,8 +26,8 @@ This implementation provides:
 - Built-in packs for core product records, APIs, CLIs, events, security
   controls, observability signals, accessibility claims, compliance mappings,
   deployment targets, early game product contracts, and creative game asset
-  contracts, Unity implementation and engine-tooling contracts, gameplay
-  contracts, game content contracts, and economy contracts.
+  contracts, Unity and Godot game implementation and engine-tooling contracts,
+  gameplay contracts, game content contracts, and economy contracts.
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
@@ -74,7 +74,8 @@ This implementation provides:
 - Product-surface pack boundary guidance for future GUI, desktop, mobile, and
   additional game packs, with the first narrow game scopes delivered through
   `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
-  `verity.pack.gameplay`, `verity.pack.content`, and `verity.pack.economy`.
+  `verity.pack.godot`, `verity.pack.gameplay`, `verity.pack.content`, and
+  `verity.pack.economy`.
 - Cross-workspace dependency design guidance for future local-only workspace
   dependencies, exported records, reference resolution, and lockfiles.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
@@ -120,6 +121,8 @@ verity validate examples/game-core
 verity validate examples/game-assets
 verity validate examples/unity
 verity graph examples/unity
+verity validate examples/godot
+verity graph examples/godot
 verity validate examples/gameplay
 verity validate examples/content
 verity validate examples/economy
@@ -134,6 +137,7 @@ verity readiness examples/deployment --strict
 verity readiness examples/game-core --strict
 verity readiness examples/game-assets --strict
 verity readiness examples/unity --strict
+verity readiness examples/godot --strict
 verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
 verity readiness examples/economy --strict
@@ -158,6 +162,7 @@ verity generate deployment-report examples/deployment --out build/deployment-rep
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
@@ -222,6 +227,7 @@ verity generate deployment-report examples/deployment --out build/deployment-rep
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
@@ -317,7 +323,8 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/deployment](examples/deployment/verityspec.json): focused deployment target workspace.
 - [examples/game-core](examples/game-core/verityspec.json): focused game product-contract workspace.
 - [examples/game-assets](examples/game-assets/verityspec.json): focused game creative-source workspace.
-- [examples/unity](examples/unity/verityspec.json): focused Unity implementation and engine-tooling workspace.
+- [examples/unity](examples/unity/verityspec.json): focused Unity game implementation and engine-tooling workspace.
+- [examples/godot](examples/godot/verityspec.json): focused Godot game implementation and engine-tooling workspace.
 - [examples/gameplay](examples/gameplay/verityspec.json): focused gameplay mechanic and encounter workspace.
 - [examples/content](examples/content/verityspec.json): focused game content manifest workspace.
 - [examples/economy](examples/economy/verityspec.json): focused game economy workspace.
@@ -345,6 +352,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Game core pack](docs/game-core-pack.md)
 - [Game assets pack](docs/game-assets-pack.md)
 - [Unity pack](docs/unity-pack.md)
+- [Godot pack](docs/godot-pack.md)
 - [Gameplay pack](docs/gameplay-pack.md)
 - [Content pack](docs/content-pack.md)
 - [Economy pack](docs/economy-pack.md)

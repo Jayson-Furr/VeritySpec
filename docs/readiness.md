@@ -80,6 +80,14 @@ passes. Tooling records such as `unity.scanner`, `unity.validation-runner`,
 `unity.readiness-dashboard`, and `unity.agent-context-exporter` should also
 carry graph links to the Unity records they scan, run, report, or describe.
 
+Godot records use readiness gates to keep implementation and engine-tooling
+contracts executable. A `godot.project` should link to addon, shared-library,
+scene, node, resource, script, autoload, input-action, and export-preset
+records before strict readiness passes. Tooling records such as
+`godot.scanner`, `godot.validation-runner`, `godot.readiness-dashboard`, and
+`godot.agent-context-exporter` should also carry graph links to the Godot
+records they scan, run, report, or describe.
+
 Gameplay records use readiness gates to keep mechanics and encounters
 implementation-ready. A `game.mechanic` should declare inputs, outputs, and
 graph references before strict readiness passes.
@@ -102,6 +110,7 @@ verity readiness examples/deployment --strict
 verity readiness examples/game-core --strict
 verity readiness examples/game-assets --strict
 verity readiness examples/unity --strict
+verity readiness examples/godot --strict
 verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
 verity readiness examples/economy --strict

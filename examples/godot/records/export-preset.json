@@ -1,0 +1,25 @@
+{
+  "id": "godot.export-preset.pc_development",
+  "kind": "godot.export-preset",
+  "name": "PC Development Export",
+  "description": "Local PC development export preset for the Dream Extraction Godot prototype.",
+  "status": "ready",
+  "owner": "build-engineering",
+  "presetName": "PC Development",
+  "platform": "windows",
+  "outputPath": "builds/pc-development/DreamExtraction.exe",
+  "scenes": [
+    "godot.scene.prototype_zone"
+  ],
+  "debugExport": true,
+  "references": [
+    {
+      "type": "includesScene",
+      "target": "godot.scene.prototype_zone"
+    },
+    {
+      "type": "usesAddon",
+      "target": "godot.addon.contract_tools"
+    }
+  ]
+}

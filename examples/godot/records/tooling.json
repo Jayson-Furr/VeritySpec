@@ -1,0 +1,129 @@
+{
+  "records": [
+    {
+      "id": "godot.scanner.prototype_contracts",
+      "kind": "godot.scanner",
+      "name": "Prototype Contract Scanner",
+      "description": "Scanner contract for reading Godot project, addon, scene, script, and resource metadata from the prototype.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "scannerType": "project",
+      "entryPoint": "addons/contract_tools/prototype_contract_scanner.gd",
+      "outputPath": "build/godot/prototype-contracts.json",
+      "scannedKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.scene",
+        "godot.script",
+        "godot.resource"
+      ],
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "godot.project.dream_extraction"
+        },
+        {
+          "type": "scansAddon",
+          "target": "godot.addon.contract_tools"
+        },
+        {
+          "type": "scansScene",
+          "target": "godot.scene.prototype_zone"
+        },
+        {
+          "type": "scansScript",
+          "target": "godot.script.player_controller"
+        },
+        {
+          "type": "scansResource",
+          "target": "godot.resource.memory_shard_icon"
+        }
+      ]
+    },
+    {
+      "id": "godot.validation-runner.prototype_contracts",
+      "kind": "godot.validation-runner",
+      "name": "Prototype Contract Validation Runner",
+      "description": "Godot validation runner contract for checking generated prototype contract data in local and CI workflows.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "runnerType": "ci",
+      "command": "godot --headless --path godot/DreamExtraction --script addons/contract_tools/run_validation.gd",
+      "scannerRefs": [
+        "godot.scanner.prototype_contracts"
+      ],
+      "readinessDashboardRef": "godot.readiness-dashboard.prototype",
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "godot.scanner.prototype_contracts"
+        }
+      ]
+    },
+    {
+      "id": "godot.readiness-dashboard.prototype",
+      "kind": "godot.readiness-dashboard",
+      "name": "Prototype Readiness Dashboard",
+      "description": "Godot editor readiness dashboard contract for prototype addon, scene, node, script, export, and validation status.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "dashboardPath": "addons/contract_tools/prototype_readiness_dashboard.gd",
+      "dashboardType": "editor",
+      "trackedRecordKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.scene",
+        "godot.node-contract",
+        "godot.export-preset",
+        "godot.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "godot.project.dream_extraction"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "godot.validation-runner.prototype_contracts"
+        }
+      ]
+    },
+    {
+      "id": "godot.agent-context-exporter.prototype",
+      "kind": "godot.agent-context-exporter",
+      "name": "Prototype Agent Context Exporter",
+      "description": "Exporter contract for producing bounded Godot implementation context for humans and AI coding agents.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "exporterType": "markdown",
+      "outputPath": "build/godot/prototype-agent-context.md",
+      "includedRecordKinds": [
+        "game.product",
+        "game.prototype-scope",
+        "godot.project",
+        "godot.shared-library",
+        "godot.scene",
+        "godot.validation-runner",
+        "godot.readiness-dashboard"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "godot.project.dream_extraction"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "godot.readiness-dashboard.prototype"
+        },
+        {
+          "type": "includesRunner",
+          "target": "godot.validation-runner.prototype_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "godot.scanner.prototype_contracts"
+        }
+      ]
+    }
+  ]
+}
