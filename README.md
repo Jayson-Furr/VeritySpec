@@ -52,7 +52,8 @@ This implementation provides:
 - Downstream GitHub Actions templates and a reusable workflow for product-contract enforcement.
 - Opt-in GitHub Actions annotation output for validation, lint, and readiness
   issues in CI logs.
-- Golden security-report fixture coverage for stable report-shape review.
+- Golden fixture coverage for security reports and observability report/schema
+  bundle output so generator drift is reviewed intentionally.
 - README command smoke tests that execute safe local CLI examples and keep
   public command snippets from drifting.
 - A canonical AI agent entry point with shell discipline, branch/PR/release

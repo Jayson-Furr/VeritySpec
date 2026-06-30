@@ -146,8 +146,10 @@ TypeScript and Python model generators support:
 - Field descriptions in generated comments
 
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
-is covered by golden-file tests. Changes to those generators should update the
-golden files only when the output contract intentionally changes.
+is covered by golden-file tests. The `examples/security` security report and
+the `examples/observability` observability report and schema bundle are also
+covered by committed golden fixtures. Changes to those generators should update
+the golden files only when the output contract intentionally changes.
 
 Known limits:
 

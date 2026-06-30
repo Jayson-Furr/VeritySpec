@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added observability report and schema-bundle golden fixtures for stable
+  generator contract review.
+
 ## 0.23.0
 
 - Added opt-in GitHub Actions annotation output for validation, lint, and

@@ -10,9 +10,11 @@ from verityspec.generators import (
     generate_accessibility_report,
     generate_asyncapi,
     generate_compliance_matrix,
+    generate_observability_report,
     generate_openapi,
     generate_python_models,
     generate_roadmap_report,
+    generate_schema_bundle,
     generate_security_report,
     generate_typescript,
 )
@@ -29,9 +31,18 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
 GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
+OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
 
 
 def normalize_security_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_observability_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -673,6 +684,24 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(str(ROOT / "examples" / "security"), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_security_report_for_golden(report))
+
+    def test_observability_report_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "observability")
+        expected = json.loads((OBSERVABILITY_GOLDEN / "observability_report.json").read_text(encoding="utf-8"))
+
+        report = generate_observability_report(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "observability"), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_observability_report_for_golden(report))
+
+    def test_observability_schema_bundle_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "observability")
+        registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths)
+        expected = json.loads((OBSERVABILITY_GOLDEN / "schema_bundle.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(expected, generate_schema_bundle(registry))
 
     def test_accessibility_report_summarizes_accessibility_claims(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "accessibility")
