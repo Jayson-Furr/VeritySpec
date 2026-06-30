@@ -1,0 +1,25 @@
+{
+  "id": "unity.prefab.player_avatar",
+  "kind": "unity.prefab",
+  "name": "Prototype Player Avatar Prefab",
+  "description": "Unity prefab contract for the player avatar used in the first prototype scene.",
+  "status": "ready",
+  "owner": "unity-engineering",
+  "prefabPath": "Assets/DreamExtraction/Prefabs/PlayerAvatar.prefab",
+  "prefabRole": "player",
+  "componentSummary": [
+    "Prototype movement controller",
+    "Input action bridge",
+    "Shard interaction probe"
+  ],
+  "references": [
+    {
+      "type": "usesPackage",
+      "target": "unity.package.input_system"
+    },
+    {
+      "type": "implementedByAssembly",
+      "target": "unity.asmdef.dream_runtime"
+    }
+  ]
+}

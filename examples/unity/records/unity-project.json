@@ -21,8 +21,20 @@
       "target": "unity.package.input_system"
     },
     {
+      "type": "usesSharedLibrary",
+      "target": "unity.shared-library.dream_runtime"
+    },
+    {
       "type": "containsScene",
       "target": "unity.scene.prototype_zone"
+    },
+    {
+      "type": "containsPrefab",
+      "target": "unity.prefab.player_avatar"
+    },
+    {
+      "type": "declaresAssembly",
+      "target": "unity.asmdef.dream_runtime"
     },
     {
       "type": "buildsFor",

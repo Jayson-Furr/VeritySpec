@@ -22,7 +22,7 @@
     "verity.pack.content",
     "verity.pack.economy"
   ],
-  "recordCount": 39,
+  "recordCount": 47,
   "productCount": 1,
   "summary": {
     "trackedSurfaces": 14,
@@ -43,7 +43,7 @@
       "gameplay": 4,
       "observability": 4,
       "security": 1,
-      "unity": 4
+      "unity": 12
     },
     "byRecordKind": {
       "accessibility.claim": 1,
@@ -81,10 +81,18 @@
       "product": 1,
       "schema.object": 1,
       "security.control": 1,
+      "unity.agent-context-exporter": 1,
+      "unity.asmdef": 1,
       "unity.build-target": 1,
+      "unity.package": 1,
       "unity.package-dependency": 1,
+      "unity.prefab": 1,
       "unity.project": 1,
-      "unity.scene": 1
+      "unity.readiness-dashboard": 1,
+      "unity.scanner": 1,
+      "unity.scene": 1,
+      "unity.shared-library": 1,
+      "unity.validation-runner": 1
     },
     "releaseGaps": {
       "missingSurfaceRecords": [],
@@ -532,15 +540,37 @@
       "recordKinds": [
         "unity.project",
         "unity.package-dependency",
+        "unity.package",
+        "unity.shared-library",
+        "unity.prefab",
+        "unity.asmdef",
+        "unity.scanner",
+        "unity.validation-runner",
+        "unity.readiness-dashboard",
+        "unity.agent-context-exporter",
         "unity.scene",
         "unity.build-target"
       ],
       "productRelationships": [
         "hasUnityProject"
       ],
-      "recordCount": 4,
+      "recordCount": 12,
       "covered": true,
       "records": [
+        {
+          "id": "unity.agent-context-exporter.coverage_context",
+          "kind": "unity.agent-context-exporter",
+          "name": "Coverage Agent Context Exporter",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.asmdef.coverage_runtime",
+          "kind": "unity.asmdef",
+          "name": "Coverage Runtime Assembly",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
         {
           "id": "unity.build-target.coverage_pc",
           "kind": "unity.build-target",
@@ -549,9 +579,23 @@
           "owner": "build-engineering"
         },
         {
-          "id": "unity.package.coverage_input",
+          "id": "unity.package-dependency.coverage_input",
           "kind": "unity.package-dependency",
+          "name": "Coverage Input Package Dependency",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.package.coverage_input",
+          "kind": "unity.package",
           "name": "Coverage Input Package",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.prefab.coverage_avatar",
+          "kind": "unity.prefab",
+          "name": "Coverage Avatar Prefab",
           "status": "ready",
           "owner": "unity-engineering"
         },
@@ -563,11 +607,39 @@
           "owner": "unity-engineering"
         },
         {
+          "id": "unity.readiness-dashboard.coverage_prototype",
+          "kind": "unity.readiness-dashboard",
+          "name": "Coverage Prototype Readiness Dashboard",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.scanner.coverage_contracts",
+          "kind": "unity.scanner",
+          "name": "Coverage Contract Scanner",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
           "id": "unity.scene.coverage_zone",
           "kind": "unity.scene",
           "name": "Coverage Zone Scene",
           "status": "ready",
           "owner": "level-design"
+        },
+        {
+          "id": "unity.shared-library.coverage_runtime",
+          "kind": "unity.shared-library",
+          "name": "Coverage Runtime Library",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.validation-runner.coverage_contracts",
+          "kind": "unity.validation-runner",
+          "name": "Coverage Contract Validation Runner",
+          "status": "ready",
+          "owner": "unity-engineering"
         }
       ],
       "productReferences": [

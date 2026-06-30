@@ -1,0 +1,29 @@
+{
+  "id": "unity.shared-library.dream_runtime",
+  "kind": "unity.shared-library",
+  "name": "Dream Extraction Runtime Library",
+  "description": "Shared Unity runtime library contract for the Dream Extraction prototype.",
+  "status": "ready",
+  "owner": "unity-engineering",
+  "libraryName": "DreamExtraction.Runtime",
+  "repository": "Jayson-Furr/VeritySpec.Unity",
+  "versionRequirement": "^0.1.0",
+  "packageRefs": [
+    "unity.package.input_system"
+  ],
+  "exportedCapabilities": [
+    "prototype-input",
+    "runtime-validation",
+    "agent-context-export"
+  ],
+  "references": [
+    {
+      "type": "includesPackage",
+      "target": "unity.package.input_system"
+    },
+    {
+      "type": "declaresAssembly",
+      "target": "unity.asmdef.dream_runtime"
+    }
+  ]
+}

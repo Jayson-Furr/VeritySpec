@@ -978,8 +978,20 @@
           "target": "unity.package.coverage_input"
         },
         {
+          "type": "usesSharedLibrary",
+          "target": "unity.shared-library.coverage_runtime"
+        },
+        {
           "type": "containsScene",
           "target": "unity.scene.coverage_zone"
+        },
+        {
+          "type": "containsPrefab",
+          "target": "unity.prefab.coverage_avatar"
+        },
+        {
+          "type": "declaresAssembly",
+          "target": "unity.asmdef.coverage_runtime"
         },
         {
           "type": "buildsFor",
@@ -988,9 +1000,9 @@
       ]
     },
     {
-      "id": "unity.package.coverage_input",
+      "id": "unity.package-dependency.coverage_input",
       "kind": "unity.package-dependency",
-      "name": "Coverage Input Package",
+      "name": "Coverage Input Package Dependency",
       "description": "Unity package dependency fixture for coverage controls.",
       "status": "ready",
       "owner": "unity-engineering",
@@ -1002,6 +1014,220 @@
         "input-actions"
       ],
       "references": []
+    },
+    {
+      "id": "unity.package.coverage_input",
+      "kind": "unity.package",
+      "name": "Coverage Input Package",
+      "description": "Unity package fixture for coverage controls.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "packageName": "com.unity.inputsystem",
+      "version": "1.7.0",
+      "source": "unity-registry",
+      "packagePath": "Packages/com.unity.inputsystem",
+      "purpose": "Provides input bindings for the coverage adventure prototype.",
+      "capabilities": [
+        "input-actions"
+      ],
+      "references": [
+        {
+          "type": "declaredByDependency",
+          "target": "unity.package-dependency.coverage_input"
+        }
+      ]
+    },
+    {
+      "id": "unity.shared-library.coverage_runtime",
+      "kind": "unity.shared-library",
+      "name": "Coverage Runtime Library",
+      "description": "Shared Unity runtime library fixture for coverage dashboard validation.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "libraryName": "CoverageAdventure.Runtime",
+      "repository": "Jayson-Furr/VeritySpec.Unity",
+      "versionRequirement": "^0.1.0",
+      "packageRefs": [
+        "unity.package.coverage_input"
+      ],
+      "exportedCapabilities": [
+        "runtime-validation",
+        "agent-context-export"
+      ],
+      "references": [
+        {
+          "type": "includesPackage",
+          "target": "unity.package.coverage_input"
+        },
+        {
+          "type": "declaresAssembly",
+          "target": "unity.asmdef.coverage_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unity.asmdef.coverage_runtime",
+      "kind": "unity.asmdef",
+      "name": "Coverage Runtime Assembly",
+      "description": "Assembly definition fixture for coverage runtime scripts.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "asmdefPath": "Assets/CoverageAdventure/CoverageAdventure.Runtime.asmdef",
+      "assemblyName": "CoverageAdventure.Runtime",
+      "defineConstraints": [],
+      "referencedAssemblies": [
+        "Unity.InputSystem"
+      ],
+      "references": [
+        {
+          "type": "usesPackage",
+          "target": "unity.package.coverage_input"
+        }
+      ]
+    },
+    {
+      "id": "unity.prefab.coverage_avatar",
+      "kind": "unity.prefab",
+      "name": "Coverage Avatar Prefab",
+      "description": "Unity prefab fixture for the coverage adventure prototype avatar.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "prefabPath": "Assets/CoverageAdventure/Prefabs/CoverageAvatar.prefab",
+      "prefabRole": "player",
+      "componentSummary": [
+        "Prototype movement controller",
+        "Input action bridge"
+      ],
+      "references": [
+        {
+          "type": "usesPackage",
+          "target": "unity.package.coverage_input"
+        },
+        {
+          "type": "implementedByAssembly",
+          "target": "unity.asmdef.coverage_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unity.scanner.coverage_contracts",
+      "kind": "unity.scanner",
+      "name": "Coverage Contract Scanner",
+      "description": "Unity scanner fixture for coverage project, package, prefab, and assembly metadata.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "scannerType": "project",
+      "entryPoint": "Assets/CoverageAdventure/Editor/CoverageContractScanner.cs",
+      "outputPath": "build/unity/coverage-contracts.json",
+      "scannedKinds": [
+        "unity.project",
+        "unity.package",
+        "unity.prefab",
+        "unity.asmdef"
+      ],
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "unity.project.coverage_adventure"
+        },
+        {
+          "type": "scansPackage",
+          "target": "unity.package.coverage_input"
+        },
+        {
+          "type": "scansPrefab",
+          "target": "unity.prefab.coverage_avatar"
+        },
+        {
+          "type": "scansAssembly",
+          "target": "unity.asmdef.coverage_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unity.validation-runner.coverage_contracts",
+      "kind": "unity.validation-runner",
+      "name": "Coverage Contract Validation Runner",
+      "description": "Unity validation runner fixture for coverage contract data.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "runnerType": "ci",
+      "command": "unity -batchmode -projectPath unity/CoverageAdventure -executeMethod CoverageAdventure.Editor.ContractValidation.Run",
+      "scannerRefs": [
+        "unity.scanner.coverage_contracts"
+      ],
+      "readinessDashboardRef": "unity.readiness-dashboard.coverage_prototype",
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "unity.scanner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unity.readiness-dashboard.coverage_prototype",
+      "kind": "unity.readiness-dashboard",
+      "name": "Coverage Prototype Readiness Dashboard",
+      "description": "Unity readiness dashboard fixture for coverage project status.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "dashboardPath": "Assets/CoverageAdventure/Editor/CoverageReadinessDashboard.cs",
+      "dashboardType": "editor",
+      "trackedRecordKinds": [
+        "unity.project",
+        "unity.package",
+        "unity.prefab",
+        "unity.scene",
+        "unity.build-target",
+        "unity.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "unity.project.coverage_adventure"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "unity.validation-runner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unity.agent-context-exporter.coverage_context",
+      "kind": "unity.agent-context-exporter",
+      "name": "Coverage Agent Context Exporter",
+      "description": "Unity agent context exporter fixture for bounded implementation context.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "exporterType": "markdown",
+      "outputPath": "build/unity/coverage-agent-context.md",
+      "includedRecordKinds": [
+        "game.product",
+        "game.prototype-scope",
+        "unity.project",
+        "unity.shared-library",
+        "unity.prefab",
+        "unity.validation-runner",
+        "unity.readiness-dashboard"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "unity.project.coverage_adventure"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "unity.readiness-dashboard.coverage_prototype"
+        },
+        {
+          "type": "includesRunner",
+          "target": "unity.validation-runner.coverage_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "unity.scanner.coverage_contracts"
+        }
+      ]
     },
     {
       "id": "unity.scene.coverage_zone",
@@ -1018,6 +1244,14 @@
         {
           "type": "usesPackage",
           "target": "unity.package.coverage_input"
+        },
+        {
+          "type": "usesPrefab",
+          "target": "unity.prefab.coverage_avatar"
+        },
+        {
+          "type": "implementedByAssembly",
+          "target": "unity.asmdef.coverage_runtime"
         },
         {
           "type": "implementsLevel",

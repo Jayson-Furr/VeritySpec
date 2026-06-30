@@ -14,6 +14,14 @@
     {
       "type": "usesPackage",
       "target": "unity.package.input_system"
+    },
+    {
+      "type": "usesPrefab",
+      "target": "unity.prefab.player_avatar"
+    },
+    {
+      "type": "implementedByAssembly",
+      "target": "unity.asmdef.dream_runtime"
     }
   ]
 }

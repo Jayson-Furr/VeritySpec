@@ -117,13 +117,15 @@ verity generate schema-bundle examples/game-assets --out build/game-assets-schem
 ```
 
 For workspaces that load `verity.pack.unity`, include the usual contract
-checks and keep a schema bundle for Unity project, package, scene, build, and
-agent handoff tooling:
+checks, graph checks, and a schema bundle for Unity project, package,
+shared-library, prefab, assembly, scanner, validation-runner, dashboard,
+scene, build, and agent handoff tooling:
 
 ```bash
 verity validate examples/unity
 verity lint examples/unity --strict
 verity readiness examples/unity --strict
+verity graph examples/unity --format json > build/unity-graph.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 ```
 

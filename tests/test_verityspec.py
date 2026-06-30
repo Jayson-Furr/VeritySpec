@@ -1025,7 +1025,7 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(39, report["recordCount"])
+        self.assertEqual(47, report["recordCount"])
         self.assertEqual(1, report["productCount"])
         self.assertEqual(14, report["summary"]["trackedSurfaces"])
         self.assertEqual(14, report["summary"]["loadedSurfacePacks"])
@@ -1046,7 +1046,7 @@ class VeritySpecTests(unittest.TestCase):
                 "gameplay": 4,
                 "observability": 4,
                 "security": 1,
-                "unity": 4,
+                "unity": 12,
             },
             report["summary"]["bySurface"],
         )
@@ -1120,10 +1120,18 @@ class VeritySpecTests(unittest.TestCase):
         )
         self.assertEqual(
             [
+                "unity.agent-context-exporter.coverage_context",
+                "unity.asmdef.coverage_runtime",
                 "unity.build-target.coverage_pc",
+                "unity.package-dependency.coverage_input",
                 "unity.package.coverage_input",
+                "unity.prefab.coverage_avatar",
                 "unity.project.coverage_adventure",
+                "unity.readiness-dashboard.coverage_prototype",
+                "unity.scanner.coverage_contracts",
                 "unity.scene.coverage_zone",
+                "unity.shared-library.coverage_runtime",
+                "unity.validation-runner.coverage_contracts",
             ],
             [record["id"] for record in surfaces["unity"]["records"]],
         )
@@ -1617,6 +1625,46 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("unity.project.missing_links", [issue.record_id for issue in issues])
+
+    def test_unity_readiness_requires_validation_runner_scanner_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "unity-tooling-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.unity"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runner.json").write_text(
+                json.dumps(
+                    {
+                        "id": "unity.validation-runner.missing_scanners",
+                        "kind": "unity.validation-runner",
+                        "name": "Missing Scanner Links",
+                        "description": "Unity validation runner missing scanner and graph links.",
+                        "status": "ready",
+                        "owner": "unity-engineering",
+                        "runnerType": "ci",
+                        "command": "unity -batchmode -executeMethod Validate.Run",
+                        "scannerRefs": [],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("unity.validation-runner.missing_scanners", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

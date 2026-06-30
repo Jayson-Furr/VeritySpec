@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Expanded built-in `verity.pack.unity` with `unity.package`,
+  `unity.shared-library`, `unity.prefab`, `unity.asmdef`, `unity.scanner`,
+  `unity.validation-runner`, `unity.readiness-dashboard`, and
+  `unity.agent-context-exporter` records, readiness gates, reference rules,
+  expanded executable Unity example, graph coverage, and public docs for Unity
+  implementation and engine-tooling contracts.
+
 ## 0.39.0
 
 - Added built-in `verity.pack.economy` with `economy.currency`,

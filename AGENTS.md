@@ -207,6 +207,7 @@ verity readiness examples/game-assets --strict
 verity validate examples/unity
 verity lint examples/unity --strict
 verity readiness examples/unity --strict
+verity graph examples/unity
 verity validate examples/gameplay
 verity lint examples/gameplay --strict
 verity readiness examples/gameplay --strict

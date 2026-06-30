@@ -1629,7 +1629,7 @@ The `v0.40.0` milestone is active.
 | Sprint | Status | Focus |
 |---:|---|---|
 | 96 | Complete | Engine and product-delivery pack roadmap |
-| 97 | Planned | Unity engine-tooling expansion foundation |
+| 97 | In Progress | Unity engine-tooling expansion foundation |
 
 ## Sprint 96 Priorities
 
@@ -1654,10 +1654,10 @@ spec-driven product delivery:
 
 ## Sprint 97 Priorities
 
-Sprint 97 should implement the first larger engine-tooling expansion for the
-built-in Unity pack:
+Sprint 97 implements the first larger engine-tooling expansion for the built-in
+Unity pack:
 
-- Add a selected Unity vertical slice such as `unity.package`,
+- Add a selected Unity vertical slice: `unity.package`,
   `unity.shared-library`, `unity.prefab`, `unity.asmdef`, `unity.scanner`,
   `unity.validation-runner`, `unity.readiness-dashboard`, and
   `unity.agent-context-exporter`.
@@ -1681,57 +1681,57 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Expand `verity.pack.unity` with a narrow engine-tooling vertical slice,
-   such as Unity package, shared-library, prefab, asmdef, scanner, validation
-   runner, readiness dashboard, and agent-context exporter records plus an
-   executable example.
-2. Add a built-in `verity.pack.godot` foundation with Godot project, addon,
-   scene, node contract, resource, script, autoload, input action, export
-   preset, scanner, validation runner, readiness dashboard, and agent-context
-   exporter records plus an executable example.
-3. Add a built-in `verity.pack.unreal` foundation with Unreal project, plugin,
+1. Add a built-in `verity.pack.godot` foundation with Godot project, addon,
+   shared-library, scene, node contract, resource, script, autoload, input
+   action, export preset, scanner, validation runner, readiness dashboard, and
+   agent-context exporter records plus an executable example for a Godot game
+   workspace.
+2. Add a built-in `verity.pack.unreal` foundation with Unreal project, plugin,
    module, target, map, blueprint, data asset, gameplay tag, input action,
    scanner, validation runner, readiness dashboard, and agent-context exporter
-   records plus an executable example.
-4. Add a built-in `verity.pack.product-delivery` foundation with product
+   records plus an executable example for an Unreal game workspace.
+3. Add a built-in `verity.pack.product-delivery` foundation with product
    scope, project-management model, decision record, readiness profile,
    evidence requirement, release process, support policy, maintenance policy,
    scanner capability, generator capability, validation runner, editor
    surface, and agent-context exporter records plus an executable example.
-5. Add a built-in `verity.pack.progression` foundation with XP, level,
+4. Add a built-in `verity.pack.progression` foundation with XP, level,
    unlock, progression track, and progression gate records plus executable
    examples.
-6. Add golden fixtures for accessibility and compliance report outputs after
+5. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-7. Add a maintainer review checklist for accepting external packs once public
+6. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-8. Add release-integrity consistency checks across package metadata, README,
+7. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-9. Add roadmap-report human-readable Markdown output for maintainer release
+8. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-10. Add security-report release gaps for stale evidence and missing
+9. Add security-report release gaps for stale evidence and missing
    verification dates.
-11. Add workspace migration impact summaries that call out record, pack, and
+10. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-12. Add machine-readable issue-code catalog generation from `verity explain`
+11. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-13. Add an agent-context generation design note for bounded AI handoff
+12. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-14. Add a Unity full-lifecycle support design note covering game workspaces,
+13. Add a Unity full-lifecycle support design note covering game workspaces,
    shared Unity library workspaces, lifecycle readiness profiles, evidence,
    liveops, decommissioning, archive records, and portfolio examples.
-15. Add a portfolio-level validation design note for multi-workspace product,
+14. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-16. Add fixture refresh documentation for regenerating golden report outputs
+15. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-17. Add a public architecture decision record template for future major pack,
+16. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-18. Add profile-aware downstream CI template examples for release, regulated,
+17. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-19. Add deployment-target release evidence links that connect deployment
+18. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-20. Add coverage-dashboard Markdown output for maintainers who need a
+19. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
+20. Add local workspace-dependency prototype fixtures for exported records,
+   dependency aliases, and dependency-aware graph validation before adding
+   remote registry behavior.
 
 ## Working Rule
 

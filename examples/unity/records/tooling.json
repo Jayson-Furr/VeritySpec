@@ -1,0 +1,124 @@
+{
+  "records": [
+    {
+      "id": "unity.scanner.prototype_contracts",
+      "kind": "unity.scanner",
+      "name": "Prototype Contract Scanner",
+      "description": "Scanner contract for reading Unity project, package, prefab, and assembly metadata from the prototype.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "scannerType": "project",
+      "entryPoint": "Assets/DreamExtraction/Editor/PrototypeContractScanner.cs",
+      "outputPath": "build/unity/prototype-contracts.json",
+      "scannedKinds": [
+        "unity.project",
+        "unity.package",
+        "unity.prefab",
+        "unity.asmdef"
+      ],
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "unity.project.dream_extraction"
+        },
+        {
+          "type": "scansPackage",
+          "target": "unity.package.input_system"
+        },
+        {
+          "type": "scansPrefab",
+          "target": "unity.prefab.player_avatar"
+        },
+        {
+          "type": "scansAssembly",
+          "target": "unity.asmdef.dream_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unity.validation-runner.prototype_contracts",
+      "kind": "unity.validation-runner",
+      "name": "Prototype Contract Validation Runner",
+      "description": "Unity validation runner contract for checking generated prototype contract data in local and CI workflows.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "runnerType": "ci",
+      "command": "unity -batchmode -projectPath unity/DreamExtraction -executeMethod DreamExtraction.Editor.ContractValidation.Run",
+      "scannerRefs": [
+        "unity.scanner.prototype_contracts"
+      ],
+      "readinessDashboardRef": "unity.readiness-dashboard.prototype",
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "unity.scanner.prototype_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unity.readiness-dashboard.prototype",
+      "kind": "unity.readiness-dashboard",
+      "name": "Prototype Readiness Dashboard",
+      "description": "Unity editor readiness dashboard contract for prototype package, prefab, scene, build, and validation status.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "dashboardPath": "Assets/DreamExtraction/Editor/PrototypeReadinessDashboard.cs",
+      "dashboardType": "editor",
+      "trackedRecordKinds": [
+        "unity.project",
+        "unity.package",
+        "unity.prefab",
+        "unity.scene",
+        "unity.build-target",
+        "unity.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "unity.project.dream_extraction"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "unity.validation-runner.prototype_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unity.agent-context-exporter.prototype",
+      "kind": "unity.agent-context-exporter",
+      "name": "Prototype Agent Context Exporter",
+      "description": "Exporter contract for producing bounded Unity implementation context for humans and AI coding agents.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "exporterType": "markdown",
+      "outputPath": "build/unity/prototype-agent-context.md",
+      "includedRecordKinds": [
+        "game.product",
+        "game.prototype-scope",
+        "unity.project",
+        "unity.shared-library",
+        "unity.prefab",
+        "unity.validation-runner",
+        "unity.readiness-dashboard"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "unity.project.dream_extraction"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "unity.readiness-dashboard.prototype"
+        },
+        {
+          "type": "includesRunner",
+          "target": "unity.validation-runner.prototype_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "unity.scanner.prototype_contracts"
+        }
+      ]
+    }
+  ]
+}

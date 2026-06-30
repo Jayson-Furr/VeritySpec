@@ -46,6 +46,7 @@ verity readiness examples/game-assets --strict
 verity validate examples/unity
 verity lint examples/unity --strict
 verity readiness examples/unity --strict
+verity graph examples/unity --format json > build/unity-graph.json
 verity validate examples/gameplay
 verity lint examples/gameplay --strict
 verity readiness examples/gameplay --strict
@@ -89,6 +90,7 @@ verity generate product-impact tests/fixtures/product_impact/baseline tests/fixt
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
+python -m json.tool build/unity-graph.json >/dev/null
 python -m build
 twine check dist/*
 ```

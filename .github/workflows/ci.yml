@@ -85,6 +85,7 @@ jobs:
           verity validate examples/unity --format json > build/unity-validate.json
           verity lint examples/unity --strict --format json > build/unity-lint.json
           verity readiness examples/unity --strict --format json > build/unity-readiness.json
+          verity graph examples/unity --format json > build/unity-graph.json
           verity validate examples/gameplay --format json > build/gameplay-validate.json
           verity lint examples/gameplay --strict --format json > build/gameplay-lint.json
           verity readiness examples/gameplay --strict --format json > build/gameplay-readiness.json
@@ -152,6 +153,7 @@ jobs:
           python -m json.tool build/unity-validate.json >/dev/null
           python -m json.tool build/unity-lint.json >/dev/null
           python -m json.tool build/unity-readiness.json >/dev/null
+          python -m json.tool build/unity-graph.json >/dev/null
           python -m json.tool build/gameplay-validate.json >/dev/null
           python -m json.tool build/gameplay-lint.json >/dev/null
           python -m json.tool build/gameplay-readiness.json >/dev/null
