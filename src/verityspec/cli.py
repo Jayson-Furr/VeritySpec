@@ -433,6 +433,8 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         },
         "issues": [issue.to_dict() for issue in issues],
     }
+    if args.report_out:
+        write_generated(result, args.report_out)
     if args.format == "json":
         print(json.dumps(result, indent=2))
     else:
@@ -540,6 +542,7 @@ def build_parser() -> argparse.ArgumentParser:
     doctor_parser.add_argument("--strict", action="store_true")
     doctor_parser.add_argument("--format", choices=["text", "json"], default="text")
     doctor_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    doctor_parser.add_argument("--report-out", help="Write the structured doctor report JSON to a file.")
     add_pack_path_argument(doctor_parser)
     doctor_parser.set_defaults(func=cmd_doctor)
 

@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added `verity doctor --report-out` for writing structured diagnostics to a
+  JSON file while preserving normal stdout output.
 
 ## 0.6.0
 

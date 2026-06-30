@@ -145,6 +145,7 @@ verity validate examples/security
 verity lint examples/security --strict
 verity readiness examples/security --strict
 verity doctor examples/basic
+verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
 verity graph examples/basic
 verity migrate --list --format json

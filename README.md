@@ -39,6 +39,7 @@ This implementation provides:
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`.
 - Fixture compatibility coverage across supported workspace format versions.
+- Doctor diagnostics that can be printed to stdout or written as JSON reports.
 
 ## Quick Start
 
@@ -75,6 +76,7 @@ verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity readiness examples/security --strict
 verity doctor examples/basic
+verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
 verity graph examples/basic
 verity migrate --list --format json
@@ -105,7 +107,11 @@ verity validate examples/basic --format json
 verity lint examples/basic --strict --format json
 verity readiness examples/basic --strict --format json
 verity doctor examples/basic --format json
+verity doctor examples/basic --report-out build/doctor-report.json
 ```
+
+`verity doctor --report-out` writes the same structured JSON diagnostics used
+by `--format json` while preserving the selected stdout format.
 
 Stable exit codes:
 
