@@ -1207,11 +1207,12 @@ Sprint 75 should release the completed `v0.29.0` scope:
 
 ## v0.30.0
 
-The `v0.30.0` milestone is active.
+The `v0.30.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 76 | Complete | Product-impact report for release-review graph analysis |
+| 77 | Complete | v0.30.0 release preparation |
 
 ## Sprint 76 Priorities
 
@@ -1230,6 +1231,22 @@ Sprint 76 should add product-impact reports:
 - Update CI, release checklist, generator docs, README, AGENTS, changelog, and
   roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 77 Priorities
+
+Sprint 77 should release the completed `v0.30.0` scope:
+
+- Promote Unreleased changelog entries into `0.30.0`.
+- Bump package metadata to `0.30.0`.
+- Add v0.30.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.30.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.30.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.30.0 GitHub release when checks pass.
+- Close the v0.30.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 
