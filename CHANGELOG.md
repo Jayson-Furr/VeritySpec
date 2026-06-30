@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.26.0
+
 - Added product-surface pack boundary guidance for future GUI, desktop, mobile,
   and game packs before first schemas are introduced.
+- Added v0.26.0 release notes and roadmap closeout.
 
 ## 0.25.0
 
