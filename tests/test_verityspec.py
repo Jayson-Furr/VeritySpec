@@ -7,6 +7,7 @@ from pathlib import Path
 
 from verityspec.generators import generate_openapi
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
+from verityspec.pack_validation import validate_builtin_packs
 from verityspec.packs import load_pack_registry
 from verityspec.readiness import evaluate_readiness
 from verityspec.validation import validate_workspace
@@ -17,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class VeritySpecTests(unittest.TestCase):
+    def test_builtin_packs_validate(self) -> None:
+        self.assertEqual([], validate_builtin_packs())
+
     def test_builtin_schemas_require_shared_record_envelope(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "basic")
         registry = load_pack_registry(workspace.pack_ids)

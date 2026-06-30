@@ -41,4 +41,4 @@ verity = "verityspec.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-verityspec = ["packs/**/*.json"]
+verityspec = ["packs/**/*.json", "schemas/*.json"]

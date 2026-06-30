@@ -8,3 +8,4 @@
 - Added executable `examples/basic` workspace and focused tests.
 - Added Sprint 1 CLI contract behavior: `verity --version`, JSON output for contract-checking commands, stable exit codes, and subprocess-based CLI tests.
 - Added Sprint 2 contract semantics: shared record envelope assertions, pack-declared reference rules, graph checks, semantic broken fixtures, and validation-report generation.
+- Added Sprint 3 pack system foundation: pack manifest schema, `verity pack list`, `verity pack validate`, pack validation tests, and pack-standard docs.

@@ -21,6 +21,7 @@ from .generators import (
 from .graph import build_graph, graph_to_text
 from .importers.prismspec import import_prismspec
 from .issues import has_errors, issue_count, print_issues
+from .pack_validation import list_builtin_pack_summaries, validate_builtin_packs
 from .packs import load_pack_registry
 from .readiness import evaluate_readiness
 from .validation import lint_workspace, validate_workspace
@@ -196,6 +197,23 @@ def cmd_import(args: argparse.Namespace) -> int:
     return EXIT_USAGE_ERROR
 
 
+def cmd_pack_list(args: argparse.Namespace) -> int:
+    packs = list_builtin_pack_summaries()
+    if args.format == "json":
+        print(json.dumps({"packs": packs}, indent=2))
+    else:
+        for pack in packs:
+            kinds = ", ".join(pack["kinds"]) or "no kinds"
+            print(f"{pack['id']} {pack['version']} - {pack['name']} ({kinds})")
+    return EXIT_SUCCESS
+
+
+def cmd_pack_validate(args: argparse.Namespace) -> int:
+    issues = validate_builtin_packs(args.pack_id)
+    print_issue_result("Pack validation", "pack.validate", issues, args.format)
+    return issue_exit(issues)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="verity", description="VeritySpec product-contract CLI.")
     parser.add_argument("--version", action="version", version=f"verity {__version__}")
@@ -260,6 +278,18 @@ def build_parser() -> argparse.ArgumentParser:
     import_parser.add_argument("source")
     import_parser.add_argument("--out", required=True)
     import_parser.set_defaults(func=cmd_import)
+
+    pack_parser = subparsers.add_parser("pack", help="Inspect and validate VeritySpec packs.")
+    pack_subparsers = pack_parser.add_subparsers(dest="pack_command", required=True)
+
+    pack_list_parser = pack_subparsers.add_parser("list", help="List built-in packs.")
+    pack_list_parser.add_argument("--format", choices=["text", "json"], default="text")
+    pack_list_parser.set_defaults(func=cmd_pack_list)
+
+    pack_validate_parser = pack_subparsers.add_parser("validate", help="Validate built-in packs.")
+    pack_validate_parser.add_argument("pack_id", nargs="?")
+    pack_validate_parser.add_argument("--format", choices=["text", "json"], default="text")
+    pack_validate_parser.set_defaults(func=cmd_pack_validate)
 
     return parser
 

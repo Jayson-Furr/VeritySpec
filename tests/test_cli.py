@@ -102,6 +102,31 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(2, result.returncode)
         self.assertIn("invalid choice", result.stderr)
 
+    def test_pack_list_json_output(self) -> None:
+        result = verity_command("pack", "list", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        pack_ids = {pack["id"] for pack in payload["packs"]}
+        self.assertIn("verity.core", pack_ids)
+        self.assertIn("verity.pack.api", pack_ids)
+
+    def test_pack_validate_json_output(self) -> None:
+        result = verity_command("pack", "validate", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("pack.validate", payload["command"])
+
+    def test_pack_validate_unknown_pack_fails(self) -> None:
+        result = verity_command("pack", "validate", "verity.pack.missing", "--format", "json")
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertEqual("pack.unknown", payload["issues"][0]["code"])
+
     def test_validation_report_generator_writes_report_for_broken_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "validation-report.json"

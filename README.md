@@ -16,6 +16,7 @@ This initial implementation provides:
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, and events.
+- Pack listing and validation through `verity pack`.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
@@ -34,6 +35,8 @@ python -m pip install --upgrade pip setuptools
 pip install -e .
 
 verity --version
+verity pack list
+verity pack validate
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
@@ -99,6 +102,20 @@ Validation reports can be generated as JSON:
 ```bash
 verity generate validation-report examples/basic --out build/validation-report.json
 ```
+
+## Packs
+
+Built-in packs can be inspected and validated:
+
+```bash
+verity pack list
+verity pack list --format json
+verity pack validate
+verity pack validate verity.pack.api --format json
+```
+
+See [docs/packs.md](docs/packs.md) for the pack manifest contract and pack
+standard.
 
 Run tests:
 
