@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.20.0
+
 - Added golden workspace compatibility manifests for supported workspace
   format coverage.
+- Added v0.20.0 release notes and roadmap closeout.
 
 ## 0.19.0
 
