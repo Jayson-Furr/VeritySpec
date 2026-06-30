@@ -189,6 +189,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 ## Documentation
 
 - [Workspace format](docs/workspace-format.md)
+- [Roadmap](docs/roadmap.md)
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
 - [Readiness](docs/readiness.md)
