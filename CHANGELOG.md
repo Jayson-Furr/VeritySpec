@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.38.0
+
 - Added built-in `verity.pack.gameplay` with `game.mechanic`,
   `game.ability`, `game.rule`, and `game.encounter` records, readiness gates,
   graph reference rules, an executable gameplay example, coverage-dashboard
@@ -12,6 +14,7 @@
   graph reference rules, an executable content example, coverage-dashboard
   support, schema-bundle generation coverage, and public docs for content
   implementation contracts.
+- Added v0.38.0 release notes and roadmap closeout.
 
 ## 0.37.0
 
