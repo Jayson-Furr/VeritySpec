@@ -1,0 +1,96 @@
+{
+  "type": "observability_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.observability",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "signalCount": 4,
+  "summary": {
+    "telemetry": 1,
+    "metrics": 1,
+    "dashboards": 1,
+    "alerts": 1,
+    "byOwner": {
+      "checkout-platform": 4
+    },
+    "alertsBySeverity": {
+      "critical": 1
+    },
+    "releaseGaps": {
+      "telemetryWithoutMetrics": [],
+      "metricsWithoutTelemetry": [],
+      "dashboardsWithoutAlerts": [],
+      "alertsWithoutRunbooks": [],
+      "missingOwners": []
+    }
+  },
+  "telemetry": [
+    {
+      "id": "observability.telemetry.checkout_completed",
+      "name": "Checkout Completed",
+      "owner": "checkout-platform",
+      "signalName": "checkout.completed",
+      "emittedBy": "checkout-service",
+      "payloadSchema": "schema.checkout_completed"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "observability.metric.checkout_success_rate",
+      "name": "Checkout Success Rate",
+      "owner": "checkout-platform",
+      "metricName": "checkout.success_rate",
+      "unit": "percent",
+      "aggregation": "rate",
+      "sources": [
+        {
+          "id": "observability.telemetry.checkout_completed",
+          "kind": "observability.telemetry",
+          "name": "Checkout Completed"
+        }
+      ]
+    }
+  ],
+  "dashboards": [
+    {
+      "id": "observability.dashboard.checkout_reliability",
+      "name": "Checkout Reliability",
+      "owner": "checkout-platform",
+      "url": "https://example.com/dashboards/checkout-reliability",
+      "audience": "engineering",
+      "metrics": [
+        {
+          "id": "observability.metric.checkout_success_rate",
+          "kind": "observability.metric",
+          "name": "Checkout Success Rate"
+        }
+      ],
+      "alerts": [
+        {
+          "id": "observability.alert.checkout_success_rate_low",
+          "kind": "observability.alert",
+          "name": "Checkout Success Rate Low"
+        }
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "id": "observability.alert.checkout_success_rate_low",
+      "name": "Checkout Success Rate Low",
+      "owner": "checkout-platform",
+      "ownerTeam": "checkout-platform",
+      "severity": "critical",
+      "condition": "checkout.success_rate < 0.98 for 10m",
+      "runbook": "https://example.com/runbooks/checkout-success-rate",
+      "metrics": [
+        {
+          "id": "observability.metric.checkout_success_rate",
+          "kind": "observability.metric",
+          "name": "Checkout Success Rate"
+        }
+      ]
+    }
+  ]
+}

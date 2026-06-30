@@ -18,6 +18,7 @@ CUSTOM_PACK = "tests/fixtures/custom_pack"
 CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
 MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
+OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
     "verity.pack.api",
@@ -53,6 +54,14 @@ def canonical_json(value: object) -> str:
 
 
 def normalize_security_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_observability_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -1182,6 +1191,43 @@ class VerityCliTests(unittest.TestCase):
             payload["summary"]["releaseGaps"],
         )
         self.assertEqual("observability.metric.checkout_success_rate", payload["metrics"][0]["id"])
+
+    def test_observability_report_generator_matches_golden_file(self) -> None:
+        expected = json.loads((OBSERVABILITY_GOLDEN / "observability_report.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "observability-report.json"
+            result = verity_command(
+                "generate",
+                "observability-report",
+                "examples/observability",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "observability"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_observability_report_for_golden(payload))
+
+    def test_observability_schema_bundle_generator_matches_golden_file(self) -> None:
+        expected = json.loads((OBSERVABILITY_GOLDEN / "schema_bundle.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "observability-schema-bundle.json"
+            result = verity_command(
+                "generate",
+                "schema-bundle",
+                "examples/observability",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual(expected, payload)
 
     def test_accessibility_report_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

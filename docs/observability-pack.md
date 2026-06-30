@@ -48,3 +48,9 @@ telemetry payload schema.
   owners
 - detailed telemetry, metric, dashboard, and alert entries with connected
   targets
+
+The `examples/observability` report and schema-bundle shapes are covered by
+committed golden fixtures at `tests/golden/observability/observability_report.json`
+and `tests/golden/observability/schema_bundle.json`. Tests normalize dynamic
+report metadata such as generation time, package version, and local workspace
+path before comparing the report fixture.
