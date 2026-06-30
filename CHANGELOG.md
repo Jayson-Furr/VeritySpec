@@ -8,6 +8,8 @@
   events, and security contracts.
 - Added built-in `verity.pack.observability` with telemetry, metric,
   dashboard, and alert records plus an executable observability example.
+- Added `verity generate observability-report` for observability signal,
+  ownership, severity, and release-gap summaries.
 
 ## 0.6.0
 

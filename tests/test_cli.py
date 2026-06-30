@@ -729,6 +729,40 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual({"verified": 1}, payload["summary"]["byCoverage"])
         self.assertEqual("security.control.account_access", payload["controls"][0]["id"])
 
+    def test_observability_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "observability-report.json"
+            result = verity_command(
+                "generate",
+                "observability-report",
+                "examples/observability",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("observability_report", payload["type"])
+        self.assertEqual(4, payload["signalCount"])
+        self.assertEqual(1, payload["summary"]["telemetry"])
+        self.assertEqual(1, payload["summary"]["metrics"])
+        self.assertEqual(1, payload["summary"]["dashboards"])
+        self.assertEqual(1, payload["summary"]["alerts"])
+        self.assertEqual({"checkout-platform": 4}, payload["summary"]["byOwner"])
+        self.assertEqual({"critical": 1}, payload["summary"]["alertsBySeverity"])
+        self.assertEqual(
+            {
+                "telemetryWithoutMetrics": [],
+                "metricsWithoutTelemetry": [],
+                "dashboardsWithoutAlerts": [],
+                "alertsWithoutRunbooks": [],
+                "missingOwners": [],
+            },
+            payload["summary"]["releaseGaps"],
+        )
+        self.assertEqual("observability.metric.checkout_success_rate", payload["metrics"][0]["id"])
+
     def test_prismspec_import_reports_migration_details(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "imported"
