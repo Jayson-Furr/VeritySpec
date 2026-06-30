@@ -53,6 +53,19 @@ Use explicit references to connect controls to product surfaces:
 
 Product records can reference controls with `securedBy`.
 
+## Critical Control Readiness
+
+Critical controls are release-blocking when they are not verified. A
+`security.control` record with `riskLevel: "critical"` must have:
+
+- `coverage: "verified"`
+- `verification.method` set to a value other than `not-verified`
+- non-empty `verification.evidence`
+
+If a critical control does not meet those conditions, readiness emits
+`security.control.critical_unverified`. With `verity readiness --strict`, that
+issue is an error.
+
 ## Commands
 
 ```bash

@@ -29,7 +29,8 @@ This implementation provides:
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
   records, unused schemas, reference cycles, and workspace spec versions.
-- Readiness gates driven by pack metadata.
+- Readiness gates driven by pack metadata, including conditional pack rules
+  for release-blocking policy.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, and security reports, with
   OpenAPI path-parameter support and snapshot-tested type/model output
@@ -70,6 +71,7 @@ verity validate examples/basic
 verity validate tests/fixtures/custom_pack_workspace
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity readiness examples/security --strict
 verity doctor examples/basic
 verity explain reference.missing
 verity graph examples/basic

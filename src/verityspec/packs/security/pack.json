@@ -25,7 +25,32 @@
       ],
       "minItems": {
         "references": 1
-      }
+      },
+      "rules": [
+        {
+          "id": "security.control.critical-verified",
+          "code": "security.control.critical_unverified",
+          "when": {
+            "field": "riskLevel",
+            "equals": "critical"
+          },
+          "must": [
+            {
+              "field": "coverage",
+              "equals": "verified"
+            },
+            {
+              "field": "verification.method",
+              "notEquals": "not-verified"
+            },
+            {
+              "field": "verification.evidence",
+              "present": true
+            }
+          ],
+          "message": "Critical security controls must be verified before release."
+        }
+      ]
     }
   ],
   "referenceRules": [

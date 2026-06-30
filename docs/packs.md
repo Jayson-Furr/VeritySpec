@@ -46,6 +46,7 @@ Every pack should include:
 - Schemas that require the shared record envelope: `id`, `kind`, `name`,
   `status`, and `owner`.
 - Readiness gates for release-relevant records.
+- Conditional readiness rules for pack-specific release policy where needed.
 - Reference rules for relationships introduced by the pack.
 - At least one useful generator or report when applicable.
 - Tests and executable examples for expected behavior.
