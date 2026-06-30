@@ -760,6 +760,29 @@ Sprint 53 should release the completed `v0.18.0` scope:
 - Tag and publish the v0.18.0 GitHub release when checks pass.
 - Close the v0.18.0 milestone after release verification.
 
+## v0.19.0
+
+The `v0.19.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 54 | Complete | Security evidence freshness checks |
+
+## Sprint 54 Priorities
+
+Sprint 54 should make security-control verification evidence freshness
+executable:
+
+- Add readiness support for date freshness checks declared by packs.
+- Add optional `verification.reviewCadenceDays` to `security.control`.
+- Emit `security.control.evidence_stale` when a control declares a cadence but
+  lacks fresh `verification.lastVerified` evidence.
+- Keep the freshness policy in the security pack manifest.
+- Add tests for fresh, stale, and missing freshness evidence.
+- Update README, readiness docs, security-pack docs, changelog, and roadmap
+  bookkeeping.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -780,46 +803,46 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add security-control evidence freshness checks for `verification.lastVerified`
-   age and review cadence.
-2. Add workspace compatibility golden manifests for future format upgrades.
-3. Add structured issue location fields for machine clients in addition to
+1. Add workspace compatibility golden manifests for future format upgrades.
+2. Add structured issue location fields for machine clients in addition to
    formatted location strings.
-4. Add documentation command smoke tests that execute README examples to
+3. Add documentation command smoke tests that execute README examples to
    prevent public command drift.
-5. Add CI annotation output for readiness and validation failures in GitHub
+4. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-6. Add observability example golden fixtures for schema bundles and future
+5. Add observability example golden fixtures for schema bundles and future
    report output.
-7. Add report timestamp controls for deterministic golden snapshot generation.
-8. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+6. Add report timestamp controls for deterministic golden snapshot generation.
+7. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-9. Add product-contract profiles for release, strict, regulated, public API,
+8. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
-10. Add a first deployment-target pack for runtime, hosting, and release
+9. Add a first deployment-target pack for runtime, hosting, and release
    environment contracts.
-11. Add cross-pack coverage dashboards that summarize which product surfaces
+10. Add cross-pack coverage dashboards that summarize which product surfaces
    have API, CLI, event, security, accessibility, observability, and compliance
    records.
-12. Add a product-impact report that expands changed records into affected
+11. Add a product-impact report that expands changed records into affected
    upstream and downstream records for release review.
-13. Define a local-only cross-workspace dependency design note covering
+12. Define a local-only cross-workspace dependency design note covering
    workspace dependencies, exported records, reference resolution, and lockfile
    boundaries before implementation.
-14. Add a pack capability index report that summarizes schemas, readiness
+13. Add a pack capability index report that summarizes schemas, readiness
    gates, reference rules, and generators across built-in and external packs.
-15. Add pack scaffold documentation fixtures that show a complete generated
+14. Add pack scaffold documentation fixtures that show a complete generated
    pack plus consuming workspace layout for external pack authors.
-16. Add downstream CI templates for monorepos with multiple VeritySpec
+15. Add downstream CI templates for monorepos with multiple VeritySpec
    workspaces and shared local packs.
-17. Add golden fixtures for accessibility and compliance report outputs after
+16. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-18. Add a maintainer review checklist for accepting external packs once public
+17. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-19. Add release-integrity consistency checks across package metadata, README,
+18. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-20. Add roadmap-report human-readable Markdown output for maintainer release
+19. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
+20. Add security-report release gaps for stale evidence and missing
+   verification dates.
 
 ## Working Rule
 

@@ -36,7 +36,7 @@ This implementation provides:
   records, unused schemas, reference cycles, workspace spec versions, and
   nested issue locations.
 - Readiness gates driven by pack metadata, including conditional pack rules
-  for release-blocking policy.
+  for release-blocking policy and security evidence freshness.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices, and

@@ -50,6 +50,17 @@ Gates can also include conditional rules for pack-specific release policy:
 }
 ```
 
+Conditional rules support:
+
+- `equals` for exact field matches
+- `notEquals` for exact field mismatches
+- `present` for required or forbidden field presence
+- `dateWithinDays` for a fixed maximum age in days
+- `dateWithinDaysField` for a maximum age read from another field
+
+Security controls use `dateWithinDaysField` to compare
+`verification.lastVerified` against `verification.reviewCadenceDays`.
+
 Run readiness checks:
 
 ```bash

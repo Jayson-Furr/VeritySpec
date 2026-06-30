@@ -40,7 +40,8 @@ Use explicit references to connect controls to product surfaces:
   "verification": {
     "method": "automated-test",
     "evidence": "tests/security/test_account_access.py::test_owner_or_support_required",
-    "lastVerified": "2026-06-30"
+    "lastVerified": "2026-06-30",
+    "reviewCadenceDays": 90
   },
   "references": [
     {
@@ -65,6 +66,17 @@ Critical controls are release-blocking when they are not verified. A
 If a critical control does not meet those conditions, readiness emits
 `security.control.critical_unverified`. With `verity readiness --strict`, that
 issue is an error.
+
+## Evidence Freshness
+
+Security controls can declare a freshness cadence with
+`verification.reviewCadenceDays`. When that field is present, readiness checks
+that `verification.lastVerified` exists, is a valid `YYYY-MM-DD` date, is not in
+the future, and is no older than the declared cadence.
+
+If evidence is missing or stale, readiness emits
+`security.control.evidence_stale`. With `verity readiness --strict`, that issue
+is an error.
 
 ## Commands
 

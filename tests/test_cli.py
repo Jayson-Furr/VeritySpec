@@ -151,6 +151,19 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("security.control.critical_unverified", payload["code"])
         self.assertEqual("Critical security control not verified", payload["title"])
 
+    def test_explain_security_stale_evidence_issue_code_json_output(self) -> None:
+        result = verity_command(
+            "explain",
+            "security.control.evidence_stale",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("security.control.evidence_stale", payload["code"])
+        self.assertEqual("Security verification evidence stale", payload["title"])
+
     def test_explain_accessibility_issue_code_json_output(self) -> None:
         result = verity_command(
             "explain",

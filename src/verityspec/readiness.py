@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 from .issues import Issue, location_at
@@ -42,8 +43,34 @@ def condition_matches(data: dict[str, Any], condition: dict[str, Any]) -> bool:
         presence_matches = not is_missing(value) if should_be_present else is_missing(value)
         matched = matched and presence_matches
         evaluated = True
+    if "dateWithinDays" in condition:
+        matched = matched and date_within_days(value, condition["dateWithinDays"])
+        evaluated = True
+    if "dateWithinDaysField" in condition:
+        days = get_field(data, str(condition["dateWithinDaysField"]))
+        matched = matched and date_within_days(value, days)
+        evaluated = True
 
     return evaluated and matched
+
+
+def parse_iso_date(value: Any) -> date | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def date_within_days(value: Any, days: Any) -> bool:
+    if not isinstance(days, int) or days < 0:
+        return False
+    verified_at = parse_iso_date(value)
+    if verified_at is None:
+        return False
+    age_days = (date.today() - verified_at).days
+    return 0 <= age_days <= days
 
 
 def failed_rule_condition(record_data: dict[str, Any], rule: dict[str, Any]) -> dict[str, Any] | None:
