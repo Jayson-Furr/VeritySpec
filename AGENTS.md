@@ -213,6 +213,9 @@ verity readiness examples/gameplay --strict
 verity validate examples/content
 verity lint examples/content --strict
 verity readiness examples/content --strict
+verity validate examples/economy
+verity lint examples/economy --strict
+verity readiness examples/economy --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -235,6 +238,7 @@ verity generate schema-bundle examples/game-assets --out build/game-assets-schem
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
+verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -283,6 +287,7 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `docs/unity-pack.md`: built-in Unity pack behavior.
 - `docs/gameplay-pack.md`: built-in gameplay pack behavior.
 - `docs/content-pack.md`: built-in content pack behavior.
+- `docs/economy-pack.md`: built-in economy pack behavior.
 - `tests/`: executable behavior coverage.
 - `.github/workflows/ci.yml`: required CI contract.
 - `.github/workflows/release.yml`: release automation.

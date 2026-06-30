@@ -60,6 +60,10 @@
         {
           "type": "hasContentManifest",
           "target": "game.content-manifest.coverage_slice"
+        },
+        {
+          "type": "hasEconomy",
+          "target": "economy.currency.coverage_shard"
         }
       ]
     },
@@ -411,6 +415,26 @@
         {
           "type": "hasContentManifest",
           "target": "game.content-manifest.coverage_slice"
+        },
+        {
+          "type": "hasCurrency",
+          "target": "economy.currency.coverage_shard"
+        },
+        {
+          "type": "hasEconomySource",
+          "target": "economy.source.coverage_extract"
+        },
+        {
+          "type": "hasEconomySink",
+          "target": "economy.sink.coverage_upgrade"
+        },
+        {
+          "type": "hasReward",
+          "target": "economy.reward.coverage_extract"
+        },
+        {
+          "type": "hasOffer",
+          "target": "economy.offer.coverage_cache"
         }
       ]
     },
@@ -462,6 +486,10 @@
         {
           "type": "usesMechanic",
           "target": "game.mechanic.coverage_shards"
+        },
+        {
+          "type": "usesEconomySink",
+          "target": "economy.sink.coverage_upgrade"
         }
       ]
     },
@@ -496,6 +524,10 @@
         {
           "type": "includesLevel",
           "target": "game.level.coverage_zone"
+        },
+        {
+          "type": "validatesEconomy",
+          "target": "economy.currency.coverage_shard"
         }
       ]
     },
@@ -619,6 +651,10 @@
         {
           "type": "governedBy",
           "target": "game.rule.coverage_collapse"
+        },
+        {
+          "type": "producesEconomySource",
+          "target": "economy.source.coverage_extract"
         }
       ]
     },
@@ -685,6 +721,10 @@
         {
           "type": "rewardsLoot",
           "target": "game.loot-table.coverage_rewards"
+        },
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.coverage_extract"
         }
       ]
     },
@@ -750,6 +790,10 @@
         {
           "type": "dropsItem",
           "target": "game.content-item.coverage_shard"
+        },
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.coverage_extract"
         }
       ]
     },
@@ -766,7 +810,8 @@
       "contentRefs": [
         "game.content-item.coverage_shard",
         "game.level.coverage_zone",
-        "game.loot-table.coverage_rewards"
+        "game.loot-table.coverage_rewards",
+        "economy.offer.coverage_cache"
       ],
       "references": [
         {
@@ -780,6 +825,133 @@
         {
           "type": "includesLootTable",
           "target": "game.loot-table.coverage_rewards"
+        },
+        {
+          "type": "includesOffer",
+          "target": "economy.offer.coverage_cache"
+        }
+      ]
+    },
+    {
+      "id": "economy.currency.coverage_shard",
+      "kind": "economy.currency",
+      "name": "Coverage Shard Currency",
+      "description": "Economy currency fixture for cross-pack coverage tracking.",
+      "status": "ready",
+      "owner": "economy-design",
+      "currencyType": "resource",
+      "unitName": "coverage shard",
+      "currencyCode": "COVERAGE_SHARD",
+      "precision": 0,
+      "balancePolicy": "Coverage shards are banked only after successful extraction.",
+      "tags": [
+        "coverage",
+        "prototype"
+      ],
+      "references": []
+    },
+    {
+      "id": "economy.source.coverage_extract",
+      "kind": "economy.source",
+      "name": "Coverage Extraction Source",
+      "description": "Economy source fixture for successful coverage extraction.",
+      "status": "ready",
+      "owner": "economy-design",
+      "sourceType": "gameplay",
+      "currencyRef": "economy.currency.coverage_shard",
+      "amount": 3,
+      "cadence": "per-session",
+      "cap": 9,
+      "tuningNotes": "Coverage fixture grants three shards per successful loop.",
+      "references": [
+        {
+          "type": "producesCurrency",
+          "target": "economy.currency.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "economy.sink.coverage_upgrade",
+      "kind": "economy.sink",
+      "name": "Coverage Upgrade Sink",
+      "description": "Economy sink fixture for spending banked coverage shards.",
+      "status": "ready",
+      "owner": "economy-design",
+      "sinkType": "upgrade",
+      "currencyRef": "economy.currency.coverage_shard",
+      "cost": 5,
+      "purpose": "Unlock a prototype coverage upgrade after two successful loops.",
+      "repeatable": false,
+      "tuningNotes": "Cost is intentionally small for fixture coverage.",
+      "references": [
+        {
+          "type": "consumesCurrency",
+          "target": "economy.currency.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "economy.reward.coverage_extract",
+      "kind": "economy.reward",
+      "name": "Coverage Extraction Reward",
+      "description": "Economy reward fixture for the coverage portal encounter.",
+      "status": "ready",
+      "owner": "economy-design",
+      "rewardType": "encounter",
+      "grants": [
+        {
+          "targetRef": "economy.currency.coverage_shard",
+          "targetKind": "economy.currency",
+          "quantity": 3
+        },
+        {
+          "targetRef": "game.content-item.coverage_shard",
+          "targetKind": "game.content-item",
+          "quantity": 1
+        }
+      ],
+      "claimLimit": 1,
+      "tuningNotes": "Fixture reward mirrors content loot and source amount.",
+      "references": [
+        {
+          "type": "grantsCurrency",
+          "target": "economy.currency.coverage_shard"
+        },
+        {
+          "type": "grantsItem",
+          "target": "game.content-item.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "economy.offer.coverage_cache",
+      "kind": "economy.offer",
+      "name": "Coverage Cache Offer",
+      "description": "Economy offer fixture for content manifest and reward linking.",
+      "status": "ready",
+      "owner": "economy-design",
+      "offerType": "prototype",
+      "priceCurrencyRef": "economy.currency.coverage_shard",
+      "priceAmount": 0,
+      "rewardRefs": [
+        "economy.reward.coverage_extract"
+      ],
+      "availability": {
+        "state": "prototype"
+      },
+      "purchaseLimit": 1,
+      "references": [
+        {
+          "type": "pricedIn",
+          "target": "economy.currency.coverage_shard"
+        },
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.coverage_extract"
+        },
+        {
+          "type": "includesItem",
+          "target": "game.content-item.coverage_shard"
         }
       ]
     },

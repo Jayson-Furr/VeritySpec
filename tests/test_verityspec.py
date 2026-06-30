@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(34, report["recordCount"])
+        self.assertEqual(39, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(13, report["summary"]["trackedSurfaces"])
-        self.assertEqual(13, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(13, report["summary"]["coveredSurfaces"])
+        self.assertEqual(14, report["summary"]["trackedSurfaces"])
+        self.assertEqual(14, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(14, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1039,6 +1039,7 @@ class VeritySpecTests(unittest.TestCase):
                 "compliance": 1,
                 "content": 4,
                 "deployment": 2,
+                "economy": 5,
                 "events": 1,
                 "game-assets": 4,
                 "game-core": 4,
@@ -1061,6 +1062,7 @@ class VeritySpecTests(unittest.TestCase):
         surfaces = {surface["id"]: surface for surface in report["surfaces"]}
         self.assertEqual("verity.pack.api", surfaces["api"]["packId"])
         self.assertEqual("verity.pack.content", surfaces["content"]["packId"])
+        self.assertEqual("verity.pack.economy", surfaces["economy"]["packId"])
         self.assertEqual("verity.pack.game-assets", surfaces["game-assets"]["packId"])
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
@@ -1105,6 +1107,16 @@ class VeritySpecTests(unittest.TestCase):
                 "game.loot-table.coverage_rewards",
             ],
             [record["id"] for record in surfaces["content"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "economy.currency.coverage_shard",
+                "economy.offer.coverage_cache",
+                "economy.reward.coverage_extract",
+                "economy.sink.coverage_upgrade",
+                "economy.source.coverage_extract",
+            ],
+            [record["id"] for record in surfaces["economy"]["records"]],
         )
         self.assertEqual(
             [
@@ -1519,6 +1531,50 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("game.content-manifest.missing_links", [issue.record_id for issue in issues])
+
+    def test_economy_readiness_requires_offer_reward_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "economy-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.economy"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "offer.json").write_text(
+                json.dumps(
+                    {
+                        "id": "economy.offer.missing_links",
+                        "kind": "economy.offer",
+                        "name": "Missing Links",
+                        "description": "Economy offer missing reward and graph links.",
+                        "status": "ready",
+                        "owner": "economy-design",
+                        "offerType": "prototype",
+                        "priceCurrencyRef": "economy.currency.test",
+                        "priceAmount": 0,
+                        "rewardRefs": [],
+                        "availability": {
+                            "state": "prototype",
+                        },
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("economy.offer.missing_links", [issue.record_id for issue in issues])
 
     def test_unity_readiness_requires_project_contract_links(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

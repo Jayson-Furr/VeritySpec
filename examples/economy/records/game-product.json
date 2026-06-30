@@ -1,0 +1,69 @@
+{
+  "records": [
+    {
+      "id": "game.product.dream_extraction",
+      "kind": "game.product",
+      "name": "Dream Extraction",
+      "description": "A co-op extraction roguelite built around unstable dream zones, memory shards, and timed escape.",
+      "status": "ready",
+      "owner": "game-design",
+      "pitch": "Players enter collapsing dream zones, gather memory shards, and decide when to escape.",
+      "playerFantasy": "A co-op team braving surreal spaces for one more shard before the world collapses.",
+      "targetAudience": "Players who enjoy cooperative extraction, roguelite risk decisions, and surreal exploration.",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "genres": [
+        "co-op",
+        "extraction",
+        "roguelite"
+      ],
+      "references": [
+        {
+          "type": "hasMode",
+          "target": "game.mode.coop_extraction"
+        },
+        {
+          "type": "hasLoop",
+          "target": "game.loop.extract_escape_upgrade"
+        },
+        {
+          "type": "prototypeScope",
+          "target": "game.prototype-scope.vertical_slice_01"
+        },
+        {
+          "type": "hasMechanic",
+          "target": "game.mechanic.memory_shard_extraction"
+        },
+        {
+          "type": "hasEncounter",
+          "target": "game.encounter.prototype_zone_collapse"
+        },
+        {
+          "type": "hasContentManifest",
+          "target": "game.content-manifest.vertical_slice_01"
+        },
+        {
+          "type": "hasCurrency",
+          "target": "economy.currency.memory_shard"
+        },
+        {
+          "type": "hasEconomySource",
+          "target": "economy.source.extract_shards"
+        },
+        {
+          "type": "hasEconomySink",
+          "target": "economy.sink.prototype_upgrade"
+        },
+        {
+          "type": "hasReward",
+          "target": "economy.reward.extract_success"
+        },
+        {
+          "type": "hasOffer",
+          "target": "economy.offer.prototype_shard_cache"
+        }
+      ]
+    }
+  ]
+}

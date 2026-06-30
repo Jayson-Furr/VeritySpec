@@ -915,6 +915,19 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
         ],
         "productRelationships": ["hasContentManifest"],
     },
+    {
+        "id": "economy",
+        "name": "Economy",
+        "packId": "verity.pack.economy",
+        "recordKinds": [
+            "economy.currency",
+            "economy.source",
+            "economy.sink",
+            "economy.reward",
+            "economy.offer",
+        ],
+        "productRelationships": ["hasEconomy"],
+    },
 ]
 PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
 

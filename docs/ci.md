@@ -149,6 +149,17 @@ verity readiness examples/content --strict
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.economy`, include the usual contract
+checks and keep a schema bundle for currency, source, sink, reward, offer, and
+agent handoff tooling:
+
+```bash
+verity validate examples/economy
+verity lint examples/economy --strict
+verity readiness examples/economy --strict
+verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 

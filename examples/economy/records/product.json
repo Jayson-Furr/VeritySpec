@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "id": "product.dream_extraction_economy",
+      "kind": "product",
+      "name": "Dream Extraction Economy Contract",
+      "description": "Economy product-contract workspace for the Dream Extraction prototype.",
+      "status": "ready",
+      "owner": "economy-design",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "describes",
+          "target": "game.product.dream_extraction"
+        },
+        {
+          "type": "hasGameplay",
+          "target": "game.mechanic.memory_shard_extraction"
+        },
+        {
+          "type": "hasContentManifest",
+          "target": "game.content-manifest.vertical_slice_01"
+        },
+        {
+          "type": "hasEconomy",
+          "target": "economy.currency.memory_shard"
+        }
+      ]
+    }
+  ]
+}

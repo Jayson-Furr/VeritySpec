@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.economy` with `economy.currency`,
+  `economy.source`, `economy.sink`, `economy.reward`, and `economy.offer`
+  records, readiness gates, graph reference rules, an executable economy
+  example, coverage-dashboard support, schema-bundle generation coverage, and
+  public docs for economy implementation contracts.
+
 ## 0.38.0
 
 - Added built-in `verity.pack.gameplay` with `game.mechanic`,

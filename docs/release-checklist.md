@@ -52,6 +52,9 @@ verity readiness examples/gameplay --strict
 verity validate examples/content
 verity lint examples/content --strict
 verity readiness examples/content --strict
+verity validate examples/economy
+verity lint examples/economy --strict
+verity readiness examples/economy --strict
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity validate tests/fixtures/cross_pack_coverage
@@ -77,6 +80,7 @@ verity generate schema-bundle examples/game-assets --out build/game-assets-schem
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
+verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -104,6 +108,7 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/unity
 /tmp/verityspec-wheel/bin/verity validate examples/gameplay
 /tmp/verityspec-wheel/bin/verity validate examples/content
+/tmp/verityspec-wheel/bin/verity validate examples/economy
 ```
 
 If `twine` is installed but the console script is not on `PATH`, run
