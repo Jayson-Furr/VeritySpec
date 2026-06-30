@@ -1,0 +1,105 @@
+{
+  "records": [
+    {
+      "id": "game.mechanic.memory_shard_extraction",
+      "kind": "game.mechanic",
+      "name": "Memory Shard Extraction",
+      "description": "Players collect memory shards from unstable dream-zone nodes and bank them only after extraction.",
+      "status": "ready",
+      "owner": "game-design",
+      "mechanicType": "resource",
+      "summary": "Turns exploration time into recoverable resources while preserving risk until escape.",
+      "playerFacing": true,
+      "inputs": [
+        "interact with shard node",
+        "inventory capacity",
+        "collapse timer pressure"
+      ],
+      "outputs": [
+        "carried memory shards",
+        "banked shards after extraction"
+      ],
+      "tuningParameters": [
+        "node yield",
+        "carry capacity",
+        "interaction duration"
+      ],
+      "references": [
+        {
+          "type": "enablesAbility",
+          "target": "game.ability.phase_dash"
+        },
+        {
+          "type": "governedBy",
+          "target": "game.rule.zone_collapse_timer"
+        }
+      ]
+    },
+    {
+      "id": "game.ability.phase_dash",
+      "kind": "game.ability",
+      "name": "Phase Dash",
+      "description": "Short burst movement ability used to cross unstable dream gaps during extraction.",
+      "status": "ready",
+      "owner": "game-design",
+      "abilityType": "movement",
+      "activation": "manual",
+      "effectSummary": "Moves the player through a short hazard gap without interrupting carried shard state.",
+      "cooldownSeconds": 8,
+      "resourceCost": "none",
+      "constraints": [
+        "Cannot be used while reviving another player."
+      ],
+      "references": [
+        {
+          "type": "governedBy",
+          "target": "game.rule.zone_collapse_timer"
+        }
+      ]
+    },
+    {
+      "id": "game.rule.zone_collapse_timer",
+      "kind": "game.rule",
+      "name": "Zone Collapse Timer",
+      "description": "Extraction zone fails if players do not reach the portal before collapse completes.",
+      "status": "ready",
+      "owner": "game-design",
+      "ruleType": "failure",
+      "condition": "Collapse timer reaches zero before the squad extracts.",
+      "outcome": "Carried memory shards are lost and the encounter fails.",
+      "priority": 10,
+      "rationale": "Creates an explicit risk decision for collecting one more shard.",
+      "references": []
+    },
+    {
+      "id": "game.encounter.prototype_zone_collapse",
+      "kind": "game.encounter",
+      "name": "Prototype Zone Collapse",
+      "description": "Greybox encounter where players gather shards and escape through one portal before collapse.",
+      "status": "ready",
+      "owner": "level-design",
+      "encounterType": "exploration",
+      "difficulty": "normal",
+      "objective": "Collect three shard bundles and extract before the collapse timer ends.",
+      "location": "Greybox dream-zone prototype",
+      "participantRefs": [
+        "player.squad",
+        "hazard.zone-collapse"
+      ],
+      "references": [
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.memory_shard_extraction"
+        },
+        {
+          "type": "includesAbility",
+          "target": "game.ability.phase_dash"
+        },
+        {
+          "type": "governedBy",
+          "target": "game.rule.zone_collapse_timer"
+        }
+      ]
+    }
+  ]
+}

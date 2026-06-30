@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(26, report["recordCount"])
+        self.assertEqual(34, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(11, report["summary"]["trackedSurfaces"])
-        self.assertEqual(11, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(11, report["summary"]["coveredSurfaces"])
+        self.assertEqual(13, report["summary"]["trackedSurfaces"])
+        self.assertEqual(13, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(13, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1037,10 +1037,12 @@ class VeritySpecTests(unittest.TestCase):
                 "api": 1,
                 "cli": 1,
                 "compliance": 1,
+                "content": 4,
                 "deployment": 2,
                 "events": 1,
                 "game-assets": 4,
                 "game-core": 4,
+                "gameplay": 4,
                 "observability": 4,
                 "security": 1,
                 "unity": 4,
@@ -1058,8 +1060,10 @@ class VeritySpecTests(unittest.TestCase):
         )
         surfaces = {surface["id"]: surface for surface in report["surfaces"]}
         self.assertEqual("verity.pack.api", surfaces["api"]["packId"])
+        self.assertEqual("verity.pack.content", surfaces["content"]["packId"])
         self.assertEqual("verity.pack.game-assets", surfaces["game-assets"]["packId"])
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
+        self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
         self.assertEqual("verity.pack.unity", surfaces["unity"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
         self.assertEqual(
@@ -1083,6 +1087,24 @@ class VeritySpecTests(unittest.TestCase):
                 "game.visual-identity.coverage_style",
             ],
             [record["id"] for record in surfaces["game-assets"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "game.ability.coverage_dash",
+                "game.encounter.coverage_portal",
+                "game.mechanic.coverage_shards",
+                "game.rule.coverage_collapse",
+            ],
+            [record["id"] for record in surfaces["gameplay"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "game.content-item.coverage_shard",
+                "game.content-manifest.coverage_slice",
+                "game.level.coverage_zone",
+                "game.loot-table.coverage_rewards",
+            ],
+            [record["id"] for record in surfaces["content"]["records"]],
         )
         self.assertEqual(
             [
@@ -1415,6 +1437,88 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("game.visual-identity.missing_assets", [issue.record_id for issue in issues])
+
+    def test_gameplay_readiness_requires_mechanic_handoff_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "gameplay-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.gameplay"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "mechanic.json").write_text(
+                json.dumps(
+                    {
+                        "id": "game.mechanic.missing_handoff",
+                        "kind": "game.mechanic",
+                        "name": "Missing Handoff",
+                        "description": "Gameplay mechanic missing implementation handoff details.",
+                        "status": "ready",
+                        "owner": "game-design",
+                        "mechanicType": "resource",
+                        "summary": "A mechanic without enough handoff detail.",
+                        "inputs": [],
+                        "outputs": [],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("game.mechanic.missing_handoff", [issue.record_id for issue in issues])
+
+    def test_content_readiness_requires_manifest_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "content-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.content"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "id": "game.content-manifest.missing_links",
+                        "kind": "game.content-manifest",
+                        "name": "Missing Links",
+                        "description": "Content manifest missing content and graph links.",
+                        "status": "ready",
+                        "owner": "production",
+                        "manifestType": "vertical-slice",
+                        "scope": "Small fixture scope.",
+                        "contentVersion": "0.1.0",
+                        "contentRefs": [],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("game.content-manifest.missing_links", [issue.record_id for issue in issues])
 
     def test_unity_readiness_requires_project_contract_links(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

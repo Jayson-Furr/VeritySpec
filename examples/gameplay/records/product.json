@@ -1,0 +1,23 @@
+{
+  "records": [
+    {
+      "id": "product.dream_extraction_gameplay",
+      "kind": "product",
+      "name": "Dream Extraction Gameplay Contract",
+      "description": "Gameplay product-contract workspace for the Dream Extraction prototype.",
+      "status": "ready",
+      "owner": "game-design",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "describes",
+          "target": "game.product.dream_extraction"
+        },
+        {
+          "type": "hasGameplay",
+          "target": "game.mechanic.memory_shard_extraction"
+        }
+      ]
+    }
+  ]
+}

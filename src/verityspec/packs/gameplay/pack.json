@@ -1,0 +1,172 @@
+{
+  "id": "verity.pack.gameplay",
+  "version": "0.1.0",
+  "name": "VeritySpec Gameplay Pack",
+  "description": "Game mechanic, ability, rule, and encounter records for executable gameplay product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "game.mechanic",
+      "path": "schemas/game-mechanic.schema.json"
+    },
+    {
+      "kind": "game.ability",
+      "path": "schemas/game-ability.schema.json"
+    },
+    {
+      "kind": "game.rule",
+      "path": "schemas/game-rule.schema.json"
+    },
+    {
+      "kind": "game.encounter",
+      "path": "schemas/game-encounter.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "game.mechanic.release",
+      "kind": "game.mechanic",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "mechanicType",
+        "summary"
+      ],
+      "minItems": {
+        "inputs": 1,
+        "outputs": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "game.ability.release",
+      "kind": "game.ability",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "abilityType",
+        "activation",
+        "effectSummary"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "game.rule.release",
+      "kind": "game.rule",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "ruleType",
+        "condition",
+        "outcome"
+      ]
+    },
+    {
+      "id": "game.encounter.release",
+      "kind": "game.encounter",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "encounterType",
+        "difficulty",
+        "objective"
+      ],
+      "minItems": {
+        "participantRefs": 1,
+        "references": 2
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasGameplay",
+      "targetKind": "game.mechanic"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasMechanic",
+      "targetKind": "game.mechanic"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasAbility",
+      "targetKind": "game.ability"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasRule",
+      "targetKind": "game.rule"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasEncounter",
+      "targetKind": "game.encounter"
+    },
+    {
+      "sourceKind": "game.mode",
+      "relationship": "usesMechanic",
+      "targetKind": "game.mechanic"
+    },
+    {
+      "sourceKind": "game.loop",
+      "relationship": "usesMechanic",
+      "targetKind": "game.mechanic"
+    },
+    {
+      "sourceKind": "game.mechanic",
+      "relationship": "enablesAbility",
+      "targetKind": "game.ability"
+    },
+    {
+      "sourceKind": "game.ability",
+      "relationship": "governedBy",
+      "targetKind": "game.rule"
+    },
+    {
+      "sourceKind": "game.mechanic",
+      "relationship": "governedBy",
+      "targetKind": "game.rule"
+    },
+    {
+      "sourceKind": "game.encounter",
+      "relationship": "usesMechanic",
+      "targetKind": "game.mechanic"
+    },
+    {
+      "sourceKind": "game.encounter",
+      "relationship": "includesAbility",
+      "targetKind": "game.ability"
+    },
+    {
+      "sourceKind": "game.encounter",
+      "relationship": "governedBy",
+      "targetKind": "game.rule"
+    },
+    {
+      "sourceKind": "game.prototype-scope",
+      "relationship": "validatesEncounter",
+      "targetKind": "game.encounter"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for gameplay records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "game.mechanic",
+        "game.ability",
+        "game.rule",
+        "game.encounter"
+      ]
+    }
+  ]
+}

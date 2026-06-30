@@ -1531,6 +1531,53 @@ Sprint 91 should release the completed `v0.37.0` scope:
 - Tag and publish the v0.37.0 GitHub release when checks pass.
 - Close the v0.37.0 milestone after release verification.
 
+## v0.38.0
+
+The `v0.38.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 92 | In Progress | Gameplay and content pack foundations |
+| 93 | Planned | v0.38.0 release preparation |
+
+## Sprint 92 Priorities
+
+Sprint 92 is a larger bundled implementation sprint for the next game-domain
+expansion:
+
+- Add built-in `verity.pack.gameplay`.
+- Add strict schemas for `game.mechanic`, `game.ability`, `game.rule`, and
+  `game.encounter`.
+- Add built-in `verity.pack.content`.
+- Add strict schemas for `game.content-item`, `game.level`, `game.loot-table`,
+  and `game.content-manifest`.
+- Add readiness gates and reference rules that connect gameplay mechanics,
+  abilities, rules, encounters, content items, levels, loot tables, manifests,
+  game-core records, and Unity scene records where appropriate.
+- Add executable `examples/gameplay` and `examples/content` workspaces.
+- Add gameplay and content coverage to cross-pack coverage dashboards.
+- Update tests, CI, README, changelog, roadmap, pack docs, generator docs,
+  readiness docs, release checklist, and AI-agent guidance in one bundled
+  sprint.
+- Keep the next-20 planning backlog populated after converting the gameplay
+  item.
+
+## Sprint 93 Priorities
+
+Sprint 93 should release the completed `v0.38.0` scope:
+
+- Promote Unreleased changelog entries into `0.38.0`.
+- Bump package metadata to `0.38.0`.
+- Add v0.38.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.38.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.38.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.38.0 GitHub release when checks pass.
+- Close the v0.38.0 milestone after release verification.
+
 ## Next 20 Roadmap Points
 
 These points define the next backlog once the active roadmap is caught up. They
@@ -1543,8 +1590,8 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a built-in `verity.pack.gameplay` foundation with mechanic, ability,
-   rule, and encounter records plus executable examples.
+1. Add a built-in `verity.pack.economy` foundation with currency, source,
+   sink, reward, and offer records plus executable examples.
 2. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
 3. Add a maintainer review checklist for accepting external packs once public

@@ -21,6 +21,8 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
 
         for phrase in [
             "verity.pack.game-core",
+            "verity.pack.gameplay",
+            "verity.pack.content",
             "verity.pack.gui",
             "verity.pack.desktop",
             "verity.pack.mobile",

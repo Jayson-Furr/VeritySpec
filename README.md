@@ -26,7 +26,8 @@ This implementation provides:
 - Built-in packs for core product records, APIs, CLIs, events, security
   controls, observability signals, accessibility claims, compliance mappings,
   deployment targets, early game product contracts, and creative game asset
-  contracts, and Unity implementation contracts.
+  contracts, Unity implementation contracts, gameplay contracts, and game
+  content contracts.
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
@@ -72,7 +73,8 @@ This implementation provides:
   schema changes.
 - Product-surface pack boundary guidance for future GUI, desktop, mobile, and
   additional game packs, with the first narrow game scopes delivered through
-  `verity.pack.game-core`, `verity.pack.game-assets`, and `verity.pack.unity`.
+  `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
+  `verity.pack.gameplay`, and `verity.pack.content`.
 - Cross-workspace dependency design guidance for future local-only workspace
   dependencies, exported records, reference resolution, and lockfiles.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
@@ -117,6 +119,8 @@ verity validate docs/fixtures/pack-scaffold/workspace
 verity validate examples/game-core
 verity validate examples/game-assets
 verity validate examples/unity
+verity validate examples/gameplay
+verity validate examples/content
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity doctor examples/basic --profile public-api --format json
@@ -128,6 +132,8 @@ verity readiness examples/deployment --strict
 verity readiness examples/game-core --strict
 verity readiness examples/game-assets --strict
 verity readiness examples/unity --strict
+verity readiness examples/gameplay --strict
+verity readiness examples/content --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -149,6 +155,8 @@ verity generate deployment-report examples/deployment --out build/deployment-rep
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
+verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -210,6 +218,8 @@ verity generate deployment-report examples/deployment --out build/deployment-rep
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
+verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
@@ -303,6 +313,8 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/game-core](examples/game-core/verityspec.json): focused game product-contract workspace.
 - [examples/game-assets](examples/game-assets/verityspec.json): focused game creative-source workspace.
 - [examples/unity](examples/unity/verityspec.json): focused Unity implementation workspace.
+- [examples/gameplay](examples/gameplay/verityspec.json): focused gameplay mechanic and encounter workspace.
+- [examples/content](examples/content/verityspec.json): focused game content manifest workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -326,6 +338,8 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Game core pack](docs/game-core-pack.md)
 - [Game assets pack](docs/game-assets-pack.md)
 - [Unity pack](docs/unity-pack.md)
+- [Gameplay pack](docs/gameplay-pack.md)
+- [Content pack](docs/content-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)

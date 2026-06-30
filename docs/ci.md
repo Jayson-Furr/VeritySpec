@@ -127,6 +127,28 @@ verity readiness examples/unity --strict
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.gameplay`, include the usual contract
+checks and keep a schema bundle for mechanic, ability, rule, encounter, and
+agent handoff tooling:
+
+```bash
+verity validate examples/gameplay
+verity lint examples/gameplay --strict
+verity readiness examples/gameplay --strict
+verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
+```
+
+For workspaces that load `verity.pack.content`, include the usual contract
+checks and keep a schema bundle for content item, level, loot-table, manifest,
+and agent handoff tooling:
+
+```bash
+verity validate examples/content
+verity lint examples/content --strict
+verity readiness examples/content --strict
+verity generate schema-bundle examples/content --out build/content-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 
