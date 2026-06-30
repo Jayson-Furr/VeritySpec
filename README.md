@@ -24,7 +24,7 @@ This implementation provides:
 - A small core model: workspace, pack, schema, record, reference graph,
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, events, security
-  controls, and observability signals.
+  controls, observability signals, and accessibility claims.
 - Pack listing, validation, and scaffolding through `verity pack`, including local external packs.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
 - Structural validation with JSON Schema.
@@ -81,6 +81,7 @@ verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity readiness examples/security --strict
 verity readiness examples/observability --strict
+verity readiness examples/accessibility --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -95,6 +96,7 @@ verity generate cli-reference examples/basic --out build/cli-reference.md
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
+verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
 verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
 ```
@@ -218,6 +220,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/events](examples/events/verityspec.json): focused event workspace.
 - [examples/security](examples/security/verityspec.json): focused security-control workspace.
 - [examples/observability](examples/observability/verityspec.json): focused observability workspace.
+- [examples/accessibility](examples/accessibility/verityspec.json): focused accessibility-claim workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -230,6 +233,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Packs](docs/packs.md)
 - [Security pack](docs/security-pack.md)
 - [Observability pack](docs/observability-pack.md)
+- [Accessibility pack](docs/accessibility-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)

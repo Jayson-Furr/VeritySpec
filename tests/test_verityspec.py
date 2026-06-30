@@ -235,6 +235,80 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("error", matching[0].severity)
         self.assertEqual("security.control.mfa", matching[0].record_id)
 
+    def test_readiness_fails_critical_unverified_accessibility_claim(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "critical-accessibility",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.accessibility"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.critical_accessibility",
+                        "kind": "product",
+                        "name": "Critical Accessibility Product",
+                        "description": "A product with a critical accessibility claim.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "accessibility.json").write_text(
+                json.dumps(
+                    {
+                        "id": "accessibility.claim.keyboard",
+                        "kind": "accessibility.claim",
+                        "name": "Keyboard Operation",
+                        "description": "Core workflow supports keyboard-only use.",
+                        "status": "ready",
+                        "owner": "design-systems",
+                        "standard": "wcag-2.2",
+                        "criterion": "2.1.1 Keyboard",
+                        "level": "a",
+                        "userNeed": "Keyboard users can complete the workflow.",
+                        "surface": "critical workflow",
+                        "impact": "critical",
+                        "coverage": "implemented",
+                        "verification": {
+                            "method": "not-verified",
+                            "evidence": "Manual test plan exists but has not run.",
+                        },
+                        "references": [
+                            {
+                                "type": "appliesTo",
+                                "target": "product.critical_accessibility",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        matching = [
+            issue
+            for issue in issues
+            if issue.code == "accessibility.claim.critical_unverified"
+        ]
+        self.assertEqual(1, len(matching))
+        self.assertEqual("error", matching[0].severity)
+        self.assertEqual("accessibility.claim.keyboard", matching[0].record_id)
+
     def test_broken_semantic_fixture_reports_graph_and_reference_issues(self) -> None:
         workspace = load_workspace(ROOT / "tests" / "fixtures" / "broken_semantics")
         registry = load_pack_registry(workspace.pack_ids)

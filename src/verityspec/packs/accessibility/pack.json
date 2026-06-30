@@ -1,0 +1,93 @@
+{
+  "id": "verity.pack.accessibility",
+  "version": "0.1.0",
+  "name": "VeritySpec Accessibility Pack",
+  "description": "Accessibility claim records for product accessibility contracts.",
+  "schemas": [
+    {
+      "kind": "accessibility.claim",
+      "path": "schemas/accessibility-claim.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "accessibility.claim.release",
+      "kind": "accessibility.claim",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "standard",
+        "criterion",
+        "level",
+        "userNeed",
+        "surface",
+        "impact",
+        "coverage",
+        "verification.method",
+        "verification.evidence"
+      ],
+      "minItems": {
+        "references": 1
+      },
+      "rules": [
+        {
+          "id": "accessibility.claim.critical-verified",
+          "code": "accessibility.claim.critical_unverified",
+          "when": {
+            "field": "impact",
+            "equals": "critical"
+          },
+          "must": [
+            {
+              "field": "coverage",
+              "equals": "verified"
+            },
+            {
+              "field": "verification.method",
+              "notEquals": "not-verified"
+            },
+            {
+              "field": "verification.evidence",
+              "present": true
+            }
+          ],
+          "message": "Critical accessibility claims must be verified before release."
+        }
+      ]
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "accessibilityCoveredBy",
+      "targetKind": "accessibility.claim"
+    },
+    {
+      "sourceKind": "accessibility.claim",
+      "relationship": "appliesTo",
+      "targetKind": "product"
+    },
+    {
+      "sourceKind": "accessibility.claim",
+      "relationship": "appliesTo",
+      "targetKind": "api.endpoint"
+    },
+    {
+      "sourceKind": "accessibility.claim",
+      "relationship": "appliesTo",
+      "targetKind": "cli.command"
+    },
+    {
+      "sourceKind": "accessibility.claim",
+      "relationship": "appliesTo",
+      "targetKind": "event.message"
+    },
+    {
+      "sourceKind": "accessibility.claim",
+      "relationship": "appliesTo",
+      "targetKind": "schema.object"
+    }
+  ],
+  "generators": ["schema-bundle"]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "product.accessible_checkout",
+  "kind": "product",
+  "name": "Accessible Checkout",
+  "description": "Accessibility contract for the checkout product experience.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "version": "0.1.0",
+  "references": []
+}

@@ -1,0 +1,12 @@
+{
+  "workspace": "examples.accessibility",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.accessibility"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

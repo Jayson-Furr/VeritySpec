@@ -12,6 +12,7 @@ Built-in packs currently include:
 - `verity.pack.events`: event messages and AsyncAPI generation.
 - `verity.pack.security`: security controls and security report generation.
 - `verity.pack.observability`: telemetry, metrics, dashboards, and alerts.
+- `verity.pack.accessibility`: accessibility claims, checks, and evidence.
 
 ## Manifest
 

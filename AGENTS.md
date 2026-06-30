@@ -148,6 +148,9 @@ verity readiness examples/security --strict
 verity validate examples/observability
 verity lint examples/observability --strict
 verity readiness examples/observability --strict
+verity validate examples/accessibility
+verity lint examples/accessibility --strict
+verity readiness examples/accessibility --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -161,6 +164,7 @@ verity generate python-models examples/basic --out build/models.py
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
+verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 ```
 
 External pack checks:
@@ -190,6 +194,7 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `src/verityspec/packs.py`: pack registry and loading.
 - `src/verityspec/generators.py`: generated artifacts.
 - `docs/security-pack.md`: built-in security pack and security report behavior.
+- `docs/accessibility-pack.md`: built-in accessibility pack behavior.
 - `tests/`: executable behavior coverage.
 - `.github/workflows/ci.yml`: required CI contract.
 - `.github/workflows/release.yml`: release automation.
