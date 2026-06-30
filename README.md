@@ -51,6 +51,8 @@ This implementation provides:
 - Golden security-report fixture coverage for stable report-shape review.
 - A canonical AI agent entry point with shell discipline, branch/PR/release
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
+- Public contribution guidance and issue templates for pack proposals and
+  schema changes.
 
 ## Quick Start
 
@@ -242,6 +244,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 ## Documentation
 
 - [Workspace format](docs/workspace-format.md)
+- [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 - [AI agent entry point](AGENTS.md)
 - [Roadmap](ROADMAP.md)

@@ -640,6 +640,32 @@ Sprint 47 should release the completed `v0.15.0` scope:
 - Tag and publish the v0.15.0 GitHub release when checks pass.
 - Close the v0.15.0 milestone after release verification.
 
+## v0.16.0
+
+The `v0.16.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 48 | Complete | Public contribution guidance |
+
+## Sprint 48 Priorities
+
+Sprint 48 should make public pack and schema contributions easier to propose
+without weakening VeritySpec's executable-contract standard:
+
+- Add top-level contribution guidance for the project.
+- Document pack proposal expectations, including schemas, examples, tests,
+  readiness gates, reference rules, generators or reports, and compatibility
+  boundaries.
+- Document schema-change expectations, including additive versus breaking
+  changes, migration impact, generator impact, and validation fixtures.
+- Add GitHub issue templates for pack proposals and schema changes.
+- Link the contribution guidance from README and pack docs.
+- Add executable tests that keep the contribution guidance and templates
+  present and aligned.
+- Update changelog and roadmap bookkeeping.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -660,46 +686,46 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add public contribution guidance for proposing new packs and schema
-   changes.
-2. Review package distribution readiness for PyPI trusted publishing and
+1. Review package distribution readiness for PyPI trusted publishing and
    decide whether to publish the `verityspec` package publicly.
-3. Add a roadmap-report generator that emits active milestones, completed
+2. Add a roadmap-report generator that emits active milestones, completed
    sprints, and future planning points for project governance.
-4. Add security-control evidence freshness checks for `verification.lastVerified`
+3. Add security-control evidence freshness checks for `verification.lastVerified`
    age and review cadence.
-5. Add workspace compatibility golden manifests for future format upgrades.
-6. Add structured issue location fields for machine clients in addition to
+4. Add workspace compatibility golden manifests for future format upgrades.
+5. Add structured issue location fields for machine clients in addition to
    formatted location strings.
-7. Add documentation command smoke tests that execute README examples to
+6. Add documentation command smoke tests that execute README examples to
    prevent public command drift.
-8. Add CI annotation output for readiness and validation failures in GitHub
+7. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-9. Add observability example golden fixtures for schema bundles and future
+8. Add observability example golden fixtures for schema bundles and future
    report output.
-10. Add report timestamp controls for deterministic golden snapshot generation.
-11. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+9. Add report timestamp controls for deterministic golden snapshot generation.
+10. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-12. Add product-contract profiles for release, strict, regulated, public API,
+11. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
-13. Add a first deployment-target pack for runtime, hosting, and release
+12. Add a first deployment-target pack for runtime, hosting, and release
    environment contracts.
-14. Add cross-pack coverage dashboards that summarize which product surfaces
+13. Add cross-pack coverage dashboards that summarize which product surfaces
    have API, CLI, event, security, accessibility, observability, and compliance
    records.
-15. Add a product-impact report that expands changed records into affected
+14. Add a product-impact report that expands changed records into affected
    upstream and downstream records for release review.
-16. Define a local-only cross-workspace dependency design note covering
+15. Define a local-only cross-workspace dependency design note covering
    workspace dependencies, exported records, reference resolution, and lockfile
    boundaries before implementation.
-17. Add a pack capability index report that summarizes schemas, readiness
+16. Add a pack capability index report that summarizes schemas, readiness
    gates, reference rules, and generators across built-in and external packs.
-18. Add pack scaffold documentation fixtures that show a complete generated
+17. Add pack scaffold documentation fixtures that show a complete generated
    pack plus consuming workspace layout for external pack authors.
-19. Add downstream CI templates for monorepos with multiple VeritySpec
+18. Add downstream CI templates for monorepos with multiple VeritySpec
    workspaces and shared local packs.
-20. Add golden fixtures for accessibility and compliance report outputs after
+19. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
+20. Add a maintainer review checklist for accepting external packs once public
+   pack proposals become common.
 
 ## Working Rule
 
