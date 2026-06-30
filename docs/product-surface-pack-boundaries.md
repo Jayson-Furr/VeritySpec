@@ -5,9 +5,9 @@ expanding the core kernel or creating a broad static catalog. This note defines
 the initial boundaries for future GUI, desktop, mobile, and game packs.
 
 `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
-`verity.pack.gameplay`, and `verity.pack.content` now provide the first narrow
-built-in game and engine scopes. The remaining GUI, desktop, mobile, economy,
-progression, liveops, evidence, dependency, portfolio, and broader game scopes
+`verity.pack.gameplay`, `verity.pack.content`, and `verity.pack.economy` now
+provide the first narrow built-in game and engine scopes. The remaining GUI,
+desktop, mobile, progression, liveops, evidence, dependency, portfolio, and broader game scopes
 should still use this note to define pack ownership, overlap rules, and
 readiness expectations before implementation begins.
 
@@ -121,10 +121,11 @@ The first mobile schemas should wait until the pack includes store-submission
 readiness examples and validates at least one iOS or Android platform target
 with explicit permission rationale.
 
-## Game Core, Game Assets, Unity, Gameplay, Content, and Future Game Packs
+## Game Core, Game Assets, Unity, Gameplay, Content, Economy, and Future Game Packs
 
 Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`,
-`verity.pack.unity`, `verity.pack.gameplay`, `verity.pack.content`.
+`verity.pack.unity`, `verity.pack.gameplay`, `verity.pack.content`,
+`verity.pack.economy`.
 
 The game-core pack describes the first narrow game product-contract surface:
 game product identity, playable modes, game loops, and prototype scope. It is
@@ -150,8 +151,13 @@ levels, loot tables, and content manifests. It composes with gameplay and Unity
 records without becoming an economy, progression, liveops, or asset-pipeline
 pack.
 
+The economy pack describes the first narrow economy surface: currencies,
+sources, sinks, rewards, and offers. It composes with gameplay and content
+records without becoming a progression, liveops, pricing approval, or platform
+store pack.
+
 Future broader game packs may use pack IDs such as `verity.pack.game`,
-`verity.pack.economy`, `verity.pack.progression`, or `verity.pack.liveops`.
+`verity.pack.progression`, `verity.pack.quest`, or `verity.pack.liveops`.
 
 Future game packs should describe game product contracts, especially the bridge
 between game design intent, implementation scope, QA, telemetry, liveops, and

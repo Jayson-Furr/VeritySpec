@@ -1,0 +1,127 @@
+{
+  "records": [
+    {
+      "id": "economy.currency.memory_shard",
+      "kind": "economy.currency",
+      "name": "Memory Shard",
+      "description": "Primary prototype resource earned through extraction and spent on the first upgrade path.",
+      "status": "ready",
+      "owner": "economy-design",
+      "currencyType": "resource",
+      "unitName": "shard",
+      "currencyCode": "MEMORY_SHARD",
+      "precision": 0,
+      "balancePolicy": "Players can only bank memory shards after successful extraction.",
+      "tags": [
+        "prototype",
+        "extraction"
+      ],
+      "references": []
+    },
+    {
+      "id": "economy.source.extract_shards",
+      "kind": "economy.source",
+      "name": "Extract Shards Source",
+      "description": "Successful extraction grants the first banked memory shard payout.",
+      "status": "ready",
+      "owner": "economy-design",
+      "sourceType": "gameplay",
+      "currencyRef": "economy.currency.memory_shard",
+      "amount": 3,
+      "cadence": "per-session",
+      "cap": 9,
+      "tuningNotes": "Start with three shards per extraction and tune after prototype playtests.",
+      "references": [
+        {
+          "type": "producesCurrency",
+          "target": "economy.currency.memory_shard"
+        }
+      ]
+    },
+    {
+      "id": "economy.sink.prototype_upgrade",
+      "kind": "economy.sink",
+      "name": "Prototype Upgrade Sink",
+      "description": "First spend path for testing whether banked memory shards have a visible post-run use.",
+      "status": "ready",
+      "owner": "economy-design",
+      "sinkType": "upgrade",
+      "currencyRef": "economy.currency.memory_shard",
+      "cost": 5,
+      "purpose": "Unlock the first prototype extraction upgrade after two successful runs.",
+      "repeatable": false,
+      "tuningNotes": "Cost should be reachable in two early successful sessions.",
+      "references": [
+        {
+          "type": "consumesCurrency",
+          "target": "economy.currency.memory_shard"
+        }
+      ]
+    },
+    {
+      "id": "economy.reward.extract_success",
+      "kind": "economy.reward",
+      "name": "Extraction Success Reward",
+      "description": "Reward granted when players extract from the Dream Ruins prototype level.",
+      "status": "ready",
+      "owner": "economy-design",
+      "rewardType": "encounter",
+      "grants": [
+        {
+          "targetRef": "economy.currency.memory_shard",
+          "targetKind": "economy.currency",
+          "quantity": 3
+        },
+        {
+          "targetRef": "game.content-item.memory_shard_cache",
+          "targetKind": "game.content-item",
+          "quantity": 1
+        }
+      ],
+      "claimLimit": 1,
+      "tuningNotes": "Prototype reward intentionally mirrors the source amount for early testing.",
+      "references": [
+        {
+          "type": "grantsCurrency",
+          "target": "economy.currency.memory_shard"
+        },
+        {
+          "type": "grantsItem",
+          "target": "game.content-item.memory_shard_cache"
+        }
+      ]
+    },
+    {
+      "id": "economy.offer.prototype_shard_cache",
+      "kind": "economy.offer",
+      "name": "Prototype Shard Cache Offer",
+      "description": "Internal prototype offer used to verify offer pricing and reward references before real monetization exists.",
+      "status": "ready",
+      "owner": "economy-design",
+      "offerType": "prototype",
+      "priceCurrencyRef": "economy.currency.memory_shard",
+      "priceAmount": 0,
+      "rewardRefs": [
+        "economy.reward.extract_success"
+      ],
+      "availability": {
+        "state": "prototype"
+      },
+      "purchaseLimit": 1,
+      "references": [
+        {
+          "type": "pricedIn",
+          "target": "economy.currency.memory_shard"
+        },
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.extract_success"
+        },
+        {
+          "type": "includesItem",
+          "target": "game.content-item.memory_shard_cache"
+        }
+      ]
+    }
+  ]
+}

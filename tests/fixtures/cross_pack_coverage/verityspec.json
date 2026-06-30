@@ -15,7 +15,8 @@
     "verity.pack.game-assets",
     "verity.pack.unity",
     "verity.pack.gameplay",
-    "verity.pack.content"
+    "verity.pack.content",
+    "verity.pack.economy"
   ],
   "packPaths": [],
   "records": [

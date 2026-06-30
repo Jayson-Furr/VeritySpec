@@ -85,6 +85,10 @@ Content records use readiness gates to keep item, level, loot-table, and
 manifest contracts traceable. A `game.content-manifest` should include content
 references and graph links before strict readiness passes.
 
+Economy records use readiness gates to keep currency, source, sink, reward, and
+offer contracts traceable. An `economy.offer` should include reward references,
+price metadata, availability, and graph links before strict readiness passes.
+
 Run readiness checks:
 
 ```bash
@@ -97,6 +101,7 @@ verity readiness examples/game-assets --strict
 verity readiness examples/unity --strict
 verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
+verity readiness examples/economy --strict
 verity readiness examples/basic --strict --format json
 ```
 

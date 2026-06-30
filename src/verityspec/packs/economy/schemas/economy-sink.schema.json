@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/v0.1/economy/economy-sink.schema.json",
+  "title": "Economy Sink",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "sinkType",
+    "currencyRef",
+    "cost",
+    "purpose",
+    "references"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "economy.sink"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "ready", "deprecated", "removed"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sinkType": {
+      "type": "string",
+      "enum": ["upgrade", "store", "crafting", "entry-fee", "repair", "reroll", "time-skip", "other"]
+    },
+    "currencyRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cost": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repeatable": {
+      "type": "boolean",
+      "default": true
+    },
+    "tuningNotes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "$ref": "#/$defs/references"
+    }
+  },
+  "$defs": {
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

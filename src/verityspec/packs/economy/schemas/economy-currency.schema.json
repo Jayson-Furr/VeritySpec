@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/v0.1/economy/economy-currency.schema.json",
+  "title": "Economy Currency",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "currencyType",
+    "unitName",
+    "references"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "economy.currency"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "ready", "deprecated", "removed"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currencyType": {
+      "type": "string",
+      "enum": ["soft", "hard", "premium", "resource", "event", "crafting", "other"]
+    },
+    "unitName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currencyCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,15}$"
+    },
+    "precision": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6,
+      "default": 0
+    },
+    "balancePolicy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "default": []
+    },
+    "references": {
+      "$ref": "#/$defs/references"
+    }
+  },
+  "$defs": {
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

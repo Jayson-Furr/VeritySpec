@@ -1,0 +1,81 @@
+{
+  "records": [
+    {
+      "id": "game.mechanic.memory_shard_extraction",
+      "kind": "game.mechanic",
+      "name": "Memory Shard Extraction",
+      "description": "Players collect memory shards from unstable dream-zone nodes and bank them only after extraction.",
+      "status": "ready",
+      "owner": "game-design",
+      "mechanicType": "resource",
+      "summary": "Turns exploration time into recoverable resources while preserving risk until escape.",
+      "playerFacing": true,
+      "inputs": [
+        "interact with shard node",
+        "inventory capacity",
+        "collapse timer pressure"
+      ],
+      "outputs": [
+        "carried memory shards",
+        "banked shards after extraction"
+      ],
+      "references": [
+        {
+          "type": "governedBy",
+          "target": "game.rule.zone_collapse_timer"
+        },
+        {
+          "type": "producesEconomySource",
+          "target": "economy.source.extract_shards"
+        }
+      ]
+    },
+    {
+      "id": "game.rule.zone_collapse_timer",
+      "kind": "game.rule",
+      "name": "Zone Collapse Timer",
+      "description": "Extraction zone fails if players do not reach the portal before collapse completes.",
+      "status": "ready",
+      "owner": "game-design",
+      "ruleType": "failure",
+      "condition": "Collapse timer reaches zero before the squad extracts.",
+      "outcome": "Carried memory shards are lost and the encounter fails.",
+      "priority": 10,
+      "references": []
+    },
+    {
+      "id": "game.encounter.prototype_zone_collapse",
+      "kind": "game.encounter",
+      "name": "Prototype Zone Collapse",
+      "description": "Greybox encounter where players gather shards and escape through one portal before collapse.",
+      "status": "ready",
+      "owner": "level-design",
+      "encounterType": "exploration",
+      "difficulty": "normal",
+      "objective": "Collect three shard bundles and extract before the collapse timer ends.",
+      "location": "Dream Ruins prototype level",
+      "participantRefs": [
+        "player.squad",
+        "hazard.zone-collapse"
+      ],
+      "references": [
+        {
+          "type": "usesMechanic",
+          "target": "game.mechanic.memory_shard_extraction"
+        },
+        {
+          "type": "governedBy",
+          "target": "game.rule.zone_collapse_timer"
+        },
+        {
+          "type": "rewardsLoot",
+          "target": "game.loot-table.memory_shard_rewards"
+        },
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.extract_success"
+        }
+      ]
+    }
+  ]
+}

@@ -19,14 +19,15 @@
     "verity.pack.game-assets",
     "verity.pack.unity",
     "verity.pack.gameplay",
-    "verity.pack.content"
+    "verity.pack.content",
+    "verity.pack.economy"
   ],
-  "recordCount": 34,
+  "recordCount": 39,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 13,
-    "loadedSurfacePacks": 13,
-    "coveredSurfaces": 13,
+    "trackedSurfaces": 14,
+    "loadedSurfacePacks": 14,
+    "coveredSurfaces": 14,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -35,6 +36,7 @@
       "compliance": 1,
       "content": 4,
       "deployment": 2,
+      "economy": 5,
       "events": 1,
       "game-assets": 4,
       "game-core": 4,
@@ -50,6 +52,11 @@
       "compliance.mapping": 1,
       "deployment.runtime": 1,
       "deployment.target": 1,
+      "economy.currency": 1,
+      "economy.offer": 1,
+      "economy.reward": 1,
+      "economy.sink": 1,
+      "economy.source": 1,
       "event.message": 1,
       "game.ability": 1,
       "game.concept-art": 1,
@@ -684,6 +691,70 @@
           "targetName": "Coverage Slice Content Manifest"
         }
       ]
+    },
+    {
+      "id": "economy",
+      "name": "Economy",
+      "packId": "verity.pack.economy",
+      "packLoaded": true,
+      "recordKinds": [
+        "economy.currency",
+        "economy.source",
+        "economy.sink",
+        "economy.reward",
+        "economy.offer"
+      ],
+      "productRelationships": [
+        "hasEconomy"
+      ],
+      "recordCount": 5,
+      "covered": true,
+      "records": [
+        {
+          "id": "economy.currency.coverage_shard",
+          "kind": "economy.currency",
+          "name": "Coverage Shard Currency",
+          "status": "ready",
+          "owner": "economy-design"
+        },
+        {
+          "id": "economy.offer.coverage_cache",
+          "kind": "economy.offer",
+          "name": "Coverage Cache Offer",
+          "status": "ready",
+          "owner": "economy-design"
+        },
+        {
+          "id": "economy.reward.coverage_extract",
+          "kind": "economy.reward",
+          "name": "Coverage Extraction Reward",
+          "status": "ready",
+          "owner": "economy-design"
+        },
+        {
+          "id": "economy.sink.coverage_upgrade",
+          "kind": "economy.sink",
+          "name": "Coverage Upgrade Sink",
+          "status": "ready",
+          "owner": "economy-design"
+        },
+        {
+          "id": "economy.source.coverage_extract",
+          "kind": "economy.source",
+          "name": "Coverage Extraction Source",
+          "status": "ready",
+          "owner": "economy-design"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasEconomy",
+          "targetId": "economy.currency.coverage_shard",
+          "targetKind": "economy.currency",
+          "targetName": "Coverage Shard Currency"
+        }
+      ]
     }
   ],
   "products": [
@@ -808,6 +879,15 @@
             "targetId": "game.content-manifest.coverage_slice",
             "targetKind": "game.content-manifest",
             "targetName": "Coverage Slice Content Manifest"
+          }
+        ],
+        "economy": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasEconomy",
+            "targetId": "economy.currency.coverage_shard",
+            "targetKind": "economy.currency",
+            "targetName": "Coverage Shard Currency"
           }
         ]
       },

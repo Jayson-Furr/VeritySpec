@@ -1,0 +1,221 @@
+{
+  "id": "verity.pack.economy",
+  "version": "0.1.0",
+  "name": "VeritySpec Economy Pack",
+  "description": "Game economy currency, source, sink, reward, and offer records for executable economy product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "economy.currency",
+      "path": "schemas/economy-currency.schema.json"
+    },
+    {
+      "kind": "economy.source",
+      "path": "schemas/economy-source.schema.json"
+    },
+    {
+      "kind": "economy.sink",
+      "path": "schemas/economy-sink.schema.json"
+    },
+    {
+      "kind": "economy.reward",
+      "path": "schemas/economy-reward.schema.json"
+    },
+    {
+      "kind": "economy.offer",
+      "path": "schemas/economy-offer.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "economy.currency.release",
+      "kind": "economy.currency",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "currencyType",
+        "unitName"
+      ]
+    },
+    {
+      "id": "economy.source.release",
+      "kind": "economy.source",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "sourceType",
+        "currencyRef",
+        "amount"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "economy.sink.release",
+      "kind": "economy.sink",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "sinkType",
+        "currencyRef",
+        "cost",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "economy.reward.release",
+      "kind": "economy.reward",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "rewardType"
+      ],
+      "minItems": {
+        "grants": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "economy.offer.release",
+      "kind": "economy.offer",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "offerType",
+        "priceCurrencyRef",
+        "priceAmount",
+        "availability"
+      ],
+      "minItems": {
+        "rewardRefs": 1,
+        "references": 2
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasEconomy",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasCurrency",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasEconomySource",
+      "targetKind": "economy.source"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasEconomySink",
+      "targetKind": "economy.sink"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasReward",
+      "targetKind": "economy.reward"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasOffer",
+      "targetKind": "economy.offer"
+    },
+    {
+      "sourceKind": "game.mechanic",
+      "relationship": "producesEconomySource",
+      "targetKind": "economy.source"
+    },
+    {
+      "sourceKind": "game.loop",
+      "relationship": "usesEconomySink",
+      "targetKind": "economy.sink"
+    },
+    {
+      "sourceKind": "game.encounter",
+      "relationship": "grantsReward",
+      "targetKind": "economy.reward"
+    },
+    {
+      "sourceKind": "game.loot-table",
+      "relationship": "grantsReward",
+      "targetKind": "economy.reward"
+    },
+    {
+      "sourceKind": "game.content-manifest",
+      "relationship": "includesOffer",
+      "targetKind": "economy.offer"
+    },
+    {
+      "sourceKind": "game.prototype-scope",
+      "relationship": "validatesEconomy",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "economy.source",
+      "relationship": "producesCurrency",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "economy.sink",
+      "relationship": "consumesCurrency",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "economy.reward",
+      "relationship": "grantsCurrency",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "economy.reward",
+      "relationship": "grantsItem",
+      "targetKind": "game.content-item"
+    },
+    {
+      "sourceKind": "economy.reward",
+      "relationship": "usesLootTable",
+      "targetKind": "game.loot-table"
+    },
+    {
+      "sourceKind": "economy.offer",
+      "relationship": "pricedIn",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "economy.offer",
+      "relationship": "grantsReward",
+      "targetKind": "economy.reward"
+    },
+    {
+      "sourceKind": "economy.offer",
+      "relationship": "includesItem",
+      "targetKind": "game.content-item"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for economy records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "economy.currency",
+        "economy.source",
+        "economy.sink",
+        "economy.reward",
+        "economy.offer"
+      ]
+    }
+  ]
+}
