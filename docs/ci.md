@@ -12,6 +12,7 @@ verity doctor examples/basic --report-out build/doctor-report.json
 verity diff examples/basic examples/basic --format json > build/diff.json
 verity migrate examples/basic --dry-run --format json > build/migration.json
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 ```
 
 For repositories with multiple workspaces, run the contract checks for each
@@ -86,6 +87,16 @@ verity lint examples/deployment --strict
 verity readiness examples/deployment --strict
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
+```
+
+For release-review workspaces that combine multiple product-surface packs,
+generate a cross-pack coverage dashboard:
+
+```bash
+verity validate tests/fixtures/cross_pack_coverage
+verity lint tests/fixtures/cross_pack_coverage --strict
+verity readiness tests/fixtures/cross_pack_coverage --strict
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 ```
 
 For workspaces with local external packs:

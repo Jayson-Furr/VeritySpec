@@ -20,6 +20,10 @@ MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
+COVERAGE_DASHBOARD_GOLDEN = (
+    ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
+)
+COVERAGE_FIXTURE = "tests/fixtures/cross_pack_coverage"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
@@ -72,6 +76,14 @@ def normalize_observability_report_for_golden(report: dict) -> dict:
 
 
 def normalize_deployment_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_coverage_dashboard_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -1491,6 +1503,48 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(str(ROOT / "examples" / "deployment"), payload["workspacePath"])
         self.assertIsInstance(payload["verityVersion"], str)
         self.assertEqual(expected, normalize_deployment_report_for_golden(payload))
+
+    def test_coverage_dashboard_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "coverage-dashboard.json"
+            result = verity_command(
+                "generate",
+                "coverage-dashboard",
+                COVERAGE_FIXTURE,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("coverage_dashboard", payload["type"])
+        self.assertEqual(14, payload["recordCount"])
+        self.assertEqual(8, payload["summary"]["trackedSurfaces"])
+        self.assertEqual(8, payload["summary"]["coveredSurfaces"])
+        self.assertEqual(100.0, payload["summary"]["coveragePercent"])
+        self.assertEqual([], payload["summary"]["releaseGaps"]["missingSurfaceRecords"])
+        self.assertEqual("product.coverage_dashboard", payload["products"][0]["id"])
+
+    def test_coverage_dashboard_generator_matches_golden_file(self) -> None:
+        expected = json.loads(COVERAGE_DASHBOARD_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "coverage-dashboard.json"
+            result = verity_command(
+                "generate",
+                "coverage-dashboard",
+                COVERAGE_FIXTURE,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / COVERAGE_FIXTURE), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_coverage_dashboard_for_golden(payload))
 
     def test_explain_deployment_issue_code_json_output(self) -> None:
         result = verity_command(

@@ -78,6 +78,9 @@ jobs:
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
+          verity validate tests/fixtures/cross_pack_coverage --format json > build/cross-pack-coverage-validate.json
+          verity lint tests/fixtures/cross_pack_coverage --strict --format json > build/cross-pack-coverage-lint.json
+          verity readiness tests/fixtures/cross_pack_coverage --strict --format json > build/cross-pack-coverage-readiness.json
           verity doctor examples/basic --format json > build/doctor.json
           verity explain reference.missing --format json > build/explain-reference-missing.json
           verity diff examples/basic examples/basic --format json > build/diff.json
@@ -114,6 +117,9 @@ jobs:
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
+          python -m json.tool build/cross-pack-coverage-validate.json >/dev/null
+          python -m json.tool build/cross-pack-coverage-lint.json >/dev/null
+          python -m json.tool build/cross-pack-coverage-readiness.json >/dev/null
           python -m json.tool build/doctor.json >/dev/null
           python -m json.tool build/explain-reference-missing.json >/dev/null
           python -m json.tool build/diff.json >/dev/null
@@ -145,6 +151,7 @@ jobs:
           verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
           verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
           verity generate deployment-report examples/deployment --out build/deployment-report.json
+          verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
           verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
           verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
@@ -169,6 +176,7 @@ jobs:
           python -m json.tool build/accessibility-report.json >/dev/null
           python -m json.tool build/compliance-matrix.json >/dev/null
           python -m json.tool build/deployment-report.json >/dev/null
+          python -m json.tool build/coverage-dashboard.json >/dev/null
           python -m py_compile build/models.py
           python -m py_compile build/generator-maturity.py
 

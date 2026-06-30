@@ -1,0 +1,462 @@
+{
+  "type": "coverage_dashboard",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "fixtures.cross_pack_coverage",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.api",
+    "verity.pack.cli",
+    "verity.pack.events",
+    "verity.pack.security",
+    "verity.pack.accessibility",
+    "verity.pack.observability",
+    "verity.pack.compliance",
+    "verity.pack.deployment"
+  ],
+  "recordCount": 14,
+  "productCount": 1,
+  "summary": {
+    "trackedSurfaces": 8,
+    "loadedSurfacePacks": 8,
+    "coveredSurfaces": 8,
+    "coveragePercent": 100.0,
+    "bySurface": {
+      "accessibility": 1,
+      "api": 1,
+      "cli": 1,
+      "compliance": 1,
+      "deployment": 2,
+      "events": 1,
+      "observability": 4,
+      "security": 1
+    },
+    "byRecordKind": {
+      "accessibility.claim": 1,
+      "api.endpoint": 1,
+      "cli.command": 1,
+      "compliance.mapping": 1,
+      "deployment.runtime": 1,
+      "deployment.target": 1,
+      "event.message": 1,
+      "observability.alert": 1,
+      "observability.dashboard": 1,
+      "observability.metric": 1,
+      "observability.telemetry": 1,
+      "product": 1,
+      "schema.object": 1,
+      "security.control": 1
+    },
+    "releaseGaps": {
+      "missingSurfaceRecords": [],
+      "loadedPacksWithoutSurfaceRecords": [],
+      "productsWithoutSurfaceReferences": [],
+      "productSurfaceGaps": []
+    }
+  },
+  "surfaces": [
+    {
+      "id": "core",
+      "name": "Core",
+      "packId": "verity.core",
+      "packLoaded": true,
+      "recordKinds": [
+        "product",
+        "schema.object"
+      ],
+      "productRelationships": [],
+      "recordCount": 2,
+      "covered": true,
+      "records": [
+        {
+          "id": "product.coverage_dashboard",
+          "kind": "product",
+          "name": "Coverage Dashboard Product",
+          "status": "ready",
+          "owner": "platform"
+        },
+        {
+          "id": "schema.coverage_status",
+          "kind": "schema.object",
+          "name": "Coverage Status",
+          "status": "ready",
+          "owner": "platform"
+        }
+      ],
+      "productReferences": []
+    },
+    {
+      "id": "api",
+      "name": "API",
+      "packId": "verity.pack.api",
+      "packLoaded": true,
+      "recordKinds": [
+        "api.endpoint"
+      ],
+      "productRelationships": [
+        "exposes"
+      ],
+      "recordCount": 1,
+      "covered": true,
+      "records": [
+        {
+          "id": "api.coverage.status",
+          "kind": "api.endpoint",
+          "name": "Get Coverage Status",
+          "status": "ready",
+          "owner": "platform-api"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "exposes",
+          "targetId": "api.coverage.status",
+          "targetKind": "api.endpoint",
+          "targetName": "Get Coverage Status"
+        }
+      ]
+    },
+    {
+      "id": "cli",
+      "name": "CLI",
+      "packId": "verity.pack.cli",
+      "packLoaded": true,
+      "recordKinds": [
+        "cli.command"
+      ],
+      "productRelationships": [
+        "ships"
+      ],
+      "recordCount": 1,
+      "covered": true,
+      "records": [
+        {
+          "id": "cli.coverage.status",
+          "kind": "cli.command",
+          "name": "Coverage Status Command",
+          "status": "ready",
+          "owner": "platform-cli"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "ships",
+          "targetId": "cli.coverage.status",
+          "targetKind": "cli.command",
+          "targetName": "Coverage Status Command"
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "name": "Events",
+      "packId": "verity.pack.events",
+      "packLoaded": true,
+      "recordKinds": [
+        "event.message"
+      ],
+      "productRelationships": [
+        "emits"
+      ],
+      "recordCount": 1,
+      "covered": true,
+      "records": [
+        {
+          "id": "event.coverage.status_reported",
+          "kind": "event.message",
+          "name": "Coverage Status Reported",
+          "status": "ready",
+          "owner": "platform-events"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "emits",
+          "targetId": "event.coverage.status_reported",
+          "targetKind": "event.message",
+          "targetName": "Coverage Status Reported"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "packId": "verity.pack.security",
+      "packLoaded": true,
+      "recordKinds": [
+        "security.control"
+      ],
+      "productRelationships": [
+        "securedBy"
+      ],
+      "recordCount": 1,
+      "covered": true,
+      "records": [
+        {
+          "id": "security.control.coverage_access",
+          "kind": "security.control",
+          "name": "Coverage Access Control",
+          "status": "ready",
+          "owner": "platform-security"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "securedBy",
+          "targetId": "security.control.coverage_access",
+          "targetKind": "security.control",
+          "targetName": "Coverage Access Control"
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessibility",
+      "packId": "verity.pack.accessibility",
+      "packLoaded": true,
+      "recordKinds": [
+        "accessibility.claim"
+      ],
+      "productRelationships": [
+        "accessibilityCoveredBy"
+      ],
+      "recordCount": 1,
+      "covered": true,
+      "records": [
+        {
+          "id": "accessibility.claim.coverage_keyboard",
+          "kind": "accessibility.claim",
+          "name": "Coverage Keyboard Access",
+          "status": "ready",
+          "owner": "platform-accessibility"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "accessibilityCoveredBy",
+          "targetId": "accessibility.claim.coverage_keyboard",
+          "targetKind": "accessibility.claim",
+          "targetName": "Coverage Keyboard Access"
+        }
+      ]
+    },
+    {
+      "id": "observability",
+      "name": "Observability",
+      "packId": "verity.pack.observability",
+      "packLoaded": true,
+      "recordKinds": [
+        "observability.telemetry",
+        "observability.metric",
+        "observability.dashboard",
+        "observability.alert"
+      ],
+      "productRelationships": [
+        "observes"
+      ],
+      "recordCount": 4,
+      "covered": true,
+      "records": [
+        {
+          "id": "observability.alert.coverage_status_low",
+          "kind": "observability.alert",
+          "name": "Coverage Status Low",
+          "status": "ready",
+          "owner": "platform-observability"
+        },
+        {
+          "id": "observability.dashboard.coverage_health",
+          "kind": "observability.dashboard",
+          "name": "Coverage Health Dashboard",
+          "status": "ready",
+          "owner": "platform-observability"
+        },
+        {
+          "id": "observability.metric.coverage_success_rate",
+          "kind": "observability.metric",
+          "name": "Coverage Success Rate",
+          "status": "ready",
+          "owner": "platform-observability"
+        },
+        {
+          "id": "observability.telemetry.coverage_status",
+          "kind": "observability.telemetry",
+          "name": "Coverage Status Telemetry",
+          "status": "ready",
+          "owner": "platform-observability"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "observes",
+          "targetId": "observability.dashboard.coverage_health",
+          "targetKind": "observability.dashboard",
+          "targetName": "Coverage Health Dashboard"
+        }
+      ]
+    },
+    {
+      "id": "compliance",
+      "name": "Compliance",
+      "packId": "verity.pack.compliance",
+      "packLoaded": true,
+      "recordKinds": [
+        "compliance.mapping"
+      ],
+      "productRelationships": [
+        "complianceMappedBy"
+      ],
+      "recordCount": 1,
+      "covered": true,
+      "records": [
+        {
+          "id": "compliance.mapping.coverage_review",
+          "kind": "compliance.mapping",
+          "name": "Coverage Review Mapping",
+          "status": "ready",
+          "owner": "platform-compliance"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "complianceMappedBy",
+          "targetId": "compliance.mapping.coverage_review",
+          "targetKind": "compliance.mapping",
+          "targetName": "Coverage Review Mapping"
+        }
+      ]
+    },
+    {
+      "id": "deployment",
+      "name": "Deployment",
+      "packId": "verity.pack.deployment",
+      "packLoaded": true,
+      "recordKinds": [
+        "deployment.runtime",
+        "deployment.target"
+      ],
+      "productRelationships": [
+        "deploysTo"
+      ],
+      "recordCount": 2,
+      "covered": true,
+      "records": [
+        {
+          "id": "deployment.runtime.coverage_api",
+          "kind": "deployment.runtime",
+          "name": "Coverage API Runtime",
+          "status": "ready",
+          "owner": "platform-runtime"
+        },
+        {
+          "id": "deployment.target.coverage_production",
+          "kind": "deployment.target",
+          "name": "Coverage Production",
+          "status": "ready",
+          "owner": "platform-operations"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "deploysTo",
+          "targetId": "deployment.target.coverage_production",
+          "targetKind": "deployment.target",
+          "targetName": "Coverage Production"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "product.coverage_dashboard",
+      "name": "Coverage Dashboard Product",
+      "status": "ready",
+      "owner": "platform",
+      "surfaceReferences": {
+        "api": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "exposes",
+            "targetId": "api.coverage.status",
+            "targetKind": "api.endpoint",
+            "targetName": "Get Coverage Status"
+          }
+        ],
+        "cli": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "ships",
+            "targetId": "cli.coverage.status",
+            "targetKind": "cli.command",
+            "targetName": "Coverage Status Command"
+          }
+        ],
+        "events": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "emits",
+            "targetId": "event.coverage.status_reported",
+            "targetKind": "event.message",
+            "targetName": "Coverage Status Reported"
+          }
+        ],
+        "security": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "securedBy",
+            "targetId": "security.control.coverage_access",
+            "targetKind": "security.control",
+            "targetName": "Coverage Access Control"
+          }
+        ],
+        "accessibility": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "accessibilityCoveredBy",
+            "targetId": "accessibility.claim.coverage_keyboard",
+            "targetKind": "accessibility.claim",
+            "targetName": "Coverage Keyboard Access"
+          }
+        ],
+        "observability": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "observes",
+            "targetId": "observability.dashboard.coverage_health",
+            "targetKind": "observability.dashboard",
+            "targetName": "Coverage Health Dashboard"
+          }
+        ],
+        "compliance": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "complianceMappedBy",
+            "targetId": "compliance.mapping.coverage_review",
+            "targetKind": "compliance.mapping",
+            "targetName": "Coverage Review Mapping"
+          }
+        ],
+        "deployment": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "deploysTo",
+            "targetId": "deployment.target.coverage_production",
+            "targetKind": "deployment.target",
+            "targetName": "Coverage Production"
+          }
+        ]
+      },
+      "missingSurfaces": []
+    }
+  ]
+}

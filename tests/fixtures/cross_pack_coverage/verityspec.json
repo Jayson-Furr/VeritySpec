@@ -1,0 +1,19 @@
+{
+  "workspace": "fixtures.cross_pack_coverage",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.api",
+    "verity.pack.cli",
+    "verity.pack.events",
+    "verity.pack.security",
+    "verity.pack.accessibility",
+    "verity.pack.observability",
+    "verity.pack.compliance",
+    "verity.pack.deployment"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

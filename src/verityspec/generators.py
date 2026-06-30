@@ -556,6 +556,267 @@ def generate_validation_report(
     }
 
 
+SURFACE_DEFINITIONS: list[dict[str, Any]] = [
+    {
+        "id": "core",
+        "name": "Core",
+        "packId": "verity.core",
+        "recordKinds": ["product", "schema.object"],
+        "productRelationships": [],
+    },
+    {
+        "id": "api",
+        "name": "API",
+        "packId": "verity.pack.api",
+        "recordKinds": ["api.endpoint"],
+        "productRelationships": ["exposes"],
+    },
+    {
+        "id": "cli",
+        "name": "CLI",
+        "packId": "verity.pack.cli",
+        "recordKinds": ["cli.command"],
+        "productRelationships": ["ships"],
+    },
+    {
+        "id": "events",
+        "name": "Events",
+        "packId": "verity.pack.events",
+        "recordKinds": ["event.message"],
+        "productRelationships": ["emits"],
+    },
+    {
+        "id": "security",
+        "name": "Security",
+        "packId": "verity.pack.security",
+        "recordKinds": ["security.control"],
+        "productRelationships": ["securedBy"],
+    },
+    {
+        "id": "accessibility",
+        "name": "Accessibility",
+        "packId": "verity.pack.accessibility",
+        "recordKinds": ["accessibility.claim"],
+        "productRelationships": ["accessibilityCoveredBy"],
+    },
+    {
+        "id": "observability",
+        "name": "Observability",
+        "packId": "verity.pack.observability",
+        "recordKinds": [
+            "observability.telemetry",
+            "observability.metric",
+            "observability.dashboard",
+            "observability.alert",
+        ],
+        "productRelationships": ["observes"],
+    },
+    {
+        "id": "compliance",
+        "name": "Compliance",
+        "packId": "verity.pack.compliance",
+        "recordKinds": ["compliance.mapping"],
+        "productRelationships": ["complianceMappedBy"],
+    },
+    {
+        "id": "deployment",
+        "name": "Deployment",
+        "packId": "verity.pack.deployment",
+        "recordKinds": ["deployment.runtime", "deployment.target"],
+        "productRelationships": ["deploysTo"],
+    },
+]
+PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
+
+
+def coverage_record_summary(record: Record) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "kind": record.kind,
+        "name": record.data.get("name"),
+        "status": record.data.get("status"),
+        "owner": record.data.get("owner"),
+    }
+
+
+def coverage_reference_summary(
+    product: Record,
+    item: dict[str, Any],
+    records_by_id: dict[str, Record],
+) -> dict[str, Any]:
+    target_id = item.get("target")
+    target = records_by_id.get(target_id) if isinstance(target_id, str) else None
+    return {
+        "productId": product.id,
+        "relationship": item.get("type"),
+        "targetId": target_id,
+        "targetKind": target.kind if target else "unknown",
+        "targetName": target.data.get("name", "") if target else "",
+    }
+
+
+def generate_coverage_dashboard(workspace: Workspace, generated_at: str | None = None) -> dict:
+    records_by_kind: dict[str, list[Record]] = {}
+    for record in workspace.records:
+        if record.kind:
+            records_by_kind.setdefault(record.kind, []).append(record)
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    products = sorted(
+        [record for record in workspace.records if record.kind == "product"],
+        key=lambda record: record.id or "",
+    )
+    relationship_to_surface = {
+        relationship: surface["id"]
+        for surface in SURFACE_DEFINITIONS
+        for relationship in surface["productRelationships"]
+    }
+
+    surface_entries: list[dict[str, Any]] = []
+    for surface in SURFACE_DEFINITIONS:
+        records = [
+            record
+            for kind in surface["recordKinds"]
+            for record in records_by_kind.get(kind, [])
+        ]
+        product_references = []
+        for product in products:
+            for item in product.data.get("references", []):
+                if not isinstance(item, dict):
+                    continue
+                if item.get("type") not in surface["productRelationships"]:
+                    continue
+                product_references.append(coverage_reference_summary(product, item, records_by_id))
+
+        surface_entries.append(
+            {
+                "id": surface["id"],
+                "name": surface["name"],
+                "packId": surface["packId"],
+                "packLoaded": surface["packId"] in workspace.pack_ids,
+                "recordKinds": surface["recordKinds"],
+                "productRelationships": surface["productRelationships"],
+                "recordCount": len(records),
+                "covered": bool(records),
+                "records": [
+                    coverage_record_summary(record)
+                    for record in sorted(records, key=lambda item: item.id or "")
+                ],
+                "productReferences": sorted(
+                    product_references,
+                    key=lambda item: (
+                        str(item.get("productId", "")),
+                        str(item.get("relationship", "")),
+                        str(item.get("targetId", "")),
+                    ),
+                ),
+            }
+        )
+
+    product_entries: list[dict[str, Any]] = []
+    products_without_surface_references: list[str] = []
+    product_surface_gaps: list[dict[str, Any]] = []
+    for product in products:
+        refs_by_surface: dict[str, list[dict[str, Any]]] = {surface_id: [] for surface_id in PRODUCT_SURFACE_IDS}
+        for item in product.data.get("references", []):
+            if not isinstance(item, dict):
+                continue
+            relationship = item.get("type")
+            surface_id = relationship_to_surface.get(relationship)
+            if surface_id is None:
+                continue
+            refs_by_surface[surface_id].append(coverage_reference_summary(product, item, records_by_id))
+
+        missing = [
+            surface_id
+            for surface_id in PRODUCT_SURFACE_IDS
+            if not refs_by_surface[surface_id]
+        ]
+        if product.id and len(missing) == len(PRODUCT_SURFACE_IDS):
+            products_without_surface_references.append(product.id)
+        if product.id and missing:
+            product_surface_gaps.append(
+                {
+                    "productId": product.id,
+                    "missingSurfaces": missing,
+                }
+            )
+        product_entries.append(
+            {
+                "id": product.id,
+                "name": product.data.get("name"),
+                "status": product.data.get("status"),
+                "owner": product.data.get("owner"),
+                "surfaceReferences": {
+                    surface_id: refs_by_surface[surface_id]
+                    for surface_id in PRODUCT_SURFACE_IDS
+                },
+                "missingSurfaces": missing,
+            }
+        )
+
+    surface_records = {
+        surface["id"]: sum(
+            len(records_by_kind.get(kind, []))
+            for kind in surface["recordKinds"]
+        )
+        for surface in SURFACE_DEFINITIONS
+        if surface["id"] != "core"
+    }
+    covered_surface_ids = [
+        surface_id for surface_id, count in surface_records.items() if count > 0
+    ]
+    missing_surface_records = [
+        surface_id for surface_id, count in surface_records.items() if count == 0
+    ]
+    loaded_packs_without_surface_records = [
+        surface["id"]
+        for surface in SURFACE_DEFINITIONS
+        if surface["id"] != "core"
+        and surface["packId"] in workspace.pack_ids
+        and surface_records[surface["id"]] == 0
+    ]
+    coverage_percent = (
+        round((len(covered_surface_ids) / len(PRODUCT_SURFACE_IDS)) * 100, 2)
+        if PRODUCT_SURFACE_IDS
+        else 100.0
+    )
+
+    return {
+        "type": "coverage_dashboard",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "recordCount": len(workspace.records),
+        "productCount": len(products),
+        "summary": {
+            "trackedSurfaces": len(PRODUCT_SURFACE_IDS),
+            "loadedSurfacePacks": sum(
+                1
+                for surface in SURFACE_DEFINITIONS
+                if surface["id"] != "core" and surface["packId"] in workspace.pack_ids
+            ),
+            "coveredSurfaces": len(covered_surface_ids),
+            "coveragePercent": coverage_percent,
+            "bySurface": dict(sorted(surface_records.items(), key=lambda item: item[0])),
+            "byRecordKind": {
+                kind: len(records)
+                for kind, records in sorted(records_by_kind.items(), key=lambda item: item[0])
+            },
+            "releaseGaps": {
+                "missingSurfaceRecords": missing_surface_records,
+                "loadedPacksWithoutSurfaceRecords": loaded_packs_without_surface_records,
+                "productsWithoutSurfaceReferences": products_without_surface_references,
+                "productSurfaceGaps": product_surface_gaps,
+            },
+        },
+        "surfaces": surface_entries,
+        "products": product_entries,
+    }
+
+
 ROADMAP_MILESTONE_PATTERN = re.compile(r"^## (v\d+\.\d+\.\d+)\s*$")
 ROADMAP_SECTION_PATTERN = re.compile(r"^## .+")
 ROADMAP_SPRINT_ROW_PATTERN = re.compile(r"^\|\s*(\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|")

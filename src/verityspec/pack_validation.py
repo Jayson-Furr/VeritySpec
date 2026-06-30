@@ -32,6 +32,7 @@ KNOWN_GENERATORS = {
     "observability-report",
     "accessibility-report",
     "compliance-matrix",
+    "coverage-dashboard",
     "deployment-report",
 }
 

@@ -1,0 +1,338 @@
+{
+  "records": [
+    {
+      "id": "product.coverage_dashboard",
+      "kind": "product",
+      "name": "Coverage Dashboard Product",
+      "description": "A fixture product that exercises every built-in product surface.",
+      "status": "ready",
+      "owner": "platform",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "exposes",
+          "target": "api.coverage.status"
+        },
+        {
+          "type": "ships",
+          "target": "cli.coverage.status"
+        },
+        {
+          "type": "emits",
+          "target": "event.coverage.status_reported"
+        },
+        {
+          "type": "securedBy",
+          "target": "security.control.coverage_access"
+        },
+        {
+          "type": "accessibilityCoveredBy",
+          "target": "accessibility.claim.coverage_keyboard"
+        },
+        {
+          "type": "observes",
+          "target": "observability.dashboard.coverage_health"
+        },
+        {
+          "type": "complianceMappedBy",
+          "target": "compliance.mapping.coverage_review"
+        },
+        {
+          "type": "deploysTo",
+          "target": "deployment.target.coverage_production"
+        }
+      ]
+    },
+    {
+      "id": "schema.coverage_status",
+      "kind": "schema.object",
+      "name": "Coverage Status",
+      "description": "Coverage status payload.",
+      "status": "ready",
+      "owner": "platform",
+      "jsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ]
+          }
+        }
+      },
+      "references": []
+    },
+    {
+      "id": "api.coverage.status",
+      "kind": "api.endpoint",
+      "name": "Get Coverage Status",
+      "description": "Returns coverage status.",
+      "status": "ready",
+      "owner": "platform-api",
+      "method": "GET",
+      "path": "/coverage/status",
+      "summary": "Get coverage status.",
+      "responses": [
+        {
+          "statusCode": 200,
+          "description": "Coverage status returned.",
+          "schema": "schema.coverage_status"
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "cli.coverage.status",
+      "kind": "cli.command",
+      "name": "Coverage Status Command",
+      "description": "Prints coverage status.",
+      "status": "ready",
+      "owner": "platform-cli",
+      "command": "coverage status",
+      "outputSchema": "schema.coverage_status",
+      "exitCodes": [
+        {
+          "code": 0,
+          "description": "Coverage status was printed."
+        },
+        {
+          "code": 1,
+          "description": "Coverage status could not be printed."
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "event.coverage.status_reported",
+      "kind": "event.message",
+      "name": "Coverage Status Reported",
+      "description": "Published when coverage status is reported.",
+      "status": "ready",
+      "owner": "platform-events",
+      "topic": "coverage.status.reported",
+      "payloadSchema": "schema.coverage_status",
+      "references": []
+    },
+    {
+      "id": "security.control.coverage_access",
+      "kind": "security.control",
+      "name": "Coverage Access Control",
+      "description": "Controls access to coverage dashboard data.",
+      "status": "ready",
+      "owner": "platform-security",
+      "category": "authorization",
+      "controlType": "preventive",
+      "riskLevel": "high",
+      "objective": "Only approved operators can access coverage status.",
+      "coverage": "verified",
+      "verification": {
+        "method": "automated-test",
+        "evidence": "tests/security/test_coverage_access.py::test_operator_required",
+        "lastVerified": "2026-06-30"
+      },
+      "references": [
+        {
+          "type": "appliesTo",
+          "target": "api.coverage.status"
+        }
+      ]
+    },
+    {
+      "id": "accessibility.claim.coverage_keyboard",
+      "kind": "accessibility.claim",
+      "name": "Coverage Keyboard Access",
+      "description": "Coverage dashboard controls are keyboard reachable.",
+      "status": "ready",
+      "owner": "platform-accessibility",
+      "standard": "wcag-2.2",
+      "criterion": "2.1.1 Keyboard",
+      "level": "aa",
+      "userNeed": "Operators can use the dashboard without a pointing device.",
+      "surface": "coverage dashboard",
+      "impact": "high",
+      "coverage": "verified",
+      "verification": {
+        "method": "manual-review",
+        "evidence": "docs/accessibility/coverage-keyboard.md",
+        "lastVerified": "2026-06-30"
+      },
+      "assistiveTechnologies": [
+        "keyboard"
+      ],
+      "acceptanceCriteria": [
+        "All controls are reachable with Tab.",
+        "Focus order follows visual order."
+      ],
+      "references": [
+        {
+          "type": "appliesTo",
+          "target": "api.coverage.status"
+        }
+      ]
+    },
+    {
+      "id": "observability.telemetry.coverage_status",
+      "kind": "observability.telemetry",
+      "name": "Coverage Status Telemetry",
+      "description": "Telemetry emitted when coverage status is read.",
+      "status": "ready",
+      "owner": "platform-observability",
+      "signalName": "coverage.status.read",
+      "emittedBy": "api.coverage.status",
+      "payloadSchema": "schema.coverage_status",
+      "references": []
+    },
+    {
+      "id": "observability.metric.coverage_success_rate",
+      "kind": "observability.metric",
+      "name": "Coverage Success Rate",
+      "description": "Successful coverage status reads.",
+      "status": "ready",
+      "owner": "platform-observability",
+      "metricName": "coverage_status_success_rate",
+      "unit": "percent",
+      "aggregation": "rate",
+      "references": [
+        {
+          "type": "derivedFrom",
+          "target": "observability.telemetry.coverage_status"
+        }
+      ]
+    },
+    {
+      "id": "observability.alert.coverage_status_low",
+      "kind": "observability.alert",
+      "name": "Coverage Status Low",
+      "description": "Coverage status success rate is below target.",
+      "status": "ready",
+      "owner": "platform-observability",
+      "severity": "warning",
+      "condition": "coverage_status_success_rate < 0.99 for 10m",
+      "ownerTeam": "platform-operations",
+      "runbook": "docs/runbooks/coverage-status-low.md",
+      "references": [
+        {
+          "type": "firesOn",
+          "target": "observability.metric.coverage_success_rate"
+        }
+      ]
+    },
+    {
+      "id": "observability.dashboard.coverage_health",
+      "kind": "observability.dashboard",
+      "name": "Coverage Health Dashboard",
+      "description": "Dashboard for coverage status health.",
+      "status": "ready",
+      "owner": "platform-observability",
+      "url": "https://observability.example.com/d/coverage-health",
+      "audience": "operations",
+      "references": [
+        {
+          "type": "displays",
+          "target": "observability.metric.coverage_success_rate"
+        },
+        {
+          "type": "tracks",
+          "target": "observability.alert.coverage_status_low"
+        }
+      ]
+    },
+    {
+      "id": "compliance.mapping.coverage_review",
+      "kind": "compliance.mapping",
+      "name": "Coverage Review Mapping",
+      "description": "Maps coverage dashboard controls to internal review requirements.",
+      "status": "ready",
+      "owner": "platform-compliance",
+      "framework": {
+        "name": "internal-release-review",
+        "version": "2026.1",
+        "requirementId": "RR-7",
+        "requirementTitle": "Operational coverage review"
+      },
+      "mappingType": "operational",
+      "coverage": "reviewed",
+      "attestation": false,
+      "verification": {
+        "method": "evidence-review",
+        "evidence": "docs/compliance/coverage-review.md",
+        "lastVerified": "2026-06-30"
+      },
+      "references": [
+        {
+          "type": "covers",
+          "target": "security.control.coverage_access"
+        },
+        {
+          "type": "covers",
+          "target": "accessibility.claim.coverage_keyboard"
+        },
+        {
+          "type": "covers",
+          "target": "observability.dashboard.coverage_health"
+        }
+      ]
+    },
+    {
+      "id": "deployment.runtime.coverage_api",
+      "kind": "deployment.runtime",
+      "name": "Coverage API Runtime",
+      "description": "Runtime for the coverage API.",
+      "status": "ready",
+      "owner": "platform-runtime",
+      "runtimeType": "container",
+      "runtimeName": "python",
+      "version": "3.12",
+      "artifactType": "container-image",
+      "language": "python",
+      "entrypoint": "coverage-api",
+      "dependencies": [
+        "postgres"
+      ],
+      "references": []
+    },
+    {
+      "id": "deployment.target.coverage_production",
+      "kind": "deployment.target",
+      "name": "Coverage Production",
+      "description": "Production deployment target for the coverage API.",
+      "status": "ready",
+      "owner": "platform-operations",
+      "environment": "production",
+      "provider": "aws",
+      "platform": "kubernetes",
+      "runtimeRef": "deployment.runtime.coverage_api",
+      "regions": [
+        "us-east-1"
+      ],
+      "url": "https://coverage.example.com",
+      "healthCheckUrl": "https://coverage.example.com/healthz",
+      "releasePolicy": {
+        "strategy": "rolling",
+        "approvalRequired": true,
+        "owner": "release-management"
+      },
+      "rollbackPlan": "docs/ops/coverage-production-rollback.md",
+      "references": [
+        {
+          "type": "monitoredBy",
+          "target": "observability.dashboard.coverage_health"
+        },
+        {
+          "type": "securedBy",
+          "target": "security.control.coverage_access"
+        }
+      ]
+    }
+  ]
+}
