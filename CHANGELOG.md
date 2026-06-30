@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.19.0
+
 - Added security-control evidence freshness readiness checks based on
   `verification.lastVerified` and `verification.reviewCadenceDays`.
+- Added v0.19.0 release notes and roadmap closeout.
 
 ## 0.18.0
 

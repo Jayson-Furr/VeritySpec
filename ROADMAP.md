@@ -762,11 +762,12 @@ Sprint 53 should release the completed `v0.18.0` scope:
 
 ## v0.19.0
 
-The `v0.19.0` milestone is active.
+The `v0.19.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 54 | Complete | Security evidence freshness checks |
+| 55 | Complete | v0.19.0 release preparation |
 
 ## Sprint 54 Priorities
 
@@ -782,6 +783,22 @@ executable:
 - Update README, readiness docs, security-pack docs, changelog, and roadmap
   bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 55 Priorities
+
+Sprint 55 should release the completed `v0.19.0` scope:
+
+- Promote Unreleased changelog entries into `0.19.0`.
+- Bump package metadata to `0.19.0`.
+- Add v0.19.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.19.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.19.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.19.0 GitHub release when checks pass.
+- Close the v0.19.0 milestone after release verification.
 
 ## Later Candidates
 

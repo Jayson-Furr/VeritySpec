@@ -16,7 +16,7 @@ on:
       install-command:
         description: "Command used to install VeritySpec"
         required: false
-        default: 'pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.18.0"'
+        default: 'pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.19.0"'
         type: string
       pack-paths:
         description: "Space-separated local pack paths"
