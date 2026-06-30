@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.21.0
+
 - Added structured issue `locationDetails` fields for JSON diagnostics while
   preserving formatted `location` strings.
+- Added v0.21.0 release notes and roadmap closeout.
 
 ## 0.20.0
 
