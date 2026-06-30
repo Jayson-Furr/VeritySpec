@@ -1,98 +1,58 @@
 # VeritySpec Sprint Roadmap
 
-VeritySpec will mature through small, shippable sprints. Each sprint should
-leave the repository in a releasable state with tests, examples, and CI checks
-updated alongside code.
+VeritySpec matures through small, shippable sprints. Each sprint should leave
+the repository in a releasable state with tests, examples, documentation, and CI
+checks updated alongside code.
 
-## Sprint 1: CLI Contract
+The GitHub issues and milestones are the operational roadmap. This file is the
+repository-level summary.
 
-Goal: make `verity` behave like a stable developer tool.
+## Completed Foundation
 
-Deliverables:
+| Sprint | Status | Focus |
+|---:|---|---|
+| 1 | Complete | CLI contract, version output, JSON output, stable exit codes |
+| 2 | Complete | Semantic validation, reference rules, graph checks, validation reports |
+| 3 | Complete | Pack manifests, pack listing, pack validation |
+| 4 | Complete | Executable examples and core documentation |
+| 5 | Complete | Release automation, package build checks, GitHub release workflow |
+| 6 | Complete | Public package polish, badges, install guidance, PyPI preparation |
+| 7 | Complete | Contract intelligence: `doctor`, `explain`, graph filters, `--fail-on` |
+| 8 | Complete | PrismSpec import bridge and migration reports |
 
-- Add `verity --version`.
-- Add `--format text|json` to `validate`, `lint`, and `readiness`.
-- Define stable exit codes for success, validation failure, usage error, and internal error.
-- Add CLI integration tests that execute the command surface.
-- Add README examples for JSON output and CI usage.
+## v0.2.0
 
-Acceptance criteria:
+The active milestone is `v0.2.0`.
 
-- CLI output is scriptable.
-- CI verifies command behavior, not only library behavior.
-- Every documented command example works from a clean checkout.
+| Sprint | Status | Focus |
+|---:|---|---|
+| 9 | Complete | Version registry, workspace version validation, `verity migrate`, version-aware diffing |
+| 10 | Complete | External pack loading through workspace `packPaths` and CLI `--pack-path` flags |
+| 11 | Complete | Generator maturity, richer OpenAPI/AsyncAPI metadata, golden type/model snapshots |
+| 12 | In progress | CI productization, release notes, action warning cleanup, v0.2.0 release readiness |
 
-## Sprint 2: Contract Semantics
+## Sprint 12 Priorities
 
-Goal: make validation more semantic and graph-aware.
+Sprint 12 should finish the `v0.2.0` line by making VeritySpec easier to adopt
+from downstream repositories:
 
-Deliverables:
+- Add a reusable or copy-paste CI workflow for product-contract checks.
+- Add v0.2.0 release notes.
+- Review GitHub Actions version warnings.
+- Run final package build, wheel install, examples, importer, generator, and docs checks.
+- Tag and publish the v0.2.0 release when the scope is complete.
 
-- Formalize the shared record envelope.
-- Add typed reference rules for allowed source and target kind relationships.
-- Add validation report output as a first-class generated artifact.
-- Add orphan, unused schema, cycle, deprecated-reference, and removed-reference checks.
-- Add tests with intentionally broken workspaces.
+## Later Candidates
 
-Acceptance criteria:
+These are intentionally not committed to a release until the current milestone
+is complete:
 
-- Broken contracts produce clear, stable issue codes.
-- Graph-level failures can break CI.
-- Validation reports can be saved and consumed by other tools.
-
-## Sprint 3: Pack System
-
-Goal: make packs independently validatable and ready for ecosystem growth.
-
-Deliverables:
-
-- Add `verity pack list`.
-- Add `verity pack validate`.
-- Define pack manifest schema.
-- Validate pack schemas, readiness gates, declared generators, and kind collisions.
-- Document the pack standard.
-
-Acceptance criteria:
-
-- Built-in packs validate independently.
-- A future external pack author has a documented path.
-- CI fails if pack manifests or schemas drift.
-
-## Sprint 4: Examples and Documentation
-
-Goal: make VeritySpec understandable from examples before reading internals.
-
-Deliverables:
-
-- Add `examples/api-service`.
-- Add `examples/cli-tool`.
-- Add `examples/events`.
-- Add `examples/broken` for validation demos.
-- Add docs for workspace format, record lifecycle, packs, readiness, generators, graph checks, and CI.
-
-Acceptance criteria:
-
-- All positive examples validate, lint, pass readiness, and generate expected artifacts.
-- Broken examples fail with expected issue codes.
-- Documentation is aligned with tested commands.
-
-## Sprint 5: Release Automation
-
-Goal: make public releases repeatable.
-
-Deliverables:
-
-- Add GitHub release workflow.
-- Add package build checks.
-- Prepare PyPI publishing for `verityspec`.
-- Add changelog/release checklist.
-- Add `v0.1.0` tag after release checks are stable.
-
-Acceptance criteria:
-
-- A release can be created from a clean tag.
-- Built distributions install and expose `verity`.
-- Release notes are generated from the repository state.
+- OpenAPI path-parameter extraction.
+- More complete Python nested-object model generation.
+- Pack authoring scaffolds.
+- Migration chains beyond `v0.1.0`.
+- UI, security, observability, accessibility, deployment, and compliance packs.
+- Downstream project templates and examples.
 
 ## Working Rule
 
@@ -102,4 +62,3 @@ No sprint is complete unless:
 - CI passes.
 - Documentation and examples match the implemented behavior.
 - New behavior has at least one executable test or CLI smoke check.
-
