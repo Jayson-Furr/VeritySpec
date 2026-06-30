@@ -38,7 +38,7 @@ twine check dist/*
 ## Tag
 
 ```bash
-VERSION=v0.8.0
+VERSION=v0.9.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```
