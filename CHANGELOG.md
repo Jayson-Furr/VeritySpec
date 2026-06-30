@@ -2,11 +2,16 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.9.0
+
 - Added built-in `verity.pack.compliance` with `compliance.mapping` records,
   readiness gates, reference rules, documentation, CI coverage, and an
   executable compliance example.
 - Added `verity generate compliance-matrix` for compliance mapping,
   framework, verification, evidence, target, and release-gap summaries.
+- Added v0.9.0 release notes and roadmap closeout.
 
 ## 0.8.0
 
