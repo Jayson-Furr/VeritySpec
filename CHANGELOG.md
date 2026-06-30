@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-No changes yet.
+- Added `verity generate roadmap-report` for JSON roadmap governance reports
+  covering milestones, sprint status, and Next 20 planning points.
 
 ## 0.17.0
 

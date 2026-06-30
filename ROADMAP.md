@@ -722,6 +722,27 @@ Sprint 51 should release the completed `v0.17.0` scope:
 - Tag and publish the v0.17.0 GitHub release when checks pass.
 - Close the v0.17.0 milestone after release verification.
 
+## v0.18.0
+
+The `v0.18.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 52 | Complete | Roadmap-report generator |
+
+## Sprint 52 Priorities
+
+Sprint 52 should make roadmap governance machine-readable:
+
+- Add `verity generate roadmap-report`.
+- Parse `ROADMAP.md` into a structured JSON report.
+- Include release milestone sections, sprint rows, active milestones, latest
+  released milestone, completed sprint counts, and Next 20 planning points.
+- Allow the command to read a repository directory or direct roadmap file.
+- Add library and CLI coverage for the report shape.
+- Update README, generator docs, changelog, and roadmap bookkeeping.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -742,46 +763,46 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a roadmap-report generator that emits active milestones, completed
-   sprints, and future planning points for project governance.
-2. Add security-control evidence freshness checks for `verification.lastVerified`
+1. Add security-control evidence freshness checks for `verification.lastVerified`
    age and review cadence.
-3. Add workspace compatibility golden manifests for future format upgrades.
-4. Add structured issue location fields for machine clients in addition to
+2. Add workspace compatibility golden manifests for future format upgrades.
+3. Add structured issue location fields for machine clients in addition to
    formatted location strings.
-5. Add documentation command smoke tests that execute README examples to
+4. Add documentation command smoke tests that execute README examples to
    prevent public command drift.
-6. Add CI annotation output for readiness and validation failures in GitHub
+5. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-7. Add observability example golden fixtures for schema bundles and future
+6. Add observability example golden fixtures for schema bundles and future
    report output.
-8. Add report timestamp controls for deterministic golden snapshot generation.
-9. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+7. Add report timestamp controls for deterministic golden snapshot generation.
+8. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-10. Add product-contract profiles for release, strict, regulated, public API,
+9. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
-11. Add a first deployment-target pack for runtime, hosting, and release
+10. Add a first deployment-target pack for runtime, hosting, and release
    environment contracts.
-12. Add cross-pack coverage dashboards that summarize which product surfaces
+11. Add cross-pack coverage dashboards that summarize which product surfaces
    have API, CLI, event, security, accessibility, observability, and compliance
    records.
-13. Add a product-impact report that expands changed records into affected
+12. Add a product-impact report that expands changed records into affected
    upstream and downstream records for release review.
-14. Define a local-only cross-workspace dependency design note covering
+13. Define a local-only cross-workspace dependency design note covering
    workspace dependencies, exported records, reference resolution, and lockfile
    boundaries before implementation.
-15. Add a pack capability index report that summarizes schemas, readiness
+14. Add a pack capability index report that summarizes schemas, readiness
    gates, reference rules, and generators across built-in and external packs.
-16. Add pack scaffold documentation fixtures that show a complete generated
+15. Add pack scaffold documentation fixtures that show a complete generated
    pack plus consuming workspace layout for external pack authors.
-17. Add downstream CI templates for monorepos with multiple VeritySpec
+16. Add downstream CI templates for monorepos with multiple VeritySpec
    workspaces and shared local packs.
-18. Add golden fixtures for accessibility and compliance report outputs after
+17. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-19. Add a maintainer review checklist for accepting external packs once public
+18. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-20. Add release-integrity consistency checks across package metadata, README,
+19. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
+20. Add roadmap-report human-readable Markdown output for maintainer release
+   governance reviews.
 
 ## Working Rule
 

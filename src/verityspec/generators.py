@@ -542,6 +542,138 @@ def generate_validation_report(
     }
 
 
+ROADMAP_MILESTONE_PATTERN = re.compile(r"^## (v\d+\.\d+\.\d+)\s*$")
+ROADMAP_SECTION_PATTERN = re.compile(r"^## .+")
+ROADMAP_SPRINT_ROW_PATTERN = re.compile(r"^\|\s*(\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|")
+ROADMAP_PLANNING_ITEM_PATTERN = re.compile(r"^(\d+)\.\s+(.*)")
+
+
+def roadmap_path(path: str | Path) -> Path:
+    candidate = Path(path)
+    if candidate.is_dir():
+        candidate = candidate / "ROADMAP.md"
+    return candidate
+
+
+def roadmap_status(lines: list[str]) -> str:
+    for line in lines[:8]:
+        text = line.strip().lower()
+        if "milestone is active" in text:
+            return "active"
+        if "milestone is released" in text:
+            return "released"
+    return "unknown"
+
+
+def parse_roadmap_sprints(lines: list[str]) -> list[dict[str, Any]]:
+    sprints: list[dict[str, Any]] = []
+    for line in lines:
+        match = ROADMAP_SPRINT_ROW_PATTERN.match(line.strip())
+        if not match:
+            continue
+        sprints.append(
+            {
+                "number": int(match.group(1)),
+                "status": match.group(2).strip(),
+                "focus": match.group(3).strip(),
+            }
+        )
+    return sprints
+
+
+def parse_roadmap_milestones(text: str) -> list[dict[str, Any]]:
+    lines = text.splitlines()
+    milestones: list[dict[str, Any]] = []
+    index = 0
+    while index < len(lines):
+        match = ROADMAP_MILESTONE_PATTERN.match(lines[index])
+        if not match:
+            index += 1
+            continue
+        version = match.group(1)
+        section_start = index + 1
+        index += 1
+        while index < len(lines) and not ROADMAP_MILESTONE_PATTERN.match(lines[index]):
+            if lines[index].startswith("## Later Candidates") or lines[index].startswith("## Next 20"):
+                break
+            index += 1
+        section_lines = lines[section_start:index]
+        sprints = parse_roadmap_sprints(section_lines)
+        completed = [sprint for sprint in sprints if sprint["status"].lower() == "complete"]
+        in_progress = [sprint for sprint in sprints if sprint["status"].lower() == "in progress"]
+        milestones.append(
+            {
+                "version": version,
+                "status": roadmap_status(section_lines),
+                "sprintCount": len(sprints),
+                "completedSprintCount": len(completed),
+                "inProgressSprintCount": len(in_progress),
+                "sprints": sprints,
+            }
+        )
+    return milestones
+
+
+def parse_next_roadmap_points(text: str) -> list[dict[str, Any]]:
+    lines = text.splitlines()
+    points: list[dict[str, Any]] = []
+    in_section = False
+    current: dict[str, Any] | None = None
+    for line in lines:
+        if line.startswith("## Next 20 Roadmap Points"):
+            in_section = True
+            continue
+        if in_section and ROADMAP_SECTION_PATTERN.match(line):
+            break
+        if not in_section:
+            continue
+
+        stripped = line.strip()
+        match = ROADMAP_PLANNING_ITEM_PATTERN.match(stripped)
+        if match:
+            if current is not None:
+                points.append(current)
+            current = {"number": int(match.group(1)), "text": match.group(2).strip()}
+            continue
+        if current is not None and stripped:
+            current["text"] = f"{current['text']} {stripped}".strip()
+
+    if current is not None:
+        points.append(current)
+    return points
+
+
+def generate_roadmap_report(path: str | Path) -> dict:
+    resolved_path = roadmap_path(path).resolve()
+    text = resolved_path.read_text(encoding="utf-8")
+    milestones = parse_roadmap_milestones(text)
+    next_points = parse_next_roadmap_points(text)
+    released = [milestone for milestone in milestones if milestone["status"] == "released"]
+    active = [milestone for milestone in milestones if milestone["status"] == "active"]
+    completed_sprints = sum(milestone["completedSprintCount"] for milestone in milestones)
+    in_progress_sprints = sum(milestone["inProgressSprintCount"] for milestone in milestones)
+
+    return {
+        "type": "roadmap_report",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "verityVersion": __version__,
+        "roadmapPath": str(resolved_path),
+        "latestReleasedMilestone": released[-1]["version"] if released else None,
+        "activeMilestones": [milestone["version"] for milestone in active],
+        "summary": {
+            "milestones": len(milestones),
+            "releasedMilestones": len(released),
+            "activeMilestones": len(active),
+            "sprints": sum(milestone["sprintCount"] for milestone in milestones),
+            "completedSprints": completed_sprints,
+            "inProgressSprints": in_progress_sprints,
+            "nextRoadmapPoints": len(next_points),
+        },
+        "milestones": milestones,
+        "nextRoadmapPoints": next_points,
+    }
+
+
 def count_by_field(records: list[Record], field: str) -> dict[str, int]:
     counts: dict[str, int] = {}
     for record in records:

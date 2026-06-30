@@ -12,6 +12,7 @@ from verityspec.generators import (
     generate_compliance_matrix,
     generate_openapi,
     generate_python_models,
+    generate_roadmap_report,
     generate_security_report,
     generate_typescript,
 )
@@ -514,6 +515,20 @@ class VeritySpecTests(unittest.TestCase):
             ["api.accounts.get", "schema.account"],
             [target["id"] for target in control["targets"]],
         )
+
+    def test_roadmap_report_summarizes_release_governance(self) -> None:
+        report = generate_roadmap_report(ROOT)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual("roadmap_report", report["type"])
+        self.assertEqual(str(ROOT / "ROADMAP.md"), report["roadmapPath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertGreater(report["summary"]["milestones"], 0)
+        self.assertGreater(report["summary"]["completedSprints"], 0)
+        self.assertEqual(20, report["summary"]["nextRoadmapPoints"])
+        self.assertEqual(list(range(1, 21)), [point["number"] for point in report["nextRoadmapPoints"]])
+        milestone_versions = {milestone["version"] for milestone in report["milestones"]}
+        self.assertIn(report["latestReleasedMilestone"], milestone_versions)
 
     def test_security_report_matches_golden_file(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "security")
