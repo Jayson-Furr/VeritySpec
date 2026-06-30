@@ -28,6 +28,7 @@ POSITIVE_EXAMPLES = [
     ROOT / "examples" / "deployment",
     ROOT / "examples" / "game-core",
     ROOT / "examples" / "game-assets",
+    ROOT / "examples" / "unity",
 ]
 COMPATIBILITY_WORKSPACES = POSITIVE_EXAMPLES + [
     ROOT / "tests" / "fixtures" / "generator_maturity",

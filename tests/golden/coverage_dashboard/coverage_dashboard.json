@@ -16,14 +16,15 @@
     "verity.pack.compliance",
     "verity.pack.deployment",
     "verity.pack.game-core",
-    "verity.pack.game-assets"
+    "verity.pack.game-assets",
+    "verity.pack.unity"
   ],
-  "recordCount": 22,
+  "recordCount": 26,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 10,
-    "loadedSurfacePacks": 10,
-    "coveredSurfaces": 10,
+    "trackedSurfaces": 11,
+    "loadedSurfacePacks": 11,
+    "coveredSurfaces": 11,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -35,7 +36,8 @@
       "game-assets": 4,
       "game-core": 4,
       "observability": 4,
-      "security": 1
+      "security": 1,
+      "unity": 4
     },
     "byRecordKind": {
       "accessibility.claim": 1,
@@ -59,7 +61,11 @@
       "observability.telemetry": 1,
       "product": 1,
       "schema.object": 1,
-      "security.control": 1
+      "security.control": 1,
+      "unity.build-target": 1,
+      "unity.package-dependency": 1,
+      "unity.project": 1,
+      "unity.scene": 1
     },
     "releaseGaps": {
       "missingSurfaceRecords": [],
@@ -498,6 +504,62 @@
           "targetName": "Coverage Adventure Visual Identity"
         }
       ]
+    },
+    {
+      "id": "unity",
+      "name": "Unity",
+      "packId": "verity.pack.unity",
+      "packLoaded": true,
+      "recordKinds": [
+        "unity.project",
+        "unity.package-dependency",
+        "unity.scene",
+        "unity.build-target"
+      ],
+      "productRelationships": [
+        "hasUnityProject"
+      ],
+      "recordCount": 4,
+      "covered": true,
+      "records": [
+        {
+          "id": "unity.build-target.coverage_pc",
+          "kind": "unity.build-target",
+          "name": "Coverage PC Development Build",
+          "status": "ready",
+          "owner": "build-engineering"
+        },
+        {
+          "id": "unity.package.coverage_input",
+          "kind": "unity.package-dependency",
+          "name": "Coverage Input Package",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.project.coverage_adventure",
+          "kind": "unity.project",
+          "name": "Coverage Adventure Unity Project",
+          "status": "ready",
+          "owner": "unity-engineering"
+        },
+        {
+          "id": "unity.scene.coverage_zone",
+          "kind": "unity.scene",
+          "name": "Coverage Zone Scene",
+          "status": "ready",
+          "owner": "level-design"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasUnityProject",
+          "targetId": "unity.project.coverage_adventure",
+          "targetKind": "unity.project",
+          "targetName": "Coverage Adventure Unity Project"
+        }
+      ]
     }
   ],
   "products": [
@@ -595,6 +657,15 @@
             "targetId": "game.visual-identity.coverage_style",
             "targetKind": "game.visual-identity",
             "targetName": "Coverage Adventure Visual Identity"
+          }
+        ],
+        "unity": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasUnityProject",
+            "targetId": "unity.project.coverage_adventure",
+            "targetKind": "unity.project",
+            "targetName": "Coverage Adventure Unity Project"
           }
         ]
       },

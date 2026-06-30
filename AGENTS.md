@@ -204,6 +204,9 @@ verity readiness examples/game-core --strict
 verity validate examples/game-assets
 verity lint examples/game-assets --strict
 verity readiness examples/game-assets --strict
+verity validate examples/unity
+verity lint examples/unity --strict
+verity readiness examples/unity --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -223,6 +226,7 @@ verity generate compliance-matrix examples/compliance --out build/compliance-mat
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
+verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -268,6 +272,7 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `docs/compliance-pack.md`: built-in compliance pack behavior.
 - `docs/game-core-pack.md`: built-in game-core pack behavior.
 - `docs/game-assets-pack.md`: built-in game-assets pack behavior.
+- `docs/unity-pack.md`: built-in Unity pack behavior.
 - `tests/`: executable behavior coverage.
 - `.github/workflows/ci.yml`: required CI contract.
 - `.github/workflows/release.yml`: release automation.

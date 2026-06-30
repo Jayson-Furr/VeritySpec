@@ -48,6 +48,10 @@
         {
           "type": "hasGameAssets",
           "target": "game.visual-identity.coverage_style"
+        },
+        {
+          "type": "hasUnityProject",
+          "target": "unity.project.coverage_adventure"
         }
       ]
     },
@@ -537,6 +541,98 @@
         {
           "type": "supportsLoop",
           "target": "game.loop.coverage_status"
+        }
+      ]
+    },
+    {
+      "id": "unity.project.coverage_adventure",
+      "kind": "unity.project",
+      "name": "Coverage Adventure Unity Project",
+      "description": "Unity project fixture for the Unity coverage surface.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "unityVersion": "2022.3 LTS",
+      "projectPath": "unity/CoverageAdventure",
+      "renderPipeline": "urp",
+      "scriptingBackend": "il2cpp",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "assemblyDefinitionPaths": [
+        "Assets/CoverageAdventure/CoverageAdventure.Runtime.asmdef"
+      ],
+      "references": [
+        {
+          "type": "usesPackage",
+          "target": "unity.package.coverage_input"
+        },
+        {
+          "type": "containsScene",
+          "target": "unity.scene.coverage_zone"
+        },
+        {
+          "type": "buildsFor",
+          "target": "unity.build-target.coverage_pc"
+        }
+      ]
+    },
+    {
+      "id": "unity.package.coverage_input",
+      "kind": "unity.package-dependency",
+      "name": "Coverage Input Package",
+      "description": "Unity package dependency fixture for coverage controls.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "packageName": "com.unity.inputsystem",
+      "versionRequirement": ">=1.7.0",
+      "source": "unity-registry",
+      "purpose": "Provides input bindings for the coverage adventure prototype.",
+      "requiredCapabilities": [
+        "input-actions"
+      ],
+      "references": []
+    },
+    {
+      "id": "unity.scene.coverage_zone",
+      "kind": "unity.scene",
+      "name": "Coverage Zone Scene",
+      "description": "Unity scene fixture for the coverage adventure prototype.",
+      "status": "ready",
+      "owner": "level-design",
+      "scenePath": "Assets/CoverageAdventure/Scenes/CoverageZone.unity",
+      "sceneRole": "prototype",
+      "loadMode": "single",
+      "includedInBuild": true,
+      "references": [
+        {
+          "type": "usesPackage",
+          "target": "unity.package.coverage_input"
+        }
+      ]
+    },
+    {
+      "id": "unity.build-target.coverage_pc",
+      "kind": "unity.build-target",
+      "name": "Coverage PC Development Build",
+      "description": "Unity build target fixture for the coverage adventure prototype.",
+      "status": "ready",
+      "owner": "build-engineering",
+      "platform": "windows",
+      "buildConfiguration": "development",
+      "outputPath": "builds/coverage-pc/CoverageAdventure.exe",
+      "scenes": [
+        "unity.scene.coverage_zone"
+      ],
+      "scriptingBackend": "il2cpp",
+      "developmentBuild": true,
+      "references": [
+        {
+          "type": "includesScene",
+          "target": "unity.scene.coverage_zone"
+        },
+        {
+          "type": "usesPackage",
+          "target": "unity.package.coverage_input"
         }
       ]
     }

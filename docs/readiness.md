@@ -73,6 +73,10 @@ Game-assets records use readiness gates to keep creative-source contracts
 traceable. A `game.visual-identity` should link to identity image and concept
 art records before strict readiness passes.
 
+Unity records use readiness gates to keep implementation contracts executable.
+A `unity.project` should link to package, scene, and build-target records before
+strict readiness passes.
+
 Run readiness checks:
 
 ```bash
@@ -82,6 +86,7 @@ verity readiness examples/basic --profile release
 verity readiness examples/deployment --strict
 verity readiness examples/game-core --strict
 verity readiness examples/game-assets --strict
+verity readiness examples/unity --strict
 verity readiness examples/basic --strict --format json
 ```
 

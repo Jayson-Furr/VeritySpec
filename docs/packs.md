@@ -22,6 +22,8 @@ Built-in packs currently include:
   records for early game product-contract coverage.
 - `verity.pack.game-assets`: GDD source, visual identity, identity image, and
   concept art records for creative-source game coverage.
+- `verity.pack.unity`: Unity projects, package dependencies, scenes, and build
+  targets for engine-specific implementation coverage.
 
 ## Manifest
 
@@ -174,9 +176,10 @@ impact, affected generators or readiness gates, and validation fixtures.
 Future GUI, desktop, mobile, and additional game packs should follow the
 boundary guidance in
 [Product surface pack boundaries](product-surface-pack-boundaries.md) before
-their first schemas are added. The first narrow game scopes now live in
+their first schemas are added. The first narrow game and engine scopes now live in
 [`verity.pack.game-core`](game-core-pack.md) and
-[`verity.pack.game-assets`](game-assets-pack.md).
+[`verity.pack.game-assets`](game-assets-pack.md), with Unity implementation
+coverage in [`verity.pack.unity`](unity-pack.md).
 
 That guidance keeps product-surface packs focused on their own domains and
 prevents them from duplicating cross-cutting concerns owned by security,

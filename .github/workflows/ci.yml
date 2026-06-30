@@ -39,7 +39,7 @@ jobs:
 
       - name: Check all example workspaces
         run: |
-          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets; do
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity; do
             verity validate "$workspace"
             verity lint "$workspace" --strict
             verity readiness "$workspace" --strict
@@ -82,6 +82,9 @@ jobs:
           verity validate examples/game-assets --format json > build/game-assets-validate.json
           verity lint examples/game-assets --strict --format json > build/game-assets-lint.json
           verity readiness examples/game-assets --strict --format json > build/game-assets-readiness.json
+          verity validate examples/unity --format json > build/unity-validate.json
+          verity lint examples/unity --strict --format json > build/unity-lint.json
+          verity readiness examples/unity --strict --format json > build/unity-readiness.json
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
@@ -137,6 +140,9 @@ jobs:
           python -m json.tool build/game-assets-validate.json >/dev/null
           python -m json.tool build/game-assets-lint.json >/dev/null
           python -m json.tool build/game-assets-readiness.json >/dev/null
+          python -m json.tool build/unity-validate.json >/dev/null
+          python -m json.tool build/unity-lint.json >/dev/null
+          python -m json.tool build/unity-readiness.json >/dev/null
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
@@ -195,6 +201,7 @@ jobs:
           verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
           verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
           verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
+          verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
           verity generate openapi examples/api-service --out build/api-service.openapi.json
           verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
           verity generate asyncapi examples/events --out build/events.asyncapi.json
@@ -210,6 +217,7 @@ jobs:
           python -m json.tool build/deployment-schema-bundle.json >/dev/null
           python -m json.tool build/game-core-schema-bundle.json >/dev/null
           python -m json.tool build/game-assets-schema-bundle.json >/dev/null
+          python -m json.tool build/unity-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m json.tool build/security-report.json >/dev/null
           python -m json.tool build/observability-report.json >/dev/null
@@ -240,3 +248,4 @@ jobs:
           /tmp/verityspec-wheel/bin/verity validate examples/deployment
           /tmp/verityspec-wheel/bin/verity validate examples/game-core
           /tmp/verityspec-wheel/bin/verity validate examples/game-assets
+          /tmp/verityspec-wheel/bin/verity validate examples/unity

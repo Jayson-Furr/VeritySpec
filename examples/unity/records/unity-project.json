@@ -1,0 +1,32 @@
+{
+  "id": "unity.project.dream_extraction",
+  "kind": "unity.project",
+  "name": "Dream Extraction Unity Project",
+  "description": "Unity project contract for the first Dream Extraction prototype.",
+  "status": "ready",
+  "owner": "unity-engineering",
+  "unityVersion": "2022.3 LTS",
+  "projectPath": "unity/DreamExtraction",
+  "renderPipeline": "urp",
+  "scriptingBackend": "il2cpp",
+  "targetPlatforms": [
+    "pc"
+  ],
+  "assemblyDefinitionPaths": [
+    "Assets/DreamExtraction/DreamExtraction.Runtime.asmdef"
+  ],
+  "references": [
+    {
+      "type": "usesPackage",
+      "target": "unity.package.input_system"
+    },
+    {
+      "type": "containsScene",
+      "target": "unity.scene.prototype_zone"
+    },
+    {
+      "type": "buildsFor",
+      "target": "unity.build-target.pc_development"
+    }
+  ]
+}

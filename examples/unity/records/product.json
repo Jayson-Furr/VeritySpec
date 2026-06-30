@@ -1,0 +1,19 @@
+{
+  "id": "product.dream_extraction_unity",
+  "kind": "product",
+  "name": "Dream Extraction Unity Prototype",
+  "description": "Product contract connecting the Dream Extraction game concept to a Unity prototype project.",
+  "status": "ready",
+  "owner": "engineering",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "describes",
+      "target": "game.product.dream_extraction"
+    },
+    {
+      "type": "hasUnityProject",
+      "target": "unity.project.dream_extraction"
+    }
+  ]
+}

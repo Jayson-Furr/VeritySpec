@@ -4,11 +4,12 @@ VeritySpec should add large product surfaces through deliberate packs, not by
 expanding the core kernel or creating a broad static catalog. This note defines
 the initial boundaries for future GUI, desktop, mobile, and game packs.
 
-`verity.pack.game-core` and `verity.pack.game-assets` now provide the first
-narrow built-in game scopes. The remaining GUI, desktop, mobile, engine,
-gameplay, content, liveops, evidence, dependency, portfolio, and broader game
-scopes should still use this note to define pack ownership, overlap rules, and
-readiness expectations before implementation begins.
+`verity.pack.game-core`, `verity.pack.game-assets`, and `verity.pack.unity`
+now provide the first narrow built-in game and engine scopes. The remaining
+GUI, desktop, mobile, gameplay, content, liveops, evidence, dependency,
+portfolio, and broader game scopes should still use this note to define pack
+ownership, overlap rules, and readiness expectations before implementation
+begins.
 
 ## Pack Boundary Rule
 
@@ -122,7 +123,8 @@ with explicit permission rationale.
 
 ## Game Core, Game Assets, and Future Game Packs
 
-Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`.
+Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`,
+`verity.pack.unity`.
 
 The game-core pack describes the first narrow game product-contract surface:
 game product identity, playable modes, game loops, and prototype scope. It is
@@ -132,6 +134,11 @@ The game-assets pack describes the first narrow creative-source surface: GDD
 source records, visual identity records, identity images, and concept art. It
 links creative sources to game-core records without becoming a full asset
 pipeline, content, economy, or engine pack.
+
+The Unity pack describes the first narrow engine-specific implementation
+surface: Unity project records, package dependencies, scenes, and build
+targets. It does not define generic gameplay, content, liveops, evidence, or
+workspace-dependency behavior.
 
 Future broader game packs may use pack IDs such as `verity.pack.game`,
 `verity.pack.gameplay`, `verity.pack.content`, or `verity.pack.liveops`.

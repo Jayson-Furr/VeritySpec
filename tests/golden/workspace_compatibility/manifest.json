@@ -322,6 +322,39 @@
       ]
     },
     {
+      "path": "examples/unity",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.game-core",
+        "verity.pack.unity"
+      ],
+      "recordCount": 9,
+      "recordKinds": {
+        "game.loop": 1,
+        "game.mode": 1,
+        "game.product": 1,
+        "game.prototype-scope": 1,
+        "product": 1,
+        "unity.build-target": 1,
+        "unity.package-dependency": 1,
+        "unity.project": 1,
+        "unity.scene": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "tests/fixtures/generator_maturity",
       "sourceSpecVersion": "v0.2.0",
       "packs": [
