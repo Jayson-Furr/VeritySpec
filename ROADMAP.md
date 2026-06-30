@@ -1,7 +1,7 @@
 # VeritySpec Sprint Roadmap
 
-VeritySpec matures through shippable sprints. Starting after the current
-`v0.38.0` sprint, plan sprints as cohesive bundles of related work sized up to
+VeritySpec matures through shippable sprints. Starting with the first sprint
+after `v0.38.0`, plan sprints as cohesive bundles of related work sized up to
 roughly one week of development effort, while still leaving the repository in a
 releasable state with tests, examples, documentation, and CI checks updated
 alongside code.
@@ -1535,12 +1535,12 @@ Sprint 91 should release the completed `v0.37.0` scope:
 
 ## v0.38.0
 
-The `v0.38.0` milestone is active.
+The `v0.38.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 92 | In Progress | Gameplay and content pack foundations |
-| 93 | Planned | v0.38.0 release preparation |
+| 92 | Complete | Gameplay and content pack foundations |
+| 93 | Complete | v0.38.0 release preparation |
 
 ## Sprint 92 Priorities
 

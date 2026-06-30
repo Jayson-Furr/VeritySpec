@@ -120,7 +120,7 @@ If `twine` is installed but the console script is not on `PATH`, run
 ## Tag
 
 ```bash
-VERSION=v0.37.0
+VERSION=v0.38.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```

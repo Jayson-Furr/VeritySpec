@@ -3,8 +3,8 @@
 VeritySpec keeps `main` releasable. Sprint and feature work happens on branches
 and merges back only after verification.
 
-Starting after the current `v0.38.0` sprint, plan sprint branches as cohesive
-bundles of related work sized up to roughly one week of development effort.
+Starting with the first sprint after `v0.38.0`, plan sprint branches as
+cohesive bundles of related work sized up to roughly one week of development effort.
 Avoid splitting tightly related work into many tiny sprint branches when it can
 be implemented, verified, reviewed, and released as one clean bundle.
 

@@ -43,7 +43,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install VeritySpec
-        run: pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.37.0"
+        run: pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.38.0"
 
       - name: Check product contract
         shell: bash
@@ -90,7 +90,7 @@ on:
 
 jobs:
   verity:
-    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.37.0
+    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.38.0
     with:
       workspace: .
 ```
@@ -100,7 +100,7 @@ For local external packs:
 ```yaml
 jobs:
   verity:
-    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.37.0
+    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.38.0
     with:
       workspace: specs/product
       pack-paths: packs/features packs/security
@@ -140,7 +140,7 @@ jobs:
           - workspace: packages/cli/specs
             pack_paths: packs/shared packs/cli
             strict: true
-    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.37.0
+    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.38.0
     with:
       workspace: ${{ matrix.workspace }}
       pack-paths: ${{ matrix.pack_paths }}
