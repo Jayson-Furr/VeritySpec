@@ -2,11 +2,14 @@
 
 ## Unreleased
 
+## 0.39.0
+
 - Added built-in `verity.pack.economy` with `economy.currency`,
   `economy.source`, `economy.sink`, `economy.reward`, and `economy.offer`
   records, readiness gates, graph reference rules, an executable economy
   example, coverage-dashboard support, schema-bundle generation coverage, and
   public docs for economy implementation contracts.
+- Added v0.39.0 release notes and roadmap closeout.
 
 ## 0.38.0
 
