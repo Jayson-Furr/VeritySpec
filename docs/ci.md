@@ -43,6 +43,7 @@ contract checks and keep a schema bundle for downstream tooling:
 verity validate examples/accessibility
 verity lint examples/accessibility --strict
 verity readiness examples/accessibility --strict
+verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 ```
 

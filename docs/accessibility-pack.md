@@ -39,8 +39,21 @@ Critical accessibility claims also emit
 verity validate examples/accessibility
 verity lint examples/accessibility --strict
 verity readiness examples/accessibility --strict
+verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 ```
 
 The example workspace connects a checkout product to a WCAG-style keyboard
 operation claim with verification evidence.
+
+## Report
+
+`accessibility-report` emits JSON with:
+
+- counts for accessibility claims
+- ownership, standard, level, impact, and coverage summaries
+- verified-claim count
+- release gaps for critical unverified claims, claims without targets, missing
+  owners, and missing verification dates
+- detailed claim entries with verification evidence, acceptance criteria,
+  assistive technologies, and connected targets

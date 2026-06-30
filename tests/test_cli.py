@@ -777,6 +777,38 @@ class VerityCliTests(unittest.TestCase):
         )
         self.assertEqual("observability.metric.checkout_success_rate", payload["metrics"][0]["id"])
 
+    def test_accessibility_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "accessibility-report.json"
+            result = verity_command(
+                "generate",
+                "accessibility-report",
+                "examples/accessibility",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("accessibility_report", payload["type"])
+        self.assertEqual(1, payload["claimCount"])
+        self.assertEqual({"checkout-platform": 1}, payload["summary"]["byOwner"])
+        self.assertEqual({"wcag-2.2": 1}, payload["summary"]["byStandard"])
+        self.assertEqual({"a": 1}, payload["summary"]["byLevel"])
+        self.assertEqual({"high": 1}, payload["summary"]["byImpact"])
+        self.assertEqual({"verified": 1}, payload["summary"]["byCoverage"])
+        self.assertEqual(
+            {
+                "criticalUnverified": [],
+                "claimsWithoutTargets": [],
+                "missingOwners": [],
+                "missingVerificationDates": [],
+            },
+            payload["summary"]["releaseGaps"],
+        )
+        self.assertEqual("accessibility.claim.checkout_keyboard", payload["claims"][0]["id"])
+
     def test_prismspec_import_reports_migration_details(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "imported"

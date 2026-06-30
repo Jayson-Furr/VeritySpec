@@ -164,6 +164,7 @@ verity generate python-models examples/basic --out build/models.py
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
+verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 ```
 

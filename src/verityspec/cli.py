@@ -11,6 +11,7 @@ from . import __version__
 from .diffing import diff_to_text, diff_workspaces
 from .explain import ISSUE_EXPLANATIONS, explain_issue
 from .generators import (
+    generate_accessibility_report,
     generate_asyncapi,
     generate_cli_reference,
     generate_openapi,
@@ -641,6 +642,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "cli-reference": lambda: generate_cli_reference(workspace),
         "security-report": lambda: generate_security_report(workspace),
         "observability-report": lambda: generate_observability_report(workspace),
+        "accessibility-report": lambda: generate_accessibility_report(workspace),
     }
     value = generators[args.artifact]()
     text = write_generated(value, args.out)
@@ -844,6 +846,7 @@ def build_parser() -> argparse.ArgumentParser:
             "validation-report",
             "security-report",
             "observability-report",
+            "accessibility-report",
         ],
     )
     generate_parser.add_argument("workspace")

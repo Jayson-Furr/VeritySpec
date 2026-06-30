@@ -592,6 +592,22 @@ def is_security_control_verified(record: Record) -> bool:
     )
 
 
+def accessibility_claim_targets(record: Record, records_by_id: dict[str, Record]) -> list[dict[str, str]]:
+    return reference_targets(record, records_by_id, "appliesTo")
+
+
+def is_accessibility_claim_verified(record: Record) -> bool:
+    verification = record.data.get("verification")
+    if not isinstance(verification, dict):
+        return False
+    return (
+        record.data.get("coverage") == "verified"
+        and verification.get("method") != "not-verified"
+        and isinstance(verification.get("evidence"), str)
+        and bool(verification.get("evidence", "").strip())
+    )
+
+
 def generate_security_report(workspace: Workspace) -> dict:
     controls = [record for record in workspace.records if record.kind == "security.control"]
     records_by_id = {record.id: record for record in workspace.records if record.id}
@@ -638,6 +654,81 @@ def generate_security_report(workspace: Workspace) -> dict:
             "criticalUnverified": critical_unverified,
         },
         "controls": control_entries,
+    }
+
+
+def generate_accessibility_report(workspace: Workspace) -> dict:
+    claims = [record for record in workspace.records if record.kind == "accessibility.claim"]
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    claim_entries: list[dict[str, Any]] = []
+    verified_claim_count = 0
+    critical_unverified: list[str] = []
+    claims_without_targets: list[str] = []
+    missing_verification_dates: list[str] = []
+
+    for record in claims:
+        verified = is_accessibility_claim_verified(record)
+        targets = accessibility_claim_targets(record, records_by_id)
+        verification = record.data.get("verification", {})
+        if verified:
+            verified_claim_count += 1
+        if record.data.get("impact") == "critical" and not verified and record.id:
+            critical_unverified.append(record.id)
+        if record.id and not targets:
+            claims_without_targets.append(record.id)
+        if record.id and (
+            not isinstance(verification, dict)
+            or not str(verification.get("lastVerified", "")).strip()
+        ):
+            missing_verification_dates.append(record.id)
+
+        claim_entries.append(
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "status": record.data.get("status"),
+                "owner": record.data.get("owner"),
+                "standard": record.data.get("standard"),
+                "criterion": record.data.get("criterion"),
+                "level": record.data.get("level"),
+                "userNeed": record.data.get("userNeed"),
+                "surface": record.data.get("surface"),
+                "impact": record.data.get("impact"),
+                "coverage": record.data.get("coverage"),
+                "verified": verified,
+                "verification": verification if isinstance(verification, dict) else {},
+                "assistiveTechnologies": record.data.get("assistiveTechnologies", []),
+                "acceptanceCriteria": record.data.get("acceptanceCriteria", []),
+                "targets": targets,
+            }
+        )
+
+    missing_owners = [record.id for record in claims if record.id and owner_missing(record)]
+
+    return {
+        "type": "accessibility_report",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "claimCount": len(claims),
+        "summary": {
+            "byOwner": count_by_field(claims, "owner"),
+            "byStandard": count_by_field(claims, "standard"),
+            "byLevel": count_by_field(claims, "level"),
+            "byImpact": count_by_field(claims, "impact"),
+            "byCoverage": count_by_field(claims, "coverage"),
+            "verifiedClaims": verified_claim_count,
+            "criticalUnverified": critical_unverified,
+            "releaseGaps": {
+                "criticalUnverified": critical_unverified,
+                "claimsWithoutTargets": claims_without_targets,
+                "missingOwners": missing_owners,
+                "missingVerificationDates": missing_verification_dates,
+            },
+        },
+        "claims": claim_entries,
     }
 
 
