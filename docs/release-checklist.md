@@ -19,9 +19,13 @@ verity readiness examples/basic --strict
 verity validate examples/security
 verity lint examples/security --strict
 verity readiness examples/security --strict
+verity validate examples/observability
+verity lint examples/observability --strict
+verity readiness examples/observability --strict
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity generate security-report examples/security --out build/security-report.json
+verity generate observability-report examples/observability --out build/observability-report.json
 python -m build
 twine check dist/*
 ```
@@ -29,7 +33,7 @@ twine check dist/*
 ## Tag
 
 ```bash
-VERSION=v0.7.0
+VERSION=v0.8.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```

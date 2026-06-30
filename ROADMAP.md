@@ -223,7 +223,7 @@ Sprint 24 should release the completed `v0.6.0` scope:
 
 ## v0.7.0
 
-The `v0.7.0` milestone is active.
+The `v0.7.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
@@ -231,6 +231,7 @@ The `v0.7.0` milestone is active.
 | 26 | Complete | Workspace initialization templates |
 | 27 | Complete | Observability pack foundation |
 | 28 | Complete | Observability report generator |
+| 29 | Complete | v0.7.0 release preparation |
 
 ## Sprint 25 Priorities
 
@@ -289,6 +290,18 @@ Sprint 28 should make observability contracts reportable:
 - Update README, changelog, roadmap, generator docs, observability docs, CI,
   and AI-agent command examples.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 29 Priorities
+
+Sprint 29 should release the completed `v0.7.0` scope:
+
+- Promote Unreleased changelog entries into `0.7.0`.
+- Bump package metadata to `0.7.0`.
+- Add v0.7.0 release notes.
+- Update README and install references to `v0.7.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.7.0 GitHub release when checks pass.
+- Close the v0.7.0 milestone after release verification.
 
 ## Later Candidates
 
