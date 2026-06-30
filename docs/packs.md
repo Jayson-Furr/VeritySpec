@@ -179,10 +179,11 @@ impact, affected generators or readiness gates, and validation fixtures.
 
 ## Future Product Surface Packs
 
-Future GUI, desktop, mobile, and additional game packs should follow the
-boundary guidance in
-[Product surface pack boundaries](product-surface-pack-boundaries.md) before
-their first schemas are added. The first narrow game and engine scopes now live in
+Future GUI, desktop, mobile, engine, product-delivery, and additional game
+packs should follow the boundary guidance in
+[Product surface pack boundaries](product-surface-pack-boundaries.md) and
+[Engine and product-delivery pack direction](engine-product-delivery-packs.md)
+before their first schemas are added. The first narrow game and engine scopes now live in
 [`verity.pack.game-core`](game-core-pack.md) and
 [`verity.pack.game-assets`](game-assets-pack.md), with Unity implementation
 coverage in [`verity.pack.unity`](unity-pack.md), gameplay coverage in
