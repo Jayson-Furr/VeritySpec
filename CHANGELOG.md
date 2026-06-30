@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.10.0
+
 - Improved `verity diff` JSON and text output with machine-readable change
   severity, breaking-change classification, and summary counts.
+- Added v0.10.0 release notes and roadmap closeout.
 
 ## 0.9.0
 
