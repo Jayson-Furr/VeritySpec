@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import shutil
 import tempfile
+from collections import Counter
 from pathlib import Path
 
 import unittest
@@ -10,7 +11,7 @@ import unittest
 from verityspec.packs import load_pack_registry
 from verityspec.readiness import evaluate_readiness
 from verityspec.validation import lint_workspace, validate_workspace
-from verityspec.versions import SUPPORTED_SPEC_VERSIONS
+from verityspec.versions import CURRENT_SPEC_VERSION, SUPPORTED_SPEC_VERSIONS
 from verityspec.workspace import load_workspace
 
 
@@ -29,6 +30,10 @@ COMPATIBILITY_WORKSPACES = POSITIVE_EXAMPLES + [
     ROOT / "tests" / "fixtures" / "generator_maturity",
 ]
 COMPATIBILITY_SPEC_VERSIONS = sorted(SUPPORTED_SPEC_VERSIONS)
+COMPATIBILITY_CHECKS = ["validate", "lint --strict", "readiness --strict"]
+COMPATIBILITY_GOLDEN_MANIFEST = (
+    ROOT / "tests" / "golden" / "workspace_compatibility" / "manifest.json"
+)
 
 
 def write_compatibility_config(path: Path, spec_version: str) -> None:
@@ -40,6 +45,40 @@ def write_compatibility_config(path: Path, spec_version: str) -> None:
     else:
         config.pop("packPaths", None)
     config_path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+
+
+def build_compatibility_manifest() -> dict[str, object]:
+    workspaces: list[dict[str, object]] = []
+    variants = [
+        {
+            "specVersion": spec_version,
+            "packPaths": "required" if spec_version == "v0.2.0" else "omitted",
+            "expected": "pass",
+        }
+        for spec_version in COMPATIBILITY_SPEC_VERSIONS
+    ]
+
+    for path in COMPATIBILITY_WORKSPACES:
+        workspace = load_workspace(path)
+        record_kinds = Counter(record.kind or "<missing>" for record in workspace.records)
+        workspaces.append(
+            {
+                "path": str(path.relative_to(ROOT)),
+                "sourceSpecVersion": workspace.config.get("specVersion"),
+                "packs": workspace.pack_ids,
+                "recordCount": len(workspace.records),
+                "recordKinds": dict(sorted(record_kinds.items())),
+                "compatibilityVariants": variants,
+            }
+        )
+
+    return {
+        "type": "verityspec_workspace_compatibility_manifest",
+        "currentSpecVersion": CURRENT_SPEC_VERSION,
+        "supportedSpecVersions": COMPATIBILITY_SPEC_VERSIONS,
+        "checks": COMPATIBILITY_CHECKS,
+        "workspaces": workspaces,
+    }
 
 
 class ExampleWorkspaceTests(unittest.TestCase):
@@ -72,6 +111,11 @@ class ExampleWorkspaceTests(unittest.TestCase):
                         self.assertEqual([], validate_workspace(workspace, registry, strict=True))
                         self.assertEqual([], lint_workspace(workspace, registry, strict=True))
                         self.assertEqual([], evaluate_readiness(workspace, registry, strict=True))
+
+    def test_workspace_compatibility_manifest_matches_golden_file(self) -> None:
+        expected = json.loads(COMPATIBILITY_GOLDEN_MANIFEST.read_text(encoding="utf-8"))
+
+        self.assertEqual(expected, build_compatibility_manifest())
 
     def test_broken_example_fails_with_expected_issue_codes(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "broken")

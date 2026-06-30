@@ -1,0 +1,266 @@
+{
+  "type": "verityspec_workspace_compatibility_manifest",
+  "currentSpecVersion": "v0.2.0",
+  "supportedSpecVersions": [
+    "v0.1.0",
+    "v0.2.0"
+  ],
+  "checks": [
+    "validate",
+    "lint --strict",
+    "readiness --strict"
+  ],
+  "workspaces": [
+    {
+      "path": "examples/basic",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.api",
+        "verity.pack.cli",
+        "verity.pack.events"
+      ],
+      "recordCount": 8,
+      "recordKinds": {
+        "api.endpoint": 2,
+        "cli.command": 1,
+        "event.message": 1,
+        "product": 1,
+        "schema.object": 3
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/api-service",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.api"
+      ],
+      "recordCount": 3,
+      "recordKinds": {
+        "api.endpoint": 1,
+        "product": 1,
+        "schema.object": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/cli-tool",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.cli"
+      ],
+      "recordCount": 3,
+      "recordKinds": {
+        "cli.command": 1,
+        "product": 1,
+        "schema.object": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/events",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.events"
+      ],
+      "recordCount": 3,
+      "recordKinds": {
+        "event.message": 1,
+        "product": 1,
+        "schema.object": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/security",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.api",
+        "verity.pack.security"
+      ],
+      "recordCount": 4,
+      "recordKinds": {
+        "api.endpoint": 1,
+        "product": 1,
+        "schema.object": 1,
+        "security.control": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/observability",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.observability"
+      ],
+      "recordCount": 6,
+      "recordKinds": {
+        "observability.alert": 1,
+        "observability.dashboard": 1,
+        "observability.metric": 1,
+        "observability.telemetry": 1,
+        "product": 1,
+        "schema.object": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/accessibility",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.accessibility"
+      ],
+      "recordCount": 2,
+      "recordKinds": {
+        "accessibility.claim": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/compliance",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.security",
+        "verity.pack.accessibility",
+        "verity.pack.observability",
+        "verity.pack.compliance"
+      ],
+      "recordCount": 7,
+      "recordKinds": {
+        "accessibility.claim": 1,
+        "compliance.mapping": 1,
+        "observability.metric": 1,
+        "observability.telemetry": 1,
+        "product": 1,
+        "schema.object": 1,
+        "security.control": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/generator_maturity",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.api",
+        "verity.pack.events"
+      ],
+      "recordCount": 6,
+      "recordKinds": {
+        "api.endpoint": 2,
+        "event.message": 1,
+        "product": 1,
+        "schema.object": 2
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    }
+  ]
+}

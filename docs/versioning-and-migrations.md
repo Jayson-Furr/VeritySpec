@@ -38,6 +38,14 @@ workspace `specVersion` and runs validation, lint, and readiness checks. This
 guards against accidental drift when the current workspace format changes while
 older supported formats remain valid.
 
+The expected compatibility surface is also captured in
+`tests/golden/workspace_compatibility/manifest.json`. The manifest records the
+current workspace format, every supported format, the required checks, covered
+workspaces, packs, record counts, record-kind coverage, and per-version
+compatibility variants. When a future format is added, update this manifest in
+the same change as the migration, fixture, documentation, and test updates so
+format support stays reviewable.
+
 ## Migrate
 
 `verity migrate` rewrites a workspace to a supported target version. By
