@@ -95,3 +95,21 @@ verity diff old-workspace new-workspace --format json
 
 This makes migration review easier because a single diff shows both record
 movement and contract-environment changes.
+
+JSON output keeps the legacy top-level fields and also includes
+machine-readable change metadata:
+
+- `summary.totalChanges`
+- `summary.breakingChanges`
+- `summary.hasBreakingChanges`
+- `summary.bySeverity`
+- `changes[]` with `type`, `severity`, `breaking`, `reasons`, and the affected
+  `recordId` or `packId`
+
+Breaking changes currently include removed packs, removed records, record kind
+changes, records marked removed, API endpoint method/path changes, removed API
+response status codes, and schema-object contract removals such as removed
+properties, required fields, enum values, or type changes.
+
+Text output prints the same severity summary and a breaking-change section
+before the existing pack and record lists.

@@ -912,6 +912,132 @@ class VerityCliTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual("v0.1.0", payload["versions"]["old"])
         self.assertIn("verity.pack.api", payload["packs"]["added"])
+        self.assertEqual(1, payload["summary"]["totalChanges"])
+        self.assertEqual(0, payload["summary"]["breakingChanges"])
+        self.assertEqual({"info": 1, "warning": 0, "error": 0}, payload["summary"]["bySeverity"])
+        self.assertEqual("pack.added", payload["changes"][0]["type"])
+        self.assertFalse(payload["changes"][0]["breaking"])
+
+    def test_diff_reports_severity_and_breaking_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            old = root / "old"
+            new = root / "new"
+            (old / "records").mkdir(parents=True)
+            (new / "records").mkdir(parents=True)
+            (old / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "old",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.api", "verity.pack.cli"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (new / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "new",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.api"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            api_record = {
+                "id": "api.users.get",
+                "kind": "api.endpoint",
+                "name": "Get User",
+                "status": "ready",
+                "owner": "platform",
+                "method": "GET",
+                "path": "/users/{id}",
+                "responses": [
+                    {"statusCode": 200, "description": "User found.", "schema": "schema.user"},
+                    {"statusCode": 404, "description": "User missing."},
+                ],
+            }
+            schema_record = {
+                "id": "schema.user",
+                "kind": "schema.object",
+                "name": "User",
+                "status": "ready",
+                "owner": "platform",
+                "jsonSchema": {
+                    "type": "object",
+                    "required": ["id", "email", "status"],
+                    "properties": {
+                        "id": {"type": "string"},
+                        "email": {"type": "string"},
+                        "status": {"type": "string", "enum": ["active", "disabled"]},
+                    },
+                },
+            }
+            removed_command = {
+                "id": "cli.users.get",
+                "kind": "cli.command",
+                "name": "Get User CLI",
+                "status": "ready",
+                "owner": "platform",
+                "command": "users get",
+            }
+            changed_api = {
+                **api_record,
+                "path": "/members/{id}",
+                "responses": [
+                    {"statusCode": 200, "description": "User found.", "schema": "schema.user"},
+                ],
+            }
+            changed_schema = {
+                **schema_record,
+                "jsonSchema": {
+                    "type": "object",
+                    "required": ["id", "status"],
+                    "properties": {
+                        "id": {"type": "string"},
+                        "status": {"type": "string", "enum": ["active"]},
+                    },
+                },
+            }
+            (old / "records" / "api.json").write_text(json.dumps(api_record), encoding="utf-8")
+            (old / "records" / "schema.json").write_text(json.dumps(schema_record), encoding="utf-8")
+            (old / "records" / "cli.json").write_text(json.dumps(removed_command), encoding="utf-8")
+            (new / "records" / "api.json").write_text(json.dumps(changed_api), encoding="utf-8")
+            (new / "records" / "schema.json").write_text(json.dumps(changed_schema), encoding="utf-8")
+
+            json_result = verity_command("diff", str(old), str(new), "--format", "json")
+            text_result = verity_command("diff", str(old), str(new))
+
+        self.assertEqual(0, json_result.returncode)
+        payload = json.loads(json_result.stdout)
+        self.assertEqual(["cli.users.get"], payload["removed"])
+        self.assertEqual(["api.users.get", "schema.user"], payload["changed"])
+        self.assertEqual(4, payload["summary"]["totalChanges"])
+        self.assertEqual(4, payload["summary"]["breakingChanges"])
+        self.assertEqual({"info": 0, "warning": 0, "error": 4}, payload["summary"]["bySeverity"])
+
+        changes_by_type = {change["type"]: change for change in payload["changes"]}
+        self.assertTrue(changes_by_type["pack.removed"]["breaking"])
+        self.assertEqual("verity.pack.cli", changes_by_type["pack.removed"]["packId"])
+
+        changes_by_record = {
+            change["recordId"]: change
+            for change in payload["changes"]
+            if "recordId" in change
+        }
+        self.assertTrue(changes_by_record["cli.users.get"]["breaking"])
+        self.assertIn("API endpoint path changed", " ".join(changes_by_record["api.users.get"]["reasons"]))
+        self.assertIn("API endpoint responses removed", " ".join(changes_by_record["api.users.get"]["reasons"]))
+        self.assertIn("jsonSchema.properties removed", " ".join(changes_by_record["schema.user"]["reasons"]))
+        self.assertIn("enum removed", " ".join(changes_by_record["schema.user"]["reasons"]))
+
+        self.assertEqual(0, text_result.returncode)
+        self.assertIn("Breaking changes: 4", text_result.stdout)
+        self.assertIn("[error] record.changed api.users.get", text_result.stdout)
+        self.assertIn("[error] record.removed cli.users.get", text_result.stdout)
 
 
 if __name__ == "__main__":

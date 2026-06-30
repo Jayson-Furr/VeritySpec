@@ -88,6 +88,7 @@ verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
 verity graph examples/basic
+verity diff examples/basic examples/basic --format json
 verity migrate --list --format json
 verity migrate examples/basic --dry-run --format json
 verity generate openapi examples/basic --out build/openapi.json
@@ -145,6 +146,7 @@ Minimal CI usage:
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
+verity diff previous-workspace current-workspace --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate validation-report examples/basic --out build/validation-report.json
 ```

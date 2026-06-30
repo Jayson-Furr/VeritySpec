@@ -413,6 +413,32 @@ Sprint 35 should release the completed `v0.9.0` scope:
 - Tag and publish the v0.9.0 GitHub release when checks pass.
 - Close the v0.9.0 milestone after release verification.
 
+## v0.10.0
+
+The `v0.10.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 36 | Complete | Diff severity and breaking-change classification |
+
+## Sprint 36 Priorities
+
+Sprint 36 should make workspace diffs easier for humans, CI, and machine
+clients to evaluate:
+
+- Add machine-readable per-change severity to `verity diff --format json`.
+- Add breaking-change classification for removed packs, removed records, kind
+  changes, records marked removed, API endpoint method/path changes, removed
+  API response status codes, and schema-object contract removals.
+- Preserve existing `versions`, `packs`, `added`, `removed`, and `changed`
+  fields for compatibility.
+- Add `summary` and `changes` fields for machine clients.
+- Update text output with severity and breaking-change summaries.
+- Add focused CLI tests and CI smoke coverage.
+- Update README, changelog, roadmap, versioning docs, CI docs, and AI-agent
+  command examples.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
@@ -433,43 +459,43 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Improve `verity diff` with machine-readable change severity and breaking
-   change classification.
-2. Add migration dry-run fixtures for every supported workspace version edge.
-3. Add generator plugin metadata so packs can advertise report capabilities
+1. Add migration dry-run fixtures for every supported workspace version edge.
+2. Add generator plugin metadata so packs can advertise report capabilities
    more explicitly than a string list.
-4. Add pack authoring tests that verify generated scaffolds can be used by a
+3. Add pack authoring tests that verify generated scaffolds can be used by a
    sample workspace immediately.
-5. Add downstream repository templates for GitHub Actions product-contract
+4. Add downstream repository templates for GitHub Actions product-contract
    enforcement.
-6. Add golden security-report fixtures once the report shape stabilizes.
-7. Add public contribution guidance for proposing new packs and schema
+5. Add golden security-report fixtures once the report shape stabilizes.
+6. Add public contribution guidance for proposing new packs and schema
    changes.
-8. Review package distribution readiness for PyPI trusted publishing and
+7. Review package distribution readiness for PyPI trusted publishing and
    decide whether to publish the `verityspec` package publicly.
-9. Add a roadmap-report generator that emits active milestones, completed
+8. Add a roadmap-report generator that emits active milestones, completed
    sprints, and future planning points for project governance.
-10. Add security-control evidence freshness checks for `verification.lastVerified`
+9. Add security-control evidence freshness checks for `verification.lastVerified`
    age and review cadence.
-11. Add workspace compatibility golden manifests for future format upgrades.
-12. Add structured issue location fields for machine clients in addition to
+10. Add workspace compatibility golden manifests for future format upgrades.
+11. Add structured issue location fields for machine clients in addition to
    formatted location strings.
-13. Add documentation command smoke tests that execute README examples to
+12. Add documentation command smoke tests that execute README examples to
    prevent public command drift.
-14. Add CI annotation output for readiness and validation failures in GitHub
+13. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-15. Add observability example golden fixtures for schema bundles and future
+14. Add observability example golden fixtures for schema bundles and future
    report output.
-16. Add report timestamp controls for deterministic golden snapshot generation.
-17. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+15. Add report timestamp controls for deterministic golden snapshot generation.
+16. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-18. Add product-contract profiles for release, strict, regulated, public API,
+17. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
-19. Add a first deployment-target pack for runtime, hosting, and release
+18. Add a first deployment-target pack for runtime, hosting, and release
    environment contracts.
-20. Add cross-pack coverage dashboards that summarize which product surfaces
+19. Add cross-pack coverage dashboards that summarize which product surfaces
    have API, CLI, event, security, accessibility, observability, and compliance
    records.
+20. Add a product-impact report that expands changed records into affected
+   upstream and downstream records for release review.
 
 ## Working Rule
 
