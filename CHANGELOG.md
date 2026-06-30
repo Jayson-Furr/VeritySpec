@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.30.0
+
 - Added `verity generate product-impact` for release-review reports that
   compare two workspaces, classify changed records, and expand upstream and
   downstream reference-graph impact.
+- Added v0.30.0 release notes and roadmap closeout.
 
 ## 0.29.0
 
