@@ -1250,11 +1250,12 @@ Sprint 77 should release the completed `v0.30.0` scope:
 
 ## v0.31.0
 
-The `v0.31.0` milestone is active.
+The `v0.31.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 78 | Complete | Local-only cross-workspace dependency design |
+| 79 | Complete | v0.31.0 release preparation |
 
 ## Sprint 78 Priorities
 
@@ -1271,6 +1272,22 @@ implementation:
 - Link the design note from README, pack, workspace-format, and graph docs.
 - Add a documentation guard test for the key design decisions.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 79 Priorities
+
+Sprint 79 should release the completed `v0.31.0` scope:
+
+- Promote Unreleased changelog entries into `0.31.0`.
+- Bump package metadata to `0.31.0`.
+- Add v0.31.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.31.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.31.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.31.0 GitHub release when checks pass.
+- Close the v0.31.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 

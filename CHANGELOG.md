@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.31.0
+
 - Added cross-workspace dependency design guidance for future local-only
   workspace dependencies, exported records, reference resolution, and
   lockfiles.
+- Added v0.31.0 release notes and roadmap closeout.
 
 ## 0.30.0
 
