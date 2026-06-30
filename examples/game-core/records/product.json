@@ -1,0 +1,15 @@
+{
+  "id": "product.dream_extraction",
+  "kind": "product",
+  "name": "Dream Extraction",
+  "description": "Product contract for the Dream Extraction game concept.",
+  "status": "ready",
+  "owner": "creative-direction",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "describes",
+      "target": "game.product.dream_extraction"
+    }
+  ]
+}

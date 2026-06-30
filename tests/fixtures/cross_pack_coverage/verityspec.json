@@ -10,7 +10,8 @@
     "verity.pack.accessibility",
     "verity.pack.observability",
     "verity.pack.compliance",
-    "verity.pack.deployment"
+    "verity.pack.deployment",
+    "verity.pack.game-core"
   ],
   "packPaths": [],
   "records": [

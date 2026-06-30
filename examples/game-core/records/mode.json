@@ -1,0 +1,25 @@
+{
+  "id": "game.mode.coop_extraction",
+  "kind": "game.mode",
+  "name": "Co-op Extraction",
+  "description": "Primary cooperative mode where players enter, loot, and escape a collapsing dream zone.",
+  "status": "ready",
+  "owner": "game-design",
+  "modeType": "co-op",
+  "summary": "Two to four players collect memory shards and decide when to extract before the collapse timer expires.",
+  "playerCount": {
+    "min": 2,
+    "max": 4,
+    "recommended": 3
+  },
+  "sessionLengthMinutes": {
+    "min": 12,
+    "max": 25
+  },
+  "references": [
+    {
+      "type": "usesLoop",
+      "target": "game.loop.extract_escape_upgrade"
+    }
+  ]
+}

@@ -2,10 +2,11 @@
 
 VeritySpec should add large product surfaces through deliberate packs, not by
 expanding the core kernel or creating a broad static catalog. This note defines
-the initial boundaries for future GUI, desktop, mobile, and game packs before
-their first schemas are introduced.
+the initial boundaries for future GUI, desktop, mobile, and game packs.
 
-No schemas are introduced by this design note. The purpose is to define pack
+`verity.pack.game-core` now provides the first narrow built-in game scope. The
+remaining GUI, desktop, mobile, engine, asset, liveops, evidence, dependency,
+portfolio, and broader game scopes should still use this note to define pack
 ownership, overlap rules, and readiness expectations before implementation
 begins.
 
@@ -119,13 +120,22 @@ The first mobile schemas should wait until the pack includes store-submission
 readiness examples and validates at least one iOS or Android platform target
 with explicit permission rationale.
 
-## Future Game Pack
+## Game Core and Future Game Packs
 
-Proposed pack ID: `verity.pack.game`.
+Current pack ID: `verity.pack.game-core`.
 
-The game pack should describe game product contracts, especially the bridge
+The game-core pack describes the first narrow game product-contract surface:
+game product identity, playable modes, game loops, and prototype scope. It is
+not the whole game domain.
+
+Future broader game packs may use pack IDs such as `verity.pack.game`,
+`verity.pack.game-assets`, `verity.pack.gameplay`, `verity.pack.content`, or
+`verity.pack.liveops`.
+
+Future game packs should describe game product contracts, especially the bridge
 between game design intent, implementation scope, QA, telemetry, liveops, and
-release planning.
+release planning, without duplicating game-core records unless the schema
+evolution is explicit.
 
 Likely ownership:
 
@@ -145,11 +155,10 @@ The game pack should not own:
   dependency, or portfolio records that belong in dedicated packs
 - shared-library workspace dependency semantics
 
-The first game schemas should wait until the project has a narrower
-game-support design note or proposal that chooses the first game scope. A
-minimum first scope should include examples, readiness gates, graph checks, and
-a generator or report that is useful for game development rather than a broad
-catalog of game concepts.
+Additional game schemas should start from a narrow proposal that chooses the
+next game scope. A minimum future scope should include examples, readiness
+gates, graph checks, and a generator or report that is useful for game
+development rather than a broad catalog of game concepts.
 
 ## Relationship Model
 

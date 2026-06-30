@@ -20,7 +20,7 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
         text = DOC.read_text(encoding="utf-8")
 
         for phrase in [
-            "No schemas are introduced by this design note.",
+            "verity.pack.game-core",
             "verity.pack.gui",
             "verity.pack.desktop",
             "verity.pack.mobile",

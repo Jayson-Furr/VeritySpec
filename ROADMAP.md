@@ -1412,6 +1412,45 @@ Sprint 85 should release the completed `v0.34.0` scope:
 - Tag and publish the v0.34.0 GitHub release when checks pass.
 - Close the v0.34.0 milestone after release verification.
 
+## v0.35.0
+
+The `v0.35.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 86 | In Progress | Game-core pack foundation |
+| 87 | Planned | v0.35.0 release preparation |
+
+## Sprint 86 Priorities
+
+Sprint 86 should add the first narrow built-in game product-surface pack:
+
+- Add built-in `verity.pack.game-core`.
+- Add strict schemas for `game.product`, `game.mode`, `game.loop`, and
+  `game.prototype-scope`.
+- Add game-core readiness gates and reference rules.
+- Add an executable `examples/game-core` workspace.
+- Add game-core coverage to cross-pack coverage dashboards.
+- Update tests, CI, README, changelog, roadmap, pack docs, generator docs,
+  release checklist, and AI-agent guidance.
+- Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 87 Priorities
+
+Sprint 87 should release the completed `v0.35.0` scope:
+
+- Promote Unreleased changelog entries into `0.35.0`.
+- Bump package metadata to `0.35.0`.
+- Add v0.35.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.35.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.35.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.35.0 GitHub release when checks pass.
+- Close the v0.35.0 milestone after release verification.
+
 ## Next 20 Roadmap Points
 
 These points define the next backlog once the active roadmap is caught up. They
@@ -1424,8 +1463,9 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a built-in `verity.pack.game-core` foundation with game product,
-   mode, loop, and prototype-scope records plus executable examples.
+1. Add a built-in `verity.pack.game-assets` foundation with GDD source,
+   visual identity, identity image, and concept art records plus executable
+   examples.
 2. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
 3. Add a maintainer review checklist for accepting external packs once public

@@ -18,6 +18,8 @@ Built-in packs currently include:
 - `verity.pack.compliance`: compliance mappings and compliance matrix generation.
 - `verity.pack.deployment`: deployment runtimes, targets, release policies,
   rollback plans, and deployment report generation.
+- `verity.pack.game-core`: game product, mode, loop, and prototype-scope
+  records for early game product-contract coverage.
 
 ## Manifest
 
@@ -167,9 +169,11 @@ impact, affected generators or readiness gates, and validation fixtures.
 
 ## Future Product Surface Packs
 
-Future GUI, desktop, mobile, and game packs should follow the boundary guidance
-in [Product surface pack boundaries](product-surface-pack-boundaries.md) before
-their first schemas are added.
+Future GUI, desktop, mobile, and additional game packs should follow the
+boundary guidance in
+[Product surface pack boundaries](product-surface-pack-boundaries.md) before
+their first schemas are added. The first narrow game scope now lives in
+[`verity.pack.game-core`](game-core-pack.md).
 
 That guidance keeps product-surface packs focused on their own domains and
 prevents them from duplicating cross-cutting concerns owned by security,

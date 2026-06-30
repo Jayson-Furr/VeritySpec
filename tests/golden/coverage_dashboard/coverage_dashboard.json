@@ -14,14 +14,15 @@
     "verity.pack.accessibility",
     "verity.pack.observability",
     "verity.pack.compliance",
-    "verity.pack.deployment"
+    "verity.pack.deployment",
+    "verity.pack.game-core"
   ],
-  "recordCount": 14,
+  "recordCount": 18,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 8,
-    "loadedSurfacePacks": 8,
-    "coveredSurfaces": 8,
+    "trackedSurfaces": 9,
+    "loadedSurfacePacks": 9,
+    "coveredSurfaces": 9,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -30,6 +31,7 @@
       "compliance": 1,
       "deployment": 2,
       "events": 1,
+      "game-core": 4,
       "observability": 4,
       "security": 1
     },
@@ -41,6 +43,10 @@
       "deployment.runtime": 1,
       "deployment.target": 1,
       "event.message": 1,
+      "game.loop": 1,
+      "game.mode": 1,
+      "game.product": 1,
+      "game.prototype-scope": 1,
       "observability.alert": 1,
       "observability.dashboard": 1,
       "observability.metric": 1,
@@ -374,6 +380,62 @@
           "targetName": "Coverage Production"
         }
       ]
+    },
+    {
+      "id": "game-core",
+      "name": "Game Core",
+      "packId": "verity.pack.game-core",
+      "packLoaded": true,
+      "recordKinds": [
+        "game.product",
+        "game.mode",
+        "game.loop",
+        "game.prototype-scope"
+      ],
+      "productRelationships": [
+        "describes"
+      ],
+      "recordCount": 4,
+      "covered": true,
+      "records": [
+        {
+          "id": "game.loop.coverage_status",
+          "kind": "game.loop",
+          "name": "Coverage Status Loop",
+          "status": "ready",
+          "owner": "game-design"
+        },
+        {
+          "id": "game.mode.coverage_coop",
+          "kind": "game.mode",
+          "name": "Coverage Co-op",
+          "status": "ready",
+          "owner": "game-design"
+        },
+        {
+          "id": "game.product.coverage_adventure",
+          "kind": "game.product",
+          "name": "Coverage Adventure",
+          "status": "ready",
+          "owner": "game-design"
+        },
+        {
+          "id": "game.prototype-scope.coverage_slice",
+          "kind": "game.prototype-scope",
+          "name": "Coverage Slice",
+          "status": "ready",
+          "owner": "production"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "describes",
+          "targetId": "game.product.coverage_adventure",
+          "targetKind": "game.product",
+          "targetName": "Coverage Adventure"
+        }
+      ]
     }
   ],
   "products": [
@@ -453,6 +515,15 @@
             "targetId": "deployment.target.coverage_production",
             "targetKind": "deployment.target",
             "targetName": "Coverage Production"
+          }
+        ],
+        "game-core": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "describes",
+            "targetId": "game.product.coverage_adventure",
+            "targetKind": "game.product",
+            "targetName": "Coverage Adventure"
           }
         ]
       },

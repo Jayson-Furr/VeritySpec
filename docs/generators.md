@@ -17,6 +17,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -100,7 +101,7 @@ Coverage dashboards include:
 - Workspace and VeritySpec version metadata
 - Loaded pack IDs and total product-contract record count
 - Tracked product-surface coverage for API, CLI, events, security,
-  accessibility, observability, compliance, and deployment records
+  accessibility, observability, compliance, deployment, and game-core records
 - Counts by product surface and record kind
 - Release gaps for missing surface records, loaded surface packs without
   records, products without surface references, and product-specific missing
@@ -208,7 +209,8 @@ Coverage dashboard output includes:
 
 - Product-surface records from all currently supported built-in packs
 - Product-level references through `exposes`, `ships`, `emits`, `securedBy`,
-  `accessibilityCoveredBy`, `observes`, `complianceMappedBy`, and `deploysTo`
+  `accessibilityCoveredBy`, `observes`, `complianceMappedBy`, `deploysTo`,
+  and `describes`
 - Summary coverage percentages based on the supported non-core product
   surfaces
 - Golden fixture coverage through `tests/fixtures/cross_pack_coverage`
