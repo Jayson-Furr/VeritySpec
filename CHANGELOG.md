@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.5.0
+
 - Added built-in `verity.pack.security` with `security.control` records,
   readiness gates, reference rules, and an executable security example.
 - Added `verity generate security-report` for JSON summaries of security
@@ -10,6 +14,7 @@
   continuation work, and project expansion.
 - Added an AI-agent rule requiring up to 20 future roadmap points when the
   active roadmap is caught up.
+- Added v0.5.0 release notes and roadmap closeout.
 
 ## 0.4.0
 
