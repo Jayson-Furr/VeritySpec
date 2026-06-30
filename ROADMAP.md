@@ -1624,12 +1624,13 @@ Sprint 95 should release the completed `v0.39.0` scope:
 
 ## v0.40.0
 
-The `v0.40.0` milestone is active.
+The `v0.40.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 96 | Complete | Engine and product-delivery pack roadmap |
-| 97 | In Progress | Unity engine-tooling expansion foundation |
+| 97 | Complete | Unity engine-tooling expansion foundation |
+| 98 | Complete | v0.40.0 release preparation |
 
 ## Sprint 96 Priorities
 
@@ -1668,6 +1669,22 @@ Unity pack:
 - Keep core small and preserve pack-based architecture.
 - Avoid commercial, legal, marketplace-readiness, certification, or similar
   claims.
+
+## Sprint 98 Priorities
+
+Sprint 98 releases the completed `v0.40.0` scope:
+
+- Promote Unreleased changelog entries into `0.40.0`.
+- Bump package metadata to `0.40.0`.
+- Add v0.40.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.40.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.40.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.40.0 GitHub release when checks pass.
+- Close the v0.40.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 
