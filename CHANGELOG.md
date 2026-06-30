@@ -2,11 +2,14 @@
 
 ## Unreleased
 
+## 0.36.0
+
 - Added built-in `verity.pack.game-assets` with `game.gdd-source`,
   `game.visual-identity`, `game.identity-image`, and `game.concept-art`
   records, readiness gates, graph reference rules, an executable game-assets
   example, coverage-dashboard support, schema-bundle generation coverage, and
   public docs for creative-source game contracts.
+- Added v0.36.0 release notes and roadmap closeout.
 
 ## 0.35.0
 
