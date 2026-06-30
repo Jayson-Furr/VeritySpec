@@ -17,6 +17,7 @@ from verityspec.generators import (
     generate_typescript,
 )
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
+from verityspec.issues import parse_issue_location
 from verityspec.pack_validation import validate_builtin_packs
 from verityspec.packs import load_pack_registry
 from verityspec.readiness import evaluate_readiness
@@ -100,6 +101,21 @@ def write_security_freshness_workspace(root: Path, last_verified: str | None, ca
 
 
 class VeritySpecTests(unittest.TestCase):
+    def test_issue_location_details_parse_record_index_and_field_pointer(self) -> None:
+        details = parse_issue_location("records/batch.json#records/2:responses[0].statusCode")
+
+        self.assertEqual("records/batch.json", details["path"])
+        self.assertEqual("records/2", details["fragment"])
+        self.assertEqual(2, details["recordIndex"])
+        self.assertEqual("responses[0].statusCode", details["fieldPath"])
+        self.assertEqual(["responses", 0, "statusCode"], details["fieldParts"])
+        self.assertEqual("/responses/0/statusCode", details["jsonPointer"])
+
+    def test_issue_location_details_preserve_windows_paths_without_fields(self) -> None:
+        details = parse_issue_location("C:\\repo\\workspace\\verityspec.json")
+
+        self.assertEqual({"path": "C:\\repo\\workspace\\verityspec.json"}, details)
+
     def test_builtin_packs_validate(self) -> None:
         self.assertEqual([], validate_builtin_packs())
 

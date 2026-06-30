@@ -34,7 +34,8 @@ This implementation provides:
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
   records, unused schemas, reference cycles, workspace spec versions, and
-  nested issue locations.
+  nested issue locations with structured JSON location details for machine
+  clients.
 - Readiness gates driven by pack metadata, including conditional pack rules
   for release-blocking policy and security evidence freshness.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema

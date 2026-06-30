@@ -254,6 +254,12 @@ class VerityCliTests(unittest.TestCase):
         self.assertTrue(
             payload["issues"][0]["location"].endswith("records/product.json:references[0].target")
         )
+        self.assertIn("locationDetails", payload["issues"][0])
+        location_details = payload["issues"][0]["locationDetails"]
+        self.assertTrue(location_details["path"].endswith("records/product.json"))
+        self.assertEqual("references[0].target", location_details["fieldPath"])
+        self.assertEqual(["references", 0, "target"], location_details["fieldParts"])
+        self.assertEqual("/references/0/target", location_details["jsonPointer"])
 
     def test_fail_on_warning_exit_code(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -1000,6 +1006,12 @@ class VerityCliTests(unittest.TestCase):
         self.assertFalse(payload["passed"])
         self.assertGreater(payload["summary"]["errors"], 0)
         self.assertTrue(any(issue["code"] == "reference.disallowed" for issue in payload["issues"]))
+        disallowed = next(issue for issue in payload["issues"] if issue["code"] == "reference.disallowed")
+        self.assertIn("locationDetails", disallowed)
+        self.assertTrue(disallowed["locationDetails"]["path"].endswith("records/product.json"))
+        self.assertEqual("references[0].target", disallowed["locationDetails"]["fieldPath"])
+        self.assertEqual(["references", 0, "target"], disallowed["locationDetails"]["fieldParts"])
+        self.assertEqual("/references/0/target", disallowed["locationDetails"]["jsonPointer"])
 
     def test_security_report_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
