@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/v0.1/unity/unity-build-target.schema.json",
+  "title": "Unity Build Target",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "platform",
+    "buildConfiguration",
+    "outputPath",
+    "scenes",
+    "references"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "unity.build-target"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "ready", "deprecated", "removed"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "windows",
+        "macos",
+        "linux",
+        "ios",
+        "android",
+        "webgl",
+        "playstation",
+        "xbox",
+        "switch",
+        "server",
+        "other"
+      ]
+    },
+    "buildConfiguration": {
+      "type": "string",
+      "enum": ["debug", "development", "release", "shipping"]
+    },
+    "outputPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "scriptingBackend": {
+      "type": "string",
+      "enum": ["mono", "il2cpp", "dotnet", "unknown"]
+    },
+    "developmentBuild": {
+      "type": "boolean",
+      "default": false
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

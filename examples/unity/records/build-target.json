@@ -1,0 +1,26 @@
+{
+  "id": "unity.build-target.pc_development",
+  "kind": "unity.build-target",
+  "name": "PC Development Build",
+  "description": "Local PC development build target for the Dream Extraction Unity prototype.",
+  "status": "ready",
+  "owner": "build-engineering",
+  "platform": "windows",
+  "buildConfiguration": "development",
+  "outputPath": "builds/pc-development/DreamExtraction.exe",
+  "scenes": [
+    "unity.scene.prototype_zone"
+  ],
+  "scriptingBackend": "il2cpp",
+  "developmentBuild": true,
+  "references": [
+    {
+      "type": "includesScene",
+      "target": "unity.scene.prototype_zone"
+    },
+    {
+      "type": "usesPackage",
+      "target": "unity.package.input_system"
+    }
+  ]
+}

@@ -116,6 +116,17 @@ verity readiness examples/game-assets --strict
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.unity`, include the usual contract
+checks and keep a schema bundle for Unity project, package, scene, build, and
+agent handoff tooling:
+
+```bash
+verity validate examples/unity
+verity lint examples/unity --strict
+verity readiness examples/unity --strict
+verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 

@@ -1,0 +1,144 @@
+{
+  "id": "verity.pack.unity",
+  "version": "0.1.0",
+  "name": "VeritySpec Unity Pack",
+  "description": "Unity project, package dependency, scene, and build-target records for engine-specific product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "unity.project",
+      "path": "schemas/unity-project.schema.json"
+    },
+    {
+      "kind": "unity.package-dependency",
+      "path": "schemas/unity-package-dependency.schema.json"
+    },
+    {
+      "kind": "unity.scene",
+      "path": "schemas/unity-scene.schema.json"
+    },
+    {
+      "kind": "unity.build-target",
+      "path": "schemas/unity-build-target.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "unity.project.release",
+      "kind": "unity.project",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "unityVersion",
+        "projectPath",
+        "renderPipeline",
+        "scriptingBackend"
+      ],
+      "minItems": {
+        "targetPlatforms": 1,
+        "references": 3
+      }
+    },
+    {
+      "id": "unity.package-dependency.release",
+      "kind": "unity.package-dependency",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "packageName",
+        "versionRequirement",
+        "source",
+        "purpose"
+      ]
+    },
+    {
+      "id": "unity.scene.release",
+      "kind": "unity.scene",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scenePath",
+        "sceneRole",
+        "loadMode"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.build-target.release",
+      "kind": "unity.build-target",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "platform",
+        "buildConfiguration",
+        "outputPath"
+      ],
+      "minItems": {
+        "scenes": 1,
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasUnityProject",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "implementedBy",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "containsScene",
+      "targetKind": "unity.scene"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "buildsFor",
+      "targetKind": "unity.build-target"
+    },
+    {
+      "sourceKind": "unity.scene",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.build-target",
+      "relationship": "includesScene",
+      "targetKind": "unity.scene"
+    },
+    {
+      "sourceKind": "unity.build-target",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for Unity records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "unity.project",
+        "unity.package-dependency",
+        "unity.scene",
+        "unity.build-target"
+      ]
+    }
+  ]
+}

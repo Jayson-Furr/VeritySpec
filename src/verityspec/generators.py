@@ -879,6 +879,18 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
         ],
         "productRelationships": ["hasGameAssets"],
     },
+    {
+        "id": "unity",
+        "name": "Unity",
+        "packId": "verity.pack.unity",
+        "recordKinds": [
+            "unity.project",
+            "unity.package-dependency",
+            "unity.scene",
+            "unity.build-target",
+        ],
+        "productRelationships": ["hasUnityProject"],
+    },
 ]
 PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
 

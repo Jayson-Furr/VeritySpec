@@ -958,6 +958,7 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("verity.pack.game-core", pack_ids)
         self.assertIn("verity.pack.observability", pack_ids)
         self.assertIn("verity.pack.security", pack_ids)
+        self.assertIn("verity.pack.unity", pack_ids)
         api_pack = next(pack for pack in payload["packs"] if pack["id"] == "verity.pack.api")
         self.assertEqual(["openapi"], api_pack["generators"])
         self.assertEqual(
@@ -1582,9 +1583,9 @@ class VerityCliTests(unittest.TestCase):
 
         self.assertEqual(0, result.returncode)
         self.assertEqual("coverage_dashboard", payload["type"])
-        self.assertEqual(22, payload["recordCount"])
-        self.assertEqual(10, payload["summary"]["trackedSurfaces"])
-        self.assertEqual(10, payload["summary"]["coveredSurfaces"])
+        self.assertEqual(26, payload["recordCount"])
+        self.assertEqual(11, payload["summary"]["trackedSurfaces"])
+        self.assertEqual(11, payload["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, payload["summary"]["coveragePercent"])
         self.assertEqual([], payload["summary"]["releaseGaps"]["missingSurfaceRecords"])
         self.assertEqual("product.coverage_dashboard", payload["products"][0]["id"])

@@ -1491,6 +1491,46 @@ Sprint 89 should release the completed `v0.36.0` scope:
 - Tag and publish the v0.36.0 GitHub release when checks pass.
 - Close the v0.36.0 milestone after release verification.
 
+## v0.37.0
+
+The `v0.37.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 90 | In Progress | Unity pack foundation |
+| 91 | Planned | v0.37.0 release preparation |
+
+## Sprint 90 Priorities
+
+Sprint 90 should add the first narrow built-in Unity implementation pack:
+
+- Add built-in `verity.pack.unity`.
+- Add strict schemas for `unity.project`, `unity.package-dependency`,
+  `unity.scene`, and `unity.build-target`.
+- Add Unity readiness gates and reference rules that connect Unity projects to
+  package dependencies, scenes, and build targets.
+- Add an executable `examples/unity` workspace.
+- Add Unity coverage to cross-pack coverage dashboards.
+- Update tests, CI, README, changelog, roadmap, pack docs, generator docs,
+  release checklist, and AI-agent guidance.
+- Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 91 Priorities
+
+Sprint 91 should release the completed `v0.37.0` scope:
+
+- Promote Unreleased changelog entries into `0.37.0`.
+- Bump package metadata to `0.37.0`.
+- Add v0.37.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.37.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.37.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.37.0 GitHub release when checks pass.
+- Close the v0.37.0 milestone after release verification.
+
 ## Next 20 Roadmap Points
 
 These points define the next backlog once the active roadmap is caught up. They
@@ -1503,8 +1543,8 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a built-in `verity.pack.unity` foundation with Unity project, package
-   dependency, scene, and build-target records plus executable examples.
+1. Add a built-in `verity.pack.gameplay` foundation with mechanic, ability,
+   rule, and encounter records plus executable examples.
 2. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
 3. Add a maintainer review checklist for accepting external packs once public

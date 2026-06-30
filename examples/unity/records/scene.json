@@ -1,0 +1,19 @@
+{
+  "id": "unity.scene.prototype_zone",
+  "kind": "unity.scene",
+  "name": "Prototype Zone Scene",
+  "description": "Greybox Unity scene for proving the Dream Extraction loop.",
+  "status": "ready",
+  "owner": "level-design",
+  "scenePath": "Assets/DreamExtraction/Scenes/PrototypeZone.unity",
+  "sceneRole": "prototype",
+  "loadMode": "single",
+  "includedInBuild": true,
+  "notes": "Contains the first timed extraction loop and placeholder shard pickup path.",
+  "references": [
+    {
+      "type": "usesPackage",
+      "target": "unity.package.input_system"
+    }
+  ]
+}

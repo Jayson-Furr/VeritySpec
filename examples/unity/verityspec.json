@@ -1,0 +1,13 @@
+{
+  "workspace": "examples.unity",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.game-core",
+    "verity.pack.unity"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

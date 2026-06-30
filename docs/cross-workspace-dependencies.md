@@ -40,11 +40,12 @@ A pack teaches VeritySpec vocabulary and behavior:
 A workspace contains product, service, game, library, or platform records that
 use those packs.
 
-For example, a future `verity.pack.unity` could define `unity.package` and
-`unity.scene` record kinds. A `studio.library.shared_unity_runtime` workspace
-would contain actual records for a studio's shared Unity runtime. A game
-workspace should depend on the shared Unity runtime workspace, not on a copied
-set of library records or on the pack itself.
+For example, `verity.pack.unity` defines Unity implementation vocabulary such
+as package dependency and scene record kinds. A
+`studio.library.shared_unity_runtime` workspace would contain actual records
+for a studio's shared Unity runtime. A game workspace should depend on the
+shared Unity runtime workspace, not on a copied set of library records or on
+the pack itself.
 
 ## Phase 1 Boundary
 
