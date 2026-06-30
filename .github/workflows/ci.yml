@@ -74,6 +74,12 @@ jobs:
           verity migrate examples/basic --dry-run --format json > build/migrate.json
           verity graph examples/basic --focus api.users.create --format json > build/graph-focus.json
           verity graph tests/fixtures/broken_semantics --cycles --format json > build/graph-cycles.json
+          for template in basic api cli events security; do
+            verity init "build/init-$template" --template "$template" --owner platform --force
+            verity validate "build/init-$template" --format json > "build/init-$template-validate.json"
+            verity lint "build/init-$template" --strict --format json > "build/init-$template-lint.json"
+            verity readiness "build/init-$template" --strict --format json > "build/init-$template-readiness.json"
+          done
           verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import > build/prismspec-import-report.json
           verity validate build/prismspec-import --format json > build/prismspec-import-validation.json
           python -m json.tool build/packs.json >/dev/null
@@ -94,6 +100,11 @@ jobs:
           python -m json.tool build/migrate.json >/dev/null
           python -m json.tool build/graph-focus.json >/dev/null
           python -m json.tool build/graph-cycles.json >/dev/null
+          for template in basic api cli events security; do
+            python -m json.tool "build/init-$template-validate.json" >/dev/null
+            python -m json.tool "build/init-$template-lint.json" >/dev/null
+            python -m json.tool "build/init-$template-readiness.json" >/dev/null
+          done
           python -m json.tool build/prismspec-import-report.json >/dev/null
           python -m json.tool build/prismspec-import/migration-report.json >/dev/null
           python -m json.tool build/prismspec-import-validation.json >/dev/null

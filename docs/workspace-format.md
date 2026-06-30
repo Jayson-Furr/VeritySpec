@@ -3,6 +3,16 @@
 A VeritySpec workspace is a directory with a `verityspec.json` file and one or
 more JSON record files.
 
+Create a starter workspace with:
+
+```bash
+verity init ./workspace --template api --owner platform
+```
+
+Supported templates are `basic`, `api`, `cli`, `events`, and `security`. The
+generated workspaces include the built-in packs and starter records needed to
+validate, lint, and pass readiness immediately.
+
 ```json
 {
   "workspace": "examples.api_service",
