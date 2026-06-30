@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added pack authoring coverage proving `verity pack init` scaffolds can be
+  loaded by a sample workspace for validation, strict linting, strict
+  readiness, and schema-bundle generation.
+- Updated `verity pack init` scaffolds to include a starter `product` to
+  generated-kind `uses` reference rule.
 
 ## 0.12.0
 
