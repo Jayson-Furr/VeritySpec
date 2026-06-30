@@ -13,6 +13,7 @@ from .packs import (
     PackRegistry,
     available_builtin_packs,
     available_external_packs,
+    generator_id,
     load_pack,
     load_pack_from_path,
     load_pack_registry,
@@ -50,6 +51,7 @@ def pack_summary_from_pack(pack: Pack) -> dict[str, Any]:
         "kinds": sorted(pack.schemas),
         "readinessGates": [gate.get("id") for gate in pack.readiness_gates],
         "generators": pack.generators,
+        "generatorMetadata": pack.generator_metadata,
     }
 
 
@@ -167,15 +169,29 @@ def validate_pack_declarations_for_pack(pack: Pack) -> list[Issue]:
             )
 
     for generator in manifest.get("generators", []):
-        if generator not in KNOWN_GENERATORS:
+        generator_id_value = generator_id(generator)
+        if generator_id_value is None:
+            continue
+        if generator_id_value not in KNOWN_GENERATORS:
             issues.append(
                 Issue(
                     "error",
                     "pack.generator.unknown",
-                    f"Unknown generator '{generator}'.",
+                    f"Unknown generator '{generator_id_value}'.",
                     str(manifest_path),
                 )
             )
+        if isinstance(generator, dict):
+            for kind in generator.get("recordKinds", []):
+                if kind not in own_kinds:
+                    issues.append(
+                        Issue(
+                            "error",
+                            "pack.generator.unknown_kind",
+                            f"Generator '{generator_id_value}' references record kind '{kind}' not declared by this pack.",
+                            str(manifest_path),
+                        )
+                    )
 
     return issues
 

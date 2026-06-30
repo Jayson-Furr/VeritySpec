@@ -26,7 +26,8 @@ This implementation provides:
 - Built-in packs for core product records, APIs, CLIs, events, security
   controls, observability signals, accessibility claims, and compliance
   mappings.
-- Pack listing, validation, and scaffolding through `verity pack`, including local external packs.
+- Pack listing, validation, and scaffolding through `verity pack`, including
+  local external packs and structured generator metadata.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,

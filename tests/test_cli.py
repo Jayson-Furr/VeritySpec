@@ -647,6 +647,19 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("verity.pack.compliance", pack_ids)
         self.assertIn("verity.pack.observability", pack_ids)
         self.assertIn("verity.pack.security", pack_ids)
+        api_pack = next(pack for pack in payload["packs"] if pack["id"] == "verity.pack.api")
+        self.assertEqual(["openapi"], api_pack["generators"])
+        self.assertEqual(
+            {
+                "id": "openapi",
+                "name": "OpenAPI",
+                "description": "Emit an OpenAPI document from API endpoint and schema records.",
+                "artifactType": "api-description",
+                "outputFormats": ["json"],
+                "recordKinds": ["api.endpoint"],
+            },
+            api_pack["generatorMetadata"][0],
+        )
 
     def test_pack_validate_json_output(self) -> None:
         result = verity_command("pack", "validate", "--format", "json")
@@ -695,11 +708,47 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("verity.pack.features", manifest["id"])
         self.assertEqual("feature.flag", manifest["schemas"][0]["kind"])
         self.assertEqual("schemas/feature-flag.schema.json", manifest["schemas"][0]["path"])
+        self.assertEqual("schema-bundle", manifest["generators"][0]["id"])
+        self.assertEqual("schema-bundle", manifest["generators"][0]["artifactType"])
+        self.assertEqual(["feature.flag"], manifest["generators"][0]["recordKinds"])
         self.assertEqual("feature.flag", schema["properties"]["kind"]["const"])
         self.assertEqual(0, validate_result.returncode)
         self.assertTrue(json.loads(validate_result.stdout)["passed"])
         pack_ids = {pack["id"] for pack in json.loads(list_result.stdout)["packs"]}
         self.assertIn("verity.pack.features", pack_ids)
+
+    def test_pack_validate_unknown_generator_metadata_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pack_path = Path(tmp) / "features"
+            shutil.copytree(ROOT / CUSTOM_PACK, pack_path)
+            manifest_path = pack_path / "pack.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["generators"] = [
+                {
+                    "id": "unknown-report",
+                    "name": "Unknown Report",
+                    "description": "A deliberately unsupported generator fixture.",
+                    "artifactType": "report",
+                    "outputFormats": ["json"],
+                    "recordKinds": ["feature.flag"],
+                }
+            ]
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+            result = verity_command(
+                "pack",
+                "validate",
+                "verity.pack.features",
+                "--path",
+                str(pack_path),
+                "--format",
+                "json",
+            )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertTrue(any(issue["code"] == "pack.generator.unknown" for issue in payload["issues"]))
 
     def test_external_pack_workspace_from_config(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -790,8 +839,12 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(0, validate_result.returncode)
         self.assertEqual(0, pack_list_result.returncode)
         self.assertEqual(0, pack_validate_result.returncode)
-        pack_ids = {pack["id"] for pack in json.loads(pack_list_result.stdout)["packs"]}
+        pack_payload = json.loads(pack_list_result.stdout)
+        pack_ids = {pack["id"] for pack in pack_payload["packs"]}
         self.assertIn("verity.pack.features", pack_ids)
+        custom_pack = next(pack for pack in pack_payload["packs"] if pack["id"] == "verity.pack.features")
+        self.assertEqual(["schema-bundle"], custom_pack["generators"])
+        self.assertEqual([{"id": "schema-bundle"}], custom_pack["generatorMetadata"])
 
     def test_validation_report_generator_writes_report_for_broken_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

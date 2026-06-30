@@ -21,6 +21,12 @@ verity generate typescript tests/fixtures/generator_maturity --out build/generat
 verity generate python-models tests/fixtures/generator_maturity --out build/generator-maturity.py
 ```
 
+Packs advertise supported generators in `pack.json`. The preferred declaration
+is structured metadata with `id`, `name`, `description`, `artifactType`,
+`outputFormats`, and `recordKinds`; legacy string declarations remain valid for
+older external packs. `verity pack list --format json` exposes both the
+normalized generator ID list and `generatorMetadata`.
+
 Most generators run validation first and fail if the product contract has
 errors. `validation-report` is special: it always writes the report, then exits
 with the validation result.

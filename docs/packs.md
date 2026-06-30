@@ -33,12 +33,26 @@ Each built-in pack has a `pack.json` manifest:
   ],
   "readinessGates": [],
   "referenceRules": [],
-  "generators": ["openapi"]
+  "generators": [
+    {
+      "id": "openapi",
+      "name": "OpenAPI",
+      "description": "Emit an OpenAPI document from API endpoint and schema records.",
+      "artifactType": "api-description",
+      "outputFormats": ["json"],
+      "recordKinds": ["api.endpoint"]
+    }
+  ]
 }
 ```
 
 The manifest contract is defined by
 `src/verityspec/schemas/pack-manifest.schema.json`.
+
+Generator declarations may use the legacy string form, such as
+`"schema-bundle"`, or the structured metadata form shown above. `verity pack
+list --format json` always emits both the normalized `generators` ID list and
+`generatorMetadata` for machine clients.
 
 ## Pack Standard
 
@@ -70,7 +84,7 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
 - `schemas/<kind>.schema.json`
 - one strict starter record schema
 - one readiness gate for the starter kind
-- `schema-bundle` generator support
+- `schema-bundle` generator metadata
 
 The generated pack can be validated immediately:
 

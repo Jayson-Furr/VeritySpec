@@ -85,5 +85,14 @@
       "targetKind": "schema.object"
     }
   ],
-  "generators": ["security-report"]
+  "generators": [
+    {
+      "id": "security-report",
+      "name": "Security Report",
+      "description": "Summarize security controls, verification coverage, and release gaps.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["security.control"]
+    }
+  ]
 }

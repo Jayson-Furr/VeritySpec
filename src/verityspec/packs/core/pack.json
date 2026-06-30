@@ -47,5 +47,14 @@
       "targetKind": "schema.object"
     }
   ],
-  "generators": ["schema-bundle"]
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for core product and schema records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": ["product", "schema.object"]
+    }
+  ]
 }

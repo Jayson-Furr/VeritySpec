@@ -484,7 +484,16 @@ def cmd_pack_init(args: argparse.Namespace) -> int:
             }
         ],
         "referenceRules": [],
-        "generators": ["schema-bundle"],
+        "generators": [
+            {
+                "id": "schema-bundle",
+                "name": "Schema Bundle",
+                "description": "Emit a JSON Schema bundle for records loaded by this pack.",
+                "artifactType": "schema-bundle",
+                "outputFormats": ["json"],
+                "recordKinds": [kind],
+            }
+        ],
     }
 
     (target / "schemas").mkdir(parents=True, exist_ok=True)

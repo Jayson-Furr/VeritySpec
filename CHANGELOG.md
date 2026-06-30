@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added structured generator metadata in pack manifests while preserving legacy
+  string generator declarations.
 
 ## 0.11.0
 

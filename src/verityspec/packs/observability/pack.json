@@ -84,5 +84,32 @@
       "targetKind": "observability.metric"
     }
   ],
-  "generators": ["schema-bundle", "observability-report"]
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for observability records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "observability.telemetry",
+        "observability.metric",
+        "observability.dashboard",
+        "observability.alert"
+      ]
+    },
+    {
+      "id": "observability-report",
+      "name": "Observability Report",
+      "description": "Summarize observability signals, ownership, and release gaps.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "observability.telemetry",
+        "observability.metric",
+        "observability.dashboard",
+        "observability.alert"
+      ]
+    }
+  ]
 }

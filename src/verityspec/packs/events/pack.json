@@ -23,5 +23,14 @@
       "targetKind": "schema.object"
     }
   ],
-  "generators": ["asyncapi"]
+  "generators": [
+    {
+      "id": "asyncapi",
+      "name": "AsyncAPI",
+      "description": "Emit an AsyncAPI document from event message and schema records.",
+      "artifactType": "event-description",
+      "outputFormats": ["json"],
+      "recordKinds": ["event.message"]
+    }
+  ]
 }
