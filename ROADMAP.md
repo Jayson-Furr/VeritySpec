@@ -598,11 +598,12 @@ Sprint 45 should release the completed `v0.14.0` scope:
 
 ## v0.15.0
 
-The `v0.15.0` milestone is active.
+The `v0.15.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 46 | Complete | Golden security-report fixtures |
+| 47 | Complete | v0.15.0 release preparation |
 
 ## Sprint 46 Priorities
 
@@ -620,6 +621,21 @@ Sprint 46 should make the security report output shape reviewable and stable:
   docs.
 - Update README, changelog, and roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 47 Priorities
+
+Sprint 47 should release the completed `v0.15.0` scope:
+
+- Promote Unreleased changelog entries into `0.15.0`.
+- Bump package metadata to `0.15.0`.
+- Add v0.15.0 release notes.
+- Update README badge, latest-release text, install references, workspace
+  package-version text, and release-notes link to `v0.15.0`.
+- Update downstream CI templates, docs, and reusable workflow release pins to
+  `v0.15.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.15.0 GitHub release when checks pass.
+- Close the v0.15.0 milestone after release verification.
 
 ## Later Candidates
 

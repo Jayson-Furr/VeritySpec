@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.15.0
+
 - Added golden security-report fixtures and unit/CLI snapshot coverage for the
   `examples/security` report shape.
+- Added v0.15.0 release notes and roadmap closeout.
 
 ## 0.14.0
 
