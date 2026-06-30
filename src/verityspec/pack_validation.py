@@ -28,6 +28,7 @@ KNOWN_GENERATORS = {
     "cli-reference",
     "validation-report",
     "security-report",
+    "observability-report",
 }
 
 PACK_MANIFEST_SCHEMA_PATH = Path(__file__).resolve().parent / "schemas" / "pack-manifest.schema.json"

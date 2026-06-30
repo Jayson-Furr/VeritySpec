@@ -551,10 +551,16 @@ def count_by_field(records: list[Record], field: str) -> dict[str, int]:
     return dict(sorted(counts.items(), key=lambda item: item[0]))
 
 
-def security_control_targets(record: Record, records_by_id: dict[str, Record]) -> list[dict[str, str]]:
+def reference_targets(
+    record: Record,
+    records_by_id: dict[str, Record],
+    relationship: str | None = None,
+) -> list[dict[str, str]]:
     targets: list[dict[str, str]] = []
     for item in record.data.get("references", []):
-        if not isinstance(item, dict) or item.get("type") != "appliesTo":
+        if not isinstance(item, dict):
+            continue
+        if relationship is not None and item.get("type") != relationship:
             continue
         target_id = item.get("target")
         if not isinstance(target_id, str) or not target_id:
@@ -568,6 +574,10 @@ def security_control_targets(record: Record, records_by_id: dict[str, Record]) -
             }
         )
     return targets
+
+
+def security_control_targets(record: Record, records_by_id: dict[str, Record]) -> list[dict[str, str]]:
+    return reference_targets(record, records_by_id, "appliesTo")
 
 
 def is_security_control_verified(record: Record) -> bool:
@@ -628,6 +638,125 @@ def generate_security_report(workspace: Workspace) -> dict:
             "criticalUnverified": critical_unverified,
         },
         "controls": control_entries,
+    }
+
+
+def has_reference(record: Record, relationship: str) -> bool:
+    return bool(reference_targets(record, {}, relationship))
+
+
+def owner_missing(record: Record) -> bool:
+    owner = record.data.get("owner")
+    return owner in {"unknown", "todo", "tbd", ""}
+
+
+def telemetry_metric_ids(metrics: list[Record]) -> set[str]:
+    telemetry_ids: set[str] = set()
+    for metric in metrics:
+        for item in metric.data.get("references", []):
+            if isinstance(item, dict) and item.get("type") == "derivedFrom":
+                target = item.get("target")
+                if isinstance(target, str) and target:
+                    telemetry_ids.add(target)
+    return telemetry_ids
+
+
+def generate_observability_report(workspace: Workspace) -> dict:
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    telemetry = [record for record in workspace.records if record.kind == "observability.telemetry"]
+    metrics = [record for record in workspace.records if record.kind == "observability.metric"]
+    dashboards = [record for record in workspace.records if record.kind == "observability.dashboard"]
+    alerts = [record for record in workspace.records if record.kind == "observability.alert"]
+    observability_records = telemetry + metrics + dashboards + alerts
+
+    telemetry_with_metrics = telemetry_metric_ids(metrics)
+    telemetry_without_metrics = [
+        record.id for record in telemetry if record.id and record.id not in telemetry_with_metrics
+    ]
+    metrics_without_telemetry = [
+        record.id for record in metrics if record.id and not has_reference(record, "derivedFrom")
+    ]
+    dashboards_without_alerts = [
+        record.id for record in dashboards if record.id and not has_reference(record, "tracks")
+    ]
+    alerts_without_runbooks = [
+        record.id
+        for record in alerts
+        if record.id and not str(record.data.get("runbook", "")).strip()
+    ]
+    missing_owners = [record.id for record in observability_records if record.id and owner_missing(record)]
+
+    return {
+        "type": "observability_report",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "signalCount": len(observability_records),
+        "summary": {
+            "telemetry": len(telemetry),
+            "metrics": len(metrics),
+            "dashboards": len(dashboards),
+            "alerts": len(alerts),
+            "byOwner": count_by_field(observability_records, "owner"),
+            "alertsBySeverity": count_by_field(alerts, "severity"),
+            "releaseGaps": {
+                "telemetryWithoutMetrics": telemetry_without_metrics,
+                "metricsWithoutTelemetry": metrics_without_telemetry,
+                "dashboardsWithoutAlerts": dashboards_without_alerts,
+                "alertsWithoutRunbooks": alerts_without_runbooks,
+                "missingOwners": missing_owners,
+            },
+        },
+        "telemetry": [
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "owner": record.data.get("owner"),
+                "signalName": record.data.get("signalName"),
+                "emittedBy": record.data.get("emittedBy"),
+                "payloadSchema": record.data.get("payloadSchema"),
+            }
+            for record in telemetry
+        ],
+        "metrics": [
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "owner": record.data.get("owner"),
+                "metricName": record.data.get("metricName"),
+                "unit": record.data.get("unit"),
+                "aggregation": record.data.get("aggregation"),
+                "sources": reference_targets(record, records_by_id, "derivedFrom"),
+            }
+            for record in metrics
+        ],
+        "dashboards": [
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "owner": record.data.get("owner"),
+                "url": record.data.get("url"),
+                "audience": record.data.get("audience"),
+                "metrics": reference_targets(record, records_by_id, "displays"),
+                "alerts": reference_targets(record, records_by_id, "tracks"),
+            }
+            for record in dashboards
+        ],
+        "alerts": [
+            {
+                "id": record.id,
+                "name": record.data.get("name"),
+                "owner": record.data.get("owner"),
+                "ownerTeam": record.data.get("ownerTeam"),
+                "severity": record.data.get("severity"),
+                "condition": record.data.get("condition"),
+                "runbook": record.data.get("runbook"),
+                "metrics": reference_targets(record, records_by_id, "firesOn"),
+            }
+            for record in alerts
+        ],
     }
 
 

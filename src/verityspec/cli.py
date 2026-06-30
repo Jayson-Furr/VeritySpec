@@ -14,6 +14,7 @@ from .generators import (
     generate_asyncapi,
     generate_cli_reference,
     generate_openapi,
+    generate_observability_report,
     generate_python_models,
     generate_schema_bundle,
     generate_security_report,
@@ -639,6 +640,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "schema-bundle": lambda: generate_schema_bundle(registry),
         "cli-reference": lambda: generate_cli_reference(workspace),
         "security-report": lambda: generate_security_report(workspace),
+        "observability-report": lambda: generate_observability_report(workspace),
     }
     value = generators[args.artifact]()
     text = write_generated(value, args.out)
@@ -841,6 +843,7 @@ def build_parser() -> argparse.ArgumentParser:
             "cli-reference",
             "validation-report",
             "security-report",
+            "observability-report",
         ],
     )
     generate_parser.add_argument("workspace")

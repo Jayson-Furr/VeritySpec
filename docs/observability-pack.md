@@ -29,9 +29,22 @@ The pack declares these reference relationships:
 verity validate examples/observability
 verity lint examples/observability --strict
 verity readiness examples/observability --strict
+verity generate observability-report examples/observability --out build/observability-report.json
 verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
 ```
 
 The example workspace connects a checkout product to a reliability dashboard,
 checkout success-rate metric, low-success alert, emitted telemetry signal, and
 telemetry payload schema.
+
+## Report
+
+`observability-report` emits JSON with:
+
+- counts for telemetry, metrics, dashboards, and alerts
+- ownership and alert-severity summaries
+- release gaps for telemetry without metrics, metrics without telemetry,
+  dashboards without tracked alerts, alerts without runbooks, and missing
+  owners
+- detailed telemetry, metric, dashboard, and alert entries with connected
+  targets

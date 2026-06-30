@@ -84,5 +84,5 @@
       "targetKind": "observability.metric"
     }
   ],
-  "generators": ["schema-bundle"]
+  "generators": ["schema-bundle", "observability-report"]
 }

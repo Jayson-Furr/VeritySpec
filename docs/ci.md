@@ -32,6 +32,7 @@ contract checks and keep a schema bundle for downstream tooling:
 verity validate examples/observability
 verity lint examples/observability --strict
 verity readiness examples/observability --strict
+verity generate observability-report examples/observability --out build/observability-report.json
 verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
 ```
 

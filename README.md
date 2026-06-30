@@ -93,6 +93,7 @@ verity generate python-models examples/basic --out build/models.py
 verity generate cli-reference examples/basic --out build/cli-reference.md
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
+verity generate observability-report examples/observability --out build/observability-report.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
 verity import prismspec tests/fixtures/prismspec_sample --out build/prismspec-import
 ```
