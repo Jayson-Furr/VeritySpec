@@ -1,0 +1,12 @@
+{
+  "workspace": "examples.observability",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.observability"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

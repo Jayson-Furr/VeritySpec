@@ -25,6 +25,16 @@ verity readiness examples/security --strict
 verity generate security-report examples/security --out build/security-report.json
 ```
 
+For workspaces that load `verity.pack.observability`, include the usual
+contract checks and keep a schema bundle for downstream tooling:
+
+```bash
+verity validate examples/observability
+verity lint examples/observability --strict
+verity readiness examples/observability --strict
+verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
+```
+
 For workspaces with local external packs:
 
 ```bash

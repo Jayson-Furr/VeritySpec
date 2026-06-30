@@ -1,0 +1,88 @@
+{
+  "id": "verity.pack.observability",
+  "version": "0.1.0",
+  "name": "VeritySpec Observability Pack",
+  "description": "Telemetry, metric, dashboard, and alert records for product observability contracts.",
+  "schemas": [
+    {
+      "kind": "observability.telemetry",
+      "path": "schemas/observability-telemetry.schema.json"
+    },
+    {
+      "kind": "observability.metric",
+      "path": "schemas/observability-metric.schema.json"
+    },
+    {
+      "kind": "observability.dashboard",
+      "path": "schemas/observability-dashboard.schema.json"
+    },
+    {
+      "kind": "observability.alert",
+      "path": "schemas/observability-alert.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "observability.telemetry.release",
+      "kind": "observability.telemetry",
+      "required": ["owner", "name", "description", "signalName", "emittedBy", "payloadSchema"]
+    },
+    {
+      "id": "observability.metric.release",
+      "kind": "observability.metric",
+      "required": ["owner", "name", "description", "metricName", "unit", "aggregation"],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "observability.dashboard.release",
+      "kind": "observability.dashboard",
+      "required": ["owner", "name", "description", "url"],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "observability.alert.release",
+      "kind": "observability.alert",
+      "required": ["owner", "name", "description", "severity", "condition", "ownerTeam"],
+      "minItems": {
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "observes",
+      "targetKind": "observability.dashboard"
+    },
+    {
+      "sourceKind": "observability.telemetry",
+      "relationship": "payloadSchema",
+      "targetKind": "schema.object"
+    },
+    {
+      "sourceKind": "observability.metric",
+      "relationship": "derivedFrom",
+      "targetKind": "observability.telemetry"
+    },
+    {
+      "sourceKind": "observability.dashboard",
+      "relationship": "displays",
+      "targetKind": "observability.metric"
+    },
+    {
+      "sourceKind": "observability.dashboard",
+      "relationship": "tracks",
+      "targetKind": "observability.alert"
+    },
+    {
+      "sourceKind": "observability.alert",
+      "relationship": "firesOn",
+      "targetKind": "observability.metric"
+    }
+  ],
+  "generators": ["schema-bundle"]
+}

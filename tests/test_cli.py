@@ -544,6 +544,7 @@ class VerityCliTests(unittest.TestCase):
         pack_ids = {pack["id"] for pack in payload["packs"]}
         self.assertIn("verity.core", pack_ids)
         self.assertIn("verity.pack.api", pack_ids)
+        self.assertIn("verity.pack.observability", pack_ids)
         self.assertIn("verity.pack.security", pack_ids)
 
     def test_pack_validate_json_output(self) -> None:
