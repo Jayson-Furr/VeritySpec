@@ -61,6 +61,8 @@ This implementation provides:
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 - Public contribution guidance and issue templates for pack proposals and
   schema changes.
+- Product-surface pack boundary guidance for future GUI, desktop, mobile, and
+  game packs before first schemas are added.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
   retained as the canonical public install path until publishing is enabled.
 
@@ -264,6 +266,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Roadmap](ROADMAP.md)
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
+- [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
 - [Security pack](docs/security-pack.md)
 - [Observability pack](docs/observability-pack.md)
 - [Accessibility pack](docs/accessibility-pack.md)

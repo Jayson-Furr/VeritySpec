@@ -146,3 +146,14 @@ and compatibility boundaries before implementation begins.
 Schema changes should explain whether the change is additive, behavioral,
 deprecated, or breaking, and should include before-and-after records, migration
 impact, affected generators or readiness gates, and validation fixtures.
+
+## Future Product Surface Packs
+
+Future GUI, desktop, mobile, and game packs should follow the boundary guidance
+in [Product surface pack boundaries](product-surface-pack-boundaries.md) before
+their first schemas are added.
+
+That guidance keeps product-surface packs focused on their own domains and
+prevents them from duplicating cross-cutting concerns owned by security,
+accessibility, observability, compliance, release, evidence, deployment,
+dependency, or portfolio packs.

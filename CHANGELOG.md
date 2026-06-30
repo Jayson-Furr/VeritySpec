@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added product-surface pack boundary guidance for future GUI, desktop, mobile,
+  and game packs before first schemas are introduced.
+
 ## 0.25.0
 
 - Added `--generated-at` for deterministic JSON report timestamps and golden
