@@ -1,0 +1,65 @@
+name: Schema change
+description: Propose a field, enum, reference, or compatibility change to a schema.
+title: "Schema: "
+labels: ["enhancement", "schema"]
+body:
+  - type: input
+    id: affected_pack
+    attributes:
+      label: Affected pack
+      description: Example: verity.pack.security
+    validations:
+      required: true
+  - type: input
+    id: affected_kind
+    attributes:
+      label: Affected record kind
+      description: Example: security.control
+    validations:
+      required: true
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Change type
+      options:
+        - Additive
+        - Behavioral
+        - Deprecation
+        - Breaking
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed schema change
+      description: Describe the field, enum, reference shape, or schema rule.
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Before and after examples
+      description: Include representative JSON records or snippets.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Validation, readiness, graph, and generator impact
+      description: Which commands, gates, reports, or generated outputs are affected?
+    validations:
+      required: true
+  - type: textarea
+    id: migration
+    attributes:
+      label: Migration or compatibility plan
+      description: Explain compatibility, deprecation, and migration behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests and fixtures
+      description: Which tests, examples, or golden fixtures should prove the change?
+    validations:
+      required: true

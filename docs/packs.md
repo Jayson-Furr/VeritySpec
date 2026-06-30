@@ -128,3 +128,21 @@ External packs use the same manifest schema, strict JSON Schema checks, shared
 record envelope requirements, readiness gate checks, reference rule checks, and
 registry collision checks as built-in packs. External pack IDs cannot shadow
 built-in pack IDs.
+
+## Contributing Packs and Schema Changes
+
+Public pack and schema proposals should start from
+[Contributing](../CONTRIBUTING.md).
+
+Use the `Pack proposal` issue template for new packs or major pack expansions.
+Use the `Schema change` issue template for new fields, required-field changes,
+enum changes, reference-shape changes, deprecations, removals, and breaking
+schema behavior.
+
+Pack proposals should define the product surface, record kinds, reference
+rules, readiness gates, generator or report output, executable examples, tests,
+and compatibility boundaries before implementation begins.
+
+Schema changes should explain whether the change is additive, behavioral,
+deprecated, or breaking, and should include before-and-after records, migration
+impact, affected generators or readiness gates, and validation fixtures.

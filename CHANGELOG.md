@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- No changes yet.
+- Added public contribution guidance for pack proposals, schema changes,
+  issue templates, and contribution workflow expectations.
 
 ## 0.15.0
 

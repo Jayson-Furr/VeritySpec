@@ -1,0 +1,61 @@
+name: Pack proposal
+description: Propose a new VeritySpec pack or major pack expansion.
+title: "Pack: "
+labels: ["enhancement", "pack"]
+body:
+  - type: textarea
+    id: product_problem
+    attributes:
+      label: Product problem
+      description: What product-contract surface should this pack make executable?
+    validations:
+      required: true
+  - type: input
+    id: pack_id
+    attributes:
+      label: Proposed pack ID
+      description: Example: verity.pack.game-core
+    validations:
+      required: true
+  - type: textarea
+    id: record_kinds
+    attributes:
+      label: Initial record kinds
+      description: List each record kind and why it belongs in this pack.
+    validations:
+      required: true
+  - type: textarea
+    id: reference_rules
+    attributes:
+      label: Reference rules
+      description: Which relationships should be allowed or denied?
+    validations:
+      required: true
+  - type: textarea
+    id: readiness
+    attributes:
+      label: Readiness gates
+      description: Which release-relevant checks should this pack enforce?
+    validations:
+      required: true
+  - type: textarea
+    id: generator
+    attributes:
+      label: Generator or report
+      description: What useful artifact should this pack generate?
+    validations:
+      required: true
+  - type: textarea
+    id: executable_example
+    attributes:
+      label: Executable example or fixture
+      description: What workspace, records, and tests will prove the pack works?
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and boundaries
+      description: Note migration, deprecation, versioning, and future expansion concerns.
+    validations:
+      required: true
