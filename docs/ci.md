@@ -94,6 +94,17 @@ verity generate deployment-report examples/deployment --out build/deployment-rep
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.game-core`, include the usual contract
+checks and keep a schema bundle for game design, prototype, and agent handoff
+tooling:
+
+```bash
+verity validate examples/game-core
+verity lint examples/game-core --strict
+verity readiness examples/game-core --strict
+verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 

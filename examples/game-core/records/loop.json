@@ -1,0 +1,29 @@
+{
+  "id": "game.loop.extract_escape_upgrade",
+  "kind": "game.loop",
+  "name": "Extract, Escape, Upgrade",
+  "description": "Core loop for entering dream zones, collecting resources, escaping, and investing upgrades.",
+  "status": "ready",
+  "owner": "game-design",
+  "loopType": "core",
+  "cadence": "session",
+  "steps": [
+    {
+      "name": "Enter",
+      "description": "Players select a dream zone and load into an unstable run."
+    },
+    {
+      "name": "Collect",
+      "description": "Players locate memory shards while choosing how much risk to take."
+    },
+    {
+      "name": "Escape",
+      "description": "Players reach an extraction portal before the zone collapse finishes."
+    },
+    {
+      "name": "Upgrade",
+      "description": "Players spend recovered shards on persistent squad upgrades."
+    }
+  ],
+  "references": []
+}

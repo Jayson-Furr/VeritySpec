@@ -25,7 +25,7 @@ This implementation provides:
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, events, security
   controls, observability signals, accessibility claims, compliance mappings,
-  and deployment targets.
+  deployment targets, and early game product contracts.
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
@@ -70,7 +70,8 @@ This implementation provides:
 - Public contribution guidance and issue templates for pack proposals and
   schema changes.
 - Product-surface pack boundary guidance for future GUI, desktop, mobile, and
-  game packs before first schemas are added.
+  additional game packs, with the first narrow game scope delivered through
+  `verity.pack.game-core`.
 - Cross-workspace dependency design guidance for future local-only workspace
   dependencies, exported records, reference resolution, and lockfiles.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
@@ -112,6 +113,7 @@ verity validate examples/basic
 verity validate examples/basic --profile release --format json
 verity validate tests/fixtures/custom_pack_workspace
 verity validate docs/fixtures/pack-scaffold/workspace
+verity validate examples/game-core
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity doctor examples/basic --profile public-api --format json
@@ -120,6 +122,7 @@ verity readiness examples/observability --strict
 verity readiness examples/accessibility --strict
 verity readiness examples/compliance --strict
 verity readiness examples/deployment --strict
+verity readiness examples/game-core --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -138,6 +141,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -196,6 +200,7 @@ verity diff previous-workspace current-workspace --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
@@ -286,6 +291,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/accessibility](examples/accessibility/verityspec.json): focused accessibility-claim workspace.
 - [examples/compliance](examples/compliance/verityspec.json): focused compliance-mapping workspace.
 - [examples/deployment](examples/deployment/verityspec.json): focused deployment target workspace.
+- [examples/game-core](examples/game-core/verityspec.json): focused game product-contract workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -306,6 +312,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Accessibility pack](docs/accessibility-pack.md)
 - [Compliance pack](docs/compliance-pack.md)
 - [Deployment pack](docs/deployment-pack.md)
+- [Game core pack](docs/game-core-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)

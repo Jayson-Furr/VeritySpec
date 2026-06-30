@@ -65,6 +65,10 @@ Deployment targets use conditional readiness rules to require production
 release controls. A `deployment.target` with `environment: "production"` must
 require approval, declare a rollback plan, and expose a health-check URL.
 
+Game-core records use readiness gates to keep early game contracts executable.
+A `game.product` should link to mode, loop, and prototype-scope records before
+strict readiness passes.
+
 Run readiness checks:
 
 ```bash
@@ -72,6 +76,7 @@ verity readiness examples/basic
 verity readiness examples/basic --strict
 verity readiness examples/basic --profile release
 verity readiness examples/deployment --strict
+verity readiness examples/game-core --strict
 verity readiness examples/basic --strict --format json
 ```
 

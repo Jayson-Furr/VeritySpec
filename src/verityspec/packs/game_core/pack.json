@@ -1,0 +1,137 @@
+{
+  "id": "verity.pack.game-core",
+  "version": "0.1.0",
+  "name": "VeritySpec Game Core Pack",
+  "description": "Game product, mode, loop, and prototype-scope records for early game product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "game.product",
+      "path": "schemas/game-product.schema.json"
+    },
+    {
+      "kind": "game.mode",
+      "path": "schemas/game-mode.schema.json"
+    },
+    {
+      "kind": "game.loop",
+      "path": "schemas/game-loop.schema.json"
+    },
+    {
+      "kind": "game.prototype-scope",
+      "path": "schemas/game-prototype-scope.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "game.product.release",
+      "kind": "game.product",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "pitch",
+        "playerFantasy",
+        "targetAudience"
+      ],
+      "minItems": {
+        "targetPlatforms": 1,
+        "references": 3
+      }
+    },
+    {
+      "id": "game.mode.release",
+      "kind": "game.mode",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "modeType",
+        "summary",
+        "playerCount.min",
+        "playerCount.max"
+      ]
+    },
+    {
+      "id": "game.loop.release",
+      "kind": "game.loop",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "loopType",
+        "cadence"
+      ],
+      "minItems": {
+        "steps": 1
+      }
+    },
+    {
+      "id": "game.prototype-scope.release",
+      "kind": "game.prototype-scope",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "prototypeType",
+        "goal"
+      ],
+      "minItems": {
+        "includedFeatureRefs": 1,
+        "successCriteria": 1,
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "describes",
+      "targetKind": "game.product"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasMode",
+      "targetKind": "game.mode"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasLoop",
+      "targetKind": "game.loop"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "prototypeScope",
+      "targetKind": "game.prototype-scope"
+    },
+    {
+      "sourceKind": "game.mode",
+      "relationship": "usesLoop",
+      "targetKind": "game.loop"
+    },
+    {
+      "sourceKind": "game.prototype-scope",
+      "relationship": "validatesMode",
+      "targetKind": "game.mode"
+    },
+    {
+      "sourceKind": "game.prototype-scope",
+      "relationship": "validatesLoop",
+      "targetKind": "game.loop"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for game-core records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": [
+        "game.product",
+        "game.mode",
+        "game.loop",
+        "game.prototype-scope"
+      ]
+    }
+  ]
+}

@@ -855,6 +855,18 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
         "recordKinds": ["deployment.runtime", "deployment.target"],
         "productRelationships": ["deploysTo"],
     },
+    {
+        "id": "game-core",
+        "name": "Game Core",
+        "packId": "verity.pack.game-core",
+        "recordKinds": [
+            "game.product",
+            "game.mode",
+            "game.loop",
+            "game.prototype-scope",
+        ],
+        "productRelationships": ["describes"],
+    },
 ]
 PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
 

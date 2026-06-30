@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(14, report["recordCount"])
+        self.assertEqual(18, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(8, report["summary"]["trackedSurfaces"])
-        self.assertEqual(8, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(8, report["summary"]["coveredSurfaces"])
+        self.assertEqual(9, report["summary"]["trackedSurfaces"])
+        self.assertEqual(9, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(9, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1039,6 +1039,7 @@ class VeritySpecTests(unittest.TestCase):
                 "compliance": 1,
                 "deployment": 2,
                 "events": 1,
+                "game-core": 4,
                 "observability": 4,
                 "security": 1,
             },
@@ -1055,7 +1056,17 @@ class VeritySpecTests(unittest.TestCase):
         )
         surfaces = {surface["id"]: surface for surface in report["surfaces"]}
         self.assertEqual("verity.pack.api", surfaces["api"]["packId"])
+        self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
+        self.assertEqual(
+            [
+                "game.loop.coverage_status",
+                "game.mode.coverage_coop",
+                "game.product.coverage_adventure",
+                "game.prototype-scope.coverage_slice",
+            ],
+            [record["id"] for record in surfaces["game-core"]["records"]],
+        )
         self.assertEqual(
             ["deployment.runtime.coverage_api", "deployment.target.coverage_production"],
             [record["id"] for record in surfaces["deployment"]["records"]],
@@ -1301,6 +1312,47 @@ class VeritySpecTests(unittest.TestCase):
             "deployment.target.production_release_controls_missing",
             [issue.code for issue in issues],
         )
+
+    def test_game_core_readiness_requires_product_contract_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "game-core-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.game-core"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "game-product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "game.product.missing_links",
+                        "kind": "game.product",
+                        "name": "Missing Links",
+                        "description": "Game product missing graph links.",
+                        "status": "ready",
+                        "owner": "game-design",
+                        "pitch": "A small fixture game.",
+                        "playerFantasy": "Players prove readiness gaps.",
+                        "targetAudience": "Maintainers.",
+                        "targetPlatforms": ["pc"],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("game.product.missing_links", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

@@ -40,6 +40,10 @@
         {
           "type": "deploysTo",
           "target": "deployment.target.coverage_production"
+        },
+        {
+          "type": "describes",
+          "target": "game.product.coverage_adventure"
         }
       ]
     },
@@ -331,6 +335,106 @@
         {
           "type": "securedBy",
           "target": "security.control.coverage_access"
+        }
+      ]
+    },
+    {
+      "id": "game.product.coverage_adventure",
+      "kind": "game.product",
+      "name": "Coverage Adventure",
+      "description": "Game product record for coverage-dashboard surface tracking.",
+      "status": "ready",
+      "owner": "game-design",
+      "pitch": "Players recover coverage shards before a status portal closes.",
+      "playerFantasy": "A squad converts product-contract coverage into a readable adventure loop.",
+      "targetAudience": "Maintainers validating product-surface coverage behavior.",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "genres": [
+        "co-op",
+        "adventure"
+      ],
+      "references": [
+        {
+          "type": "hasMode",
+          "target": "game.mode.coverage_coop"
+        },
+        {
+          "type": "hasLoop",
+          "target": "game.loop.coverage_status"
+        },
+        {
+          "type": "prototypeScope",
+          "target": "game.prototype-scope.coverage_slice"
+        }
+      ]
+    },
+    {
+      "id": "game.mode.coverage_coop",
+      "kind": "game.mode",
+      "name": "Coverage Co-op",
+      "description": "Co-op mode fixture for the game-core coverage surface.",
+      "status": "ready",
+      "owner": "game-design",
+      "modeType": "co-op",
+      "summary": "Two players collect coverage shards and return them to a status portal.",
+      "playerCount": {
+        "min": 2,
+        "max": 2,
+        "recommended": 2
+      },
+      "references": [
+        {
+          "type": "usesLoop",
+          "target": "game.loop.coverage_status"
+        }
+      ]
+    },
+    {
+      "id": "game.loop.coverage_status",
+      "kind": "game.loop",
+      "name": "Coverage Status Loop",
+      "description": "Short session loop for exercising game-core coverage records.",
+      "status": "ready",
+      "owner": "game-design",
+      "loopType": "core",
+      "cadence": "session",
+      "steps": [
+        {
+          "name": "Gather",
+          "description": "Players gather coverage shards."
+        },
+        {
+          "name": "Return",
+          "description": "Players return shards to the status portal."
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "game.prototype-scope.coverage_slice",
+      "kind": "game.prototype-scope",
+      "name": "Coverage Slice",
+      "description": "Prototype scope fixture for the game-core coverage surface.",
+      "status": "ready",
+      "owner": "production",
+      "prototypeType": "greybox",
+      "goal": "Prove the coverage status loop with placeholder content.",
+      "includedFeatureRefs": [
+        "feature.coverage-shards"
+      ],
+      "successCriteria": [
+        "Players can complete one coverage status loop."
+      ],
+      "references": [
+        {
+          "type": "validatesMode",
+          "target": "game.mode.coverage_coop"
+        },
+        {
+          "type": "validatesLoop",
+          "target": "game.loop.coverage_status"
         }
       ]
     }
