@@ -16,6 +16,7 @@ DOWNSTREAM_FILES = [
     ROOT / "templates" / "github-actions" / "product-contract-reusable.yml",
     ROOT / "templates" / "github-actions" / "product-contract-with-local-packs.yml",
 ]
+PYPI_DOC = ROOT / "docs" / "pypi.md"
 RELEASE_REF_PATTERN = re.compile(
     r"Jayson-Furr/VeritySpec(?:\.git)?(?:/\.github/workflows/product-contract\.yml)?@"
     r"(v\d+\.\d+\.\d+)"
@@ -64,3 +65,13 @@ class DownstreamTemplateTests(unittest.TestCase):
         self.assertIn(reusable_ref, reusable_template)
         self.assertIn(reusable_ref, local_pack_template)
         self.assertIn("pack-paths: packs/features packs/security", local_pack_template)
+
+    def test_pypi_docs_reference_current_release_tag_and_safeguards(self) -> None:
+        text = PYPI_DOC.read_text(encoding="utf-8")
+        refs = RELEASE_REF_PATTERN.findall(text)
+
+        self.assertEqual({CURRENT_TAG}, set(refs))
+        self.assertIn("publish_pypi=false", text)
+        self.assertIn("trusted publishing", text)
+        self.assertIn("No PyPI API token should be committed", text)
+        self.assertIn("python3 -m twine check dist/*", text)
