@@ -2,12 +2,17 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.6.0
+
 - Added conditional readiness rules to pack manifests.
 - Added security readiness hardening so critical unverified
   `security.control` records emit `security.control.critical_unverified`.
 - Added a fixture compatibility matrix across supported workspace spec
   versions.
 - Improved nested issue locations for schema, readiness, and reference errors.
+- Added v0.6.0 release notes and roadmap closeout.
 
 ## 0.5.0
 
