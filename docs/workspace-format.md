@@ -38,6 +38,14 @@ validate, lint, and pass readiness immediately.
 Records may be stored as individual JSON objects, arrays of objects, or catalog
 objects with a top-level `records` array.
 
+## Future Dependency Field
+
+The current workspace format does not include workspace dependencies. Future
+dependency support should follow
+[Cross-workspace dependencies](cross-workspace-dependencies.md), including the
+local-only first phase, exported-record boundary, alias-qualified reference
+resolution, and lockfile expectations.
+
 ## Shared Record Envelope
 
 Every record kind must require:

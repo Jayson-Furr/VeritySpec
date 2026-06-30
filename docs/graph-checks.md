@@ -33,3 +33,7 @@ Run semantic validation:
 ```bash
 verity validate examples/basic --strict
 ```
+
+Future cross-workspace graph behavior should follow
+[Cross-workspace dependencies](cross-workspace-dependencies.md). The current
+graph checks remain local to one loaded workspace.

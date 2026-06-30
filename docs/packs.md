@@ -165,3 +165,9 @@ That guidance keeps product-surface packs focused on their own domains and
 prevents them from duplicating cross-cutting concerns owned by security,
 accessibility, observability, compliance, release, evidence, deployment,
 dependency, or portfolio packs.
+
+Workspace dependencies are not packs. A pack defines vocabulary and behavior;
+a workspace contains actual product, service, game, library, or platform
+records. Future dependency behavior should follow the boundary guidance in
+[Cross-workspace dependencies](cross-workspace-dependencies.md) before adding
+manifest fields, lockfiles, or dependency-aware graph behavior.
