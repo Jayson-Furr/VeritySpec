@@ -30,7 +30,7 @@ This initial implementation provides:
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, and CLI reference docs, with OpenAPI path-parameter support and
-  snapshot-tested type/model output.
+  snapshot-tested type/model output including nested Python dataclasses.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration reporting through `verity migrate`.
 
