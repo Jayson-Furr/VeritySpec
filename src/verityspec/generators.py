@@ -11,7 +11,7 @@ from . import __version__
 from .diffing import SEVERITY_LEVELS, diff_workspaces
 from .graph import build_graph
 from .issues import Issue, issue_count
-from .packs import PackRegistry
+from .packs import PACK_ROOT, Pack, PackRegistry, ReferenceRule, SchemaBinding
 from .workspace import Record, Workspace
 
 
@@ -523,6 +523,234 @@ def generate_schema_bundle(registry: PackRegistry) -> dict:
             kind: binding.schema
             for kind, binding in sorted(registry.schemas.items(), key=lambda item: item[0])
         },
+    }
+
+
+def sorted_strings(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    return sorted(value for value in values if isinstance(value, str))
+
+
+def sorted_mapping(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        return {}
+    return {key: value[key] for key in sorted(value)}
+
+
+def pack_source(pack: Pack) -> str:
+    try:
+        pack.path.resolve().relative_to(PACK_ROOT.resolve())
+    except ValueError:
+        return "external"
+    return "built-in"
+
+
+def schema_capability_summary(binding: SchemaBinding) -> dict[str, Any]:
+    return {
+        "kind": binding.kind,
+        "packId": binding.pack_id,
+        "path": str(binding.path),
+    }
+
+
+def readiness_gate_summary(gate: dict[str, Any], pack_id: str) -> dict[str, Any]:
+    rules = [
+        {
+            "id": rule.get("id", ""),
+            "code": rule.get("code", ""),
+            "when": rule.get("when", {}),
+            "must": rule.get("must", []),
+            "message": rule.get("message", ""),
+        }
+        for rule in gate.get("rules", [])
+        if isinstance(rule, dict)
+    ]
+    return {
+        "id": gate.get("id", ""),
+        "kind": gate.get("kind", ""),
+        "packId": pack_id,
+        "required": sorted_strings(gate.get("required", [])),
+        "minItems": sorted_mapping(gate.get("minItems", {})),
+        "ruleCount": len(rules),
+        "rules": sorted(rules, key=lambda item: (str(item["id"]), str(item["code"]))),
+    }
+
+
+def reference_rule_summary(rule: ReferenceRule) -> dict[str, Any]:
+    return {
+        "sourceKind": rule.source_kind,
+        "relationship": rule.relationship,
+        "targetKind": rule.target_kind,
+        "packId": rule.pack_id,
+    }
+
+
+def generator_metadata_summary(metadata: dict[str, Any], pack_id: str) -> dict[str, Any]:
+    return {
+        "id": metadata.get("id", ""),
+        "packId": pack_id,
+        "name": metadata.get("name", ""),
+        "description": metadata.get("description", ""),
+        "artifactType": metadata.get("artifactType", ""),
+        "outputFormats": sorted_strings(metadata.get("outputFormats", [])),
+        "recordKinds": sorted_strings(metadata.get("recordKinds", [])),
+    }
+
+
+def generator_capability_index(packs: list[Pack]) -> list[dict[str, Any]]:
+    indexed: dict[str, dict[str, Any]] = {}
+    for pack in packs:
+        for metadata in pack.generator_metadata:
+            generator_id = metadata.get("id")
+            if not isinstance(generator_id, str):
+                continue
+            entry = indexed.setdefault(
+                generator_id,
+                {
+                    "id": generator_id,
+                    "packIds": set(),
+                    "declarationCount": 0,
+                    "artifactTypes": set(),
+                    "outputFormats": set(),
+                    "recordKinds": set(),
+                },
+            )
+            entry["packIds"].add(pack.id)
+            entry["declarationCount"] += 1
+            artifact_type = metadata.get("artifactType")
+            if isinstance(artifact_type, str) and artifact_type:
+                entry["artifactTypes"].add(artifact_type)
+            for output_format in sorted_strings(metadata.get("outputFormats", [])):
+                entry["outputFormats"].add(output_format)
+            for record_kind in sorted_strings(metadata.get("recordKinds", [])):
+                entry["recordKinds"].add(record_kind)
+
+    return [
+        {
+            "id": generator_id,
+            "packIds": sorted(entry["packIds"]),
+            "declarationCount": entry["declarationCount"],
+            "artifactTypes": sorted(entry["artifactTypes"]),
+            "outputFormats": sorted(entry["outputFormats"]),
+            "recordKinds": sorted(entry["recordKinds"]),
+        }
+        for generator_id, entry in sorted(indexed.items(), key=lambda item: item[0])
+    ]
+
+
+def generate_pack_capability_index(
+    workspace: Workspace,
+    registry: PackRegistry,
+    generated_at: str | None = None,
+) -> dict:
+    packs = [pack for _, pack in sorted(registry.packs.items(), key=lambda item: item[0])]
+    pack_sources = {pack.id: pack_source(pack) for pack in packs}
+    readiness_gates = [
+        readiness_gate_summary(gate, pack.id)
+        for pack in packs
+        for gate in pack.readiness_gates
+    ]
+    reference_rules = [
+        reference_rule_summary(rule)
+        for rule in sorted(
+            registry.reference_rules,
+            key=lambda item: (
+                item.pack_id,
+                item.source_kind,
+                item.relationship,
+                item.target_kind,
+            ),
+        )
+    ]
+    generators = generator_capability_index(packs)
+    generator_declaration_count = sum(len(pack.generator_metadata) for pack in packs)
+    conditional_rule_count = sum(
+        len(gate.get("rules", []))
+        for pack in packs
+        for gate in pack.readiness_gates
+        if isinstance(gate.get("rules", []), list)
+    )
+
+    return {
+        "type": "pack_capability_index",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "packPaths": workspace.pack_paths,
+        "loadedPacks": [pack.id for pack in packs],
+        "summary": {
+            "packCount": len(packs),
+            "builtInPackCount": sum(1 for source in pack_sources.values() if source == "built-in"),
+            "externalPackCount": sum(1 for source in pack_sources.values() if source == "external"),
+            "schemaCount": len(registry.schemas),
+            "readinessGateCount": len(readiness_gates),
+            "conditionalReadinessRuleCount": conditional_rule_count,
+            "referenceRuleCount": len(reference_rules),
+            "generatorCount": len(generators),
+            "generatorDeclarationCount": generator_declaration_count,
+            "recordKinds": registry.known_kinds,
+            "generators": [generator["id"] for generator in generators],
+        },
+        "capabilities": {
+            "schemas": [
+                schema_capability_summary(binding)
+                for _, binding in sorted(registry.schemas.items(), key=lambda item: item[0])
+            ],
+            "readinessGates": sorted(
+                readiness_gates,
+                key=lambda item: (str(item["packId"]), str(item["kind"]), str(item["id"])),
+            ),
+            "referenceRules": reference_rules,
+            "generators": generators,
+        },
+        "packDetails": [
+            {
+                "id": pack.id,
+                "version": pack.version,
+                "name": pack.name,
+                "description": pack.description,
+                "source": pack_sources[pack.id],
+                "path": str(pack.path),
+                "schemaCount": len(pack.schemas),
+                "readinessGateCount": len(pack.readiness_gates),
+                "referenceRuleCount": len(pack.reference_rules),
+                "generatorCount": len(pack.generator_metadata),
+                "schemas": [
+                    schema_capability_summary(binding)
+                    for _, binding in sorted(pack.schemas.items(), key=lambda item: item[0])
+                ],
+                "readinessGates": [
+                    readiness_gate_summary(gate, pack.id)
+                    for gate in sorted(
+                        pack.readiness_gates,
+                        key=lambda item: (str(item.get("kind", "")), str(item.get("id", ""))),
+                    )
+                ],
+                "referenceRules": [
+                    reference_rule_summary(rule)
+                    for rule in sorted(
+                        pack.reference_rules,
+                        key=lambda item: (
+                            item.source_kind,
+                            item.relationship,
+                            item.target_kind,
+                        ),
+                    )
+                ],
+                "generators": [
+                    generator_metadata_summary(metadata, pack.id)
+                    for metadata in sorted(
+                        pack.generator_metadata,
+                        key=lambda item: str(item.get("id", "")),
+                    )
+                ],
+            }
+            for pack in packs
+        ],
     }
 
 

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added `verity generate pack-capability-index` for registry reports that
+  summarize loaded built-in and external pack schemas, readiness gates,
+  reference rules, and generator metadata.
+
 ## 0.31.0
 
 - Added cross-workspace dependency design guidance for future local-only

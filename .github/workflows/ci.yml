@@ -164,6 +164,7 @@ jobs:
           verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
           verity generate deployment-report examples/deployment --out build/deployment-report.json
           verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+          verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
           verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
           verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
@@ -190,6 +191,7 @@ jobs:
           python -m json.tool build/compliance-matrix.json >/dev/null
           python -m json.tool build/deployment-report.json >/dev/null
           python -m json.tool build/coverage-dashboard.json >/dev/null
+          python -m json.tool build/pack-capability-index.json >/dev/null
           python -m json.tool build/product-impact.json >/dev/null
           python -m py_compile build/models.py
           python -m py_compile build/generator-maturity.py

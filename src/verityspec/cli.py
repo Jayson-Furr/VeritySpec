@@ -18,8 +18,9 @@ from .generators import (
     generate_coverage_dashboard,
     generate_deployment_report,
     generate_openapi,
-    generate_product_impact_report,
     generate_observability_report,
+    generate_pack_capability_index,
+    generate_product_impact_report,
     generate_python_models,
     generate_roadmap_report,
     generate_schema_bundle,
@@ -757,6 +758,11 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "compliance-matrix": lambda: generate_compliance_matrix(workspace, generated_at=generated_at),
         "coverage-dashboard": lambda: generate_coverage_dashboard(workspace, generated_at=generated_at),
         "deployment-report": lambda: generate_deployment_report(workspace, generated_at=generated_at),
+        "pack-capability-index": lambda: generate_pack_capability_index(
+            workspace,
+            registry,
+            generated_at=generated_at,
+        ),
     }
     value = generators[args.artifact]()
     text = write_generated(value, args.out)
@@ -999,6 +1005,7 @@ def build_parser() -> argparse.ArgumentParser:
             "compliance-matrix",
             "coverage-dashboard",
             "deployment-report",
+            "pack-capability-index",
             "product-impact",
             "roadmap-report",
         ],

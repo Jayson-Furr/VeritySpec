@@ -18,6 +18,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
@@ -105,6 +106,20 @@ Coverage dashboards include:
   records, products without surface references, and product-specific missing
   surface references
 - Per-surface records and product relationship targets for release review
+
+Pack capability indexes include:
+
+- Workspace and VeritySpec version metadata
+- Requested pack IDs, local `packPaths`, and loaded pack IDs
+- Pack counts split by built-in and external source
+- Schema, readiness gate, conditional readiness rule, reference rule, and
+  generator declaration counts
+- Per-kind schema ownership and schema file paths
+- Per-gate required fields, `minItems`, conditional rules, and owning pack
+- Per-reference-rule source kind, relationship, target kind, and owning pack
+- Generator capability indexes that deduplicate generator IDs across packs
+- Per-pack details for source type, path, schemas, readiness gates, reference
+  rules, and normalized generator metadata
 
 Product-impact reports include:
 
@@ -198,6 +213,14 @@ Coverage dashboard output includes:
   surfaces
 - Golden fixture coverage through `tests/fixtures/cross_pack_coverage`
 
+Pack capability index output includes:
+
+- Built-in and local external pack summaries from the loaded pack registry
+- Schema, readiness, reference-rule, and generator capability indexes
+- Legacy external pack generator declarations normalized alongside structured
+  generator metadata
+- Golden fixture coverage through `tests/fixtures/custom_pack_workspace`
+
 Product-impact output includes:
 
 - `oldWorkspace` and `newWorkspace` metadata
@@ -222,9 +245,10 @@ TypeScript and Python model generators support:
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
 is covered by golden-file tests. The `examples/security` security report,
 `examples/observability` observability report and schema bundle, deployment
-report, cross-pack coverage dashboard, and product-impact report are also
-covered by committed golden fixtures. Changes to those generators should update
-the golden files only when the output contract intentionally changes.
+report, cross-pack coverage dashboard, pack capability index, and
+product-impact report are also covered by committed golden fixtures. Changes
+to those generators should update the golden files only when the output
+contract intentionally changes.
 
 Known limits:
 
