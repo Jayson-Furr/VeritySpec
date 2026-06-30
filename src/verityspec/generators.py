@@ -74,6 +74,12 @@ def openapi_schema_ref(schema_id: str, id_to_component: dict[str, str]) -> dict[
     return {"$ref": f"#/components/schemas/{name}"}
 
 
+def schema_ref_name(ref: str) -> str | None:
+    if ref.startswith("#/components/schemas/"):
+        return ref.rsplit("/", 1)[-1]
+    return None
+
+
 def generate_openapi(workspace: Workspace) -> dict:
     product = product_record(workspace)
     schemas, id_to_component = component_schemas(workspace)
@@ -85,22 +91,34 @@ def generate_openapi(workspace: Workspace) -> dict:
         "info": {
             "title": title,
             "version": version,
+            "description": product.data.get("description", "") if product else "",
         },
         "paths": {},
         "components": {
             "schemas": schemas,
         },
+        "tags": [],
     }
+    tag_names: set[str] = set()
 
     for record in workspace.records:
         if record.kind != "api.endpoint":
             continue
         method = record.data["method"].lower()
         path = record.data["path"]
+        owner = record.data.get("owner", "default")
+        if isinstance(owner, str) and owner not in tag_names:
+            tag_names.add(owner)
+            document["tags"].append({"name": owner})
         operation: dict[str, Any] = {
             "operationId": sanitize_identifier(record.id or record.data["name"]),
+            "tags": [owner] if isinstance(owner, str) else [],
             "summary": record.data.get("summary", record.data["name"]),
             "description": record.data.get("description", ""),
+            "deprecated": record.data.get("status") == "deprecated",
+            "x-verity-id": record.id,
+            "x-verity-owner": owner,
+            "x-verity-status": record.data.get("status"),
             "responses": {},
         }
 
@@ -141,6 +159,7 @@ def generate_asyncapi(workspace: Workspace) -> dict:
         "info": {
             "title": title,
             "version": version,
+            "description": product.data.get("description", "") if product else "",
         },
         "channels": {},
         "components": {
@@ -156,13 +175,20 @@ def generate_asyncapi(workspace: Workspace) -> dict:
         payload_schema = record.data.get("payloadSchema")
         payload = openapi_schema_ref(payload_schema, id_to_component) if isinstance(payload_schema, str) else {}
         document["components"]["messages"][message_name] = {
+            "messageId": sanitize_identifier(record.id or record.data["name"]),
             "name": record.data["name"],
             "title": record.data["name"],
             "summary": record.data.get("summary", record.data.get("description", "")),
+            "description": record.data.get("description", ""),
             "payload": payload,
+            "x-verity-id": record.id,
+            "x-verity-owner": record.data.get("owner"),
+            "x-verity-status": record.data.get("status"),
         }
         document["channels"][record.data["topic"]] = {
+            "description": record.data.get("description", ""),
             "subscribe": {
+                "operationId": sanitize_identifier(f"subscribe.{record.id or record.data['name']}"),
                 "message": {
                     "$ref": f"#/components/messages/{message_name}",
                 }
@@ -172,12 +198,31 @@ def generate_asyncapi(workspace: Workspace) -> dict:
     return document
 
 
+def ts_literal(value: Any) -> str:
+    return json.dumps(value)
+
+
+def ts_property_name(value: str) -> str:
+    if re.match(r"^[A-Za-z_$][A-Za-z0-9_$]*$", value):
+        return value
+    return json.dumps(value)
+
+
 def ts_type(schema: dict[str, Any]) -> str:
+    ref = schema.get("$ref")
+    if isinstance(ref, str):
+        return schema_ref_name(ref) or "unknown"
+    enum = schema.get("enum")
+    if isinstance(enum, list) and enum:
+        return " | ".join(ts_literal(item) for item in enum)
+    if "const" in schema:
+        return ts_literal(schema["const"])
     schema_type = schema.get("type")
     if isinstance(schema_type, list):
-        non_null = [item for item in schema_type if item != "null"]
-        if len(non_null) == 1:
-            return f"{ts_type({**schema, 'type': non_null[0]})} | null"
+        variants = [ts_type({**schema, "type": item}) for item in schema_type if item != "null"]
+        if "null" in schema_type:
+            variants.append("null")
+        return " | ".join(dict.fromkeys(variants)) if variants else "unknown"
     if schema_type == "string":
         return "string"
     if schema_type in {"integer", "number"}:
@@ -187,8 +232,23 @@ def ts_type(schema: dict[str, Any]) -> str:
     if schema_type == "array":
         return f"{ts_type(schema.get('items', {}))}[]"
     if schema_type == "object":
+        properties = schema.get("properties", {})
+        if isinstance(properties, dict) and properties:
+            required = set(schema.get("required", []))
+            fields = []
+            for prop_name, prop_schema in properties.items():
+                optional = "" if prop_name in required else "?"
+                fields.append(f"{ts_property_name(prop_name)}{optional}: {ts_type(prop_schema)}")
+            return "{ " + "; ".join(fields) + " }"
         return "Record<string, unknown>"
     return "unknown"
+
+
+def ts_doc(description: Any, indent: str = "") -> list[str]:
+    if not isinstance(description, str) or not description.strip():
+        return []
+    clean = description.replace("*/", "* /").strip()
+    return [f"{indent}/** {clean} */"]
 
 
 def generate_typescript(workspace: Workspace) -> str:
@@ -198,17 +258,31 @@ def generate_typescript(workspace: Workspace) -> str:
         name = schema_component_name(record.id or "")
         properties = schema.get("properties", {})
         required = set(schema.get("required", []))
-        lines = [f"export interface {name} {{"]
+        lines = ts_doc(record.data.get("description") or schema.get("description"))
+        lines.append(f"export interface {name} {{")
         if isinstance(properties, dict):
             for prop_name, prop_schema in properties.items():
+                lines.extend(ts_doc(prop_schema.get("description") if isinstance(prop_schema, dict) else None, "  "))
                 optional = "" if prop_name in required else "?"
-                lines.append(f"  {prop_name}{optional}: {ts_type(prop_schema)};")
+                lines.append(f"  {ts_property_name(prop_name)}{optional}: {ts_type(prop_schema)};")
         lines.append("}")
         blocks.append("\n".join(lines))
     return "\n\n".join(blocks) + "\n"
 
 
+def python_literal(value: Any) -> str:
+    return repr(value)
+
+
 def python_type(schema: dict[str, Any]) -> str:
+    ref = schema.get("$ref")
+    if isinstance(ref, str):
+        return schema_ref_name(ref) or "Any"
+    enum = schema.get("enum")
+    if isinstance(enum, list) and enum:
+        return "Literal[" + ", ".join(python_literal(item) for item in enum) + "]"
+    if "const" in schema:
+        return "Literal[" + python_literal(schema["const"]) + "]"
     schema_type = schema.get("type")
     if isinstance(schema_type, list):
         non_null = [item for item in schema_type if item != "null"]
@@ -236,12 +310,18 @@ def python_field_name(name: str) -> str:
     return field
 
 
+def optional_python_type(type_name: str) -> str:
+    if type_name.startswith("Optional[") or type_name == "Any":
+        return type_name
+    return f"Optional[{type_name}]"
+
+
 def generate_python_models(workspace: Workspace) -> str:
     blocks = [
         "from __future__ import annotations",
         "",
         "from dataclasses import dataclass",
-        "from typing import Any, Optional",
+        "from typing import Any, Literal, Optional",
         "",
     ]
     for record in schema_records(workspace):
@@ -254,11 +334,19 @@ def generate_python_models(workspace: Workspace) -> str:
         optional_lines: list[str] = []
         if isinstance(properties, dict):
             for prop_name, prop_schema in properties.items():
-                line = f"    {python_field_name(prop_name)}: {python_type(prop_schema)}"
+                description = prop_schema.get("description") if isinstance(prop_schema, dict) else None
+                field_type = python_type(prop_schema)
+                line = f"    {python_field_name(prop_name)}: {field_type}"
+                if isinstance(description, str) and description:
+                    line = f"    # {description}\n{line}"
                 if prop_name in required:
                     required_lines.append(line)
                 else:
-                    optional_lines.append(f"{line} = None")
+                    optional_line = line.replace(
+                        f": {field_type}",
+                        f": {optional_python_type(field_type)}",
+                    )
+                    optional_lines.append(f"{optional_line} = None")
         field_lines = required_lines + optional_lines
         if field_lines:
             lines.extend(field_lines)

@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from verityspec.generators import generate_openapi
+from verityspec.generators import generate_asyncapi, generate_openapi, generate_python_models, generate_typescript
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
 from verityspec.pack_validation import validate_builtin_packs
 from verityspec.packs import load_pack_registry
@@ -15,6 +15,8 @@ from verityspec.workspace import load_workspace
 
 
 ROOT = Path(__file__).resolve().parents[1]
+GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
+GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 
 
 class VeritySpecTests(unittest.TestCase):
@@ -137,6 +139,34 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("get", document["paths"]["/users"])
         self.assertIn("post", document["paths"]["/users"])
         self.assertIn("User", document["components"]["schemas"])
+
+    def test_openapi_and_asyncapi_include_verity_metadata(self) -> None:
+        workspace = load_workspace(GENERATOR_FIXTURE)
+
+        openapi = generate_openapi(workspace)
+        asyncapi = generate_asyncapi(workspace)
+
+        operation = openapi["paths"]["/accounts/{accountId}"]["get"]
+        self.assertEqual("api.accounts.get", operation["x-verity-id"])
+        self.assertEqual(["platform"], operation["tags"])
+        message = asyncapi["components"]["messages"]["EventAccountChanged"]
+        self.assertEqual("event.account.changed", message["x-verity-id"])
+        self.assertEqual(
+            "subscribe_event_account_changed",
+            asyncapi["channels"]["account.changed"]["subscribe"]["operationId"],
+        )
+
+    def test_typescript_generator_matches_golden_file(self) -> None:
+        workspace = load_workspace(GENERATOR_FIXTURE)
+        expected = (GENERATOR_GOLDEN / "typescript.ts").read_text(encoding="utf-8")
+
+        self.assertEqual(expected, generate_typescript(workspace))
+
+    def test_python_model_generator_matches_golden_file(self) -> None:
+        workspace = load_workspace(GENERATOR_FIXTURE)
+        expected = (GENERATOR_GOLDEN / "python_models.py").read_text(encoding="utf-8")
+
+        self.assertEqual(expected, generate_python_models(workspace))
 
 
 if __name__ == "__main__":

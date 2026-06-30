@@ -1,0 +1,19 @@
+{
+  "id": "product.generator_maturity",
+  "kind": "product",
+  "name": "Generator Maturity Product",
+  "description": "A fixture for stable generator output tests.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "exposes",
+      "target": "api.accounts.get"
+    },
+    {
+      "type": "emits",
+      "target": "event.account.changed"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "api.accounts.get",
+  "kind": "api.endpoint",
+  "name": "Get Account",
+  "description": "Returns account details.",
+  "status": "ready",
+  "owner": "platform",
+  "method": "GET",
+  "path": "/accounts/{accountId}",
+  "summary": "Get account.",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Account returned.",
+      "schema": "schema.account"
+    }
+  ]
+}

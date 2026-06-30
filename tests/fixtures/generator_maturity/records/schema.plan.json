@@ -1,0 +1,20 @@
+{
+  "id": "schema.plan",
+  "kind": "schema.object",
+  "name": "Plan",
+  "description": "Subscription plan summary.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["tier"],
+    "properties": {
+      "tier": {
+        "type": "string",
+        "enum": ["free", "pro"],
+        "description": "Commercial plan tier."
+      }
+    }
+  }
+}

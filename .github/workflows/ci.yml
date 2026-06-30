@@ -98,6 +98,8 @@ jobs:
           verity generate asyncapi examples/basic --out build/asyncapi.json
           verity generate typescript examples/basic --out build/types.ts
           verity generate python-models examples/basic --out build/models.py
+          verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
+          verity generate python-models tests/fixtures/generator_maturity --out build/generator-maturity.py
           verity generate schema-bundle examples/basic --out build/schema-bundle.json
           verity generate cli-reference examples/basic --out build/cli-reference.md
           verity generate validation-report examples/basic --out build/validation-report.json
@@ -113,6 +115,7 @@ jobs:
           python -m json.tool build/custom-pack-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m py_compile build/models.py
+          python -m py_compile build/generator-maturity.py
 
       - name: Check package build
         run: |

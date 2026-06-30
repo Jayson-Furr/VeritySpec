@@ -1,0 +1,10 @@
+{
+  "id": "event.account.changed",
+  "kind": "event.message",
+  "name": "Account Changed",
+  "description": "Published when account details change.",
+  "status": "ready",
+  "owner": "platform",
+  "topic": "account.changed",
+  "payloadSchema": "schema.account"
+}

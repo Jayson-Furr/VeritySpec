@@ -29,7 +29,7 @@ This initial implementation provides:
   records, unused schemas, reference cycles, and workspace spec versions.
 - Readiness gates driven by pack metadata.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
-  bundles, and CLI reference docs.
+  bundles, and CLI reference docs, with snapshot-tested type/model output.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration reporting through `verity migrate`.
 

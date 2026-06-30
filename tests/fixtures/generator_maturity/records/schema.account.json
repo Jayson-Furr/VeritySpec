@@ -1,0 +1,58 @@
+{
+  "id": "schema.account",
+  "kind": "schema.object",
+  "name": "Account",
+  "description": "Account response model.",
+  "status": "ready",
+  "owner": "platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "plan", "status"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Stable account identifier."
+      },
+      "plan": {
+        "$ref": "#/components/schemas/Plan",
+        "description": "Current subscription plan."
+      },
+      "status": {
+        "type": "string",
+        "enum": ["active", "suspended"],
+        "description": "Operational account status."
+      },
+      "tags": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Searchable account labels."
+      },
+      "profile": {
+        "type": "object",
+        "required": ["displayName"],
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer"
+          }
+        },
+        "description": "Public profile details."
+      },
+      "nickname": {
+        "type": ["string", "null"],
+        "description": "Optional display nickname."
+      }
+    }
+  },
+  "references": [
+    {
+      "type": "contains",
+      "target": "schema.plan"
+    }
+  ]
+}
