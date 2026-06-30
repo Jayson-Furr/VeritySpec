@@ -1,0 +1,136 @@
+{
+  "records": [
+    {
+      "id": "product.orders",
+      "kind": "product",
+      "name": "Orders Product",
+      "description": "Order management contract used for impact reporting.",
+      "status": "ready",
+      "owner": "commerce",
+      "version": "1.0.0",
+      "references": [
+        {
+          "type": "exposes",
+          "target": "api.orders.list"
+        },
+        {
+          "type": "ships",
+          "target": "cli.orders.export"
+        },
+        {
+          "type": "securedBy",
+          "target": "security.control.order_access"
+        }
+      ]
+    },
+    {
+      "id": "schema.order_list",
+      "kind": "schema.object",
+      "name": "Order List",
+      "description": "Order list response schema.",
+      "status": "ready",
+      "owner": "commerce",
+      "jsonSchema": {
+        "type": "object",
+        "required": [
+          "orders",
+          "total",
+          "legacyNote"
+        ],
+        "properties": {
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "legacyNote": {
+            "type": "string"
+          }
+        }
+      },
+      "references": []
+    },
+    {
+      "id": "api.orders.list",
+      "kind": "api.endpoint",
+      "name": "List Orders",
+      "description": "Lists orders for release-impact testing.",
+      "status": "ready",
+      "owner": "commerce-api",
+      "method": "GET",
+      "path": "/orders",
+      "summary": "List orders.",
+      "responses": [
+        {
+          "statusCode": 200,
+          "description": "Orders returned.",
+          "schema": "schema.order_list"
+        },
+        {
+          "statusCode": 410,
+          "description": "Legacy endpoint retired."
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "cli.orders.export",
+      "kind": "cli.command",
+      "name": "Export Orders",
+      "description": "Exports orders to a local file.",
+      "status": "ready",
+      "owner": "commerce-tools",
+      "command": "orders export",
+      "options": [
+        {
+          "name": "--format",
+          "type": "string",
+          "description": "Output format."
+        }
+      ],
+      "outputSchema": "schema.order_list",
+      "exitCodes": [
+        {
+          "code": 0,
+          "description": "Orders exported."
+        },
+        {
+          "code": 1,
+          "description": "Export failed."
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "security.control.order_access",
+      "kind": "security.control",
+      "name": "Order Access Control",
+      "description": "Restricts order reads to authorized callers.",
+      "status": "ready",
+      "owner": "security",
+      "category": "authorization",
+      "controlType": "preventive",
+      "riskLevel": "high",
+      "objective": "Prevent unauthorized order access.",
+      "coverage": "verified",
+      "verification": {
+        "method": "automated-test",
+        "evidence": "tests/security/test_order_access.py::test_order_access"
+      },
+      "references": [
+        {
+          "type": "appliesTo",
+          "target": "api.orders.list"
+        },
+        {
+          "type": "appliesTo",
+          "target": "schema.order_list"
+        }
+      ]
+    }
+  ]
+}

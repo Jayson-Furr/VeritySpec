@@ -34,6 +34,7 @@ KNOWN_GENERATORS = {
     "compliance-matrix",
     "coverage-dashboard",
     "deployment-report",
+    "product-impact",
 }
 
 PACK_MANIFEST_SCHEMA_PATH = Path(__file__).resolve().parent / "schemas" / "pack-manifest.schema.json"

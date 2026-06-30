@@ -63,6 +63,14 @@
       "artifactType": "report",
       "outputFormats": ["json"],
       "recordKinds": ["product", "schema.object"]
+    },
+    {
+      "id": "product-impact",
+      "name": "Product Impact Report",
+      "description": "Expand changed records into upstream and downstream graph impacts for release review.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["product", "schema.object"]
     }
   ]
 }

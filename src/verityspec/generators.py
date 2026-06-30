@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
+from .diffing import SEVERITY_LEVELS, diff_workspaces
+from .graph import build_graph
 from .issues import Issue, issue_count
 from .packs import PackRegistry
 from .workspace import Record, Workspace
@@ -814,6 +816,292 @@ def generate_coverage_dashboard(workspace: Workspace, generated_at: str | None =
         },
         "surfaces": surface_entries,
         "products": product_entries,
+    }
+
+
+def workspace_report_summary(workspace: Workspace) -> dict[str, Any]:
+    return {
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "recordCount": len(workspace.records),
+    }
+
+
+def impact_record_summary(record_id: str, data: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": record_id,
+        "kind": data.get("kind"),
+        "name": data.get("name"),
+        "status": data.get("status"),
+        "owner": data.get("owner"),
+    }
+
+
+def graph_reference_indexes(
+    graph: dict[str, Any],
+    records_by_id: dict[str, dict[str, Any]],
+) -> tuple[dict[str, set[str]], dict[str, set[str]], list[dict[str, str]]]:
+    downstream: dict[str, set[str]] = {}
+    upstream: dict[str, set[str]] = {}
+    missing: list[dict[str, str]] = []
+    for edge in graph.get("edges", []):
+        source = edge.get("source")
+        target = edge.get("target")
+        if not isinstance(source, str) or not isinstance(target, str):
+            continue
+        if source not in records_by_id:
+            continue
+        if target not in records_by_id:
+            missing.append(
+                {
+                    "source": source,
+                    "target": target,
+                    "relationship": str(edge.get("relationship", "")),
+                    "field": str(edge.get("field", "")),
+                }
+            )
+            continue
+        downstream.setdefault(source, set()).add(target)
+        upstream.setdefault(target, set()).add(source)
+    return downstream, upstream, sorted(
+        missing,
+        key=lambda item: (
+            item["source"],
+            item["relationship"],
+            item["target"],
+            item["field"],
+        ),
+    )
+
+
+def reachable_record_ids(start: str, adjacency: dict[str, set[str]]) -> set[str]:
+    seen: set[str] = set()
+    pending = list(sorted(adjacency.get(start, set())))
+    while pending:
+        record_id = pending.pop(0)
+        if record_id == start or record_id in seen:
+            continue
+        seen.add(record_id)
+        for next_id in sorted(adjacency.get(record_id, set())):
+            if next_id not in seen and next_id != start:
+                pending.append(next_id)
+    return seen
+
+
+def impact_direction_summary(
+    record_id: str,
+    adjacency: dict[str, set[str]],
+    records_by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    direct_ids = sorted(adjacency.get(record_id, set()))
+    all_ids = sorted(reachable_record_ids(record_id, adjacency))
+    transitive_ids = sorted(set(all_ids) - set(direct_ids))
+    return {
+        "directRecordIds": direct_ids,
+        "transitiveRecordIds": transitive_ids,
+        "recordIds": all_ids,
+        "records": [
+            impact_record_summary(impacted_id, records_by_id[impacted_id])
+            for impacted_id in all_ids
+        ],
+    }
+
+
+def change_by_record(diff: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    changes: dict[str, dict[str, Any]] = {}
+    for change in diff.get("changes", []):
+        record_id = change.get("recordId")
+        if isinstance(record_id, str):
+            changes[record_id] = change
+    return changes
+
+
+def changed_record_ids(diff: dict[str, Any]) -> list[str]:
+    record_ids: set[str] = set()
+    for key in ["added", "removed", "changed"]:
+        values = diff.get(key, [])
+        if isinstance(values, list):
+            record_ids.update(item for item in values if isinstance(item, str))
+    return sorted(record_ids)
+
+
+def graph_context_for_change(
+    record_id: str,
+    diff: dict[str, Any],
+    old_context: dict[str, Any],
+    new_context: dict[str, Any],
+) -> tuple[str, dict[str, Any]]:
+    if record_id in diff.get("removed", []):
+        return "baseline", old_context
+    return "current", new_context
+
+
+def release_review_summary(
+    diff: dict[str, Any],
+    impacted_record_count: int,
+    missing_reference_count: int,
+) -> dict[str, Any]:
+    changes = diff.get("changes", [])
+    removed_count = len(diff.get("removed", []))
+    breaking_count = diff.get("summary", {}).get("breakingChanges", 0)
+    focus: list[str] = []
+    if breaking_count:
+        focus.append("breaking changes")
+    if removed_count:
+        focus.append("removed records")
+    if impacted_record_count:
+        focus.append("upstream and downstream impacted records")
+    if missing_reference_count:
+        focus.append("missing references")
+    if not focus and changes:
+        focus.append("changed records")
+
+    risk_level = "low"
+    if breaking_count or removed_count or missing_reference_count:
+        risk_level = "high"
+    elif impacted_record_count or changes:
+        risk_level = "medium"
+
+    return {
+        "requiresReview": bool(changes or impacted_record_count or missing_reference_count),
+        "riskLevel": risk_level,
+        "focus": focus,
+    }
+
+
+def generate_product_impact_report(
+    old_workspace: Workspace,
+    new_workspace: Workspace,
+    generated_at: str | None = None,
+) -> dict:
+    diff = diff_workspaces(old_workspace, new_workspace)
+    old_records = {record.id: record.data for record in old_workspace.records if record.id}
+    new_records = {record.id: record.data for record in new_workspace.records if record.id}
+    old_graph = build_graph(old_workspace)
+    new_graph = build_graph(new_workspace)
+    old_downstream, old_upstream, old_missing = graph_reference_indexes(old_graph, old_records)
+    new_downstream, new_upstream, new_missing = graph_reference_indexes(new_graph, new_records)
+    old_context = {
+        "records": old_records,
+        "downstream": old_downstream,
+        "upstream": old_upstream,
+    }
+    new_context = {
+        "records": new_records,
+        "downstream": new_downstream,
+        "upstream": new_upstream,
+    }
+
+    changes = change_by_record(diff)
+    impacted_records: dict[str, dict[str, Any]] = {}
+    changed_entries: list[dict[str, Any]] = []
+    upstream_total = 0
+    downstream_total = 0
+
+    for record_id in changed_record_ids(diff):
+        graph_source, context = graph_context_for_change(record_id, diff, old_context, new_context)
+        records = context["records"]
+        data = records.get(record_id, {})
+        change = changes.get(record_id, {})
+        upstream = impact_direction_summary(record_id, context["upstream"], records)
+        downstream = impact_direction_summary(record_id, context["downstream"], records)
+        upstream_total += len(upstream["recordIds"])
+        downstream_total += len(downstream["recordIds"])
+
+        for direction, summary in [("upstream", upstream), ("downstream", downstream)]:
+            for impacted_id in summary["recordIds"]:
+                impacted_data = records[impacted_id]
+                entry = impacted_records.setdefault(
+                    impacted_id,
+                    {
+                        **impact_record_summary(impacted_id, impacted_data),
+                        "directions": [],
+                        "changedRecordIds": [],
+                        "graphSources": [],
+                    },
+                )
+                if direction not in entry["directions"]:
+                    entry["directions"].append(direction)
+                if record_id not in entry["changedRecordIds"]:
+                    entry["changedRecordIds"].append(record_id)
+                if graph_source not in entry["graphSources"]:
+                    entry["graphSources"].append(graph_source)
+
+        changed_entries.append(
+            {
+                **impact_record_summary(record_id, data),
+                "changeType": change.get("type", "record.changed"),
+                "severity": change.get("severity", "info"),
+                "breaking": bool(change.get("breaking", False)),
+                "fields": change.get("fields", []),
+                "reasons": change.get("reasons", []),
+                "graphSource": graph_source,
+                "upstream": upstream,
+                "downstream": downstream,
+            }
+        )
+
+    normalized_impacted_records = []
+    for record_id in sorted(impacted_records):
+        entry = impacted_records[record_id]
+        normalized_impacted_records.append(
+            {
+                **entry,
+                "directions": sorted(entry["directions"]),
+                "changedRecordIds": sorted(entry["changedRecordIds"]),
+                "graphSources": sorted(entry["graphSources"]),
+            }
+        )
+
+    missing_references = [
+        {**item, "graphSource": "baseline"}
+        for item in old_missing
+    ] + [
+        {**item, "graphSource": "current"}
+        for item in new_missing
+    ]
+    missing_references = sorted(
+        missing_references,
+        key=lambda item: (
+            item["graphSource"],
+            item["source"],
+            item["relationship"],
+            item["target"],
+            item["field"],
+        ),
+    )
+
+    by_severity = {severity: 0 for severity in SEVERITY_LEVELS}
+    for entry in changed_entries:
+        severity = entry.get("severity")
+        if isinstance(severity, str) and severity in by_severity:
+            by_severity[severity] += 1
+
+    return {
+        "type": "product_impact_report",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "oldWorkspace": workspace_report_summary(old_workspace),
+        "newWorkspace": workspace_report_summary(new_workspace),
+        "diff": diff,
+        "summary": {
+            "changedRecordCount": len(changed_entries),
+            "impactedRecordCount": len(normalized_impacted_records),
+            "upstreamImpactCount": upstream_total,
+            "downstreamImpactCount": downstream_total,
+            "missingReferenceCount": len(missing_references),
+            "bySeverity": by_severity,
+            "releaseReview": release_review_summary(
+                diff,
+                len(normalized_impacted_records),
+                len(missing_references),
+            ),
+        },
+        "changedRecords": changed_entries,
+        "impactedRecords": normalized_impacted_records,
+        "missingReferences": missing_references,
     }
 
 

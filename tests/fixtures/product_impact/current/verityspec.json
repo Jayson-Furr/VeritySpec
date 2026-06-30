@@ -1,0 +1,15 @@
+{
+  "workspace": "tests.product_impact.current",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.api",
+    "verity.pack.cli",
+    "verity.pack.events",
+    "verity.pack.security"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

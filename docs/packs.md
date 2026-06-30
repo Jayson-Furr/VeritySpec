@@ -91,9 +91,10 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
   relationship
 - `schema-bundle` generator metadata
 
-The built-in core pack also advertises `coverage-dashboard` generator metadata
-because coverage dashboards summarize product-surface records across all
-loaded packs while remaining available to every workspace.
+The built-in core pack also advertises `coverage-dashboard` and
+`product-impact` generator metadata because those reports summarize
+cross-pack product-contract state while remaining available to every
+workspace.
 
 The generated pack can be validated immediately:
 

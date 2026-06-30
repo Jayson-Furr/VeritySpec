@@ -18,6 +18,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
@@ -33,7 +34,9 @@ normalized generator ID list and `generatorMetadata`.
 
 Most generators run validation first and fail if the product contract has
 errors. `validation-report` is special: it always writes the report, then exits
-with the validation result.
+with the validation result. `product-impact` also writes the report before
+returning the validation result so release reviewers can inspect missing
+references and graph impact while fixing contract errors.
 
 Validation reports include:
 
@@ -102,6 +105,23 @@ Coverage dashboards include:
   records, products without surface references, and product-specific missing
   surface references
 - Per-surface records and product relationship targets for release review
+
+Product-impact reports include:
+
+- Baseline and current workspace metadata
+- The same structural diff summary returned by `verity diff`
+- Changed, added, and removed records expanded through the reference graph
+- Upstream dependents and downstream dependencies for each changed record
+- A deduplicated impacted-record list for release reviewers
+- Missing references in the baseline and current graphs
+- Release-review risk level and focus areas based on breaking changes,
+  removed records, impacted records, and missing references
+
+`product-impact` compares two workspace paths:
+
+```bash
+verity generate product-impact previous-workspace current-workspace --out build/product-impact.json
+```
 
 Roadmap reports include:
 
@@ -178,6 +198,14 @@ Coverage dashboard output includes:
   surfaces
 - Golden fixture coverage through `tests/fixtures/cross_pack_coverage`
 
+Product-impact output includes:
+
+- `oldWorkspace` and `newWorkspace` metadata
+- `diff` details for changed packs and records
+- `changedRecords` entries with `upstream` and `downstream` graph expansion
+- `impactedRecords` for review assignment and release notes triage
+- `missingReferences` for graph integrity review
+
 TypeScript and Python model generators support:
 
 - `$ref` values that point at `#/components/schemas/...`
@@ -194,9 +222,9 @@ TypeScript and Python model generators support:
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
 is covered by golden-file tests. The `examples/security` security report,
 `examples/observability` observability report and schema bundle, deployment
-report, and cross-pack coverage dashboard are also covered by committed golden
-fixtures. Changes to those generators should update the golden files only when
-the output contract intentionally changes.
+report, cross-pack coverage dashboard, and product-impact report are also
+covered by committed golden fixtures. Changes to those generators should update
+the golden files only when the output contract intentionally changes.
 
 Known limits:
 

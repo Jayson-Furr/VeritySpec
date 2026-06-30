@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added `verity generate product-impact` for release-review reports that
+  compare two workspaces, classify changed records, and expand upstream and
+  downstream reference-graph impact.
+
 ## 0.29.0
 
 - Added `verity generate coverage-dashboard` for cross-pack product-surface
