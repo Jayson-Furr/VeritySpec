@@ -684,11 +684,12 @@ Sprint 49 should release the completed `v0.16.0` scope:
 
 ## v0.17.0
 
-The `v0.17.0` milestone is active.
+The `v0.17.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 50 | Complete | PyPI publishing readiness |
+| 51 | Complete | v0.17.0 release preparation |
 
 ## Sprint 50 Priorities
 
@@ -704,6 +705,22 @@ Sprint 50 should harden PyPI readiness without enabling publishing:
   package version.
 - Update README, changelog, roadmap, and release checklist bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 51 Priorities
+
+Sprint 51 should release the completed `v0.17.0` scope:
+
+- Promote Unreleased changelog entries into `0.17.0`.
+- Bump package metadata to `0.17.0`.
+- Add v0.17.0 release notes.
+- Update README badge, latest-release text, install references, workspace
+  package-version text, and release-notes link to `v0.17.0`.
+- Update downstream CI templates, docs, PyPI fallback docs, and reusable
+  workflow release pins to `v0.17.0`.
+- Keep PyPI publishing disabled unless explicitly requested.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.17.0 GitHub release when checks pass.
+- Close the v0.17.0 milestone after release verification.
 
 ## Later Candidates
 

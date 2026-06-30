@@ -2,9 +2,14 @@
 
 ## Unreleased
 
+No changes yet.
+
+## 0.17.0
+
 - Added PyPI trusted-publishing readiness guidance, explicit publishing
   decision notes, and tests that keep PyPI fallback install docs aligned with
   the current release tag.
+- Added v0.17.0 release notes and roadmap closeout.
 
 ## 0.16.0
 
