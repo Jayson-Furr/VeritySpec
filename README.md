@@ -1,5 +1,11 @@
 # VeritySpec
 
+[![CI](https://github.com/Jayson-Furr/VeritySpec/actions/workflows/ci.yml/badge.svg)](https://github.com/Jayson-Furr/VeritySpec/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Jayson-Furr/VeritySpec)](https://github.com/Jayson-Furr/VeritySpec/releases)
+[![PyPI](https://img.shields.io/pypi/v/verityspec)](https://pypi.org/project/verityspec/)
+[![Python](https://img.shields.io/pypi/pyversions/verityspec)](https://pypi.org/project/verityspec/)
+[![License](https://img.shields.io/github/license/Jayson-Furr/VeritySpec)](LICENSE)
+
 Executable product contracts for humans, tools, and agents.
 
 VeritySpec supersedes PrismSpec by changing the project from a broad static
@@ -27,6 +33,22 @@ This initial implementation provides:
 - A starter PrismSpec importer that produces a migration report.
 
 ## Quick Start
+
+Install from PyPI after publishing is enabled:
+
+```bash
+pip install verityspec
+verity --version
+```
+
+Until PyPI publishing is enabled, install from GitHub:
+
+```bash
+pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.1.0"
+verity --version
+```
+
+For local development:
 
 ```bash
 python3 -m venv .venv
@@ -161,6 +183,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)
 - [CI](docs/ci.md)
+- [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)
 
 ## Supersession

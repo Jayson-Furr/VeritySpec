@@ -37,6 +37,5 @@ using it:
 
 - Create the `verityspec` project on PyPI or claim the name.
 - Configure PyPI trusted publishing for `Jayson-Furr/VeritySpec`.
-- Create the GitHub `pypi` environment.
+- Confirm the GitHub `pypi` environment exists.
 - Run the `Release` workflow manually with `publish_pypi=true`.
-
