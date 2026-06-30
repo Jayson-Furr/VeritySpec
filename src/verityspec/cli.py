@@ -27,7 +27,14 @@ from .generators import (
 )
 from .graph import build_graph, graph_to_text
 from .importers.prismspec import import_prismspec
-from .issues import dedupe_issues, has_errors, issue_count, print_issues, should_fail
+from .issues import (
+    dedupe_issues,
+    has_errors,
+    issue_count,
+    print_github_annotations,
+    print_issues,
+    should_fail,
+)
 from .migrations import (
     migrate_workspace,
     migration_capabilities,
@@ -97,6 +104,11 @@ def print_issue_result(label: str, command_name: str, issues, output_format: str
         return
     print_issues(issues, sys.stdout)
     print_issue_summary(label, issues)
+
+
+def maybe_print_github_annotations(args: argparse.Namespace, issues) -> None:
+    if getattr(args, "github_annotations", False):
+        print_github_annotations(issues, sys.stderr)
 
 
 def init_product(name: str, owner: str, references: list[dict] | None = None) -> dict:
@@ -517,6 +529,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
     issues = validate_workspace(workspace, registry, strict=args.strict)
     print_issue_result("Validation", "validate", issues, args.format)
+    maybe_print_github_annotations(args, issues)
     return issue_exit_with_fail_on(issues, args.fail_on)
 
 
@@ -524,6 +537,7 @@ def cmd_lint(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
     issues = lint_workspace(workspace, registry, strict=args.strict)
     print_issue_result("Lint", "lint", issues, args.format)
+    maybe_print_github_annotations(args, issues)
     return issue_exit_with_fail_on(issues, args.fail_on)
 
 
@@ -533,6 +547,7 @@ def cmd_readiness(args: argparse.Namespace) -> int:
     readiness_issues = evaluate_readiness(workspace, registry, strict=args.strict)
     issues = validation_issues + readiness_issues
     print_issue_result("Readiness", "readiness", issues, args.format)
+    maybe_print_github_annotations(args, issues)
     return issue_exit_with_fail_on(issues, args.fail_on)
 
 
@@ -804,6 +819,11 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--strict", action="store_true")
     validate_parser.add_argument("--format", choices=["text", "json"], default="text")
     validate_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    validate_parser.add_argument(
+        "--github-annotations",
+        action="store_true",
+        help="Emit GitHub Actions workflow annotations for issues to stderr.",
+    )
     add_pack_path_argument(validate_parser)
     validate_parser.set_defaults(func=cmd_validate)
 
@@ -812,6 +832,11 @@ def build_parser() -> argparse.ArgumentParser:
     lint_parser.add_argument("--strict", action="store_true")
     lint_parser.add_argument("--format", choices=["text", "json"], default="text")
     lint_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    lint_parser.add_argument(
+        "--github-annotations",
+        action="store_true",
+        help="Emit GitHub Actions workflow annotations for issues to stderr.",
+    )
     add_pack_path_argument(lint_parser)
     lint_parser.set_defaults(func=cmd_lint)
 
@@ -820,6 +845,11 @@ def build_parser() -> argparse.ArgumentParser:
     readiness_parser.add_argument("--strict", action="store_true")
     readiness_parser.add_argument("--format", choices=["text", "json"], default="text")
     readiness_parser.add_argument("--fail-on", choices=["error", "warning"], default="error")
+    readiness_parser.add_argument(
+        "--github-annotations",
+        action="store_true",
+        help="Emit GitHub Actions workflow annotations for issues to stderr.",
+    )
     add_pack_path_argument(readiness_parser)
     readiness_parser.set_defaults(func=cmd_readiness)
 

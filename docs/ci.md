@@ -22,6 +22,10 @@ Install and environment-setup snippets remain documentation-only, while local
 `verity` examples are smoke-tested with temporary `build/` output paths so
 public command snippets do not drift from the CLI.
 
+In GitHub Actions, pass `--github-annotations` to `verity validate`, `verity
+lint`, or `verity readiness` to emit workflow annotations for product-contract
+issues while preserving normal text or JSON stdout.
+
 For workspaces that load `verity.pack.security`, include the security report:
 
 ```bash

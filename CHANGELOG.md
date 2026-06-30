@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added opt-in GitHub Actions annotation output for validation, lint, and
+  readiness issues.
+
 ## 0.22.0
 
 - Added README command smoke tests that execute safe local CLI examples with

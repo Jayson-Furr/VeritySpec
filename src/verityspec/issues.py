@@ -90,6 +90,23 @@ def parse_issue_location(location: str | None) -> dict[str, object] | None:
     return details
 
 
+def escape_github_command_data(value: object) -> str:
+    return (
+        str(value)
+        .replace("%", "%25")
+        .replace("\r", "%0D")
+        .replace("\n", "%0A")
+    )
+
+
+def escape_github_property(value: object) -> str:
+    return (
+        escape_github_command_data(value)
+        .replace(":", "%3A")
+        .replace(",", "%2C")
+    )
+
+
 @dataclass(frozen=True)
 class Issue:
     severity: str
@@ -120,6 +137,27 @@ class Issue:
         if self.location:
             parts.append(self.location)
         return f"{' '.join(parts)}: {self.message}"
+
+    def github_annotation(self) -> str:
+        command = "warning" if self.severity == "warning" else "error"
+        properties: dict[str, object] = {}
+        if self.location:
+            details = parse_issue_location(self.location)
+            file_path = details.get("path") if details else self.location
+            if file_path:
+                properties["file"] = file_path
+        properties["title"] = self.code
+
+        property_text = ",".join(
+            f"{key}={escape_github_property(value)}" for key, value in properties.items()
+        )
+        message = self.message
+        if self.record_id:
+            message = f"{self.record_id}: {message}"
+        escaped_message = escape_github_command_data(message)
+        if property_text:
+            return f"::{command} {property_text}::{escaped_message}"
+        return f"::{command}::{escaped_message}"
 
 
 def format_issue_path(path: Iterable[object] | str | None) -> str:
@@ -191,3 +229,8 @@ def dedupe_issues(issues: Iterable[Issue]) -> list[Issue]:
 def print_issues(issues: Iterable[Issue], out: TextIO) -> None:
     for issue in issues:
         print(issue.format(), file=out)
+
+
+def print_github_annotations(issues: Iterable[Issue], out: TextIO) -> None:
+    for issue in issues:
+        print(issue.github_annotation(), file=out)

@@ -46,6 +46,11 @@ class DownstreamTemplateTests(unittest.TestCase):
             self.assertIn("verity validate", text, f"{path.relative_to(ROOT)} must validate")
             self.assertIn("verity lint", text, f"{path.relative_to(ROOT)} must lint")
             self.assertIn("verity readiness", text, f"{path.relative_to(ROOT)} must check readiness")
+            self.assertIn(
+                "--github-annotations",
+                text,
+                f"{path.relative_to(ROOT)} must preserve CI annotation guidance",
+            )
 
         direct_template = (ROOT / "templates" / "github-actions" / "product-contract-direct.yml").read_text(
             encoding="utf-8"

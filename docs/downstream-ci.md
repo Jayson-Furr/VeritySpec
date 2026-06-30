@@ -47,10 +47,15 @@ jobs:
         shell: bash
         run: |
           mkdir -p build
+          annotation_args=()
+          if verity validate --help | grep -q -- "--github-annotations"; then
+            annotation_args+=(--github-annotations)
+          fi
+
           verity --version
-          verity validate .
-          verity lint . --strict
-          verity readiness . --strict
+          verity validate . "${annotation_args[@]}"
+          verity lint . --strict "${annotation_args[@]}"
+          verity readiness . --strict "${annotation_args[@]}"
           verity doctor . --format json > build/verity-doctor.json
           verity generate validation-report . --out build/verity-validation-report.json
           python -m json.tool build/verity-doctor.json >/dev/null
@@ -62,6 +67,11 @@ After PyPI publishing is enabled, replace the install step with:
 ```bash
 pip install verityspec
 ```
+
+The annotation feature detection keeps the template compatible with older
+installed releases while automatically enabling GitHub Actions annotations for
+validation, lint, and readiness issues when the installed `verity` supports
+`--github-annotations`.
 
 ## Reusable Workflow
 
