@@ -1,0 +1,50 @@
+{
+  "type": "security_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.security",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "controlCount": 1,
+  "summary": {
+    "byCoverage": {
+      "verified": 1
+    },
+    "byRiskLevel": {
+      "high": 1
+    },
+    "verifiedControls": 1,
+    "criticalUnverified": []
+  },
+  "controls": [
+    {
+      "id": "security.control.account_access",
+      "name": "Account Access Control",
+      "status": "ready",
+      "owner": "platform-security",
+      "category": "authorization",
+      "controlType": "preventive",
+      "riskLevel": "high",
+      "coverage": "verified",
+      "objective": "Prevent unauthorized access to account profile data.",
+      "verified": true,
+      "verification": {
+        "method": "automated-test",
+        "evidence": "tests/security/test_account_access.py::test_owner_or_support_required",
+        "lastVerified": "2026-06-30"
+      },
+      "targets": [
+        {
+          "id": "api.accounts.get",
+          "kind": "api.endpoint",
+          "name": "Get Account"
+        },
+        {
+          "id": "schema.account",
+          "kind": "schema.object",
+          "name": "Account"
+        }
+      ]
+    }
+  ]
+}

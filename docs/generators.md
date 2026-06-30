@@ -96,6 +96,10 @@ Security report output includes:
   `verification.evidence`
 - Target records from explicit `appliesTo` references
 
+The `examples/security` security report shape is covered by a committed golden
+fixture. Tests normalize only the dynamic timestamp, absolute workspace path,
+and package version before comparing generated report output.
+
 Accessibility report output includes:
 
 - `accessibility.claim` records from workspaces that load

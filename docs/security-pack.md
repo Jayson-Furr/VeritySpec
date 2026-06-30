@@ -88,3 +88,7 @@ verity generate security-report examples/security --out build/security-report.js
 - per-control target records from `appliesTo` references
 
 The report is intended for CI, release review, and downstream dashboards.
+The `examples/security` report shape is covered by the committed golden
+fixture at `tests/golden/security_report/security_report.json`. Tests normalize
+only the dynamic timestamp, absolute workspace path, and package version before
+snapshot comparison.

@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 
 
@@ -14,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CUSTOM_PACK = "tests/fixtures/custom_pack"
 CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
 MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
+SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
     "verity.pack.api",
@@ -46,6 +48,14 @@ def snapshot_files(path: Path) -> dict[str, str]:
 
 def canonical_json(value: object) -> str:
     return json.dumps(value, sort_keys=True)
+
+
+def normalize_security_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
 
 
 class VerityCliTests(unittest.TestCase):
@@ -996,6 +1006,26 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(1, payload["controlCount"])
         self.assertEqual({"verified": 1}, payload["summary"]["byCoverage"])
         self.assertEqual("security.control.account_access", payload["controls"][0]["id"])
+
+    def test_security_report_generator_matches_golden_file(self) -> None:
+        expected = json.loads(SECURITY_REPORT_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "security-report.json"
+            result = verity_command(
+                "generate",
+                "security-report",
+                "examples/security",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "security"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_security_report_for_golden(payload))
 
     def test_observability_report_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
