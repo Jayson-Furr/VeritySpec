@@ -1373,11 +1373,12 @@ Sprint 83 should release the completed `v0.33.0` scope:
 
 ## v0.34.0
 
-This milestone is active.
+The `v0.34.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 84 | Active | Monorepo downstream CI templates |
+| 84 | Complete | Monorepo downstream CI templates |
+| 85 | Complete | v0.34.0 release preparation |
 
 ## Sprint 84 Priorities
 
@@ -1394,6 +1395,22 @@ Sprint 84 should make downstream CI adoption clearer for monorepos:
 - Update README, changelog, roadmap, CI docs, downstream CI docs, release
   checklist, and AI-agent guidance.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 85 Priorities
+
+Sprint 85 should release the completed `v0.34.0` scope:
+
+- Promote Unreleased changelog entries into `0.34.0`.
+- Bump package metadata to `0.34.0`.
+- Add v0.34.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.34.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.34.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.34.0 GitHub release when checks pass.
+- Close the v0.34.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 

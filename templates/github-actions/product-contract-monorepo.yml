@@ -25,7 +25,7 @@ jobs:
           - workspace: packages/cli/specs
             pack_paths: packs/shared packs/cli
             strict: true
-    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.33.0
+    uses: Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@v0.34.0
     with:
       workspace: ${{ matrix.workspace }}
       pack-paths: ${{ matrix.pack_paths }}
