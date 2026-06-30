@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.7.0
+
 - Added `verity doctor --report-out` for writing structured diagnostics to a
   JSON file while preserving normal stdout output.
 - Added `verity init --template` starter workspaces for basic, API, CLI,
@@ -10,6 +14,7 @@
   dashboard, and alert records plus an executable observability example.
 - Added `verity generate observability-report` for observability signal,
   ownership, severity, and release-gap summaries.
+- Added v0.7.0 release notes and roadmap closeout.
 
 ## 0.6.0
 
