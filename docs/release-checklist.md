@@ -52,6 +52,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json

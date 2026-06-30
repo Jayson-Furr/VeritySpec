@@ -71,6 +71,14 @@
       "artifactType": "report",
       "outputFormats": ["json"],
       "recordKinds": ["product", "schema.object"]
+    },
+    {
+      "id": "pack-capability-index",
+      "name": "Pack Capability Index",
+      "description": "Summarize loaded pack schemas, readiness gates, reference rules, and generators for registry review.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["product", "schema.object"]
     }
   ]
 }

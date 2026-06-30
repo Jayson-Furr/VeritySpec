@@ -6,8 +6,9 @@ core kernel.
 
 Built-in packs currently include:
 
-- `verity.core`: products, reusable object schemas, schema bundles, and
-  cross-pack coverage dashboards.
+- `verity.core`: products, reusable object schemas, schema bundles,
+  cross-pack coverage dashboards, product-impact reports, and pack capability
+  indexes.
 - `verity.pack.api`: API endpoints and OpenAPI generation.
 - `verity.pack.cli`: CLI commands and CLI reference generation.
 - `verity.pack.events`: event messages and AsyncAPI generation.
@@ -91,10 +92,10 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
   relationship
 - `schema-bundle` generator metadata
 
-The built-in core pack also advertises `coverage-dashboard` and
-`product-impact` generator metadata because those reports summarize
-cross-pack product-contract state while remaining available to every
-workspace.
+The built-in core pack also advertises `coverage-dashboard`,
+`product-impact`, and `pack-capability-index` generator metadata because those
+reports summarize cross-pack product-contract and pack-registry state while
+remaining available to every workspace.
 
 The generated pack can be validated immediately:
 
@@ -128,6 +129,7 @@ working directory:
 verity validate ./workspace --pack-path ./packs/features
 verity readiness ./workspace --strict --pack-path ./packs/features
 verity generate schema-bundle ./workspace --pack-path ./packs/features --out build/schema-bundle.json
+verity generate pack-capability-index ./workspace --pack-path ./packs/features --out build/pack-capability-index.json
 verity pack list --path ./packs/features
 verity pack validate verity.pack.features --path ./packs/features
 ```

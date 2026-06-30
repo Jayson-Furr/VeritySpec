@@ -24,6 +24,9 @@ COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
 COVERAGE_FIXTURE = "tests/fixtures/cross_pack_coverage"
+PACK_CAPABILITY_INDEX_GOLDEN = (
+    ROOT / "tests" / "golden" / "pack_capability_index" / "pack_capability_index.json"
+)
 PRODUCT_IMPACT_BASELINE = "tests/fixtures/product_impact/baseline"
 PRODUCT_IMPACT_CURRENT = "tests/fixtures/product_impact/current"
 PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
@@ -102,6 +105,35 @@ def normalize_product_impact_for_golden(report: dict) -> dict:
     normalized["newWorkspace"] = dict(report["newWorkspace"])
     normalized["oldWorkspace"]["workspacePath"] = "<oldWorkspacePath>"
     normalized["newWorkspace"]["workspacePath"] = "<newWorkspacePath>"
+    return normalized
+
+
+def normalize_pack_capability_index_for_golden(report: dict) -> dict:
+    def normalize_value(value):
+        if isinstance(value, dict):
+            normalized = {}
+            for key, inner in value.items():
+                if key == "path" and isinstance(inner, str):
+                    normalized[key] = normalize_repo_path(inner)
+                else:
+                    normalized[key] = normalize_value(inner)
+            return normalized
+        if isinstance(value, list):
+            return [normalize_value(item) for item in value]
+        return value
+
+    def normalize_repo_path(path: str) -> str:
+        candidate = Path(path)
+        try:
+            relative = candidate.resolve().relative_to(ROOT)
+        except ValueError:
+            return path
+        return f"<repo>/{relative}"
+
+    normalized = normalize_value(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
     return normalized
 
 
@@ -1226,16 +1258,31 @@ class VerityCliTests(unittest.TestCase):
                 "--format",
                 "json",
             )
+            pack_index_path = root / "pack-capability-index.json"
+            pack_index_result = verity_command(
+                "generate",
+                "pack-capability-index",
+                str(root),
+                "--pack-path",
+                CUSTOM_PACK,
+                "--out",
+                str(pack_index_path),
+            )
+            pack_index_payload = json.loads(pack_index_path.read_text(encoding="utf-8"))
 
         self.assertEqual(0, validate_result.returncode)
         self.assertEqual(0, pack_list_result.returncode)
         self.assertEqual(0, pack_validate_result.returncode)
+        self.assertEqual(0, pack_index_result.returncode)
         pack_payload = json.loads(pack_list_result.stdout)
         pack_ids = {pack["id"] for pack in pack_payload["packs"]}
         self.assertIn("verity.pack.features", pack_ids)
         custom_pack = next(pack for pack in pack_payload["packs"] if pack["id"] == "verity.pack.features")
         self.assertEqual(["schema-bundle"], custom_pack["generators"])
         self.assertEqual([{"id": "schema-bundle"}], custom_pack["generatorMetadata"])
+        self.assertEqual("pack_capability_index", pack_index_payload["type"])
+        self.assertEqual(1, pack_index_payload["summary"]["externalPackCount"])
+        self.assertIn("feature.flag", pack_index_payload["summary"]["recordKinds"])
 
     def test_validation_report_generator_writes_report_for_broken_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -1559,6 +1606,47 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(str(ROOT / COVERAGE_FIXTURE), payload["workspacePath"])
         self.assertIsInstance(payload["verityVersion"], str)
         self.assertEqual(expected, normalize_coverage_dashboard_for_golden(payload))
+
+    def test_pack_capability_index_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "pack-capability-index.json"
+            result = verity_command(
+                "generate",
+                "pack-capability-index",
+                CUSTOM_PACK_WORKSPACE,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated pack-capability-index", result.stdout)
+        self.assertEqual("pack_capability_index", payload["type"])
+        self.assertEqual(2, payload["summary"]["packCount"])
+        self.assertEqual(1, payload["summary"]["externalPackCount"])
+        self.assertIn("feature.flag", payload["summary"]["recordKinds"])
+        self.assertIn("pack-capability-index", payload["summary"]["generators"])
+
+    def test_pack_capability_index_generator_matches_golden_file(self) -> None:
+        expected = json.loads(PACK_CAPABILITY_INDEX_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "pack-capability-index.json"
+            result = verity_command(
+                "generate",
+                "pack-capability-index",
+                CUSTOM_PACK_WORKSPACE,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / CUSTOM_PACK_WORKSPACE), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_pack_capability_index_for_golden(payload))
 
     def test_product_impact_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

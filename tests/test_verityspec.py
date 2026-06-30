@@ -14,6 +14,7 @@ from verityspec.generators import (
     generate_deployment_report,
     generate_observability_report,
     generate_openapi,
+    generate_pack_capability_index,
     generate_product_impact_report,
     generate_python_models,
     generate_roadmap_report,
@@ -43,6 +44,10 @@ COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
 COVERAGE_FIXTURE = ROOT / "tests" / "fixtures" / "cross_pack_coverage"
+CUSTOM_PACK_WORKSPACE = ROOT / "tests" / "fixtures" / "custom_pack_workspace"
+PACK_CAPABILITY_INDEX_GOLDEN = (
+    ROOT / "tests" / "golden" / "pack_capability_index" / "pack_capability_index.json"
+)
 PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
 PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
@@ -89,6 +94,35 @@ def normalize_product_impact_for_golden(report: dict) -> dict:
     normalized["newWorkspace"] = dict(report["newWorkspace"])
     normalized["oldWorkspace"]["workspacePath"] = "<oldWorkspacePath>"
     normalized["newWorkspace"]["workspacePath"] = "<newWorkspacePath>"
+    return normalized
+
+
+def normalize_pack_capability_index_for_golden(report: dict) -> dict:
+    def normalize_value(value):
+        if isinstance(value, dict):
+            normalized = {}
+            for key, inner in value.items():
+                if key == "path" and isinstance(inner, str):
+                    normalized[key] = normalize_repo_path(inner)
+                else:
+                    normalized[key] = normalize_value(inner)
+            return normalized
+        if isinstance(value, list):
+            return [normalize_value(item) for item in value]
+        return value
+
+    def normalize_repo_path(path: str) -> str:
+        candidate = Path(path)
+        try:
+            relative = candidate.resolve().relative_to(ROOT)
+        except ValueError:
+            return path
+        return f"<repo>/{relative}"
+
+    normalized = normalize_value(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
     return normalized
 
 
@@ -1027,6 +1061,63 @@ class VeritySpecTests(unittest.TestCase):
             [record["id"] for record in surfaces["deployment"]["records"]],
         )
         self.assertEqual([], report["products"][0]["missingSurfaces"])
+
+    def test_pack_capability_index_summarizes_builtin_and_external_packs(self) -> None:
+        workspace = load_workspace(CUSTOM_PACK_WORKSPACE)
+        registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths, workspace.base_path)
+
+        report = generate_pack_capability_index(workspace, registry)
+
+        self.assertEqual("pack_capability_index", report["type"])
+        self.assertEqual(["verity.core", "verity.pack.features"], report["loadedPacks"])
+        self.assertEqual(2, report["summary"]["packCount"])
+        self.assertEqual(1, report["summary"]["builtInPackCount"])
+        self.assertEqual(1, report["summary"]["externalPackCount"])
+        self.assertEqual(3, report["summary"]["schemaCount"])
+        self.assertEqual(3, report["summary"]["readinessGateCount"])
+        self.assertEqual(5, report["summary"]["referenceRuleCount"])
+        self.assertIn("pack-capability-index", report["summary"]["generators"])
+        self.assertIn("schema-bundle", report["summary"]["generators"])
+        schemas = {entry["kind"]: entry for entry in report["capabilities"]["schemas"]}
+        self.assertEqual("verity.pack.features", schemas["feature.flag"]["packId"])
+        gates = {entry["id"]: entry for entry in report["capabilities"]["readinessGates"]}
+        self.assertEqual("feature.flag", gates["feature.flag.release"]["kind"])
+        reference_rules = {
+            (entry["sourceKind"], entry["relationship"], entry["targetKind"])
+            for entry in report["capabilities"]["referenceRules"]
+        }
+        self.assertIn(("product", "configures", "feature.flag"), reference_rules)
+        generator_index = {entry["id"]: entry for entry in report["capabilities"]["generators"]}
+        self.assertIn("verity.core", generator_index["schema-bundle"]["packIds"])
+        self.assertIn("verity.pack.features", generator_index["schema-bundle"]["packIds"])
+        pack_details = {entry["id"]: entry for entry in report["packDetails"]}
+        self.assertEqual("external", pack_details["verity.pack.features"]["source"])
+        self.assertEqual(
+            [
+                {
+                    "id": "schema-bundle",
+                    "packId": "verity.pack.features",
+                    "name": "",
+                    "description": "",
+                    "artifactType": "",
+                    "outputFormats": [],
+                    "recordKinds": [],
+                }
+            ],
+            pack_details["verity.pack.features"]["generators"],
+        )
+
+    def test_pack_capability_index_matches_golden_file(self) -> None:
+        workspace = load_workspace(CUSTOM_PACK_WORKSPACE)
+        registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths, workspace.base_path)
+        expected = json.loads(PACK_CAPABILITY_INDEX_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_pack_capability_index(workspace, registry)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(CUSTOM_PACK_WORKSPACE), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_pack_capability_index_for_golden(report))
 
     def test_coverage_dashboard_matches_golden_file(self) -> None:
         workspace = load_workspace(COVERAGE_FIXTURE)

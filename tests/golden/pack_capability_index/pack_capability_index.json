@@ -1,0 +1,399 @@
+{
+  "type": "pack_capability_index",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "fixtures.custom_pack_workspace",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.features"
+  ],
+  "packPaths": [
+    "../custom_pack"
+  ],
+  "loadedPacks": [
+    "verity.core",
+    "verity.pack.features"
+  ],
+  "summary": {
+    "packCount": 2,
+    "builtInPackCount": 1,
+    "externalPackCount": 1,
+    "schemaCount": 3,
+    "readinessGateCount": 3,
+    "conditionalReadinessRuleCount": 0,
+    "referenceRuleCount": 5,
+    "generatorCount": 4,
+    "generatorDeclarationCount": 5,
+    "recordKinds": [
+      "feature.flag",
+      "product",
+      "schema.object"
+    ],
+    "generators": [
+      "coverage-dashboard",
+      "pack-capability-index",
+      "product-impact",
+      "schema-bundle"
+    ]
+  },
+  "capabilities": {
+    "schemas": [
+      {
+        "kind": "feature.flag",
+        "packId": "verity.pack.features",
+        "path": "<repo>/tests/fixtures/custom_pack/schemas/feature-flag.schema.json"
+      },
+      {
+        "kind": "product",
+        "packId": "verity.core",
+        "path": "<repo>/src/verityspec/packs/core/schemas/product.schema.json"
+      },
+      {
+        "kind": "schema.object",
+        "packId": "verity.core",
+        "path": "<repo>/src/verityspec/packs/core/schemas/schema-object.schema.json"
+      }
+    ],
+    "readinessGates": [
+      {
+        "id": "core.product.release",
+        "kind": "product",
+        "packId": "verity.core",
+        "required": [
+          "description",
+          "name",
+          "owner",
+          "version"
+        ],
+        "minItems": {},
+        "ruleCount": 0,
+        "rules": []
+      },
+      {
+        "id": "core.schema.release",
+        "kind": "schema.object",
+        "packId": "verity.core",
+        "required": [
+          "jsonSchema",
+          "name",
+          "owner"
+        ],
+        "minItems": {},
+        "ruleCount": 0,
+        "rules": []
+      },
+      {
+        "id": "feature.flag.release",
+        "kind": "feature.flag",
+        "packId": "verity.pack.features",
+        "required": [
+          "description",
+          "key",
+          "name",
+          "owner"
+        ],
+        "minItems": {},
+        "ruleCount": 0,
+        "rules": []
+      }
+    ],
+    "referenceRules": [
+      {
+        "sourceKind": "product",
+        "relationship": "emits",
+        "targetKind": "event.message",
+        "packId": "verity.core"
+      },
+      {
+        "sourceKind": "product",
+        "relationship": "exposes",
+        "targetKind": "api.endpoint",
+        "packId": "verity.core"
+      },
+      {
+        "sourceKind": "product",
+        "relationship": "ships",
+        "targetKind": "cli.command",
+        "packId": "verity.core"
+      },
+      {
+        "sourceKind": "schema.object",
+        "relationship": "contains",
+        "targetKind": "schema.object",
+        "packId": "verity.core"
+      },
+      {
+        "sourceKind": "product",
+        "relationship": "configures",
+        "targetKind": "feature.flag",
+        "packId": "verity.pack.features"
+      }
+    ],
+    "generators": [
+      {
+        "id": "coverage-dashboard",
+        "packIds": [
+          "verity.core"
+        ],
+        "declarationCount": 1,
+        "artifactTypes": [
+          "report"
+        ],
+        "outputFormats": [
+          "json"
+        ],
+        "recordKinds": [
+          "product",
+          "schema.object"
+        ]
+      },
+      {
+        "id": "pack-capability-index",
+        "packIds": [
+          "verity.core"
+        ],
+        "declarationCount": 1,
+        "artifactTypes": [
+          "report"
+        ],
+        "outputFormats": [
+          "json"
+        ],
+        "recordKinds": [
+          "product",
+          "schema.object"
+        ]
+      },
+      {
+        "id": "product-impact",
+        "packIds": [
+          "verity.core"
+        ],
+        "declarationCount": 1,
+        "artifactTypes": [
+          "report"
+        ],
+        "outputFormats": [
+          "json"
+        ],
+        "recordKinds": [
+          "product",
+          "schema.object"
+        ]
+      },
+      {
+        "id": "schema-bundle",
+        "packIds": [
+          "verity.core",
+          "verity.pack.features"
+        ],
+        "declarationCount": 2,
+        "artifactTypes": [
+          "schema-bundle"
+        ],
+        "outputFormats": [
+          "json"
+        ],
+        "recordKinds": [
+          "product",
+          "schema.object"
+        ]
+      }
+    ]
+  },
+  "packDetails": [
+    {
+      "id": "verity.core",
+      "version": "0.1.0",
+      "name": "VeritySpec Core",
+      "description": "Core product-contract records shared by every VeritySpec workspace.",
+      "source": "built-in",
+      "path": "<repo>/src/verityspec/packs/core",
+      "schemaCount": 2,
+      "readinessGateCount": 2,
+      "referenceRuleCount": 4,
+      "generatorCount": 4,
+      "schemas": [
+        {
+          "kind": "product",
+          "packId": "verity.core",
+          "path": "<repo>/src/verityspec/packs/core/schemas/product.schema.json"
+        },
+        {
+          "kind": "schema.object",
+          "packId": "verity.core",
+          "path": "<repo>/src/verityspec/packs/core/schemas/schema-object.schema.json"
+        }
+      ],
+      "readinessGates": [
+        {
+          "id": "core.product.release",
+          "kind": "product",
+          "packId": "verity.core",
+          "required": [
+            "description",
+            "name",
+            "owner",
+            "version"
+          ],
+          "minItems": {},
+          "ruleCount": 0,
+          "rules": []
+        },
+        {
+          "id": "core.schema.release",
+          "kind": "schema.object",
+          "packId": "verity.core",
+          "required": [
+            "jsonSchema",
+            "name",
+            "owner"
+          ],
+          "minItems": {},
+          "ruleCount": 0,
+          "rules": []
+        }
+      ],
+      "referenceRules": [
+        {
+          "sourceKind": "product",
+          "relationship": "emits",
+          "targetKind": "event.message",
+          "packId": "verity.core"
+        },
+        {
+          "sourceKind": "product",
+          "relationship": "exposes",
+          "targetKind": "api.endpoint",
+          "packId": "verity.core"
+        },
+        {
+          "sourceKind": "product",
+          "relationship": "ships",
+          "targetKind": "cli.command",
+          "packId": "verity.core"
+        },
+        {
+          "sourceKind": "schema.object",
+          "relationship": "contains",
+          "targetKind": "schema.object",
+          "packId": "verity.core"
+        }
+      ],
+      "generators": [
+        {
+          "id": "coverage-dashboard",
+          "packId": "verity.core",
+          "name": "Coverage Dashboard",
+          "description": "Summarize cross-pack product-surface coverage for release review.",
+          "artifactType": "report",
+          "outputFormats": [
+            "json"
+          ],
+          "recordKinds": [
+            "product",
+            "schema.object"
+          ]
+        },
+        {
+          "id": "pack-capability-index",
+          "packId": "verity.core",
+          "name": "Pack Capability Index",
+          "description": "Summarize loaded pack schemas, readiness gates, reference rules, and generators for registry review.",
+          "artifactType": "report",
+          "outputFormats": [
+            "json"
+          ],
+          "recordKinds": [
+            "product",
+            "schema.object"
+          ]
+        },
+        {
+          "id": "product-impact",
+          "packId": "verity.core",
+          "name": "Product Impact Report",
+          "description": "Expand changed records into upstream and downstream graph impacts for release review.",
+          "artifactType": "report",
+          "outputFormats": [
+            "json"
+          ],
+          "recordKinds": [
+            "product",
+            "schema.object"
+          ]
+        },
+        {
+          "id": "schema-bundle",
+          "packId": "verity.core",
+          "name": "Schema Bundle",
+          "description": "Emit JSON Schema definitions for core product and schema records.",
+          "artifactType": "schema-bundle",
+          "outputFormats": [
+            "json"
+          ],
+          "recordKinds": [
+            "product",
+            "schema.object"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verity.pack.features",
+      "version": "0.1.0",
+      "name": "VeritySpec Feature Flags Pack",
+      "description": "Feature flag records for external pack loading tests.",
+      "source": "external",
+      "path": "<repo>/tests/fixtures/custom_pack",
+      "schemaCount": 1,
+      "readinessGateCount": 1,
+      "referenceRuleCount": 1,
+      "generatorCount": 1,
+      "schemas": [
+        {
+          "kind": "feature.flag",
+          "packId": "verity.pack.features",
+          "path": "<repo>/tests/fixtures/custom_pack/schemas/feature-flag.schema.json"
+        }
+      ],
+      "readinessGates": [
+        {
+          "id": "feature.flag.release",
+          "kind": "feature.flag",
+          "packId": "verity.pack.features",
+          "required": [
+            "description",
+            "key",
+            "name",
+            "owner"
+          ],
+          "minItems": {},
+          "ruleCount": 0,
+          "rules": []
+        }
+      ],
+      "referenceRules": [
+        {
+          "sourceKind": "product",
+          "relationship": "configures",
+          "targetKind": "feature.flag",
+          "packId": "verity.pack.features"
+        }
+      ],
+      "generators": [
+        {
+          "id": "schema-bundle",
+          "packId": "verity.pack.features",
+          "name": "",
+          "description": "",
+          "artifactType": "",
+          "outputFormats": [],
+          "recordKinds": []
+        }
+      ]
+    }
+  ]
+}
