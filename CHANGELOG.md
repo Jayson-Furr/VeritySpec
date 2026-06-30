@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.33.0
+
 - Added executable pack scaffold documentation fixtures showing a generated
   external pack and a consuming workspace layout for external pack authors.
+- Added v0.33.0 release notes and roadmap closeout.
 
 ## 0.32.0
 
