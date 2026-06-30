@@ -3,7 +3,7 @@ from __future__ import annotations
 from jsonschema import Draft202012Validator
 
 from .envelope import RECORD_ENVELOPE_REQUIRED
-from .issues import Issue, apply_strict
+from .issues import Issue, apply_strict, location_at
 from .packs import PackRegistry
 from .references import ReferenceEdge, extract_reference_edges
 from .versions import validate_workspace_version
@@ -107,7 +107,7 @@ def validate_reference_graph(
                         f"Reference relationship '{edge.relationship}' is not allowed "
                         f"from kind '{record.kind}' to kind '{target.kind}'."
                     ),
-                    record.location,
+                    location_at(record.location, edge.field),
                     record.id,
                 )
             )
@@ -194,10 +194,14 @@ def validate_workspace(
 
         validator = Draft202012Validator(binding.schema)
         for error in sorted(validator.iter_errors(record.data), key=lambda item: list(item.path)):
-            path = ".".join(str(part) for part in error.path)
-            location = f"{record.location}:{path}" if path else record.location
             issues.append(
-                Issue("error", "schema.validation", error.message, location, record.id)
+                Issue(
+                    "error",
+                    "schema.validation",
+                    error.message,
+                    location_at(record.location, error.path),
+                    record.id,
+                )
             )
 
     by_id = {record.id: record for record in workspace.records if record.id}
@@ -212,7 +216,7 @@ def validate_workspace(
                         "error",
                         "reference.missing",
                         f"Reference '{edge.target}' from {edge.field} does not resolve.",
-                        record.location,
+                        location_at(record.location, edge.field),
                         record.id,
                     )
                 )
@@ -225,7 +229,7 @@ def validate_workspace(
                         "error",
                         "reference.removed",
                         f"Reference '{edge.target}' points to a removed record.",
-                        record.location,
+                        location_at(record.location, edge.field),
                         record.id,
                     )
                 )
@@ -235,7 +239,7 @@ def validate_workspace(
                         "warning",
                         "reference.deprecated",
                         f"Reference '{edge.target}' points to a deprecated record.",
-                        record.location,
+                        location_at(record.location, edge.field),
                         record.id,
                     )
                 )

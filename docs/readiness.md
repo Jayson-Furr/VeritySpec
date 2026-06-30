@@ -60,3 +60,7 @@ verity readiness examples/basic --strict --format json
 
 Readiness is intentionally separate from schema validation. A record can be
 structurally valid but not ready for release.
+
+Readiness issue locations point at the relevant field when possible, such as
+`records/api.json:summary` for a missing required field or
+`records/security.json:coverage` for a failed conditional rule.

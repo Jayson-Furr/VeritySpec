@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .issues import Issue
+from .issues import Issue, location_at
 from .packs import PackRegistry
 from .workspace import Workspace
 
@@ -46,20 +46,19 @@ def condition_matches(data: dict[str, Any], condition: dict[str, Any]) -> bool:
     return evaluated and matched
 
 
-def evaluate_rule(record_data: dict[str, Any], rule: dict[str, Any]) -> bool:
+def failed_rule_condition(record_data: dict[str, Any], rule: dict[str, Any]) -> dict[str, Any] | None:
     when = rule.get("when")
     if isinstance(when, dict) and not condition_matches(record_data, when):
-        return True
+        return None
 
     requirements = rule.get("must", [])
     if not isinstance(requirements, list):
-        return True
+        return None
 
-    return all(
-        condition_matches(record_data, requirement)
-        for requirement in requirements
-        if isinstance(requirement, dict)
-    )
+    for requirement in requirements:
+        if isinstance(requirement, dict) and not condition_matches(record_data, requirement):
+            return requirement
+    return None
 
 
 def evaluate_readiness(
@@ -88,7 +87,7 @@ def evaluate_readiness(
                             severity,
                             "readiness.required",
                             f"Readiness gate {gate_id} requires '{field}'.",
-                            record.location,
+                            location_at(record.location, field),
                             record.id,
                         )
                     )
@@ -102,7 +101,7 @@ def evaluate_readiness(
                                 severity,
                                 "readiness.min_items",
                                 f"Readiness gate {gate_id} requires at least {minimum} item(s) in '{field}'.",
-                                record.location,
+                                location_at(record.location, str(field)),
                                 record.id,
                             )
                         )
@@ -112,14 +111,17 @@ def evaluate_readiness(
                                 severity,
                                 "readiness.min_items",
                                 f"Readiness gate {gate_id} requires '{field}' to be a list.",
-                                record.location,
+                                location_at(record.location, str(field)),
                                 record.id,
                             )
                         )
 
             if isinstance(rules, list):
                 for rule in rules:
-                    if not isinstance(rule, dict) or evaluate_rule(record.data, rule):
+                    if not isinstance(rule, dict):
+                        continue
+                    failed_condition = failed_rule_condition(record.data, rule)
+                    if failed_condition is None:
                         continue
                     issues.append(
                         Issue(
@@ -131,7 +133,7 @@ def evaluate_readiness(
                                     f"Readiness gate {gate_id} rule failed.",
                                 )
                             ),
-                            record.location,
+                            location_at(record.location, failed_condition.get("field")),
                             record.id,
                         )
                     )

@@ -28,7 +28,8 @@ This implementation provides:
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
   disallowed relationships, deprecated references, removed references, orphan
-  records, unused schemas, reference cycles, and workspace spec versions.
+  records, unused schemas, reference cycles, workspace spec versions, and
+  nested issue locations.
 - Readiness gates driven by pack metadata, including conditional pack rules
   for release-blocking policy.
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
