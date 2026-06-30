@@ -1,0 +1,38 @@
+{
+  "id": "compliance.mapping.checkout_access_review",
+  "kind": "compliance.mapping",
+  "name": "Checkout Access Review Mapping",
+  "description": "Maps checkout access and operational evidence to an internal access-review requirement without making an attestation claim.",
+  "status": "ready",
+  "owner": "risk-and-compliance",
+  "framework": {
+    "name": "internal-access-review",
+    "version": "2026.1",
+    "requirementId": "IAR-1",
+    "requirementTitle": "Access and evidence review",
+    "requirementText": "Privileged product access and release evidence are reviewed before release."
+  },
+  "mappingType": "control",
+  "coverage": "reviewed",
+  "attestation": false,
+  "verification": {
+    "method": "evidence-review",
+    "evidence": "reviews/compliance/checkout-access-review-2026-06-30.md",
+    "lastVerified": "2026-06-30"
+  },
+  "notes": "This record is a traceability mapping only; it is not a legal opinion, certification, or external audit attestation.",
+  "references": [
+    {
+      "type": "covers",
+      "target": "security.control.checkout_access"
+    },
+    {
+      "type": "covers",
+      "target": "accessibility.claim.checkout_keyboard"
+    },
+    {
+      "type": "covers",
+      "target": "observability.metric.checkout_success_rate"
+    }
+  ]
+}

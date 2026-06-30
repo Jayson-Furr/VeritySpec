@@ -134,6 +134,19 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("accessibility.claim.critical_unverified", payload["code"])
         self.assertEqual("Critical accessibility claim not verified", payload["title"])
 
+    def test_explain_compliance_issue_code_json_output(self) -> None:
+        result = verity_command(
+            "explain",
+            "compliance.mapping.reviewed_unverified",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("compliance.mapping.reviewed_unverified", payload["code"])
+        self.assertEqual("Reviewed compliance mapping not verified", payload["title"])
+
     def test_graph_focus_json_output(self) -> None:
         result = verity_command("graph", "examples/basic", "--focus", "api.users.create", "--format", "json")
 
@@ -558,6 +571,7 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("verity.core", pack_ids)
         self.assertIn("verity.pack.api", pack_ids)
         self.assertIn("verity.pack.accessibility", pack_ids)
+        self.assertIn("verity.pack.compliance", pack_ids)
         self.assertIn("verity.pack.observability", pack_ids)
         self.assertIn("verity.pack.security", pack_ids)
 

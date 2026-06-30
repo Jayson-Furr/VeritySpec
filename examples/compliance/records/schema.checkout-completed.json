@@ -1,0 +1,23 @@
+{
+  "id": "schema.checkout_completed",
+  "kind": "schema.object",
+  "name": "Checkout Completed Telemetry",
+  "description": "Payload emitted when checkout completes.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "jsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["checkoutId", "status"],
+    "properties": {
+      "checkoutId": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["success", "failed"]
+      }
+    }
+  },
+  "references": []
+}

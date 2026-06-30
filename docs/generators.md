@@ -15,6 +15,7 @@ verity generate security-report examples/security --out build/security-report.js
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
+verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
 verity generate python-models tests/fixtures/generator_maturity --out build/generator-maturity.py
 ```

@@ -47,6 +47,16 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.compliance`, include the usual contract
+checks and keep a schema bundle for downstream tooling:
+
+```bash
+verity validate examples/compliance
+verity lint examples/compliance --strict
+verity readiness examples/compliance --strict
+verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
+```
+
 For workspaces with local external packs:
 
 ```bash

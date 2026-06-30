@@ -355,12 +355,37 @@ Sprint 32 should release the completed `v0.8.0` scope:
 - Tag and publish the v0.8.0 GitHub release when checks pass.
 - Close the v0.8.0 milestone after release verification.
 
+## v0.9.0
+
+The `v0.9.0` milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 33 | Complete | Compliance pack foundation |
+
+## Sprint 33 Priorities
+
+Sprint 33 should add the first compliance surface as a pack:
+
+- Add built-in `verity.pack.compliance`.
+- Add a strict `compliance.mapping` record schema for framework requirement
+  mappings.
+- Keep compliance mappings evidence-oriented and explicitly avoid legal,
+  regulatory, audit, or certification attestation claims.
+- Add compliance readiness gates, reviewed-mapping policy, and reference rules.
+- Add an executable compliance example workspace that connects security,
+  accessibility, and observability evidence.
+- Add validation, lint, readiness, pack validation, and compatibility coverage.
+- Update README, changelog, roadmap, pack docs, compliance docs, CI, release
+  checks, and AI-agent command examples.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Later Candidates
 
 These are intentionally not committed to a release until the current milestone
 is complete:
 
-- UI, desktop, mobile, game, assets, deployment, and compliance packs.
+- UI, desktop, mobile, game, assets, and deployment packs.
 - Downstream project templates and examples.
 
 ## Next 20 Roadmap Points
@@ -375,42 +400,42 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a first `verity.pack.compliance` pack that maps controls to frameworks
-   without making legal claims.
-2. Add a compliance matrix generator that joins security, accessibility, and
+1. Add a compliance matrix generator that joins security, accessibility, and
    observability evidence.
-3. Improve `verity diff` with machine-readable change severity and breaking
+2. Improve `verity diff` with machine-readable change severity and breaking
    change classification.
-4. Add migration dry-run fixtures for every supported workspace version edge.
-5. Add generator plugin metadata so packs can advertise report capabilities
+3. Add migration dry-run fixtures for every supported workspace version edge.
+4. Add generator plugin metadata so packs can advertise report capabilities
    more explicitly than a string list.
-6. Add pack authoring tests that verify generated scaffolds can be used by a
+5. Add pack authoring tests that verify generated scaffolds can be used by a
    sample workspace immediately.
-7. Add downstream repository templates for GitHub Actions product-contract
+6. Add downstream repository templates for GitHub Actions product-contract
    enforcement.
-8. Add golden security-report fixtures once the report shape stabilizes.
-9. Add public contribution guidance for proposing new packs and schema
+7. Add golden security-report fixtures once the report shape stabilizes.
+8. Add public contribution guidance for proposing new packs and schema
    changes.
-10. Review package distribution readiness for PyPI trusted publishing and
+9. Review package distribution readiness for PyPI trusted publishing and
    decide whether to publish the `verityspec` package publicly.
-11. Add a roadmap-report generator that emits active milestones, completed
+10. Add a roadmap-report generator that emits active milestones, completed
    sprints, and future planning points for project governance.
-12. Add security-control evidence freshness checks for `verification.lastVerified`
+11. Add security-control evidence freshness checks for `verification.lastVerified`
    age and review cadence.
-13. Add workspace compatibility golden manifests for future format upgrades.
-14. Add structured issue location fields for machine clients in addition to
+12. Add workspace compatibility golden manifests for future format upgrades.
+13. Add structured issue location fields for machine clients in addition to
    formatted location strings.
-15. Add documentation command smoke tests that execute README examples to
+14. Add documentation command smoke tests that execute README examples to
    prevent public command drift.
-16. Add CI annotation output for readiness and validation failures in GitHub
+15. Add CI annotation output for readiness and validation failures in GitHub
    Actions logs.
-17. Add observability example golden fixtures for schema bundles and future
+16. Add observability example golden fixtures for schema bundles and future
    report output.
-18. Add report timestamp controls for deterministic golden snapshot generation.
-19. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
+17. Add report timestamp controls for deterministic golden snapshot generation.
+18. Define pack boundaries for GUI, desktop, mobile, and game product surfaces
    before adding their first schemas.
-20. Add product-contract profiles for release, strict, regulated, public API,
+19. Add product-contract profiles for release, strict, regulated, public API,
    and internal-tool enforcement modes.
+20. Add a first deployment-target pack for runtime, hosting, and release
+   environment contracts.
 
 ## Working Rule
 

@@ -122,6 +122,12 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A critical accessibility claim is release-relevant but is not marked as verified.",
         "resolution": "Set coverage to verified and provide a verification method other than not-verified with evidence.",
     },
+    "compliance.mapping.reviewed_unverified": {
+        "title": "Reviewed compliance mapping not verified",
+        "severity": "warning",
+        "description": "A compliance mapping marked reviewed is missing verification evidence.",
+        "resolution": "Use a verification method other than not-verified and provide evidence, or lower coverage until review is complete.",
+    },
     "workspace.packPaths.invalid": {
         "title": "Invalid workspace pack paths",
         "severity": "error",

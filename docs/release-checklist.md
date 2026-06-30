@@ -25,12 +25,16 @@ verity readiness examples/observability --strict
 verity validate examples/accessibility
 verity lint examples/accessibility --strict
 verity readiness examples/accessibility --strict
+verity validate examples/compliance
+verity lint examples/compliance --strict
+verity readiness examples/compliance --strict
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
+verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 python -m build
 twine check dist/*
 ```

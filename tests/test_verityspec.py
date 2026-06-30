@@ -310,6 +310,85 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("error", matching[0].severity)
         self.assertEqual("accessibility.claim.keyboard", matching[0].record_id)
 
+    def test_readiness_fails_reviewed_unverified_compliance_mapping(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "reviewed-compliance",
+                        "specVersion": "v0.1.0",
+                        "packs": ["verity.core", "verity.pack.compliance"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.reviewed_compliance",
+                        "kind": "product",
+                        "name": "Reviewed Compliance Product",
+                        "description": "A product with a reviewed compliance mapping.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [
+                            {
+                                "type": "complianceMappedBy",
+                                "target": "compliance.mapping.reviewed",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "compliance.json").write_text(
+                json.dumps(
+                    {
+                        "id": "compliance.mapping.reviewed",
+                        "kind": "compliance.mapping",
+                        "name": "Reviewed Mapping",
+                        "description": "A reviewed mapping that still lacks real verification.",
+                        "status": "ready",
+                        "owner": "risk",
+                        "framework": {
+                            "name": "internal",
+                            "requirementId": "INT-1",
+                        },
+                        "mappingType": "control",
+                        "coverage": "reviewed",
+                        "attestation": False,
+                        "verification": {
+                            "method": "not-verified",
+                            "evidence": "Mapping is drafted but verification has not run.",
+                        },
+                        "references": [
+                            {
+                                "type": "covers",
+                                "target": "product.reviewed_compliance",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        matching = [
+            issue
+            for issue in issues
+            if issue.code == "compliance.mapping.reviewed_unverified"
+        ]
+        self.assertEqual(1, len(matching))
+        self.assertEqual("error", matching[0].severity)
+        self.assertEqual("compliance.mapping.reviewed", matching[0].record_id)
+
     def test_broken_semantic_fixture_reports_graph_and_reference_issues(self) -> None:
         workspace = load_workspace(ROOT / "tests" / "fixtures" / "broken_semantics")
         registry = load_pack_registry(workspace.pack_ids)

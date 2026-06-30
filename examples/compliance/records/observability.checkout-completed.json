@@ -1,0 +1,12 @@
+{
+  "id": "observability.telemetry.checkout_completed",
+  "kind": "observability.telemetry",
+  "name": "Checkout Completed",
+  "description": "Telemetry signal emitted after checkout attempts complete.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "signalName": "checkout.completed",
+  "emittedBy": "checkout-service",
+  "payloadSchema": "schema.checkout_completed",
+  "references": []
+}

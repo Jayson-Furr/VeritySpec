@@ -39,7 +39,7 @@ jobs:
 
       - name: Check all example workspaces
         run: |
-          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility; do
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance; do
             verity validate "$workspace"
             verity lint "$workspace" --strict
             verity readiness "$workspace" --strict
@@ -69,6 +69,9 @@ jobs:
           verity validate examples/accessibility --format json > build/accessibility-validate.json
           verity lint examples/accessibility --strict --format json > build/accessibility-lint.json
           verity readiness examples/accessibility --strict --format json > build/accessibility-readiness.json
+          verity validate examples/compliance --format json > build/compliance-validate.json
+          verity lint examples/compliance --strict --format json > build/compliance-lint.json
+          verity readiness examples/compliance --strict --format json > build/compliance-readiness.json
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
@@ -98,6 +101,9 @@ jobs:
           python -m json.tool build/accessibility-validate.json >/dev/null
           python -m json.tool build/accessibility-lint.json >/dev/null
           python -m json.tool build/accessibility-readiness.json >/dev/null
+          python -m json.tool build/compliance-validate.json >/dev/null
+          python -m json.tool build/compliance-lint.json >/dev/null
+          python -m json.tool build/compliance-readiness.json >/dev/null
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
@@ -132,6 +138,7 @@ jobs:
           verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
           verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
+          verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
           verity generate openapi examples/api-service --out build/api-service.openapi.json
           verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
           verity generate asyncapi examples/events --out build/events.asyncapi.json
@@ -143,6 +150,7 @@ jobs:
           python -m json.tool build/custom-pack-schema-bundle.json >/dev/null
           python -m json.tool build/observability-schema-bundle.json >/dev/null
           python -m json.tool build/accessibility-schema-bundle.json >/dev/null
+          python -m json.tool build/compliance-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m json.tool build/security-report.json >/dev/null
           python -m json.tool build/observability-report.json >/dev/null
@@ -162,3 +170,4 @@ jobs:
           /tmp/verityspec-wheel/bin/verity pack validate
           /tmp/verityspec-wheel/bin/verity validate examples/basic
           /tmp/verityspec-wheel/bin/verity validate examples/accessibility
+          /tmp/verityspec-wheel/bin/verity validate examples/compliance

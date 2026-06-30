@@ -1,0 +1,15 @@
+{
+  "workspace": "examples.compliance",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.security",
+    "verity.pack.accessibility",
+    "verity.pack.observability",
+    "verity.pack.compliance"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}
