@@ -102,11 +102,12 @@ Sprint 16 should release the completed `v0.3.0` scope:
 
 ## v0.4.0
 
-The active milestone is `v0.4.0`.
+The `v0.4.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 17 | Complete | Migration chains and workspace format evolution |
+| 18 | Complete | v0.4.0 release preparation |
 
 ## Sprint 17 Priorities
 
@@ -118,6 +119,18 @@ Sprint 17 should make workspace migration version-aware:
 - Migrate legacy workspaces through `legacy -> v0.1.0 -> v0.2.0` by default.
 - Add `verity migrate --list` for migration capability discovery.
 - Update examples, docs, tests, README, changelog, roadmap, and AI-agent guidance.
+
+## Sprint 18 Priorities
+
+Sprint 18 should release the completed `v0.4.0` scope:
+
+- Promote Unreleased changelog entries into `0.4.0`.
+- Bump package metadata to `0.4.0`.
+- Add v0.4.0 release notes.
+- Update README and install references to `v0.4.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.4.0 GitHub release when checks pass.
+- Close the v0.4.0 milestone after release verification.
 
 ## Later Candidates
 
