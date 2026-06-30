@@ -25,6 +25,17 @@ def write_generated(value: str | dict, out_path: str | None) -> str:
     return text
 
 
+def generated_at_value(value: str | None = None) -> str:
+    if value is None:
+        return datetime.now(timezone.utc).isoformat()
+    candidate = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        datetime.fromisoformat(candidate)
+    except ValueError as exc:
+        raise ValueError("--generated-at must be an ISO 8601 datetime.") from exc
+    return value
+
+
 def sanitize_identifier(value: str) -> str:
     text = re.sub(r"[^A-Za-z0-9_]+", "_", value).strip("_")
     if not text:
@@ -514,13 +525,16 @@ def generate_schema_bundle(registry: PackRegistry) -> dict:
 
 
 def generate_validation_report(
-    workspace: Workspace, registry: PackRegistry, issues: list[Issue]
+    workspace: Workspace,
+    registry: PackRegistry,
+    issues: list[Issue],
+    generated_at: str | None = None,
 ) -> dict:
     errors = issue_count(issues, "error")
     warnings = issue_count(issues, "warning")
     return {
         "type": "validation_report",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at_value(generated_at),
         "verityVersion": __version__,
         "workspace": workspace.config.get("workspace", workspace.base_path.name),
         "workspacePath": str(workspace.base_path),
@@ -643,7 +657,7 @@ def parse_next_roadmap_points(text: str) -> list[dict[str, Any]]:
     return points
 
 
-def generate_roadmap_report(path: str | Path) -> dict:
+def generate_roadmap_report(path: str | Path, generated_at: str | None = None) -> dict:
     resolved_path = roadmap_path(path).resolve()
     text = resolved_path.read_text(encoding="utf-8")
     milestones = parse_roadmap_milestones(text)
@@ -655,7 +669,7 @@ def generate_roadmap_report(path: str | Path) -> dict:
 
     return {
         "type": "roadmap_report",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at_value(generated_at),
         "verityVersion": __version__,
         "roadmapPath": str(resolved_path),
         "latestReleasedMilestone": released[-1]["version"] if released else None,
@@ -740,7 +754,7 @@ def is_accessibility_claim_verified(record: Record) -> bool:
     )
 
 
-def generate_security_report(workspace: Workspace) -> dict:
+def generate_security_report(workspace: Workspace, generated_at: str | None = None) -> dict:
     controls = [record for record in workspace.records if record.kind == "security.control"]
     records_by_id = {record.id: record for record in workspace.records if record.id}
     control_entries: list[dict[str, Any]] = []
@@ -773,7 +787,7 @@ def generate_security_report(workspace: Workspace) -> dict:
 
     return {
         "type": "security_report",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at_value(generated_at),
         "verityVersion": __version__,
         "workspace": workspace.config.get("workspace", workspace.base_path.name),
         "workspacePath": str(workspace.base_path),
@@ -789,7 +803,7 @@ def generate_security_report(workspace: Workspace) -> dict:
     }
 
 
-def generate_accessibility_report(workspace: Workspace) -> dict:
+def generate_accessibility_report(workspace: Workspace, generated_at: str | None = None) -> dict:
     claims = [record for record in workspace.records if record.kind == "accessibility.claim"]
     records_by_id = {record.id: record for record in workspace.records if record.id}
     claim_entries: list[dict[str, Any]] = []
@@ -839,7 +853,7 @@ def generate_accessibility_report(workspace: Workspace) -> dict:
 
     return {
         "type": "accessibility_report",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at_value(generated_at),
         "verityVersion": __version__,
         "workspace": workspace.config.get("workspace", workspace.base_path.name),
         "workspacePath": str(workspace.base_path),
@@ -1041,7 +1055,7 @@ def compliance_evidence_groups(
     return evidence
 
 
-def generate_compliance_matrix(workspace: Workspace) -> dict:
+def generate_compliance_matrix(workspace: Workspace, generated_at: str | None = None) -> dict:
     mappings = [record for record in workspace.records if record.kind == "compliance.mapping"]
     records_by_id = {record.id: record for record in workspace.records if record.id}
     matrix: list[dict[str, Any]] = []
@@ -1096,7 +1110,7 @@ def generate_compliance_matrix(workspace: Workspace) -> dict:
 
     return {
         "type": "compliance_matrix",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at_value(generated_at),
         "verityVersion": __version__,
         "workspace": workspace.config.get("workspace", workspace.base_path.name),
         "workspacePath": str(workspace.base_path),
@@ -1141,7 +1155,7 @@ def telemetry_metric_ids(metrics: list[Record]) -> set[str]:
     return telemetry_ids
 
 
-def generate_observability_report(workspace: Workspace) -> dict:
+def generate_observability_report(workspace: Workspace, generated_at: str | None = None) -> dict:
     records_by_id = {record.id: record for record in workspace.records if record.id}
     telemetry = [record for record in workspace.records if record.kind == "observability.telemetry"]
     metrics = [record for record in workspace.records if record.kind == "observability.metric"]
@@ -1168,7 +1182,7 @@ def generate_observability_report(workspace: Workspace) -> dict:
 
     return {
         "type": "observability_report",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at_value(generated_at),
         "verityVersion": __version__,
         "workspace": workspace.config.get("workspace", workspace.base_path.name),
         "workspacePath": str(workspace.base_path),

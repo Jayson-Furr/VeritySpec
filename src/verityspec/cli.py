@@ -23,6 +23,7 @@ from .generators import (
     generate_security_report,
     generate_typescript,
     generate_validation_report,
+    generated_at_value,
     write_generated,
 )
 from .graph import build_graph, graph_to_text
@@ -648,8 +649,14 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
+    try:
+        generated_at = generated_at_value(args.generated_at) if args.generated_at else None
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return EXIT_USAGE_ERROR
+
     if args.artifact == "roadmap-report":
-        report = generate_roadmap_report(args.workspace)
+        report = generate_roadmap_report(args.workspace, generated_at=generated_at)
         text = write_generated(report, args.out)
         if not args.out:
             print(text, end="" if text.endswith("\n") else "\n")
@@ -660,7 +667,12 @@ def cmd_generate(args: argparse.Namespace) -> int:
     workspace, registry = load_context(args.workspace, args.pack_path)
     if args.artifact == "validation-report":
         issues = validate_workspace(workspace, registry, strict=args.strict)
-        report = generate_validation_report(workspace, registry, issues)
+        report = generate_validation_report(
+            workspace,
+            registry,
+            issues,
+            generated_at=generated_at,
+        )
         text = write_generated(report, args.out)
         if not args.out:
             print(text, end="" if text.endswith("\n") else "\n")
@@ -681,10 +693,16 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "python-models": lambda: generate_python_models(workspace),
         "schema-bundle": lambda: generate_schema_bundle(registry),
         "cli-reference": lambda: generate_cli_reference(workspace),
-        "security-report": lambda: generate_security_report(workspace),
-        "observability-report": lambda: generate_observability_report(workspace),
-        "accessibility-report": lambda: generate_accessibility_report(workspace),
-        "compliance-matrix": lambda: generate_compliance_matrix(workspace),
+        "security-report": lambda: generate_security_report(workspace, generated_at=generated_at),
+        "observability-report": lambda: generate_observability_report(
+            workspace,
+            generated_at=generated_at,
+        ),
+        "accessibility-report": lambda: generate_accessibility_report(
+            workspace,
+            generated_at=generated_at,
+        ),
+        "compliance-matrix": lambda: generate_compliance_matrix(workspace, generated_at=generated_at),
     }
     value = generators[args.artifact]()
     text = write_generated(value, args.out)
@@ -911,6 +929,10 @@ def build_parser() -> argparse.ArgumentParser:
     generate_parser.add_argument("workspace")
     generate_parser.add_argument("--out")
     generate_parser.add_argument("--strict", action="store_true")
+    generate_parser.add_argument(
+        "--generated-at",
+        help="Override generatedAt for JSON report artifacts with an ISO 8601 datetime.",
+    )
     add_pack_path_argument(generate_parser)
     generate_parser.set_defaults(func=cmd_generate)
 

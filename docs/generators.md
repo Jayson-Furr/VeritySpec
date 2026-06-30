@@ -11,6 +11,7 @@ verity generate typescript examples/basic --out build/types.ts
 verity generate python-models examples/basic --out build/models.py
 verity generate schema-bundle examples/basic --out build/schema-bundle.json
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate validation-report examples/basic --generated-at 2026-01-02T03:04:05Z --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
@@ -41,6 +42,11 @@ Validation reports include:
 - Known record kinds
 - Issue summary and full issue list, including formatted issue locations and
   structured `locationDetails` when available
+
+JSON report generators support `--generated-at <ISO datetime>` for
+deterministic fixture generation. The value is written directly to
+`generatedAt` after ISO 8601 validation. When omitted, VeritySpec writes the
+current UTC timestamp.
 
 Security reports include:
 

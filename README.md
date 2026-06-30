@@ -42,7 +42,8 @@ This implementation provides:
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices, and
   roadmap governance reports, with OpenAPI path-parameter support and
-  snapshot-tested type/model output including nested Python dataclasses.
+  snapshot-tested type/model output including nested Python dataclasses and
+  deterministic timestamp controls for generated JSON reports.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`.
 - Migration dry-run fixture coverage for each supported workspace version edge.
