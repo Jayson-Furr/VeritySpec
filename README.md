@@ -37,6 +37,7 @@ This implementation provides:
   including nested Python dataclasses.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`.
+- Fixture compatibility coverage across supported workspace format versions.
 
 ## Quick Start
 

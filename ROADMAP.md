@@ -172,6 +172,7 @@ The `v0.6.0` milestone is active.
 | Sprint | Status | Focus |
 |---:|---|---|
 | 21 | Complete | Security readiness hardening for critical controls |
+| 22 | Complete | Workspace compatibility matrix across supported spec versions |
 
 ## Sprint 21 Priorities
 
@@ -184,6 +185,17 @@ Sprint 21 should make release readiness stricter for critical security controls:
 - Add a stable `security.control.critical_unverified` issue code and
   explanation.
 - Update tests, README, changelog, roadmap, readiness docs, and security docs.
+
+## Sprint 22 Priorities
+
+Sprint 22 should keep supported workspace versions executable as fixtures
+evolve:
+
+- Add a compatibility matrix over supported workspace `specVersion` values.
+- Reuse positive example and fixture workspaces to avoid parallel fixture drift.
+- Verify validation, lint, and readiness for each supported workspace version.
+- Update README, changelog, roadmap, and versioning documentation.
+- Keep the next-20 planning backlog populated after converting this item.
 
 ## Later Candidates
 
@@ -205,43 +217,42 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a compatibility test matrix for fixture workspaces across supported
-   workspace spec versions.
-2. Improve validation issue locations for nested schema, readiness, and
+1. Improve validation issue locations for nested schema, readiness, and
    reference errors.
-3. Add `verity doctor --report-out` for writing diagnostics without shell
+2. Add `verity doctor --report-out` for writing diagnostics without shell
    redirection.
-4. Add `verity init --template` for API, CLI, events, and security starter
+3. Add `verity init --template` for API, CLI, events, and security starter
    workspaces.
-5. Add a first `verity.pack.observability` pack for telemetry events, metrics,
+4. Add a first `verity.pack.observability` pack for telemetry events, metrics,
    dashboards, and alert ownership.
-6. Add an observability report generator that summarizes signals, ownership,
+5. Add an observability report generator that summarizes signals, ownership,
    and release gaps.
-7. Add a first `verity.pack.accessibility` pack for UI accessibility claims,
+6. Add a first `verity.pack.accessibility` pack for UI accessibility claims,
    checks, and evidence.
-8. Add an accessibility report generator suitable for release review.
-9. Add a first `verity.pack.compliance` pack that maps controls to frameworks
+7. Add an accessibility report generator suitable for release review.
+8. Add a first `verity.pack.compliance` pack that maps controls to frameworks
     without making legal claims.
-10. Add a compliance matrix generator that joins security, accessibility, and
+9. Add a compliance matrix generator that joins security, accessibility, and
     observability evidence.
-11. Improve `verity diff` with machine-readable change severity and breaking
+10. Improve `verity diff` with machine-readable change severity and breaking
     change classification.
-12. Add migration dry-run fixtures for every supported workspace version edge.
-13. Add generator plugin metadata so packs can advertise report capabilities
+11. Add migration dry-run fixtures for every supported workspace version edge.
+12. Add generator plugin metadata so packs can advertise report capabilities
     more explicitly than a string list.
-14. Add pack authoring tests that verify generated scaffolds can be used by a
+13. Add pack authoring tests that verify generated scaffolds can be used by a
     sample workspace immediately.
-15. Add downstream repository templates for GitHub Actions product-contract
+14. Add downstream repository templates for GitHub Actions product-contract
     enforcement.
-16. Add golden security-report fixtures once the report shape stabilizes.
-17. Add public contribution guidance for proposing new packs and schema
+15. Add golden security-report fixtures once the report shape stabilizes.
+16. Add public contribution guidance for proposing new packs and schema
     changes.
-18. Review package distribution readiness for PyPI trusted publishing and
+17. Review package distribution readiness for PyPI trusted publishing and
     decide whether to publish the `verityspec` package publicly.
-19. Add a roadmap-report generator that emits active milestones, completed
+18. Add a roadmap-report generator that emits active milestones, completed
     sprints, and future planning points for project governance.
-20. Add security-control evidence freshness checks for `verification.lastVerified`
+19. Add security-control evidence freshness checks for `verification.lastVerified`
     age and review cadence.
+20. Add workspace compatibility golden manifests for future format upgrades.
 
 ## Working Rule
 

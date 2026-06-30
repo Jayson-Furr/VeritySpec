@@ -5,6 +5,8 @@
 - Added conditional readiness rules to pack manifests.
 - Added security readiness hardening so critical unverified
   `security.control` records emit `security.control.critical_unverified`.
+- Added a fixture compatibility matrix across supported workspace spec
+  versions.
 
 ## 0.5.0
 
