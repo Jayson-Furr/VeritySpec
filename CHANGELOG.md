@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.34.0
+
 - Added a maintained downstream CI template for monorepos with multiple
   VeritySpec workspaces and shared local packs.
+- Added v0.34.0 release notes and roadmap closeout.
 
 ## 0.33.0
 
