@@ -1,0 +1,79 @@
+{
+  "records": [
+    {
+      "id": "game.mode.coop_extraction",
+      "kind": "game.mode",
+      "name": "Co-op Extraction",
+      "description": "Primary cooperative mode where players enter, loot, and escape a collapsing dream zone.",
+      "status": "ready",
+      "owner": "game-design",
+      "modeType": "co-op",
+      "summary": "Two to four players collect memory shards and decide when to extract before the collapse timer expires.",
+      "playerCount": {
+        "min": 2,
+        "max": 4,
+        "recommended": 3
+      },
+      "references": [
+        {
+          "type": "usesLoop",
+          "target": "game.loop.extract_escape_upgrade"
+        }
+      ]
+    },
+    {
+      "id": "game.loop.extract_escape_upgrade",
+      "kind": "game.loop",
+      "name": "Extract, Escape, Upgrade",
+      "description": "Core loop for entering dream zones, collecting resources, escaping, and investing upgrades.",
+      "status": "ready",
+      "owner": "game-design",
+      "loopType": "core",
+      "cadence": "session",
+      "steps": [
+        {
+          "name": "Enter",
+          "description": "Players select a dream zone and load into an unstable run."
+        },
+        {
+          "name": "Collect",
+          "description": "Players locate memory shards while choosing how much risk to take."
+        },
+        {
+          "name": "Escape",
+          "description": "Players reach an extraction portal before the zone collapse finishes."
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "game.prototype-scope.vertical_slice_01",
+      "kind": "game.prototype-scope",
+      "name": "Vertical Slice 01",
+      "description": "First playable prototype scope for proving the extraction loop in Godot.",
+      "status": "ready",
+      "owner": "production",
+      "prototypeType": "vertical-slice",
+      "goal": "Prove that co-op shard collection, timed collapse pressure, and extraction decisions are compelling in one greybox Godot scene.",
+      "includedFeatureRefs": [
+        "feature.zone-entry",
+        "feature.memory-shards",
+        "feature.zone-collapse"
+      ],
+      "successCriteria": [
+        "Players can complete one extraction session without designer intervention.",
+        "The Godot export preset can produce a local development build."
+      ],
+      "references": [
+        {
+          "type": "validatesMode",
+          "target": "game.mode.coop_extraction"
+        },
+        {
+          "type": "validatesLoop",
+          "target": "game.loop.extract_escape_upgrade"
+        }
+      ]
+    }
+  ]
+}

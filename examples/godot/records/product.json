@@ -1,0 +1,19 @@
+{
+  "id": "product.dream_extraction_godot",
+  "kind": "product",
+  "name": "Dream Extraction Godot Prototype",
+  "description": "Product contract connecting the Dream Extraction game concept to a Godot prototype project.",
+  "status": "ready",
+  "owner": "engineering",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "describes",
+      "target": "game.product.dream_extraction"
+    },
+    {
+      "type": "hasGodotProject",
+      "target": "godot.project.dream_extraction"
+    }
+  ]
+}

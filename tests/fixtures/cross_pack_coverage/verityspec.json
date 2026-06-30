@@ -14,6 +14,7 @@
     "verity.pack.game-core",
     "verity.pack.game-assets",
     "verity.pack.unity",
+    "verity.pack.godot",
     "verity.pack.gameplay",
     "verity.pack.content",
     "verity.pack.economy"

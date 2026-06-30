@@ -1,0 +1,37 @@
+{
+  "id": "game.product.dream_extraction",
+  "kind": "game.product",
+  "name": "Dream Extraction Game Product",
+  "description": "A co-op extraction roguelite built around unstable dream zones, memory shards, and timed escape.",
+  "status": "ready",
+  "owner": "creative-direction",
+  "pitch": "Players enter unstable dream zones, recover memory shards, and escape before the zone collapses.",
+  "playerFantasy": "A small squad survives surreal danger by making tense extraction choices together.",
+  "targetAudience": "Co-op action players who enjoy roguelite progression and high-pressure extraction sessions.",
+  "targetPlatforms": [
+    "pc"
+  ],
+  "genres": [
+    "co-op",
+    "extraction",
+    "roguelite"
+  ],
+  "references": [
+    {
+      "type": "hasMode",
+      "target": "game.mode.coop_extraction"
+    },
+    {
+      "type": "hasLoop",
+      "target": "game.loop.extract_escape_upgrade"
+    },
+    {
+      "type": "prototypeScope",
+      "target": "game.prototype-scope.vertical_slice_01"
+    },
+    {
+      "type": "implementedBy",
+      "target": "godot.project.dream_extraction"
+    }
+  ]
+}

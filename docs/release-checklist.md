@@ -47,6 +47,10 @@ verity validate examples/unity
 verity lint examples/unity --strict
 verity readiness examples/unity --strict
 verity graph examples/unity --format json > build/unity-graph.json
+verity validate examples/godot
+verity lint examples/godot --strict
+verity readiness examples/godot --strict
+verity graph examples/godot --format json > build/godot-graph.json
 verity validate examples/gameplay
 verity lint examples/gameplay --strict
 verity readiness examples/gameplay --strict
@@ -79,6 +83,7 @@ verity generate deployment-report examples/deployment --out build/deployment-rep
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
+verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
@@ -91,6 +96,7 @@ verity generate schema-bundle examples/accessibility --out build/accessibility-s
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
 python -m json.tool build/unity-graph.json >/dev/null
+python -m json.tool build/godot-graph.json >/dev/null
 python -m build
 twine check dist/*
 ```
@@ -108,6 +114,7 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/game-core
 /tmp/verityspec-wheel/bin/verity validate examples/game-assets
 /tmp/verityspec-wheel/bin/verity validate examples/unity
+/tmp/verityspec-wheel/bin/verity validate examples/godot
 /tmp/verityspec-wheel/bin/verity validate examples/gameplay
 /tmp/verityspec-wheel/bin/verity validate examples/content
 /tmp/verityspec-wheel/bin/verity validate examples/economy

@@ -18,16 +18,17 @@
     "verity.pack.game-core",
     "verity.pack.game-assets",
     "verity.pack.unity",
+    "verity.pack.godot",
     "verity.pack.gameplay",
     "verity.pack.content",
     "verity.pack.economy"
   ],
-  "recordCount": 47,
+  "recordCount": 61,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 14,
-    "loadedSurfacePacks": 14,
-    "coveredSurfaces": 14,
+    "trackedSurfaces": 15,
+    "loadedSurfacePacks": 15,
+    "coveredSurfaces": 15,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -41,6 +42,7 @@
       "game-assets": 4,
       "game-core": 4,
       "gameplay": 4,
+      "godot": 14,
       "observability": 4,
       "security": 1,
       "unity": 12
@@ -74,6 +76,20 @@
       "game.prototype-scope": 1,
       "game.rule": 1,
       "game.visual-identity": 1,
+      "godot.addon": 1,
+      "godot.agent-context-exporter": 1,
+      "godot.autoload": 1,
+      "godot.export-preset": 1,
+      "godot.input-action": 1,
+      "godot.node-contract": 1,
+      "godot.project": 1,
+      "godot.readiness-dashboard": 1,
+      "godot.resource": 1,
+      "godot.scanner": 1,
+      "godot.scene": 1,
+      "godot.script": 1,
+      "godot.shared-library": 1,
+      "godot.validation-runner": 1,
       "observability.alert": 1,
       "observability.dashboard": 1,
       "observability.metric": 1,
@@ -653,6 +669,142 @@
       ]
     },
     {
+      "id": "godot",
+      "name": "Godot",
+      "packId": "verity.pack.godot",
+      "packLoaded": true,
+      "recordKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.shared-library",
+        "godot.scene",
+        "godot.node-contract",
+        "godot.resource",
+        "godot.script",
+        "godot.autoload",
+        "godot.input-action",
+        "godot.export-preset",
+        "godot.scanner",
+        "godot.validation-runner",
+        "godot.readiness-dashboard",
+        "godot.agent-context-exporter"
+      ],
+      "productRelationships": [
+        "hasGodotProject"
+      ],
+      "recordCount": 14,
+      "covered": true,
+      "records": [
+        {
+          "id": "godot.addon.coverage_tools",
+          "kind": "godot.addon",
+          "name": "Coverage Tools Addon",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.agent-context-exporter.coverage_context",
+          "kind": "godot.agent-context-exporter",
+          "name": "Coverage Agent Context Exporter",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.autoload.coverage_registry",
+          "kind": "godot.autoload",
+          "name": "Coverage Registry Autoload",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.export-preset.coverage_pc",
+          "kind": "godot.export-preset",
+          "name": "Coverage PC Development Export",
+          "status": "ready",
+          "owner": "build-engineering"
+        },
+        {
+          "id": "godot.input-action.coverage_interact",
+          "kind": "godot.input-action",
+          "name": "Coverage Interact Input Action",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.node-contract.coverage_avatar",
+          "kind": "godot.node-contract",
+          "name": "Coverage Avatar Node",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.project.coverage_adventure",
+          "kind": "godot.project",
+          "name": "Coverage Adventure Godot Project",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.readiness-dashboard.coverage_prototype",
+          "kind": "godot.readiness-dashboard",
+          "name": "Coverage Prototype Readiness Dashboard",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.resource.coverage_shard_icon",
+          "kind": "godot.resource",
+          "name": "Coverage Shard Icon Resource",
+          "status": "ready",
+          "owner": "art-tech"
+        },
+        {
+          "id": "godot.scanner.coverage_contracts",
+          "kind": "godot.scanner",
+          "name": "Coverage Contract Scanner",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.scene.coverage_zone",
+          "kind": "godot.scene",
+          "name": "Coverage Zone Scene",
+          "status": "ready",
+          "owner": "level-design"
+        },
+        {
+          "id": "godot.script.coverage_controller",
+          "kind": "godot.script",
+          "name": "Coverage Controller Script",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.shared-library.coverage_runtime",
+          "kind": "godot.shared-library",
+          "name": "Coverage Runtime Library",
+          "status": "ready",
+          "owner": "godot-engineering"
+        },
+        {
+          "id": "godot.validation-runner.coverage_contracts",
+          "kind": "godot.validation-runner",
+          "name": "Coverage Contract Validation Runner",
+          "status": "ready",
+          "owner": "godot-engineering"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasGodotProject",
+          "targetId": "godot.project.coverage_adventure",
+          "targetKind": "godot.project",
+          "targetName": "Coverage Adventure Godot Project"
+        }
+      ]
+    },
+    {
       "id": "gameplay",
       "name": "Gameplay",
       "packId": "verity.pack.gameplay",
@@ -933,6 +1085,15 @@
             "targetId": "unity.project.coverage_adventure",
             "targetKind": "unity.project",
             "targetName": "Coverage Adventure Unity Project"
+          }
+        ],
+        "godot": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasGodotProject",
+            "targetId": "godot.project.coverage_adventure",
+            "targetKind": "godot.project",
+            "targetName": "Coverage Adventure Godot Project"
           }
         ],
         "gameplay": [

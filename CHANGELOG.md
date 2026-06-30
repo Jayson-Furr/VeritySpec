@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.godot` with `godot.project`, `godot.addon`,
+  `godot.shared-library`, `godot.scene`, `godot.node-contract`,
+  `godot.resource`, `godot.script`, `godot.autoload`, `godot.input-action`,
+  `godot.export-preset`, `godot.scanner`, `godot.validation-runner`,
+  `godot.readiness-dashboard`, and `godot.agent-context-exporter` records,
+  readiness gates, reference rules, an executable Godot game workspace
+  example, graph coverage, schema-bundle coverage, and public docs for Godot
+  game implementation and engine-tooling contracts.
+
 ## 0.40.0
 
 - Expanded built-in `verity.pack.unity` with `unity.package`,

@@ -54,6 +54,10 @@
           "target": "unity.project.coverage_adventure"
         },
         {
+          "type": "hasGodotProject",
+          "target": "godot.project.coverage_adventure"
+        },
+        {
           "type": "hasGameplay",
           "target": "game.mechanic.coverage_shards"
         },
@@ -1282,6 +1286,397 @@
         {
           "type": "usesPackage",
           "target": "unity.package.coverage_input"
+        }
+      ]
+    },
+    {
+      "id": "godot.project.coverage_adventure",
+      "kind": "godot.project",
+      "name": "Coverage Adventure Godot Project",
+      "description": "Godot project contract for the coverage adventure prototype.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "godotVersion": "4.3",
+      "projectPath": "godot/CoverageAdventure",
+      "renderer": "forward-plus",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "mainSceneRef": "godot.scene.coverage_zone",
+      "autoloadRefs": [
+        "godot.autoload.coverage_registry"
+      ],
+      "references": [
+        {
+          "type": "usesAddon",
+          "target": "godot.addon.coverage_tools"
+        },
+        {
+          "type": "usesSharedLibrary",
+          "target": "godot.shared-library.coverage_runtime"
+        },
+        {
+          "type": "containsScene",
+          "target": "godot.scene.coverage_zone"
+        },
+        {
+          "type": "declaresNode",
+          "target": "godot.node-contract.coverage_avatar"
+        },
+        {
+          "type": "usesResource",
+          "target": "godot.resource.coverage_shard_icon"
+        },
+        {
+          "type": "usesScript",
+          "target": "godot.script.coverage_controller"
+        },
+        {
+          "type": "usesAutoload",
+          "target": "godot.autoload.coverage_registry"
+        },
+        {
+          "type": "usesInputAction",
+          "target": "godot.input-action.coverage_interact"
+        },
+        {
+          "type": "exportsFor",
+          "target": "godot.export-preset.coverage_pc"
+        }
+      ]
+    },
+    {
+      "id": "godot.addon.coverage_tools",
+      "kind": "godot.addon",
+      "name": "Coverage Tools Addon",
+      "description": "Godot addon contract for coverage prototype validation tools.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "addonName": "coverage_tools",
+      "version": "0.1.0",
+      "source": "local",
+      "addonPath": "addons/coverage_tools",
+      "purpose": "Provides contract scanning and readiness tooling for the coverage prototype.",
+      "capabilities": [
+        "contract-scan",
+        "readiness-dashboard"
+      ],
+      "references": []
+    },
+    {
+      "id": "godot.shared-library.coverage_runtime",
+      "kind": "godot.shared-library",
+      "name": "Coverage Runtime Library",
+      "description": "Shared Godot runtime library contract for coverage fixtures.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "libraryName": "Coverage.Runtime",
+      "repository": "Jayson-Furr/VeritySpec.Godot",
+      "versionRequirement": "^0.1.0",
+      "addonRefs": [
+        "godot.addon.coverage_tools"
+      ],
+      "exportedCapabilities": [
+        "runtime-validation",
+        "agent-context-export"
+      ],
+      "references": [
+        {
+          "type": "includesAddon",
+          "target": "godot.addon.coverage_tools"
+        },
+        {
+          "type": "exportsScript",
+          "target": "godot.script.coverage_controller"
+        }
+      ]
+    },
+    {
+      "id": "godot.scene.coverage_zone",
+      "kind": "godot.scene",
+      "name": "Coverage Zone Scene",
+      "description": "Godot scene contract for the coverage prototype zone.",
+      "status": "ready",
+      "owner": "level-design",
+      "scenePath": "res://scenes/coverage_zone.tscn",
+      "sceneRole": "prototype",
+      "rootNode": "CoverageZone",
+      "loadMode": "main",
+      "includedInExport": true,
+      "references": [
+        {
+          "type": "usesAddon",
+          "target": "godot.addon.coverage_tools"
+        },
+        {
+          "type": "containsNode",
+          "target": "godot.node-contract.coverage_avatar"
+        },
+        {
+          "type": "usesResource",
+          "target": "godot.resource.coverage_shard_icon"
+        },
+        {
+          "type": "usesScript",
+          "target": "godot.script.coverage_controller"
+        }
+      ]
+    },
+    {
+      "id": "godot.node-contract.coverage_avatar",
+      "kind": "godot.node-contract",
+      "name": "Coverage Avatar Node",
+      "description": "Godot node contract for the coverage player avatar.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "nodePath": "CoverageZone/PlayerAvatar",
+      "nodeType": "CharacterBody3D",
+      "nodeRole": "player",
+      "requiredSignals": [
+        "coverage_collected"
+      ],
+      "requiredGroups": [
+        "players"
+      ],
+      "references": [
+        {
+          "type": "implementedByScript",
+          "target": "godot.script.coverage_controller"
+        },
+        {
+          "type": "usesResource",
+          "target": "godot.resource.coverage_shard_icon"
+        },
+        {
+          "type": "usesInputAction",
+          "target": "godot.input-action.coverage_interact"
+        }
+      ]
+    },
+    {
+      "id": "godot.resource.coverage_shard_icon",
+      "kind": "godot.resource",
+      "name": "Coverage Shard Icon Resource",
+      "description": "Godot resource contract for coverage shard visuals.",
+      "status": "ready",
+      "owner": "art-tech",
+      "resourcePath": "res://art/items/coverage_shard_icon.tres",
+      "resourceType": "texture",
+      "purpose": "Provides coverage shard pickup visuals.",
+      "references": [
+        {
+          "type": "backedByScript",
+          "target": "godot.script.coverage_controller"
+        }
+      ]
+    },
+    {
+      "id": "godot.script.coverage_controller",
+      "kind": "godot.script",
+      "name": "Coverage Controller Script",
+      "description": "Godot script contract for coverage prototype controls.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "scriptPath": "res://scripts/coverage_controller.gd",
+      "language": "gdscript",
+      "className": "CoverageController",
+      "purpose": "Implements prototype movement and shard pickup behavior.",
+      "references": [
+        {
+          "type": "usesAddon",
+          "target": "godot.addon.coverage_tools"
+        }
+      ]
+    },
+    {
+      "id": "godot.autoload.coverage_registry",
+      "kind": "godot.autoload",
+      "name": "Coverage Registry Autoload",
+      "description": "Godot autoload contract for coverage contract metadata.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "singletonName": "CoverageRegistry",
+      "scriptRef": "godot.script.coverage_controller",
+      "loadOrder": 10,
+      "globalName": "CoverageRegistry",
+      "references": [
+        {
+          "type": "usesScript",
+          "target": "godot.script.coverage_controller"
+        }
+      ]
+    },
+    {
+      "id": "godot.input-action.coverage_interact",
+      "kind": "godot.input-action",
+      "name": "Coverage Interact Input Action",
+      "description": "Godot input action contract for coverage interactions.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "actionName": "coverage_interact",
+      "eventTypes": [
+        "key",
+        "gamepad-button"
+      ],
+      "deviceTypes": [
+        "keyboard",
+        "gamepad"
+      ],
+      "deadzone": 0.2,
+      "references": [
+        {
+          "type": "handledByScript",
+          "target": "godot.script.coverage_controller"
+        }
+      ]
+    },
+    {
+      "id": "godot.export-preset.coverage_pc",
+      "kind": "godot.export-preset",
+      "name": "Coverage PC Development Export",
+      "description": "Godot export preset contract for the coverage PC build.",
+      "status": "ready",
+      "owner": "build-engineering",
+      "presetName": "PC Development",
+      "platform": "windows",
+      "outputPath": "builds/coverage/CoverageAdventure.exe",
+      "scenes": [
+        "godot.scene.coverage_zone"
+      ],
+      "debugExport": true,
+      "references": [
+        {
+          "type": "includesScene",
+          "target": "godot.scene.coverage_zone"
+        },
+        {
+          "type": "usesAddon",
+          "target": "godot.addon.coverage_tools"
+        }
+      ]
+    },
+    {
+      "id": "godot.scanner.coverage_contracts",
+      "kind": "godot.scanner",
+      "name": "Coverage Contract Scanner",
+      "description": "Godot scanner contract for coverage project metadata.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "scannerType": "project",
+      "entryPoint": "addons/coverage_tools/coverage_contract_scanner.gd",
+      "outputPath": "build/godot/coverage-contracts.json",
+      "scannedKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.scene",
+        "godot.script",
+        "godot.resource"
+      ],
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "godot.project.coverage_adventure"
+        },
+        {
+          "type": "scansAddon",
+          "target": "godot.addon.coverage_tools"
+        },
+        {
+          "type": "scansScene",
+          "target": "godot.scene.coverage_zone"
+        },
+        {
+          "type": "scansScript",
+          "target": "godot.script.coverage_controller"
+        },
+        {
+          "type": "scansResource",
+          "target": "godot.resource.coverage_shard_icon"
+        }
+      ]
+    },
+    {
+      "id": "godot.validation-runner.coverage_contracts",
+      "kind": "godot.validation-runner",
+      "name": "Coverage Contract Validation Runner",
+      "description": "Godot validation runner contract for coverage fixture metadata.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "runnerType": "ci",
+      "command": "godot --headless --path godot/CoverageAdventure --script addons/coverage_tools/run_validation.gd",
+      "scannerRefs": [
+        "godot.scanner.coverage_contracts"
+      ],
+      "readinessDashboardRef": "godot.readiness-dashboard.coverage_prototype",
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "godot.scanner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "godot.readiness-dashboard.coverage_prototype",
+      "kind": "godot.readiness-dashboard",
+      "name": "Coverage Prototype Readiness Dashboard",
+      "description": "Godot readiness dashboard contract for coverage fixture metadata.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "dashboardPath": "addons/coverage_tools/coverage_readiness_dashboard.gd",
+      "dashboardType": "editor",
+      "trackedRecordKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.scene",
+        "godot.node-contract",
+        "godot.export-preset",
+        "godot.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "godot.project.coverage_adventure"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "godot.validation-runner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "godot.agent-context-exporter.coverage_context",
+      "kind": "godot.agent-context-exporter",
+      "name": "Coverage Agent Context Exporter",
+      "description": "Godot agent-context exporter contract for coverage fixture metadata.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "exporterType": "markdown",
+      "outputPath": "build/godot/coverage-agent-context.md",
+      "includedRecordKinds": [
+        "game.product",
+        "game.prototype-scope",
+        "godot.project",
+        "godot.shared-library",
+        "godot.scene",
+        "godot.validation-runner",
+        "godot.readiness-dashboard"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "godot.project.coverage_adventure"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "godot.readiness-dashboard.coverage_prototype"
+        },
+        {
+          "type": "includesRunner",
+          "target": "godot.validation-runner.coverage_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "godot.scanner.coverage_contracts"
         }
       ]
     }

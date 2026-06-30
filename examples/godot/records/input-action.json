@@ -1,0 +1,24 @@
+{
+  "id": "godot.input-action.interact",
+  "kind": "godot.input-action",
+  "name": "Interact Input Action",
+  "description": "Godot input action contract for collecting shards and triggering extraction interactions.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "actionName": "interact",
+  "eventTypes": [
+    "key",
+    "gamepad-button"
+  ],
+  "deviceTypes": [
+    "keyboard",
+    "gamepad"
+  ],
+  "deadzone": 0.2,
+  "references": [
+    {
+      "type": "handledByScript",
+      "target": "godot.script.player_controller"
+    }
+  ]
+}

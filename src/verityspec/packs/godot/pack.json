@@ -1,0 +1,527 @@
+{
+  "id": "verity.pack.godot",
+  "version": "0.1.0",
+  "name": "VeritySpec Godot Pack",
+  "description": "Godot project, addon, shared-library, scene, node, resource, script, autoload, input, export, scanner, validation-runner, readiness-dashboard, and agent-context records for Godot game implementation and engine-tooling product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "godot.project",
+      "path": "schemas/godot-project.schema.json"
+    },
+    {
+      "kind": "godot.addon",
+      "path": "schemas/godot-addon.schema.json"
+    },
+    {
+      "kind": "godot.shared-library",
+      "path": "schemas/godot-shared-library.schema.json"
+    },
+    {
+      "kind": "godot.scene",
+      "path": "schemas/godot-scene.schema.json"
+    },
+    {
+      "kind": "godot.node-contract",
+      "path": "schemas/godot-node-contract.schema.json"
+    },
+    {
+      "kind": "godot.resource",
+      "path": "schemas/godot-resource.schema.json"
+    },
+    {
+      "kind": "godot.script",
+      "path": "schemas/godot-script.schema.json"
+    },
+    {
+      "kind": "godot.autoload",
+      "path": "schemas/godot-autoload.schema.json"
+    },
+    {
+      "kind": "godot.input-action",
+      "path": "schemas/godot-input-action.schema.json"
+    },
+    {
+      "kind": "godot.export-preset",
+      "path": "schemas/godot-export-preset.schema.json"
+    },
+    {
+      "kind": "godot.scanner",
+      "path": "schemas/godot-scanner.schema.json"
+    },
+    {
+      "kind": "godot.validation-runner",
+      "path": "schemas/godot-validation-runner.schema.json"
+    },
+    {
+      "kind": "godot.readiness-dashboard",
+      "path": "schemas/godot-readiness-dashboard.schema.json"
+    },
+    {
+      "kind": "godot.agent-context-exporter",
+      "path": "schemas/godot-agent-context-exporter.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "godot.project.release",
+      "kind": "godot.project",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "godotVersion",
+        "projectPath",
+        "renderer"
+      ],
+      "minItems": {
+        "targetPlatforms": 1,
+        "references": 5
+      }
+    },
+    {
+      "id": "godot.addon.release",
+      "kind": "godot.addon",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "addonName",
+        "version",
+        "source",
+        "purpose"
+      ]
+    },
+    {
+      "id": "godot.shared-library.release",
+      "kind": "godot.shared-library",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "libraryName",
+        "versionRequirement"
+      ],
+      "minItems": {
+        "addonRefs": 1,
+        "exportedCapabilities": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.scene.release",
+      "kind": "godot.scene",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scenePath",
+        "sceneRole",
+        "rootNode",
+        "loadMode"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.node-contract.release",
+      "kind": "godot.node-contract",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "nodePath",
+        "nodeType",
+        "nodeRole"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.resource.release",
+      "kind": "godot.resource",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "resourcePath",
+        "resourceType",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.script.release",
+      "kind": "godot.script",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scriptPath",
+        "language",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.autoload.release",
+      "kind": "godot.autoload",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "singletonName",
+        "scriptRef",
+        "loadOrder"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.input-action.release",
+      "kind": "godot.input-action",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "actionName"
+      ],
+      "minItems": {
+        "eventTypes": 1,
+        "deviceTypes": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.export-preset.release",
+      "kind": "godot.export-preset",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "presetName",
+        "platform",
+        "outputPath"
+      ],
+      "minItems": {
+        "scenes": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.scanner.release",
+      "kind": "godot.scanner",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scannerType",
+        "entryPoint"
+      ],
+      "minItems": {
+        "scannedKinds": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.validation-runner.release",
+      "kind": "godot.validation-runner",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "runnerType",
+        "command"
+      ],
+      "minItems": {
+        "scannerRefs": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.readiness-dashboard.release",
+      "kind": "godot.readiness-dashboard",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "dashboardPath",
+        "dashboardType"
+      ],
+      "minItems": {
+        "trackedRecordKinds": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "godot.agent-context-exporter.release",
+      "kind": "godot.agent-context-exporter",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "exporterType",
+        "outputPath"
+      ],
+      "minItems": {
+        "includedRecordKinds": 1,
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasGodotProject",
+      "targetKind": "godot.project"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "implementedBy",
+      "targetKind": "godot.project"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesAddon",
+      "targetKind": "godot.addon"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesSharedLibrary",
+      "targetKind": "godot.shared-library"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "containsScene",
+      "targetKind": "godot.scene"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "declaresNode",
+      "targetKind": "godot.node-contract"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesResource",
+      "targetKind": "godot.resource"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesAutoload",
+      "targetKind": "godot.autoload"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesInputAction",
+      "targetKind": "godot.input-action"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "exportsFor",
+      "targetKind": "godot.export-preset"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "scannedBy",
+      "targetKind": "godot.scanner"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "validatedBy",
+      "targetKind": "godot.validation-runner"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "reportsReadinessTo",
+      "targetKind": "godot.readiness-dashboard"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "exportsAgentContextWith",
+      "targetKind": "godot.agent-context-exporter"
+    },
+    {
+      "sourceKind": "godot.addon",
+      "relationship": "providedByLibrary",
+      "targetKind": "godot.shared-library"
+    },
+    {
+      "sourceKind": "godot.shared-library",
+      "relationship": "includesAddon",
+      "targetKind": "godot.addon"
+    },
+    {
+      "sourceKind": "godot.shared-library",
+      "relationship": "exportsScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.scene",
+      "relationship": "usesAddon",
+      "targetKind": "godot.addon"
+    },
+    {
+      "sourceKind": "godot.scene",
+      "relationship": "containsNode",
+      "targetKind": "godot.node-contract"
+    },
+    {
+      "sourceKind": "godot.scene",
+      "relationship": "usesResource",
+      "targetKind": "godot.resource"
+    },
+    {
+      "sourceKind": "godot.scene",
+      "relationship": "usesScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.node-contract",
+      "relationship": "implementedByScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.node-contract",
+      "relationship": "usesResource",
+      "targetKind": "godot.resource"
+    },
+    {
+      "sourceKind": "godot.node-contract",
+      "relationship": "usesInputAction",
+      "targetKind": "godot.input-action"
+    },
+    {
+      "sourceKind": "godot.resource",
+      "relationship": "backedByScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.script",
+      "relationship": "usesAddon",
+      "targetKind": "godot.addon"
+    },
+    {
+      "sourceKind": "godot.input-action",
+      "relationship": "handledByScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.autoload",
+      "relationship": "usesScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.export-preset",
+      "relationship": "includesScene",
+      "targetKind": "godot.scene"
+    },
+    {
+      "sourceKind": "godot.export-preset",
+      "relationship": "usesAddon",
+      "targetKind": "godot.addon"
+    },
+    {
+      "sourceKind": "godot.scanner",
+      "relationship": "scansProject",
+      "targetKind": "godot.project"
+    },
+    {
+      "sourceKind": "godot.scanner",
+      "relationship": "scansAddon",
+      "targetKind": "godot.addon"
+    },
+    {
+      "sourceKind": "godot.scanner",
+      "relationship": "scansScene",
+      "targetKind": "godot.scene"
+    },
+    {
+      "sourceKind": "godot.scanner",
+      "relationship": "scansScript",
+      "targetKind": "godot.script"
+    },
+    {
+      "sourceKind": "godot.scanner",
+      "relationship": "scansResource",
+      "targetKind": "godot.resource"
+    },
+    {
+      "sourceKind": "godot.validation-runner",
+      "relationship": "runsScanner",
+      "targetKind": "godot.scanner"
+    },
+    {
+      "sourceKind": "godot.validation-runner",
+      "relationship": "reportsTo",
+      "targetKind": "godot.readiness-dashboard"
+    },
+    {
+      "sourceKind": "godot.readiness-dashboard",
+      "relationship": "tracksProject",
+      "targetKind": "godot.project"
+    },
+    {
+      "sourceKind": "godot.readiness-dashboard",
+      "relationship": "tracksRunner",
+      "targetKind": "godot.validation-runner"
+    },
+    {
+      "sourceKind": "godot.agent-context-exporter",
+      "relationship": "describesProject",
+      "targetKind": "godot.project"
+    },
+    {
+      "sourceKind": "godot.agent-context-exporter",
+      "relationship": "includesDashboard",
+      "targetKind": "godot.readiness-dashboard"
+    },
+    {
+      "sourceKind": "godot.agent-context-exporter",
+      "relationship": "includesRunner",
+      "targetKind": "godot.validation-runner"
+    },
+    {
+      "sourceKind": "godot.agent-context-exporter",
+      "relationship": "includesScanner",
+      "targetKind": "godot.scanner"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for Godot records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.shared-library",
+        "godot.scene",
+        "godot.node-contract",
+        "godot.resource",
+        "godot.script",
+        "godot.autoload",
+        "godot.input-action",
+        "godot.export-preset",
+        "godot.scanner",
+        "godot.validation-runner",
+        "godot.readiness-dashboard",
+        "godot.agent-context-exporter"
+      ]
+    }
+  ]
+}

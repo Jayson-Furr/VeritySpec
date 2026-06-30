@@ -1,0 +1,31 @@
+{
+  "id": "godot.node-contract.player_avatar",
+  "kind": "godot.node-contract",
+  "name": "Prototype Player Avatar Node",
+  "description": "Godot node contract for the player avatar used in the first prototype scene.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "nodePath": "PrototypeZone/PlayerAvatar",
+  "nodeType": "CharacterBody3D",
+  "nodeRole": "player",
+  "requiredSignals": [
+    "shard_collected"
+  ],
+  "requiredGroups": [
+    "players"
+  ],
+  "references": [
+    {
+      "type": "implementedByScript",
+      "target": "godot.script.player_controller"
+    },
+    {
+      "type": "usesResource",
+      "target": "godot.resource.memory_shard_icon"
+    },
+    {
+      "type": "usesInputAction",
+      "target": "godot.input-action.interact"
+    }
+  ]
+}

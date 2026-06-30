@@ -1,0 +1,56 @@
+{
+  "id": "godot.project.dream_extraction",
+  "kind": "godot.project",
+  "name": "Dream Extraction Godot Project",
+  "description": "Godot project contract for the first Dream Extraction prototype.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "godotVersion": "4.3",
+  "projectPath": "godot/DreamExtraction",
+  "renderer": "forward-plus",
+  "targetPlatforms": [
+    "pc"
+  ],
+  "mainSceneRef": "godot.scene.prototype_zone",
+  "autoloadRefs": [
+    "godot.autoload.contract_registry"
+  ],
+  "references": [
+    {
+      "type": "usesAddon",
+      "target": "godot.addon.contract_tools"
+    },
+    {
+      "type": "usesSharedLibrary",
+      "target": "godot.shared-library.dream_runtime"
+    },
+    {
+      "type": "containsScene",
+      "target": "godot.scene.prototype_zone"
+    },
+    {
+      "type": "declaresNode",
+      "target": "godot.node-contract.player_avatar"
+    },
+    {
+      "type": "usesResource",
+      "target": "godot.resource.memory_shard_icon"
+    },
+    {
+      "type": "usesScript",
+      "target": "godot.script.player_controller"
+    },
+    {
+      "type": "usesAutoload",
+      "target": "godot.autoload.contract_registry"
+    },
+    {
+      "type": "usesInputAction",
+      "target": "godot.input-action.interact"
+    },
+    {
+      "type": "exportsFor",
+      "target": "godot.export-preset.pc_development"
+    }
+  ]
+}

@@ -363,6 +363,49 @@
       ]
     },
     {
+      "path": "examples/godot",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.game-core",
+        "verity.pack.godot"
+      ],
+      "recordCount": 19,
+      "recordKinds": {
+        "game.loop": 1,
+        "game.mode": 1,
+        "game.product": 1,
+        "game.prototype-scope": 1,
+        "godot.addon": 1,
+        "godot.agent-context-exporter": 1,
+        "godot.autoload": 1,
+        "godot.export-preset": 1,
+        "godot.input-action": 1,
+        "godot.node-contract": 1,
+        "godot.project": 1,
+        "godot.readiness-dashboard": 1,
+        "godot.resource": 1,
+        "godot.scanner": 1,
+        "godot.scene": 1,
+        "godot.script": 1,
+        "godot.shared-library": 1,
+        "godot.validation-runner": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "examples/gameplay",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

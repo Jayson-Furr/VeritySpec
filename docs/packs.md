@@ -25,7 +25,12 @@ Built-in packs currently include:
 - `verity.pack.unity`: Unity projects, package dependencies, packages,
   shared libraries, prefabs, assembly definitions, scanners, validation
   runners, readiness dashboards, agent-context exporters, scenes, and build
-  targets for engine-specific implementation and tooling coverage.
+  targets for Unity game implementation and engine-tooling coverage.
+- `verity.pack.godot`: Godot projects, addons, shared libraries, scenes,
+  node contracts, resources, scripts, autoloads, input actions, export
+  presets, scanners, validation runners, readiness dashboards, and
+  agent-context exporters for Godot game implementation and engine-tooling
+  coverage.
 - `verity.pack.gameplay`: game mechanics, abilities, rules, and encounters for
   gameplay implementation handoff coverage.
 - `verity.pack.content`: game content items, levels, loot tables, and content
@@ -185,11 +190,13 @@ Future GUI, desktop, mobile, engine, product-delivery, and additional game
 packs should follow the boundary guidance in
 [Product surface pack boundaries](product-surface-pack-boundaries.md) and
 [Engine and product-delivery pack direction](engine-product-delivery-packs.md)
-before their first schemas are added. The first narrow game and engine scopes now live in
-[`verity.pack.game-core`](game-core-pack.md) and
-[`verity.pack.game-assets`](game-assets-pack.md), with Unity implementation
-and engine-tooling coverage in [`verity.pack.unity`](unity-pack.md), gameplay coverage in
-[`verity.pack.gameplay`](gameplay-pack.md), content coverage in
+before their first schemas are added. The first narrow game and engine scopes
+now live in [`verity.pack.game-core`](game-core-pack.md) and
+[`verity.pack.game-assets`](game-assets-pack.md), with Unity game
+implementation and engine-tooling coverage in
+[`verity.pack.unity`](unity-pack.md), Godot game implementation and
+engine-tooling coverage in [`verity.pack.godot`](godot-pack.md), gameplay
+coverage in [`verity.pack.gameplay`](gameplay-pack.md), content coverage in
 [`verity.pack.content`](content-pack.md), and economy coverage in
 [`verity.pack.economy`](economy-pack.md).
 

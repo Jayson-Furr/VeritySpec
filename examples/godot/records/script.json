@@ -1,0 +1,18 @@
+{
+  "id": "godot.script.player_controller",
+  "kind": "godot.script",
+  "name": "Player Controller Script",
+  "description": "Godot script contract for prototype movement, interaction, and shard pickup behavior.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "scriptPath": "res://scripts/player_controller.gd",
+  "language": "gdscript",
+  "className": "PlayerController",
+  "purpose": "Implements prototype player movement and interaction with shard pickups.",
+  "references": [
+    {
+      "type": "usesAddon",
+      "target": "godot.addon.contract_tools"
+    }
+  ]
+}

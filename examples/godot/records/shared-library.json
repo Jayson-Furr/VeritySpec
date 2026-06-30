@@ -1,0 +1,29 @@
+{
+  "id": "godot.shared-library.dream_runtime",
+  "kind": "godot.shared-library",
+  "name": "Dream Extraction Godot Runtime Library",
+  "description": "Shared Godot runtime library contract for the Dream Extraction prototype.",
+  "status": "ready",
+  "owner": "godot-engineering",
+  "libraryName": "DreamExtraction.Runtime",
+  "repository": "Jayson-Furr/VeritySpec.Godot",
+  "versionRequirement": "^0.1.0",
+  "addonRefs": [
+    "godot.addon.contract_tools"
+  ],
+  "exportedCapabilities": [
+    "prototype-input",
+    "runtime-validation",
+    "agent-context-export"
+  ],
+  "references": [
+    {
+      "type": "includesAddon",
+      "target": "godot.addon.contract_tools"
+    },
+    {
+      "type": "exportsScript",
+      "target": "godot.script.player_controller"
+    }
+  ]
+}

@@ -5,11 +5,12 @@ expanding the core kernel or creating a broad static catalog. This note defines
 the initial boundaries for future GUI, desktop, mobile, and game packs.
 
 `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
-`verity.pack.gameplay`, `verity.pack.content`, and `verity.pack.economy` now
-provide the first narrow built-in game and engine scopes. The remaining GUI,
-desktop, mobile, progression, liveops, evidence, dependency, portfolio, and
-broader game scopes should still use this note to define pack ownership,
-overlap rules, and readiness expectations before implementation begins.
+`verity.pack.godot`, `verity.pack.gameplay`, `verity.pack.content`, and
+`verity.pack.economy` now provide the first narrow built-in game and engine
+scopes. The remaining GUI, desktop, mobile, progression, liveops, evidence,
+dependency, portfolio, and broader game scopes should still use this note to
+define pack ownership, overlap rules, and readiness expectations before
+implementation begins.
 
 ## Pack Boundary Rule
 
@@ -124,8 +125,8 @@ with explicit permission rationale.
 ## Game Core, Game Assets, Unity, Gameplay, Content, Economy, and Future Game Packs
 
 Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`,
-`verity.pack.unity`, `verity.pack.gameplay`, `verity.pack.content`,
-`verity.pack.economy`.
+`verity.pack.unity`, `verity.pack.godot`, `verity.pack.gameplay`,
+`verity.pack.content`, `verity.pack.economy`.
 
 The game-core pack describes the first narrow game product-contract surface:
 game product identity, playable modes, game loops, and prototype scope. It is
@@ -136,12 +137,19 @@ source records, visual identity records, identity images, and concept art. It
 links creative sources to game-core records without becoming a full asset
 pipeline, content, economy, or engine pack.
 
-The Unity pack describes the engine-specific implementation and tooling
+The Unity pack describes the engine-specific game implementation and tooling
 surface: Unity project records, package dependencies, packages, shared
 libraries, prefabs, assembly definitions, scanners, validation runners,
 readiness dashboards, agent-context exporters, scenes, and build targets. It
 does not define generic gameplay, content, economy, progression, liveops,
 evidence, or workspace-dependency behavior.
+
+The Godot pack describes the engine-specific game implementation and tooling
+surface: Godot project records, addons, shared libraries, scenes, node
+contracts, resources, scripts, autoloads, input actions, export presets,
+scanners, validation runners, readiness dashboards, and agent-context
+exporters. It does not define generic gameplay, content, economy, progression,
+liveops, evidence, or workspace-dependency behavior.
 
 The gameplay pack describes the first narrow playable-system surface: mechanics,
 abilities, rules, and encounters. It does not define content manifests,
@@ -197,8 +205,9 @@ These packs should compose through references:
 - Desktop and mobile records can reference GUI records for screens and flows.
 - Game records can reference GUI records for player-facing surfaces and mobile
   or desktop records for platform delivery.
-- Game engine, shared library, and cross-workspace dependency records should be
-  handled by separate packs or workspace-dependency features.
+- Game engine and shared-library records for games made with Unity, Godot,
+  Unreal, or another engine should be handled by engine packs; cross-workspace
+  dependency records should be handled by workspace-dependency features.
 - Readiness profiles should aggregate cross-cutting evidence instead of copying
   the evidence model into every surface pack.
 

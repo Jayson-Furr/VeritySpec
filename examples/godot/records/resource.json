@@ -1,0 +1,20 @@
+{
+  "id": "godot.resource.memory_shard_icon",
+  "kind": "godot.resource",
+  "name": "Memory Shard Icon Resource",
+  "description": "Godot resource contract for the prototype memory shard icon and pickup affordance.",
+  "status": "ready",
+  "owner": "art-tech",
+  "resourcePath": "res://art/items/memory_shard_icon.tres",
+  "resourceType": "texture",
+  "purpose": "Provides the prototype pickup icon used by shard collection UI and world prompts.",
+  "importSettings": {
+    "filter": true
+  },
+  "references": [
+    {
+      "type": "backedByScript",
+      "target": "godot.script.player_controller"
+    }
+  ]
+}

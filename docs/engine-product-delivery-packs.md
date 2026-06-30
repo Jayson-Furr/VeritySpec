@@ -1,8 +1,9 @@
 # Engine and Product-Delivery Pack Direction
 
-This note captures future VeritySpec pack direction for engine-tooling
-repositories and spec-driven product delivery. It is a planning document, not a
-claim that the listed packs or records already exist.
+This note captures VeritySpec pack direction for engine-tooling repositories,
+games made with supported engines, and spec-driven product delivery. It mixes
+existing pack coverage with future planning; each section states whether the
+pack already exists.
 
 The goal is to let repositories for engine integrations, editor tooling,
 validation runners, scanners, dashboards, and agent handoff workflows dogfood
@@ -31,17 +32,17 @@ Core stays small. Engine and product-delivery concepts belong in packs with
 schemas, readiness gates where useful, reference rules, examples or fixtures,
 docs, and tests.
 
-These future packs should support engine-tooling repositories and spec-driven
-product management without making commercial, legal, marketplace-readiness, or
-certification claims.
+These packs should support engine-tooling repositories, engine-specific game
+workspaces, and spec-driven product management without making commercial,
+legal, marketplace-readiness, or certification claims.
 
 ## Unity Pack Expansion
 
 Existing pack ID: `verity.pack.unity`.
 
-The current Unity pack covers Unity implementation and engine-tooling records:
-projects, package dependencies, packages, shared libraries, prefabs, assembly
-definitions, scanners, validation runners, readiness dashboards,
+The current Unity pack covers Unity game implementation and engine-tooling
+records: projects, package dependencies, packages, shared libraries, prefabs,
+assembly definitions, scanners, validation runners, readiness dashboards,
 agent-context exporters, scenes, and build targets. Future expansion should
 stay incremental and validated.
 
@@ -68,16 +69,17 @@ Useful future record kinds include:
 
 ## Godot Pack
 
-Proposed pack ID: `verity.pack.godot`.
+Existing pack ID: `verity.pack.godot`.
 
-The Godot pack should describe Godot projects, addons, runtime contracts,
-editor surfaces, validation tooling, agent handoff surfaces, and the
-engine-specific contracts needed by games made with Godot. Generic game design,
-gameplay, content, economy, progression, liveops, and evidence records should
-still come from the game-oriented packs; the Godot pack should own the Godot
-implementation boundary.
+The current Godot pack describes Godot game implementation and engine-tooling
+records for games made with Godot: projects, addons, shared libraries, scenes,
+node contracts, resources, scripts, autoloads, input actions, export presets,
+scanners, validation runners, readiness dashboards, and agent-context
+exporters. Generic game design, gameplay, content, economy, progression,
+liveops, and evidence records should still come from the game-oriented packs;
+the Godot pack owns the Godot implementation boundary.
 
-Useful future record kinds include:
+Delivered engine-tooling record kinds include:
 
 - `godot.project`
 - `godot.addon`
@@ -87,18 +89,21 @@ Useful future record kinds include:
 - `godot.resource`
 - `godot.script`
 - `godot.autoload`
-- `godot.signal`
-- `godot.group`
 - `godot.input-action`
 - `godot.export-preset`
-- `godot.gdextension`
-- `godot.save-schema`
-- `godot.localization`
-- `godot.editor-panel`
 - `godot.scanner`
 - `godot.validation-runner`
 - `godot.readiness-dashboard`
 - `godot.agent-context-exporter`
+
+Useful future record kinds include:
+
+- `godot.signal`
+- `godot.group`
+- `godot.gdextension`
+- `godot.save-schema`
+- `godot.localization`
+- `godot.editor-panel`
 
 ## Unreal Pack
 
@@ -106,10 +111,12 @@ Proposed pack ID: `verity.pack.unreal`.
 
 The Unreal pack should describe Unreal projects, plugins, modules, assets,
 build targets, editor tools, validation tooling, agent handoff surfaces, and
-the engine-specific contracts needed by games made with Unreal. Generic game
-design, gameplay, content, economy, progression, liveops, and evidence records
-should still come from the game-oriented packs; the Unreal pack should own the
-Unreal implementation boundary.
+the engine-specific contracts needed by games made with Unreal. Its first
+implementation sprint should include an executable Unreal game workspace, not
+only a tooling repository example. Generic game design, gameplay, content,
+economy, progression, liveops, and evidence records should still come from the
+game-oriented packs; the Unreal pack should own the Unreal implementation
+boundary.
 
 Useful future record kinds include:
 

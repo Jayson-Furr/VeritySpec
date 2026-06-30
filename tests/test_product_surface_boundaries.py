@@ -68,6 +68,8 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
             "verity.pack.unreal",
             "verity.pack.product-delivery",
             "unity.agent-context-exporter",
+            "games made with Godot",
+            "games made with Unreal",
             "godot.validation-runner",
             "unreal.gameplay-ability",
             "product.scope",
