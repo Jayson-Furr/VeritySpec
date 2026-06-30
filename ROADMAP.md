@@ -134,11 +134,12 @@ Sprint 18 should release the completed `v0.4.0` scope:
 
 ## v0.5.0
 
-The active milestone is `v0.5.0`.
+The `v0.5.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 19 | Complete | Security pack foundation and security report generation |
+| 20 | Complete | v0.5.0 release preparation |
 
 ## Sprint 19 Priorities
 
@@ -151,6 +152,18 @@ Sprint 19 should add the first security surface as a pack, not as core bloat:
 - Add an executable security example workspace.
 - Update tests, CI, README, changelog, roadmap, generator docs, pack docs, and
   AI-agent guidance.
+
+## Sprint 20 Priorities
+
+Sprint 20 should release the completed `v0.5.0` scope:
+
+- Promote Unreleased changelog entries into `0.5.0`.
+- Bump package metadata to `0.5.0`.
+- Add v0.5.0 release notes.
+- Update README and install references to `v0.5.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.5.0 GitHub release when checks pass.
+- Close the v0.5.0 milestone after release verification.
 
 ## Later Candidates
 
@@ -172,41 +185,42 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Release `v0.5.0` after Sprint 19 security-pack verification is complete.
-2. Add a security-readiness hardening pass for unverified critical controls.
-3. Add a compatibility test matrix for fixture workspaces across supported
+1. Add a security-readiness hardening pass for unverified critical controls.
+2. Add a compatibility test matrix for fixture workspaces across supported
    workspace spec versions.
-4. Improve validation issue locations for nested schema, readiness, and
+3. Improve validation issue locations for nested schema, readiness, and
    reference errors.
-5. Add `verity doctor --report-out` for writing diagnostics without shell
+4. Add `verity doctor --report-out` for writing diagnostics without shell
    redirection.
-6. Add `verity init --template` for API, CLI, events, and security starter
+5. Add `verity init --template` for API, CLI, events, and security starter
    workspaces.
-7. Add a first `verity.pack.observability` pack for telemetry events, metrics,
+6. Add a first `verity.pack.observability` pack for telemetry events, metrics,
    dashboards, and alert ownership.
-8. Add an observability report generator that summarizes signals, ownership,
+7. Add an observability report generator that summarizes signals, ownership,
    and release gaps.
-9. Add a first `verity.pack.accessibility` pack for UI accessibility claims,
+8. Add a first `verity.pack.accessibility` pack for UI accessibility claims,
    checks, and evidence.
-10. Add an accessibility report generator suitable for release review.
-11. Add a first `verity.pack.compliance` pack that maps controls to frameworks
+9. Add an accessibility report generator suitable for release review.
+10. Add a first `verity.pack.compliance` pack that maps controls to frameworks
     without making legal claims.
-12. Add a compliance matrix generator that joins security, accessibility, and
+11. Add a compliance matrix generator that joins security, accessibility, and
     observability evidence.
-13. Improve `verity diff` with machine-readable change severity and breaking
+12. Improve `verity diff` with machine-readable change severity and breaking
     change classification.
-14. Add migration dry-run fixtures for every supported workspace version edge.
-15. Add generator plugin metadata so packs can advertise report capabilities
+13. Add migration dry-run fixtures for every supported workspace version edge.
+14. Add generator plugin metadata so packs can advertise report capabilities
     more explicitly than a string list.
-16. Add pack authoring tests that verify generated scaffolds can be used by a
+15. Add pack authoring tests that verify generated scaffolds can be used by a
     sample workspace immediately.
-17. Add downstream repository templates for GitHub Actions product-contract
+16. Add downstream repository templates for GitHub Actions product-contract
     enforcement.
-18. Add golden security-report fixtures once the report shape stabilizes.
-19. Add public contribution guidance for proposing new packs and schema
+17. Add golden security-report fixtures once the report shape stabilizes.
+18. Add public contribution guidance for proposing new packs and schema
     changes.
-20. Review package distribution readiness for PyPI trusted publishing and
+19. Review package distribution readiness for PyPI trusted publishing and
     decide whether to publish the `verityspec` package publicly.
+20. Add a roadmap-report generator that emits active milestones, completed
+    sprints, and future planning points for project governance.
 
 ## Working Rule
 
