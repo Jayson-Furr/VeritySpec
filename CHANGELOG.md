@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added cross-workspace dependency design guidance for future local-only
+  workspace dependencies, exported records, reference resolution, and
+  lockfiles.
+
 ## 0.30.0
 
 - Added `verity generate product-impact` for release-review reports that

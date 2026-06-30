@@ -67,6 +67,8 @@ This implementation provides:
   schema changes.
 - Product-surface pack boundary guidance for future GUI, desktop, mobile, and
   game packs before first schemas are added.
+- Cross-workspace dependency design guidance for future local-only workspace
+  dependencies, exported records, reference resolution, and lockfiles.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
   retained as the canonical public install path until publishing is enabled.
 
@@ -282,6 +284,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
+- [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
 - [Product contract profiles](docs/product-contract-profiles.md)
 - [Security pack](docs/security-pack.md)
 - [Observability pack](docs/observability-pack.md)
