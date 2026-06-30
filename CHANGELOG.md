@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.23.0
+
 - Added opt-in GitHub Actions annotation output for validation, lint, and
   readiness issues.
+- Added v0.23.0 release notes and roadmap closeout.
 
 ## 0.22.0
 
