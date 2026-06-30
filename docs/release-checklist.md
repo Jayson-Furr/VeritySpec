@@ -10,6 +10,8 @@ Use this checklist for public releases.
 - Confirm the README release badge, latest-release text, install tag,
   workspace package-version text, and release-notes link match the intended
   tag.
+- Confirm maintained downstream CI templates, including the monorepo template,
+  reference the intended release tag.
 - Confirm `docs/pypi.md` GitHub fallback install tag matches the intended tag.
 - Run local checks:
 

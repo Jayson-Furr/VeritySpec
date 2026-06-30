@@ -1371,6 +1371,30 @@ Sprint 83 should release the completed `v0.33.0` scope:
 - Tag and publish the v0.33.0 GitHub release when checks pass.
 - Close the v0.33.0 milestone after release verification.
 
+## v0.34.0
+
+This milestone is active.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 84 | Active | Monorepo downstream CI templates |
+
+## Sprint 84 Priorities
+
+Sprint 84 should make downstream CI adoption clearer for monorepos:
+
+- Add a maintained GitHub Actions template for monorepos with multiple
+  VeritySpec workspaces.
+- Use the existing reusable product-contract workflow instead of duplicating
+  shell logic.
+- Support shared local pack paths and workspace-specific pack paths through a
+  matrix.
+- Document how downstream repositories should adapt the matrix entries.
+- Add tests that keep the monorepo template pinned to the current release tag.
+- Update README, changelog, roadmap, CI docs, downstream CI docs, release
+  checklist, and AI-agent guidance.
+- Keep the next-20 planning backlog populated after converting this item.
+
 ## Next 20 Roadmap Points
 
 These points define the next backlog once the active roadmap is caught up. They
@@ -1383,8 +1407,8 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add downstream CI templates for monorepos with multiple VeritySpec
-   workspaces and shared local packs.
+1. Add a built-in `verity.pack.game-core` foundation with game product,
+   mode, loop, and prototype-scope records plus executable examples.
 2. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
 3. Add a maintainer review checklist for accepting external packs once public

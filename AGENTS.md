@@ -263,6 +263,8 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `.github/workflows/release.yml`: release automation.
 - `.github/workflows/product-contract.yml`: reusable downstream product-contract
   workflow.
+- `templates/github-actions/`: maintained downstream workflow templates,
+  including direct, reusable, local-pack, and monorepo examples.
 
 ## Sprint Discipline
 

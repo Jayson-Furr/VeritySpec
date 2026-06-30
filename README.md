@@ -56,7 +56,9 @@ This implementation provides:
 - Fixture compatibility coverage and golden compatibility manifests across
   supported workspace format versions.
 - Doctor diagnostics that can be printed to stdout or written as JSON reports.
-- Downstream GitHub Actions templates and a reusable workflow for product-contract enforcement.
+- Downstream GitHub Actions templates and a reusable workflow for
+  product-contract enforcement, including monorepo matrix checks for multiple
+  workspaces with shared local packs.
 - Opt-in GitHub Actions annotation output for validation, lint, and readiness
   issues in CI logs.
 - Golden fixture coverage for security reports and observability report/schema

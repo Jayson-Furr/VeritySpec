@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added a maintained downstream CI template for monorepos with multiple
+  VeritySpec workspaces and shared local packs.
+
 ## 0.33.0
 
 - Added executable pack scaffold documentation fixtures showing a generated
