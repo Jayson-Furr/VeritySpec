@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+- No changes yet.
+
+## 0.11.0
+
 - Added migration dry-run fixtures and tests for each supported workspace
   version edge.
+- Added v0.11.0 release notes and roadmap closeout.
 
 ## 0.10.0
 
