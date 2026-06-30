@@ -1,0 +1,15 @@
+{
+  "id": "product.flags",
+  "kind": "product",
+  "name": "Feature Flag Product",
+  "description": "A product contract that consumes the generated feature pack fixture.",
+  "status": "ready",
+  "owner": "platform",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "uses",
+      "target": "feature.checkout"
+    }
+  ]
+}

@@ -29,6 +29,8 @@ This implementation provides:
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
+- Executable pack scaffold documentation fixtures that show a generated
+  external pack plus a consuming workspace layout.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
 - Structural validation with JSON Schema.
 - Semantic validation for duplicate IDs, unknown kinds, missing references,
@@ -103,9 +105,11 @@ verity pack list
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
+verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features
 verity validate examples/basic
 verity validate examples/basic --profile release --format json
 verity validate tests/fixtures/custom_pack_workspace
+verity validate docs/fixtures/pack-scaffold/workspace
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity doctor examples/basic --profile public-api --format json
@@ -134,6 +138,8 @@ verity generate compliance-matrix examples/compliance --out build/compliance-mat
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
+verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
+verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
@@ -190,6 +196,7 @@ verity generate validation-report examples/basic --out build/validation-report.j
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
+verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
 ```
@@ -225,11 +232,14 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
 verity pack validate verity.pack.api --format json
 verity pack list --path tests/fixtures/custom_pack
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
+verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features
 ```
 
 See [docs/packs.md](docs/packs.md) for the pack manifest contract and pack
 standard, including the generated `product` to starter-kind `uses` reference
 rule for sample workspaces.
+See [docs/pack-scaffold-fixtures.md](docs/pack-scaffold-fixtures.md) for a
+complete generated pack and consuming workspace fixture.
 
 Run tests:
 
@@ -285,6 +295,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Roadmap](ROADMAP.md)
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
+- [Pack scaffold fixtures](docs/pack-scaffold-fixtures.md)
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
 - [Product contract profiles](docs/product-contract-profiles.md)

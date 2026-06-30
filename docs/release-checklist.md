@@ -46,6 +46,10 @@ verity readiness tests/fixtures/product_impact/baseline --strict
 verity validate tests/fixtures/product_impact/current
 verity lint tests/fixtures/product_impact/current --strict
 verity readiness tests/fixtures/product_impact/current --strict
+verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features
+verity validate docs/fixtures/pack-scaffold/workspace
+verity lint docs/fixtures/pack-scaffold/workspace --strict
+verity readiness docs/fixtures/pack-scaffold/workspace --strict
 verity generate security-report examples/security --out build/security-report.json
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
@@ -53,6 +57,8 @@ verity generate compliance-matrix examples/compliance --out build/compliance-mat
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
+verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
+verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json

@@ -60,6 +60,7 @@ jobs:
           verity pack validate --format json > build/pack-validation.json
           verity pack list --path tests/fixtures/custom_pack --format json > build/packs-with-external.json
           verity pack validate verity.pack.features --path tests/fixtures/custom_pack --format json > build/custom-pack-validation.json
+          verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features --format json > build/pack-scaffold-pack-validation.json
           verity validate examples/basic --format json > build/validate.json
           verity lint examples/basic --strict --format json > build/lint.json
           verity readiness examples/basic --strict --format json > build/readiness.json
@@ -78,6 +79,9 @@ jobs:
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
+          verity validate docs/fixtures/pack-scaffold/workspace --format json > build/pack-scaffold-validate.json
+          verity lint docs/fixtures/pack-scaffold/workspace --strict --format json > build/pack-scaffold-lint.json
+          verity readiness docs/fixtures/pack-scaffold/workspace --strict --format json > build/pack-scaffold-readiness.json
           verity validate tests/fixtures/cross_pack_coverage --format json > build/cross-pack-coverage-validate.json
           verity lint tests/fixtures/cross_pack_coverage --strict --format json > build/cross-pack-coverage-lint.json
           verity readiness tests/fixtures/cross_pack_coverage --strict --format json > build/cross-pack-coverage-readiness.json
@@ -105,6 +109,7 @@ jobs:
           python -m json.tool build/pack-validation.json >/dev/null
           python -m json.tool build/packs-with-external.json >/dev/null
           python -m json.tool build/custom-pack-validation.json >/dev/null
+          python -m json.tool build/pack-scaffold-pack-validation.json >/dev/null
           python -m json.tool build/validate.json >/dev/null
           python -m json.tool build/lint.json >/dev/null
           python -m json.tool build/readiness.json >/dev/null
@@ -123,6 +128,9 @@ jobs:
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
+          python -m json.tool build/pack-scaffold-validate.json >/dev/null
+          python -m json.tool build/pack-scaffold-lint.json >/dev/null
+          python -m json.tool build/pack-scaffold-readiness.json >/dev/null
           python -m json.tool build/cross-pack-coverage-validate.json >/dev/null
           python -m json.tool build/cross-pack-coverage-lint.json >/dev/null
           python -m json.tool build/cross-pack-coverage-readiness.json >/dev/null
@@ -165,6 +173,8 @@ jobs:
           verity generate deployment-report examples/deployment --out build/deployment-report.json
           verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
           verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
+          verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
+          verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
           verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
           verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-pack-schema-bundle.json
           verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json
@@ -192,6 +202,8 @@ jobs:
           python -m json.tool build/deployment-report.json >/dev/null
           python -m json.tool build/coverage-dashboard.json >/dev/null
           python -m json.tool build/pack-capability-index.json >/dev/null
+          python -m json.tool build/pack-scaffold-schema-bundle.json >/dev/null
+          python -m json.tool build/pack-scaffold-capability-index.json >/dev/null
           python -m json.tool build/product-impact.json >/dev/null
           python -m py_compile build/models.py
           python -m py_compile build/generator-maturity.py

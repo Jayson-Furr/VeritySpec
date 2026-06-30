@@ -227,9 +227,15 @@ External pack checks:
 
 ```bash
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
+verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features
 verity validate tests/fixtures/custom_pack_workspace
 verity lint tests/fixtures/custom_pack_workspace --strict
 verity readiness tests/fixtures/custom_pack_workspace --strict
+verity validate docs/fixtures/pack-scaffold/workspace
+verity lint docs/fixtures/pack-scaffold/workspace --strict
+verity readiness docs/fixtures/pack-scaffold/workspace --strict
+verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
+verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 ```
 
 Generator maturity checks:
