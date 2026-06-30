@@ -642,11 +642,12 @@ Sprint 47 should release the completed `v0.15.0` scope:
 
 ## v0.16.0
 
-The `v0.16.0` milestone is active.
+The `v0.16.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 48 | Complete | Public contribution guidance |
+| 49 | Complete | v0.16.0 release preparation |
 
 ## Sprint 48 Priorities
 
@@ -665,6 +666,21 @@ without weakening VeritySpec's executable-contract standard:
   present and aligned.
 - Update changelog and roadmap bookkeeping.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 49 Priorities
+
+Sprint 49 should release the completed `v0.16.0` scope:
+
+- Promote Unreleased changelog entries into `0.16.0`.
+- Bump package metadata to `0.16.0`.
+- Add v0.16.0 release notes.
+- Update README badge, latest-release text, install references, workspace
+  package-version text, and release-notes link to `v0.16.0`.
+- Update downstream CI templates, docs, and reusable workflow release pins to
+  `v0.16.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.16.0 GitHub release when checks pass.
+- Close the v0.16.0 milestone after release verification.
 
 ## Later Candidates
 
