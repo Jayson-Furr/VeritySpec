@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.24.0
+
 - Added observability report and schema-bundle golden fixtures for stable
   generator contract review.
+- Added v0.24.0 release notes and roadmap closeout.
 
 ## 0.23.0
 

@@ -962,11 +962,12 @@ Sprint 63 should release the completed `v0.23.0` scope:
 
 ## v0.24.0
 
-The `v0.24.0` milestone is in progress.
+The `v0.24.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 64 | In Progress | Observability golden fixtures |
+| 64 | Complete | Observability golden fixtures |
+| 65 | Complete | v0.24.0 release preparation |
 
 ## Sprint 64 Priorities
 
@@ -983,6 +984,22 @@ artifacts:
 - Update README, changelog, roadmap, generator docs, and observability pack
   docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 65 Priorities
+
+Sprint 65 should release the completed `v0.24.0` scope:
+
+- Promote Unreleased changelog entries into `0.24.0`.
+- Bump package metadata to `0.24.0`.
+- Add v0.24.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.24.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.24.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.24.0 GitHub release when checks pass.
+- Close the v0.24.0 milestone after release verification.
 
 ## Later Candidates
 
