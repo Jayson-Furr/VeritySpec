@@ -454,11 +454,12 @@ Sprint 37 should release the completed `v0.10.0` scope:
 
 ## v0.11.0
 
-The `v0.11.0` milestone is active.
+The `v0.11.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 38 | Complete | Migration dry-run edge fixtures |
+| 39 | Complete | v0.11.0 release preparation |
 
 ## Sprint 38 Priorities
 
@@ -470,6 +471,18 @@ Sprint 38 should harden workspace migration dry-run coverage:
 - Preserve the default legacy-to-current chained migration dry-run behavior.
 - Update README, changelog, roadmap, and migration docs.
 - Keep the next-20 planning backlog populated after converting this item.
+
+## Sprint 39 Priorities
+
+Sprint 39 should release the completed `v0.11.0` scope:
+
+- Promote Unreleased changelog entries into `0.11.0`.
+- Bump package metadata to `0.11.0`.
+- Add v0.11.0 release notes.
+- Update README and install references to `v0.11.0`.
+- Run local release verification and GitHub Actions.
+- Tag and publish the v0.11.0 GitHub release when checks pass.
+- Close the v0.11.0 milestone after release verification.
 
 ## Later Candidates
 
