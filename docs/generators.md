@@ -16,6 +16,7 @@ verity generate security-report examples/security --out build/security-report.js
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
+verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
@@ -79,6 +80,16 @@ Compliance matrices include:
 - Per-mapping framework metadata, verification state, mapped targets, and
   grouped security, accessibility, and observability evidence
 
+Deployment reports include:
+
+- Workspace and VeritySpec version metadata
+- Runtime and deployment-target counts
+- Target counts by environment, provider, and platform
+- Runtime counts by runtime type
+- Release gaps for missing runtime links, production approval, production
+  health checks, rollback plans, and owners
+- Per-runtime and per-target release-review detail
+
 Roadmap reports include:
 
 - Roadmap path and VeritySpec version metadata
@@ -137,6 +148,13 @@ Compliance matrix output includes:
 - Target records from explicit `covers` references
 - Evidence groups for linked `security.control`, `accessibility.claim`, and
   `observability.*` records
+
+Deployment report output includes:
+
+- `deployment.runtime` and `deployment.target` records from workspaces that
+  load `verity.pack.deployment`
+- Runtime links from target `runtimeRef` fields
+- Release gap summaries for production controls and target ownership
 
 TypeScript and Python model generators support:
 

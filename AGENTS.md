@@ -195,6 +195,9 @@ verity readiness examples/accessibility --strict
 verity validate examples/compliance
 verity lint examples/compliance --strict
 verity readiness examples/compliance --strict
+verity validate examples/deployment
+verity lint examples/deployment --strict
+verity readiness examples/deployment --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -211,8 +214,10 @@ verity generate security-report examples/security --out build/security-report.js
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
+verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
+verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
 ```
 
 External pack checks:

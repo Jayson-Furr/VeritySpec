@@ -22,9 +22,11 @@ Cross-cutting concerns stay outside these surface packs:
 - `verity.pack.accessibility` owns accessibility claims, checks, and evidence.
 - `verity.pack.observability` owns telemetry, metrics, dashboards, and alerts.
 - `verity.pack.compliance` owns compliance mappings and compliance matrices.
-- Future release, evidence, deployment, dependency, and portfolio packs should
-  own their own lifecycle concerns instead of being embedded into GUI,
-  desktop, mobile, or game packs.
+- `verity.pack.deployment` owns generic runtime, hosting, release environment,
+  rollback, and deployment report concerns.
+- Future release, evidence, dependency, and portfolio packs should own their
+  own lifecycle concerns instead of being embedded into GUI, desktop, mobile,
+  or game packs.
 
 Surface packs may reference cross-cutting records, but they should not duplicate
 their schemas.

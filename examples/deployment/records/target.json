@@ -1,0 +1,28 @@
+{
+  "id": "deployment.target.checkout_production",
+  "kind": "deployment.target",
+  "name": "Checkout Production",
+  "description": "Production Kubernetes target for the checkout API service.",
+  "status": "ready",
+  "owner": "platform-operations",
+  "environment": "production",
+  "provider": "aws",
+  "platform": "kubernetes",
+  "runtimeRef": "deployment.runtime.checkout_api",
+  "regions": [
+    "us-east-1",
+    "us-west-2"
+  ],
+  "url": "https://checkout.example.com",
+  "healthCheckUrl": "https://checkout.example.com/healthz",
+  "configPath": "deploy/checkout/production.yaml",
+  "releasePolicy": {
+    "strategy": "rolling",
+    "approvalRequired": true,
+    "owner": "release-management",
+    "changeWindow": "business-hours",
+    "freezePolicy": "holiday-freeze"
+  },
+  "rollbackPlan": "docs/ops/checkout-production-rollback.md",
+  "references": []
+}

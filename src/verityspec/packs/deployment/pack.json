@@ -1,0 +1,116 @@
+{
+  "id": "verity.pack.deployment",
+  "version": "0.1.0",
+  "name": "VeritySpec Deployment Pack",
+  "description": "Deployment runtime and target records for hosting, release environment, rollback, and operational contract coverage.",
+  "schemas": [
+    {
+      "kind": "deployment.runtime",
+      "path": "schemas/deployment-runtime.schema.json"
+    },
+    {
+      "kind": "deployment.target",
+      "path": "schemas/deployment-target.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "deployment.runtime.release",
+      "kind": "deployment.runtime",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "runtimeType",
+        "runtimeName",
+        "version",
+        "artifactType"
+      ]
+    },
+    {
+      "id": "deployment.target.release",
+      "kind": "deployment.target",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "environment",
+        "provider",
+        "platform",
+        "runtimeRef",
+        "releasePolicy.strategy",
+        "releasePolicy.owner",
+        "releasePolicy.approvalRequired",
+        "rollbackPlan"
+      ],
+      "minItems": {
+        "regions": 1
+      },
+      "rules": [
+        {
+          "id": "deployment.target.production-release-controls",
+          "code": "deployment.target.production_release_controls_missing",
+          "when": {
+            "field": "environment",
+            "equals": "production"
+          },
+          "must": [
+            {
+              "field": "releasePolicy.approvalRequired",
+              "equals": true
+            },
+            {
+              "field": "rollbackPlan",
+              "present": true
+            },
+            {
+              "field": "healthCheckUrl",
+              "present": true
+            }
+          ],
+          "message": "Production deployment targets must require approval, declare a rollback plan, and expose a health check URL."
+        }
+      ]
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "deploysTo",
+      "targetKind": "deployment.target"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "runtimeRef",
+      "targetKind": "deployment.runtime"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "monitoredBy",
+      "targetKind": "observability.dashboard"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "securedBy",
+      "targetKind": "security.control"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for deployment records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": ["json"],
+      "recordKinds": ["deployment.runtime", "deployment.target"]
+    },
+    {
+      "id": "deployment-report",
+      "name": "Deployment Report",
+      "description": "Summarize deployment runtimes, targets, ownership, environments, and release gaps.",
+      "artifactType": "report",
+      "outputFormats": ["json"],
+      "recordKinds": ["deployment.runtime", "deployment.target"]
+    }
+  ]
+}

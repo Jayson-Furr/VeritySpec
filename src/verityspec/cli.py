@@ -15,6 +15,7 @@ from .generators import (
     generate_asyncapi,
     generate_cli_reference,
     generate_compliance_matrix,
+    generate_deployment_report,
     generate_openapi,
     generate_observability_report,
     generate_python_models,
@@ -718,6 +719,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             generated_at=generated_at,
         ),
         "compliance-matrix": lambda: generate_compliance_matrix(workspace, generated_at=generated_at),
+        "deployment-report": lambda: generate_deployment_report(workspace, generated_at=generated_at),
     }
     value = generators[args.artifact]()
     text = write_generated(value, args.out)
@@ -958,6 +960,7 @@ def build_parser() -> argparse.ArgumentParser:
             "observability-report",
             "accessibility-report",
             "compliance-matrix",
+            "deployment-report",
             "roadmap-report",
         ],
     )

@@ -11,6 +11,7 @@ REFERENCE_FIELD_NAMES = {
     "payloadSchema",
     "requestSchema",
     "responseSchema",
+    "runtimeRef",
     "schema",
     "outputSchema",
 }

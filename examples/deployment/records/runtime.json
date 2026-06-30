@@ -1,0 +1,19 @@
+{
+  "id": "deployment.runtime.checkout_api",
+  "kind": "deployment.runtime",
+  "name": "Checkout API Runtime",
+  "description": "Container runtime for the checkout API service.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "runtimeType": "container",
+  "runtimeName": "python",
+  "version": "3.12",
+  "artifactType": "container-image",
+  "language": "python",
+  "entrypoint": "verityspec-checkout-api",
+  "dependencies": [
+    "postgres",
+    "redis"
+  ],
+  "references": []
+}

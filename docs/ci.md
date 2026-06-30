@@ -77,6 +77,17 @@ verity generate compliance-matrix examples/compliance --out build/compliance-mat
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.deployment`, include the usual contract
+checks and keep a deployment report for release and operations review:
+
+```bash
+verity validate examples/deployment
+verity lint examples/deployment --strict
+verity readiness examples/deployment --strict
+verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
+```
+
 For workspaces with local external packs:
 
 ```bash
