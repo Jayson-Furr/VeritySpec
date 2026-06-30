@@ -1,0 +1,481 @@
+{
+  "id": "verity.pack.unreal",
+  "version": "0.1.0",
+  "name": "VeritySpec Unreal Pack",
+  "description": "Unreal project, plugin, module, target, map, blueprint, data-asset, gameplay-tag, input-action, scanner, validation-runner, readiness-dashboard, and agent-context records for Unreal game implementation and engine-tooling product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "unreal.project",
+      "path": "schemas/unreal-project.schema.json"
+    },
+    {
+      "kind": "unreal.plugin",
+      "path": "schemas/unreal-plugin.schema.json"
+    },
+    {
+      "kind": "unreal.module",
+      "path": "schemas/unreal-module.schema.json"
+    },
+    {
+      "kind": "unreal.target",
+      "path": "schemas/unreal-target.schema.json"
+    },
+    {
+      "kind": "unreal.map",
+      "path": "schemas/unreal-map.schema.json"
+    },
+    {
+      "kind": "unreal.blueprint",
+      "path": "schemas/unreal-blueprint.schema.json"
+    },
+    {
+      "kind": "unreal.data-asset",
+      "path": "schemas/unreal-data-asset.schema.json"
+    },
+    {
+      "kind": "unreal.gameplay-tag",
+      "path": "schemas/unreal-gameplay-tag.schema.json"
+    },
+    {
+      "kind": "unreal.input-action",
+      "path": "schemas/unreal-input-action.schema.json"
+    },
+    {
+      "kind": "unreal.scanner",
+      "path": "schemas/unreal-scanner.schema.json"
+    },
+    {
+      "kind": "unreal.validation-runner",
+      "path": "schemas/unreal-validation-runner.schema.json"
+    },
+    {
+      "kind": "unreal.readiness-dashboard",
+      "path": "schemas/unreal-readiness-dashboard.schema.json"
+    },
+    {
+      "kind": "unreal.agent-context-exporter",
+      "path": "schemas/unreal-agent-context-exporter.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "unreal.project.release",
+      "kind": "unreal.project",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "engineVersion",
+        "projectPath"
+      ],
+      "minItems": {
+        "targetPlatforms": 1,
+        "references": 5
+      }
+    },
+    {
+      "id": "unreal.plugin.release",
+      "kind": "unreal.plugin",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "pluginName",
+        "version",
+        "source",
+        "purpose"
+      ]
+    },
+    {
+      "id": "unreal.module.release",
+      "kind": "unreal.module",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "moduleName",
+        "moduleType",
+        "modulePath"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.target.release",
+      "kind": "unreal.target",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "targetName",
+        "targetType",
+        "platform",
+        "configuration"
+      ],
+      "minItems": {
+        "mapRefs": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.map.release",
+      "kind": "unreal.map",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "mapPath",
+        "mapRole",
+        "loadMode"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.blueprint.release",
+      "kind": "unreal.blueprint",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "blueprintPath",
+        "blueprintType",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.data-asset.release",
+      "kind": "unreal.data-asset",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "assetPath",
+        "assetType",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.gameplay-tag.release",
+      "kind": "unreal.gameplay-tag",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "tagName",
+        "tagDomain",
+        "purpose"
+      ]
+    },
+    {
+      "id": "unreal.input-action.release",
+      "kind": "unreal.input-action",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "actionName",
+        "valueType"
+      ],
+      "minItems": {
+        "deviceTypes": 1
+      }
+    },
+    {
+      "id": "unreal.scanner.release",
+      "kind": "unreal.scanner",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scannerType",
+        "entryPoint"
+      ],
+      "minItems": {
+        "scannedKinds": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.validation-runner.release",
+      "kind": "unreal.validation-runner",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "runnerType",
+        "command"
+      ],
+      "minItems": {
+        "scannerRefs": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.readiness-dashboard.release",
+      "kind": "unreal.readiness-dashboard",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "dashboardPath",
+        "dashboardType"
+      ],
+      "minItems": {
+        "trackedRecordKinds": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unreal.agent-context-exporter.release",
+      "kind": "unreal.agent-context-exporter",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "exporterType",
+        "outputPath"
+      ],
+      "minItems": {
+        "includedRecordKinds": 1,
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasUnrealProject",
+      "targetKind": "unreal.project"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "implementedBy",
+      "targetKind": "unreal.project"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "usesPlugin",
+      "targetKind": "unreal.plugin"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "declaresModule",
+      "targetKind": "unreal.module"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "buildsTarget",
+      "targetKind": "unreal.target"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "containsMap",
+      "targetKind": "unreal.map"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "usesBlueprint",
+      "targetKind": "unreal.blueprint"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "usesDataAsset",
+      "targetKind": "unreal.data-asset"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "usesGameplayTag",
+      "targetKind": "unreal.gameplay-tag"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "usesInputAction",
+      "targetKind": "unreal.input-action"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "scannedBy",
+      "targetKind": "unreal.scanner"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "validatedBy",
+      "targetKind": "unreal.validation-runner"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "reportsReadinessTo",
+      "targetKind": "unreal.readiness-dashboard"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "exportsAgentContextWith",
+      "targetKind": "unreal.agent-context-exporter"
+    },
+    {
+      "sourceKind": "unreal.plugin",
+      "relationship": "declaresModule",
+      "targetKind": "unreal.module"
+    },
+    {
+      "sourceKind": "unreal.module",
+      "relationship": "usesPlugin",
+      "targetKind": "unreal.plugin"
+    },
+    {
+      "sourceKind": "unreal.target",
+      "relationship": "includesMap",
+      "targetKind": "unreal.map"
+    },
+    {
+      "sourceKind": "unreal.target",
+      "relationship": "usesModule",
+      "targetKind": "unreal.module"
+    },
+    {
+      "sourceKind": "unreal.target",
+      "relationship": "usesPlugin",
+      "targetKind": "unreal.plugin"
+    },
+    {
+      "sourceKind": "unreal.map",
+      "relationship": "usesBlueprint",
+      "targetKind": "unreal.blueprint"
+    },
+    {
+      "sourceKind": "unreal.map",
+      "relationship": "usesDataAsset",
+      "targetKind": "unreal.data-asset"
+    },
+    {
+      "sourceKind": "unreal.blueprint",
+      "relationship": "implementedByModule",
+      "targetKind": "unreal.module"
+    },
+    {
+      "sourceKind": "unreal.blueprint",
+      "relationship": "usesDataAsset",
+      "targetKind": "unreal.data-asset"
+    },
+    {
+      "sourceKind": "unreal.blueprint",
+      "relationship": "usesInputAction",
+      "targetKind": "unreal.input-action"
+    },
+    {
+      "sourceKind": "unreal.data-asset",
+      "relationship": "usesGameplayTag",
+      "targetKind": "unreal.gameplay-tag"
+    },
+    {
+      "sourceKind": "unreal.gameplay-tag",
+      "relationship": "usedByBlueprint",
+      "targetKind": "unreal.blueprint"
+    },
+    {
+      "sourceKind": "unreal.input-action",
+      "relationship": "handledByBlueprint",
+      "targetKind": "unreal.blueprint"
+    },
+    {
+      "sourceKind": "unreal.scanner",
+      "relationship": "scansProject",
+      "targetKind": "unreal.project"
+    },
+    {
+      "sourceKind": "unreal.scanner",
+      "relationship": "scansPlugin",
+      "targetKind": "unreal.plugin"
+    },
+    {
+      "sourceKind": "unreal.scanner",
+      "relationship": "scansMap",
+      "targetKind": "unreal.map"
+    },
+    {
+      "sourceKind": "unreal.scanner",
+      "relationship": "scansBlueprint",
+      "targetKind": "unreal.blueprint"
+    },
+    {
+      "sourceKind": "unreal.scanner",
+      "relationship": "scansDataAsset",
+      "targetKind": "unreal.data-asset"
+    },
+    {
+      "sourceKind": "unreal.validation-runner",
+      "relationship": "runsScanner",
+      "targetKind": "unreal.scanner"
+    },
+    {
+      "sourceKind": "unreal.validation-runner",
+      "relationship": "reportsTo",
+      "targetKind": "unreal.readiness-dashboard"
+    },
+    {
+      "sourceKind": "unreal.readiness-dashboard",
+      "relationship": "tracksProject",
+      "targetKind": "unreal.project"
+    },
+    {
+      "sourceKind": "unreal.readiness-dashboard",
+      "relationship": "tracksRunner",
+      "targetKind": "unreal.validation-runner"
+    },
+    {
+      "sourceKind": "unreal.agent-context-exporter",
+      "relationship": "describesProject",
+      "targetKind": "unreal.project"
+    },
+    {
+      "sourceKind": "unreal.agent-context-exporter",
+      "relationship": "includesDashboard",
+      "targetKind": "unreal.readiness-dashboard"
+    },
+    {
+      "sourceKind": "unreal.agent-context-exporter",
+      "relationship": "includesRunner",
+      "targetKind": "unreal.validation-runner"
+    },
+    {
+      "sourceKind": "unreal.agent-context-exporter",
+      "relationship": "includesScanner",
+      "targetKind": "unreal.scanner"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for Unreal records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.target",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.data-asset",
+        "unreal.gameplay-tag",
+        "unreal.input-action",
+        "unreal.scanner",
+        "unreal.validation-runner",
+        "unreal.readiness-dashboard",
+        "unreal.agent-context-exporter"
+      ]
+    }
+  ]
+}

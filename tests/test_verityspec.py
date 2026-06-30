@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(61, report["recordCount"])
+        self.assertEqual(74, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(15, report["summary"]["trackedSurfaces"])
-        self.assertEqual(15, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(15, report["summary"]["coveredSurfaces"])
+        self.assertEqual(16, report["summary"]["trackedSurfaces"])
+        self.assertEqual(16, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(16, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1048,6 +1048,7 @@ class VeritySpecTests(unittest.TestCase):
                 "observability": 4,
                 "security": 1,
                 "unity": 12,
+                "unreal": 13,
             },
             report["summary"]["bySurface"],
         )
@@ -1069,6 +1070,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
         self.assertEqual("verity.pack.godot", surfaces["godot"]["packId"])
         self.assertEqual("verity.pack.unity", surfaces["unity"]["packId"])
+        self.assertEqual("verity.pack.unreal", surfaces["unreal"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
         self.assertEqual(
             [
@@ -1155,6 +1157,24 @@ class VeritySpecTests(unittest.TestCase):
                 "unity.validation-runner.coverage_contracts",
             ],
             [record["id"] for record in surfaces["unity"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "unreal.agent-context-exporter.coverage_context",
+                "unreal.blueprint.coverage_avatar",
+                "unreal.data-asset.coverage_shard",
+                "unreal.gameplay-tag.coverage_shard",
+                "unreal.input-action.coverage_interact",
+                "unreal.map.coverage_zone",
+                "unreal.module.coverage_runtime",
+                "unreal.plugin.coverage_tools",
+                "unreal.project.coverage_adventure",
+                "unreal.readiness-dashboard.coverage_prototype",
+                "unreal.scanner.coverage_contracts",
+                "unreal.target.coverage_pc",
+                "unreal.validation-runner.coverage_contracts",
+            ],
+            [record["id"] for record in surfaces["unreal"]["records"]],
         )
         self.assertEqual([], report["products"][0]["missingSurfaces"])
 
@@ -1726,6 +1746,46 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("godot.validation-runner.missing_scanners", [issue.record_id for issue in issues])
+
+    def test_unreal_readiness_requires_validation_runner_scanner_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "unreal-tooling-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.unreal"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runner.json").write_text(
+                json.dumps(
+                    {
+                        "id": "unreal.validation-runner.missing_scanners",
+                        "kind": "unreal.validation-runner",
+                        "name": "Missing Scanner Links",
+                        "description": "Unreal validation runner missing scanner and graph links.",
+                        "status": "ready",
+                        "owner": "unreal-engineering",
+                        "runnerType": "ci",
+                        "command": "UnrealEditor-Cmd.exe Project.uproject -run=Contracts",
+                        "scannerRefs": [],
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("unreal.validation-runner.missing_scanners", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

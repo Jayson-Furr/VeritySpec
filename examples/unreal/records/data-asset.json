@@ -1,0 +1,21 @@
+{
+  "id": "unreal.data-asset.memory_shard",
+  "kind": "unreal.data-asset",
+  "name": "Memory Shard Data Asset",
+  "status": "ready",
+  "owner": "design",
+  "description": "Data asset contract for prototype memory shard pickups.",
+  "assetPath": "/Game/Data/DA_MemoryShard",
+  "assetType": "PrimaryDataAsset",
+  "primaryAssetType": "Resource",
+  "purpose": "Defines prototype shard reward metadata.",
+  "gameplayTagRefs": [
+    "unreal.gameplay-tag.dream.shard"
+  ],
+  "references": [
+    {
+      "type": "usesGameplayTag",
+      "target": "unreal.gameplay-tag.dream.shard"
+    }
+  ]
+}

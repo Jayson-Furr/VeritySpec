@@ -1,0 +1,19 @@
+{
+  "id": "product.dream_extraction_unreal",
+  "kind": "product",
+  "name": "Dream Extraction Unreal Prototype",
+  "status": "ready",
+  "owner": "product",
+  "description": "Product contract for a Dream Extraction Unreal prototype.",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "describes",
+      "target": "game.product.dream_extraction"
+    },
+    {
+      "type": "hasUnrealProject",
+      "target": "unreal.project.dream_extraction"
+    }
+  ]
+}

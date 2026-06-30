@@ -1,0 +1,36 @@
+{
+  "id": "unreal.target.pc_development",
+  "kind": "unreal.target",
+  "name": "PC Development Target",
+  "status": "ready",
+  "owner": "build",
+  "description": "PC development target for the Unreal prototype.",
+  "targetName": "DreamExtractionEditor",
+  "targetType": "Editor",
+  "platform": "Win64",
+  "configuration": "Development",
+  "outputPath": "Builds/PC/DreamExtraction",
+  "mapRefs": [
+    "unreal.map.dream_zone"
+  ],
+  "moduleRefs": [
+    "unreal.module.dream_runtime"
+  ],
+  "pluginRefs": [
+    "unreal.plugin.verity_runtime"
+  ],
+  "references": [
+    {
+      "type": "includesMap",
+      "target": "unreal.map.dream_zone"
+    },
+    {
+      "type": "usesModule",
+      "target": "unreal.module.dream_runtime"
+    },
+    {
+      "type": "usesPlugin",
+      "target": "unreal.plugin.verity_runtime"
+    }
+  ]
+}

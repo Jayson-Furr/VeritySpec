@@ -1,0 +1,21 @@
+{
+  "id": "unreal.module.dream_runtime",
+  "kind": "unreal.module",
+  "name": "Dream Runtime Module",
+  "status": "ready",
+  "owner": "unreal-engineering",
+  "description": "Runtime module for Dream Extraction prototype systems.",
+  "moduleName": "DreamRuntime",
+  "moduleType": "Runtime",
+  "modulePath": "Source/DreamRuntime/DreamRuntime.Build.cs",
+  "loadingPhase": "Default",
+  "publicDependencyRefs": [
+    "unreal.plugin.verity_runtime"
+  ],
+  "references": [
+    {
+      "type": "usesPlugin",
+      "target": "unreal.plugin.verity_runtime"
+    }
+  ]
+}

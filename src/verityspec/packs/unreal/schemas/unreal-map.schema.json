@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.dev/schemas/unreal.map.json",
+  "title": "unreal.map record",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "mapPath",
+    "mapRole",
+    "loadMode"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "unreal.map"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "ready",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "mapPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mapRole": {
+      "type": "string",
+      "minLength": 1
+    },
+    "loadMode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "includedInBuild": {
+      "type": "boolean"
+    },
+    "blueprintRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataAssetRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "repository": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": [
+        "type",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

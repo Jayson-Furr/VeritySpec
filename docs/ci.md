@@ -142,6 +142,19 @@ verity graph examples/godot --format json > build/godot-graph.json
 verity generate schema-bundle examples/godot --out build/godot-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.unreal`, include the usual contract
+checks, graph checks, and a schema bundle for Unreal project, plugin, module,
+target, map, Blueprint, data-asset, gameplay-tag, input-action, scanner,
+validation-runner, dashboard, and agent handoff tooling:
+
+```bash
+verity validate examples/unreal
+verity lint examples/unreal --strict
+verity readiness examples/unreal --strict
+verity graph examples/unreal --format json > build/unreal-graph.json
+verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.json
+```
+
 For workspaces that load `verity.pack.gameplay`, include the usual contract
 checks and keep a schema bundle for mechanic, ability, rule, encounter, and
 agent handoff tooling:

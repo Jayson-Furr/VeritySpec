@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.unreal` with `unreal.project`,
+  `unreal.plugin`, `unreal.module`, `unreal.target`, `unreal.map`,
+  `unreal.blueprint`, `unreal.data-asset`, `unreal.gameplay-tag`,
+  `unreal.input-action`, `unreal.scanner`, `unreal.validation-runner`,
+  `unreal.readiness-dashboard`, and `unreal.agent-context-exporter` records,
+  readiness gates, reference rules, an executable Unreal game workspace
+  example, graph coverage, schema-bundle coverage, and public docs for Unreal
+  game implementation and engine-tooling contracts.
+
 ## 0.41.0
 
 - Added built-in `verity.pack.godot` with `godot.project`, `godot.addon`,

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.dev/schemas/unreal.gameplay-tag.json",
+  "title": "unreal.gameplay-tag record",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "tagName",
+    "tagDomain",
+    "purpose"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "unreal.gameplay-tag"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "ready",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "tagName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tagDomain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parentTag": {
+      "type": "string"
+    },
+    "usedByRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "repository": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": [
+        "type",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

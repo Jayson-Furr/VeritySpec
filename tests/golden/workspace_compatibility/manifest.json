@@ -406,6 +406,48 @@
       ]
     },
     {
+      "path": "examples/unreal",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.game-core",
+        "verity.pack.unreal"
+      ],
+      "recordCount": 18,
+      "recordKinds": {
+        "game.loop": 1,
+        "game.mode": 1,
+        "game.product": 1,
+        "game.prototype-scope": 1,
+        "product": 1,
+        "unreal.agent-context-exporter": 1,
+        "unreal.blueprint": 1,
+        "unreal.data-asset": 1,
+        "unreal.gameplay-tag": 1,
+        "unreal.input-action": 1,
+        "unreal.map": 1,
+        "unreal.module": 1,
+        "unreal.plugin": 1,
+        "unreal.project": 1,
+        "unreal.readiness-dashboard": 1,
+        "unreal.scanner": 1,
+        "unreal.target": 1,
+        "unreal.validation-runner": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "examples/gameplay",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

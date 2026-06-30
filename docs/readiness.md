@@ -88,6 +88,14 @@ records before strict readiness passes. Tooling records such as
 `godot.agent-context-exporter` should also carry graph links to the Godot
 records they scan, run, report, or describe.
 
+Unreal records use readiness gates to keep implementation and engine-tooling
+contracts executable for games made with Unreal. An `unreal.project` should
+link to plugin, module, target, map, Blueprint, data-asset, gameplay-tag, and
+input-action records before strict readiness passes. Tooling records such as
+`unreal.scanner`, `unreal.validation-runner`, `unreal.readiness-dashboard`,
+and `unreal.agent-context-exporter` should also carry graph links to the
+Unreal records they scan, run, report, or describe.
+
 Gameplay records use readiness gates to keep mechanics and encounters
 implementation-ready. A `game.mechanic` should declare inputs, outputs, and
 graph references before strict readiness passes.
@@ -111,6 +119,7 @@ verity readiness examples/game-core --strict
 verity readiness examples/game-assets --strict
 verity readiness examples/unity --strict
 verity readiness examples/godot --strict
+verity readiness examples/unreal --strict
 verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
 verity readiness examples/economy --strict

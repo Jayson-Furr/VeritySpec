@@ -1,0 +1,28 @@
+{
+  "id": "unreal.map.dream_zone",
+  "kind": "unreal.map",
+  "name": "Dream Zone Map",
+  "status": "ready",
+  "owner": "level-design",
+  "description": "Prototype dream-zone map for the extraction vertical slice.",
+  "mapPath": "/Game/Maps/DreamZone",
+  "mapRole": "prototype-zone",
+  "loadMode": "primary",
+  "includedInBuild": true,
+  "blueprintRefs": [
+    "unreal.blueprint.player_extractor"
+  ],
+  "dataAssetRefs": [
+    "unreal.data-asset.memory_shard"
+  ],
+  "references": [
+    {
+      "type": "usesBlueprint",
+      "target": "unreal.blueprint.player_extractor"
+    },
+    {
+      "type": "usesDataAsset",
+      "target": "unreal.data-asset.memory_shard"
+    }
+  ]
+}

@@ -19,16 +19,17 @@
     "verity.pack.game-assets",
     "verity.pack.unity",
     "verity.pack.godot",
+    "verity.pack.unreal",
     "verity.pack.gameplay",
     "verity.pack.content",
     "verity.pack.economy"
   ],
-  "recordCount": 61,
+  "recordCount": 74,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 15,
-    "loadedSurfacePacks": 15,
-    "coveredSurfaces": 15,
+    "trackedSurfaces": 16,
+    "loadedSurfacePacks": 16,
+    "coveredSurfaces": 16,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -45,7 +46,8 @@
       "godot": 14,
       "observability": 4,
       "security": 1,
-      "unity": 12
+      "unity": 12,
+      "unreal": 13
     },
     "byRecordKind": {
       "accessibility.claim": 1,
@@ -108,7 +110,20 @@
       "unity.scanner": 1,
       "unity.scene": 1,
       "unity.shared-library": 1,
-      "unity.validation-runner": 1
+      "unity.validation-runner": 1,
+      "unreal.agent-context-exporter": 1,
+      "unreal.blueprint": 1,
+      "unreal.data-asset": 1,
+      "unreal.gameplay-tag": 1,
+      "unreal.input-action": 1,
+      "unreal.map": 1,
+      "unreal.module": 1,
+      "unreal.plugin": 1,
+      "unreal.project": 1,
+      "unreal.readiness-dashboard": 1,
+      "unreal.scanner": 1,
+      "unreal.target": 1,
+      "unreal.validation-runner": 1
     },
     "releaseGaps": {
       "missingSurfaceRecords": [],
@@ -805,6 +820,134 @@
       ]
     },
     {
+      "id": "unreal",
+      "name": "Unreal",
+      "packId": "verity.pack.unreal",
+      "packLoaded": true,
+      "recordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.target",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.data-asset",
+        "unreal.gameplay-tag",
+        "unreal.input-action",
+        "unreal.scanner",
+        "unreal.validation-runner",
+        "unreal.readiness-dashboard",
+        "unreal.agent-context-exporter"
+      ],
+      "productRelationships": [
+        "hasUnrealProject"
+      ],
+      "recordCount": 13,
+      "covered": true,
+      "records": [
+        {
+          "id": "unreal.agent-context-exporter.coverage_context",
+          "kind": "unreal.agent-context-exporter",
+          "name": "Coverage Unreal Agent Context Exporter",
+          "status": "ready",
+          "owner": "tools"
+        },
+        {
+          "id": "unreal.blueprint.coverage_avatar",
+          "kind": "unreal.blueprint",
+          "name": "Coverage Avatar Blueprint",
+          "status": "ready",
+          "owner": "gameplay-engineering"
+        },
+        {
+          "id": "unreal.data-asset.coverage_shard",
+          "kind": "unreal.data-asset",
+          "name": "Coverage Shard Data Asset",
+          "status": "ready",
+          "owner": "design"
+        },
+        {
+          "id": "unreal.gameplay-tag.coverage_shard",
+          "kind": "unreal.gameplay-tag",
+          "name": "Coverage Shard Gameplay Tag",
+          "status": "ready",
+          "owner": "design"
+        },
+        {
+          "id": "unreal.input-action.coverage_interact",
+          "kind": "unreal.input-action",
+          "name": "Coverage Interact Input Action",
+          "status": "ready",
+          "owner": "gameplay-engineering"
+        },
+        {
+          "id": "unreal.map.coverage_zone",
+          "kind": "unreal.map",
+          "name": "Coverage Zone Map",
+          "status": "ready",
+          "owner": "level-design"
+        },
+        {
+          "id": "unreal.module.coverage_runtime",
+          "kind": "unreal.module",
+          "name": "Coverage Runtime Module",
+          "status": "ready",
+          "owner": "unreal-engineering"
+        },
+        {
+          "id": "unreal.plugin.coverage_tools",
+          "kind": "unreal.plugin",
+          "name": "Coverage Tools Plugin",
+          "status": "ready",
+          "owner": "unreal-engineering"
+        },
+        {
+          "id": "unreal.project.coverage_adventure",
+          "kind": "unreal.project",
+          "name": "Coverage Adventure Unreal Project",
+          "status": "ready",
+          "owner": "unreal-engineering"
+        },
+        {
+          "id": "unreal.readiness-dashboard.coverage_prototype",
+          "kind": "unreal.readiness-dashboard",
+          "name": "Coverage Unreal Readiness Dashboard",
+          "status": "ready",
+          "owner": "production"
+        },
+        {
+          "id": "unreal.scanner.coverage_contracts",
+          "kind": "unreal.scanner",
+          "name": "Coverage Unreal Contract Scanner",
+          "status": "ready",
+          "owner": "tools"
+        },
+        {
+          "id": "unreal.target.coverage_pc",
+          "kind": "unreal.target",
+          "name": "Coverage PC Target",
+          "status": "ready",
+          "owner": "build"
+        },
+        {
+          "id": "unreal.validation-runner.coverage_contracts",
+          "kind": "unreal.validation-runner",
+          "name": "Coverage Unreal Validation Runner",
+          "status": "ready",
+          "owner": "tools"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasUnrealProject",
+          "targetId": "unreal.project.coverage_adventure",
+          "targetKind": "unreal.project",
+          "targetName": "Coverage Adventure Unreal Project"
+        }
+      ]
+    },
+    {
       "id": "gameplay",
       "name": "Gameplay",
       "packId": "verity.pack.gameplay",
@@ -1094,6 +1237,15 @@
             "targetId": "godot.project.coverage_adventure",
             "targetKind": "godot.project",
             "targetName": "Coverage Adventure Godot Project"
+          }
+        ],
+        "unreal": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasUnrealProject",
+            "targetId": "unreal.project.coverage_adventure",
+            "targetKind": "unreal.project",
+            "targetName": "Coverage Adventure Unreal Project"
           }
         ],
         "gameplay": [

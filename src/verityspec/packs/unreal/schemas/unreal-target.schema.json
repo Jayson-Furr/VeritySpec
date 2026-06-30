@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.dev/schemas/unreal.target.json",
+  "title": "unreal.target record",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "status",
+    "owner",
+    "description",
+    "targetName",
+    "targetType",
+    "platform",
+    "configuration"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "unreal.target"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "ready",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "targetName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "targetType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform": {
+      "type": "string",
+      "minLength": 1
+    },
+    "configuration": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outputPath": {
+      "type": "string"
+    },
+    "mapRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "moduleRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pluginRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "repository": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": [
+        "type",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "records": [
+    {
+      "id": "unreal.scanner.contracts",
+      "kind": "unreal.scanner",
+      "name": "Unreal Contract Scanner",
+      "status": "ready",
+      "owner": "tools",
+      "description": "Scanner contract for Unreal project metadata.",
+      "scannerType": "editor-commandlet",
+      "entryPoint": "VeritySpecContractScanner",
+      "outputPath": "Saved/VeritySpec/contracts.json",
+      "scannedKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.data-asset"
+      ],
+      "outputFormat": "json",
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "unreal.project.dream_extraction"
+        },
+        {
+          "type": "scansPlugin",
+          "target": "unreal.plugin.verity_runtime"
+        },
+        {
+          "type": "scansMap",
+          "target": "unreal.map.dream_zone"
+        },
+        {
+          "type": "scansBlueprint",
+          "target": "unreal.blueprint.player_extractor"
+        },
+        {
+          "type": "scansDataAsset",
+          "target": "unreal.data-asset.memory_shard"
+        }
+      ]
+    },
+    {
+      "id": "unreal.validation-runner.contracts",
+      "kind": "unreal.validation-runner",
+      "name": "Unreal Contract Validation Runner",
+      "status": "ready",
+      "owner": "tools",
+      "description": "Validation-runner contract for Unreal project contract checks.",
+      "runnerType": "commandlet",
+      "command": "UnrealEditor-Cmd.exe DreamExtraction.uproject -run=VeritySpecValidation",
+      "scannerRefs": [
+        "unreal.scanner.contracts"
+      ],
+      "readinessDashboardRef": "unreal.readiness-dashboard.prototype",
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "unreal.scanner.contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.readiness-dashboard.prototype",
+      "kind": "unreal.readiness-dashboard",
+      "name": "Unreal Prototype Readiness Dashboard",
+      "status": "ready",
+      "owner": "production",
+      "description": "Dashboard contract for Unreal prototype readiness.",
+      "dashboardPath": "Docs/UnrealPrototypeReadiness.md",
+      "dashboardType": "markdown",
+      "targetAudience": "production",
+      "trackedRecordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.target",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.validation-runner"
+      ],
+      "outputFormat": "markdown",
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "unreal.project.dream_extraction"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "unreal.validation-runner.contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.agent-context-exporter.prototype",
+      "kind": "unreal.agent-context-exporter",
+      "name": "Unreal Prototype Agent Context Exporter",
+      "status": "ready",
+      "owner": "tools",
+      "description": "Agent-context exporter for bounded Unreal implementation handoff.",
+      "exporterType": "markdown",
+      "outputPath": "Build/agent-context/unreal-prototype.md",
+      "exportFormat": "markdown",
+      "includedRecordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.map",
+        "unreal.blueprint",
+        "unreal.validation-runner",
+        "unreal.readiness-dashboard"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "unreal.project.dream_extraction"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "unreal.readiness-dashboard.prototype"
+        },
+        {
+          "type": "includesRunner",
+          "target": "unreal.validation-runner.contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "unreal.scanner.contracts"
+        }
+      ]
+    }
+  ]
+}

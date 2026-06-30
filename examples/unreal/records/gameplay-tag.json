@@ -1,0 +1,16 @@
+{
+  "id": "unreal.gameplay-tag.dream.shard",
+  "kind": "unreal.gameplay-tag",
+  "name": "Dream Shard Gameplay Tag",
+  "status": "ready",
+  "owner": "design",
+  "description": "Gameplay tag for memory shard pickup interactions.",
+  "tagName": "Dream.Resource.MemoryShard",
+  "tagDomain": "resource",
+  "purpose": "Classifies shard rewards and interactions.",
+  "usedByRefs": [
+    "unreal.blueprint.player_extractor",
+    "unreal.data-asset.memory_shard"
+  ],
+  "references": []
+}

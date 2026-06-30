@@ -1,0 +1,81 @@
+{
+  "id": "unreal.project.dream_extraction",
+  "kind": "unreal.project",
+  "name": "Dream Extraction Unreal Project",
+  "status": "ready",
+  "owner": "unreal-engineering",
+  "description": "Unreal project contract for the Dream Extraction prototype.",
+  "engineVersion": "5.4",
+  "projectPath": "Unreal/DreamExtraction/DreamExtraction.uproject",
+  "projectName": "DreamExtraction",
+  "targetPlatforms": [
+    "pc"
+  ],
+  "primaryMapRef": "unreal.map.dream_zone",
+  "pluginRefs": [
+    "unreal.plugin.verity_runtime"
+  ],
+  "moduleRefs": [
+    "unreal.module.dream_runtime"
+  ],
+  "targetRefs": [
+    "unreal.target.pc_development"
+  ],
+  "mapRefs": [
+    "unreal.map.dream_zone"
+  ],
+  "blueprintRefs": [
+    "unreal.blueprint.player_extractor"
+  ],
+  "dataAssetRefs": [
+    "unreal.data-asset.memory_shard"
+  ],
+  "gameplayTagRefs": [
+    "unreal.gameplay-tag.dream.shard"
+  ],
+  "inputActionRefs": [
+    "unreal.input-action.interact"
+  ],
+  "scannerRefs": [
+    "unreal.scanner.contracts"
+  ],
+  "validationRunnerRefs": [
+    "unreal.validation-runner.contracts"
+  ],
+  "readinessDashboardRef": "unreal.readiness-dashboard.prototype",
+  "agentContextExporterRef": "unreal.agent-context-exporter.prototype",
+  "references": [
+    {
+      "type": "usesPlugin",
+      "target": "unreal.plugin.verity_runtime"
+    },
+    {
+      "type": "declaresModule",
+      "target": "unreal.module.dream_runtime"
+    },
+    {
+      "type": "buildsTarget",
+      "target": "unreal.target.pc_development"
+    },
+    {
+      "type": "containsMap",
+      "target": "unreal.map.dream_zone"
+    },
+    {
+      "type": "usesBlueprint",
+      "target": "unreal.blueprint.player_extractor"
+    },
+    {
+      "type": "usesDataAsset",
+      "target": "unreal.data-asset.memory_shard"
+    },
+    {
+      "type": "usesGameplayTag",
+      "target": "unreal.gameplay-tag.dream.shard"
+    },
+    {
+      "type": "usesInputAction",
+      "target": "unreal.input-action.interact"
+    }
+  ]
+}
