@@ -41,6 +41,8 @@ Built-in packs currently include:
   manifests for content implementation and release-review coverage.
 - `verity.pack.economy`: currencies, sources, sinks, rewards, and offers for
   economy implementation and release-review coverage.
+- `verity.pack.progression`: XP models, levels, unlocks, tracks, and gates for
+  game progression implementation and readiness coverage.
 - `verity.pack.product-delivery`: product scope, commercial posture,
   project-management model, decision, readiness profile, evidence requirement,
   release process, operations, support, maintenance, archive, decommission,
@@ -54,6 +56,9 @@ Built-in packs currently include:
   analytics taxonomy, support category, save migration, decommission, data
   deletion, and archive handling records for release, maintenance, and
   retirement coverage.
+- `verity.pack.evidence`: test, CI, build, review, screenshot, video, QA,
+  playtest, certification-checklist, and artifact evidence records plus an
+  evidence report for implementation and release proof.
 
 ## Manifest
 
@@ -218,10 +223,12 @@ implementation and engine-tooling coverage in
 [`verity.pack.unreal`](unreal-pack.md), gameplay coverage in
 [`verity.pack.gameplay`](gameplay-pack.md), content coverage in
 [`verity.pack.content`](content-pack.md), economy coverage in
-[`verity.pack.economy`](economy-pack.md), product-delivery coverage in
+[`verity.pack.economy`](economy-pack.md), progression coverage in
+[`verity.pack.progression`](progression-pack.md), product-delivery coverage in
 [`verity.pack.product-delivery`](product-delivery-pack.md), mobile lifecycle
-coverage in [`verity.pack.mobile`](mobile-pack.md), and liveops coverage in
-[`verity.pack.liveops`](liveops-pack.md).
+coverage in [`verity.pack.mobile`](mobile-pack.md), liveops coverage in
+[`verity.pack.liveops`](liveops-pack.md), and evidence coverage in
+[`verity.pack.evidence`](evidence-pack.md).
 
 That guidance keeps product-surface packs focused on their own domains and
 prevents them from duplicating cross-cutting concerns owned by security,

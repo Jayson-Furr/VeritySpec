@@ -1,0 +1,261 @@
+{
+  "type": "evidence_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.evidence",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "evidenceCount": 10,
+  "summary": {
+    "byKind": {
+      "evidence.artifact": 1,
+      "evidence.build": 1,
+      "evidence.certification-checklist": 1,
+      "evidence.ci-run": 1,
+      "evidence.playtest": 1,
+      "evidence.qa": 1,
+      "evidence.review": 1,
+      "evidence.screenshot": 1,
+      "evidence.test": 1,
+      "evidence.video": 1
+    },
+    "byStatus": {
+      "ready": 10
+    },
+    "byOwner": {
+      "design": 1,
+      "docs": 2,
+      "qa": 2,
+      "release": 5
+    },
+    "byEvidenceStatus": {
+      "approved": 1,
+      "passing": 4,
+      "positive": 1,
+      "ready": 3,
+      "success": 1
+    },
+    "releaseGaps": {
+      "missingSubjects": [],
+      "missingArtifacts": [],
+      "failingEvidence": [],
+      "inconclusiveEvidence": []
+    }
+  },
+  "evidence": [
+    {
+      "id": "evidence.artifact.release_manifest",
+      "kind": "evidence.artifact",
+      "name": "Release Manifest Evidence",
+      "status": "ready",
+      "owner": "release",
+      "evidenceStatus": "ready",
+      "subject": {
+        "id": "release.process.evidence_demo",
+        "kind": "release.process",
+        "name": "Evidence Demo Release Process",
+        "resolved": true
+      },
+      "uri": "archive/releases/manifest.json",
+      "references": [
+        {
+          "type": "archives",
+          "target": "archive.policy.release_artifacts"
+        },
+        {
+          "type": "proves",
+          "target": "release.process.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.build.release_wheel",
+      "kind": "evidence.build",
+      "name": "Release Wheel Build Evidence",
+      "status": "ready",
+      "owner": "release",
+      "evidenceStatus": "passing",
+      "subject": {
+        "id": "release.process.evidence_demo",
+        "kind": "release.process",
+        "name": "Evidence Demo Release Process",
+        "resolved": true
+      },
+      "uri": "dist/verityspec-0.44.0-py3-none-any.whl",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.certification-checklist.release_candidate",
+      "kind": "evidence.certification-checklist",
+      "name": "Release Candidate Certification Checklist Evidence",
+      "status": "ready",
+      "owner": "release",
+      "evidenceStatus": "passing",
+      "subject": {
+        "id": "release.process.evidence_demo",
+        "kind": "release.process",
+        "name": "Evidence Demo Release Process",
+        "resolved": true
+      },
+      "uri": "release/checklists/candidate.md",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.ci-run.release_ci",
+      "kind": "evidence.ci-run",
+      "name": "Release CI Evidence",
+      "status": "ready",
+      "owner": "release",
+      "evidenceStatus": "success",
+      "subject": {
+        "id": "release.process.evidence_demo",
+        "kind": "release.process",
+        "name": "Evidence Demo Release Process",
+        "resolved": true
+      },
+      "uri": "https://github.com/Jayson-Furr/VeritySpec/actions/runs/28489756302",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.playtest.prototype_loop",
+      "kind": "evidence.playtest",
+      "name": "Prototype Loop Playtest Evidence",
+      "status": "ready",
+      "owner": "design",
+      "evidenceStatus": "positive",
+      "subject": {
+        "id": "product.scope.evidence_demo",
+        "kind": "product.scope",
+        "name": "Evidence Demo Scope",
+        "resolved": true
+      },
+      "uri": "playtests/prototype-loop.md",
+      "references": [
+        {
+          "type": "proves",
+          "target": "product.scope.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.qa.release_qa",
+      "kind": "evidence.qa",
+      "name": "Release QA Evidence",
+      "status": "ready",
+      "owner": "qa",
+      "evidenceStatus": "passing",
+      "subject": {
+        "id": "release.process.evidence_demo",
+        "kind": "release.process",
+        "name": "Evidence Demo Release Process",
+        "resolved": true
+      },
+      "uri": "qa/reports/release-qa.md",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.review.release_review",
+      "kind": "evidence.review",
+      "name": "Release Review Evidence",
+      "status": "ready",
+      "owner": "release",
+      "evidenceStatus": "approved",
+      "subject": {
+        "id": "decision.record.release_evidence",
+        "kind": "decision.record",
+        "name": "Release Evidence Is Required",
+        "resolved": true
+      },
+      "uri": "https://github.com/Jayson-Furr/VeritySpec/pull/208",
+      "references": [
+        {
+          "type": "reviews",
+          "target": "decision.record.release_evidence"
+        }
+      ]
+    },
+    {
+      "id": "evidence.screenshot.release_dashboard",
+      "kind": "evidence.screenshot",
+      "name": "Release Dashboard Screenshot Evidence",
+      "status": "ready",
+      "owner": "docs",
+      "evidenceStatus": "ready",
+      "subject": {
+        "id": "product.scope.evidence_demo",
+        "kind": "product.scope",
+        "name": "Evidence Demo Scope",
+        "resolved": true
+      },
+      "uri": "docs/screenshots/release-dashboard.png",
+      "references": [
+        {
+          "type": "captures",
+          "target": "product.scope.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.test.release_tests",
+      "kind": "evidence.test",
+      "name": "Release Test Evidence",
+      "status": "ready",
+      "owner": "qa",
+      "evidenceStatus": "passing",
+      "subject": {
+        "id": "release.process.evidence_demo",
+        "kind": "release.process",
+        "name": "Evidence Demo Release Process",
+        "resolved": true
+      },
+      "uri": "build/evidence/tests.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.evidence_demo"
+        }
+      ]
+    },
+    {
+      "id": "evidence.video.release_walkthrough",
+      "kind": "evidence.video",
+      "name": "Release Walkthrough Video Evidence",
+      "status": "ready",
+      "owner": "docs",
+      "evidenceStatus": "ready",
+      "subject": {
+        "id": "product.scope.evidence_demo",
+        "kind": "product.scope",
+        "name": "Evidence Demo Scope",
+        "resolved": true
+      },
+      "uri": "docs/videos/release-walkthrough.mp4",
+      "references": [
+        {
+          "type": "captures",
+          "target": "product.scope.evidence_demo"
+        }
+      ]
+    }
+  ]
+}

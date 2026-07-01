@@ -108,6 +108,10 @@ Economy records use readiness gates to keep currency, source, sink, reward, and
 offer contracts traceable. An `economy.offer` should include reward references,
 price metadata, availability, and graph links before strict readiness passes.
 
+Progression records use readiness gates to keep XP models, levels, unlocks,
+tracks, and gates implementation-ready. A `progression.track` should link to
+its XP model, levels, unlocks, and gates before strict readiness passes.
+
 Product-delivery records use readiness gates to keep spec-driven repositories
 decision-complete enough for implementation and release review. A
 `product.scope` should link to posture, project-management, readiness, release,
@@ -126,6 +130,11 @@ LiveOps records use readiness gates to keep remote config, rollback, analytics,
 support, save-migration, decommission, data-deletion, and archive handling
 contracts traceable. A `liveops.config` should link to the operational records
 that make a liveops posture reviewable.
+
+Evidence records use readiness gates to keep proof artifacts reviewable. Test,
+CI, build, review, screenshot, video, QA, playtest, certification-checklist,
+and artifact evidence should each identify a subject, owner, result or status,
+and the artifact URI or path needed for release review.
 
 Run readiness checks:
 

@@ -39,7 +39,7 @@ jobs:
 
       - name: Check all example workspaces
         run: |
-          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity examples/godot examples/unreal examples/gameplay examples/content examples/economy examples/product-delivery examples/mobile examples/liveops; do
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity examples/godot examples/unreal examples/gameplay examples/content examples/economy examples/progression examples/product-delivery examples/mobile examples/liveops examples/evidence; do
             verity validate "$workspace"
             verity lint "$workspace" --strict
             verity readiness "$workspace" --strict
@@ -103,6 +103,10 @@ jobs:
           verity validate examples/economy --format json > build/economy-validate.json
           verity lint examples/economy --strict --format json > build/economy-lint.json
           verity readiness examples/economy --strict --format json > build/economy-readiness.json
+          verity validate examples/progression --format json > build/progression-validate.json
+          verity lint examples/progression --strict --format json > build/progression-lint.json
+          verity readiness examples/progression --strict --format json > build/progression-readiness.json
+          verity graph examples/progression --format json > build/progression-graph.json
           verity validate examples/product-delivery --format json > build/product-delivery-validate.json
           verity lint examples/product-delivery --strict --format json > build/product-delivery-lint.json
           verity readiness examples/product-delivery --strict --format json > build/product-delivery-readiness.json
@@ -115,6 +119,10 @@ jobs:
           verity lint examples/liveops --strict --format json > build/liveops-lint.json
           verity readiness examples/liveops --strict --format json > build/liveops-readiness.json
           verity graph examples/liveops --format json > build/liveops-graph.json
+          verity validate examples/evidence --format json > build/evidence-validate.json
+          verity lint examples/evidence --strict --format json > build/evidence-lint.json
+          verity readiness examples/evidence --strict --format json > build/evidence-readiness.json
+          verity graph examples/evidence --format json > build/evidence-graph.json
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
@@ -191,6 +199,10 @@ jobs:
           python -m json.tool build/economy-validate.json >/dev/null
           python -m json.tool build/economy-lint.json >/dev/null
           python -m json.tool build/economy-readiness.json >/dev/null
+          python -m json.tool build/progression-validate.json >/dev/null
+          python -m json.tool build/progression-lint.json >/dev/null
+          python -m json.tool build/progression-readiness.json >/dev/null
+          python -m json.tool build/progression-graph.json >/dev/null
           python -m json.tool build/product-delivery-validate.json >/dev/null
           python -m json.tool build/product-delivery-lint.json >/dev/null
           python -m json.tool build/product-delivery-readiness.json >/dev/null
@@ -203,6 +215,10 @@ jobs:
           python -m json.tool build/liveops-lint.json >/dev/null
           python -m json.tool build/liveops-readiness.json >/dev/null
           python -m json.tool build/liveops-graph.json >/dev/null
+          python -m json.tool build/evidence-validate.json >/dev/null
+          python -m json.tool build/evidence-lint.json >/dev/null
+          python -m json.tool build/evidence-readiness.json >/dev/null
+          python -m json.tool build/evidence-graph.json >/dev/null
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
@@ -249,6 +265,7 @@ jobs:
           verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
           verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
           verity generate deployment-report examples/deployment --out build/deployment-report.json
+          verity generate evidence-report examples/evidence --out build/evidence-report.json
           verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
           verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
           verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -267,9 +284,11 @@ jobs:
           verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
           verity generate schema-bundle examples/content --out build/content-schema-bundle.json
           verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+          verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
           verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
           verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
           verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
+          verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
           verity generate openapi examples/api-service --out build/api-service.openapi.json
           verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
           verity generate asyncapi examples/events --out build/events.asyncapi.json
@@ -291,15 +310,18 @@ jobs:
           python -m json.tool build/gameplay-schema-bundle.json >/dev/null
           python -m json.tool build/content-schema-bundle.json >/dev/null
           python -m json.tool build/economy-schema-bundle.json >/dev/null
+          python -m json.tool build/progression-schema-bundle.json >/dev/null
           python -m json.tool build/product-delivery-schema-bundle.json >/dev/null
           python -m json.tool build/mobile-schema-bundle.json >/dev/null
           python -m json.tool build/liveops-schema-bundle.json >/dev/null
+          python -m json.tool build/evidence-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m json.tool build/security-report.json >/dev/null
           python -m json.tool build/observability-report.json >/dev/null
           python -m json.tool build/accessibility-report.json >/dev/null
           python -m json.tool build/compliance-matrix.json >/dev/null
           python -m json.tool build/deployment-report.json >/dev/null
+          python -m json.tool build/evidence-report.json >/dev/null
           python -m json.tool build/coverage-dashboard.json >/dev/null
           python -m json.tool build/pack-capability-index.json >/dev/null
           python -m json.tool build/pack-scaffold-schema-bundle.json >/dev/null
@@ -330,6 +352,8 @@ jobs:
           /tmp/verityspec-wheel/bin/verity validate examples/gameplay
           /tmp/verityspec-wheel/bin/verity validate examples/content
           /tmp/verityspec-wheel/bin/verity validate examples/economy
+          /tmp/verityspec-wheel/bin/verity validate examples/progression
           /tmp/verityspec-wheel/bin/verity validate examples/product-delivery
           /tmp/verityspec-wheel/bin/verity validate examples/mobile
           /tmp/verityspec-wheel/bin/verity validate examples/liveops
+          /tmp/verityspec-wheel/bin/verity validate examples/evidence

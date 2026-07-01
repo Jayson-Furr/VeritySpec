@@ -17,6 +17,7 @@ from .generators import (
     generate_compliance_matrix,
     generate_coverage_dashboard,
     generate_deployment_report,
+    generate_evidence_report,
     generate_openapi,
     generate_observability_report,
     generate_pack_capability_index,
@@ -758,6 +759,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "compliance-matrix": lambda: generate_compliance_matrix(workspace, generated_at=generated_at),
         "coverage-dashboard": lambda: generate_coverage_dashboard(workspace, generated_at=generated_at),
         "deployment-report": lambda: generate_deployment_report(workspace, generated_at=generated_at),
+        "evidence-report": lambda: generate_evidence_report(workspace, generated_at=generated_at),
         "pack-capability-index": lambda: generate_pack_capability_index(
             workspace,
             registry,
@@ -1005,6 +1007,7 @@ def build_parser() -> argparse.ArgumentParser:
             "compliance-matrix",
             "coverage-dashboard",
             "deployment-report",
+            "evidence-report",
             "pack-capability-index",
             "product-impact",
             "roadmap-report",

@@ -17,6 +17,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
@@ -25,9 +26,11 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
+verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -96,6 +99,14 @@ Compliance matrices include:
 - Per-mapping framework metadata, verification state, mapped targets, and
   grouped security, accessibility, and observability evidence
 
+Evidence reports include:
+
+- Workspace and VeritySpec version metadata
+- Evidence counts by kind, lifecycle status, owner, and evidence status
+- Release gaps for missing subjects, missing artifact or URI fields, failing
+  evidence, and inconclusive evidence
+- Per-evidence subject resolution, URI, and reference detail
+
 Deployment reports include:
 
 - Workspace and VeritySpec version metadata
@@ -112,8 +123,8 @@ Coverage dashboards include:
 - Loaded pack IDs and total product-contract record count
 - Tracked product-surface coverage for API, CLI, events, security,
   accessibility, observability, compliance, deployment, game-core, game-assets,
-  Unity, Godot, Unreal, gameplay, content, economy, product-delivery, mobile,
-  and liveops records
+  Unity, Godot, Unreal, gameplay, content, economy, progression,
+  product-delivery, mobile, liveops, and evidence records
 - Counts by product surface and record kind
 - Release gaps for missing surface records, loaded surface packs without
   records, products without surface references, and product-specific missing
@@ -261,12 +272,12 @@ TypeScript and Python model generators support:
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
 is covered by golden-file tests. The `examples/security` security report,
 `examples/observability` observability report and schema bundle, deployment
-report, cross-pack coverage dashboard, pack capability index, and
-product-impact report are also covered by committed golden fixtures. Game-core,
+report, evidence report, cross-pack coverage dashboard, pack capability index,
+and product-impact report are also covered by committed golden fixtures. Game-core,
 game-assets, Unity, Godot, Unreal, gameplay, content, economy,
-product-delivery, mobile, and liveops schema-bundle smoke checks cover bundled
-schema generation for the built-in game, engine, delivery, mobile, and liveops
-packs. Changes to those generators should update the golden files only when the
+progression, product-delivery, mobile, liveops, and evidence schema-bundle
+smoke checks cover bundled schema generation for the built-in game, engine,
+progression, delivery, mobile, liveops, and evidence packs. Changes to those generators should update the golden files only when the
 output contract intentionally changes.
 
 Known limits:

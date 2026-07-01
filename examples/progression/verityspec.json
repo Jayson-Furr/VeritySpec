@@ -1,0 +1,16 @@
+{
+  "workspace": "examples.progression",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.game-core",
+    "verity.pack.gameplay",
+    "verity.pack.content",
+    "verity.pack.economy",
+    "verity.pack.progression"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

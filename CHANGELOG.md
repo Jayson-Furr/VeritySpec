@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.progression` with `progression.xp-model`,
+  `progression.level`, `progression.unlock`, `progression.track`, and
+  `progression.gate` records, readiness gates, reference rules, executable
+  progression examples, graph coverage, schema-bundle coverage,
+  coverage-dashboard support, CI coverage, and public docs for game
+  progression contracts.
+- Added built-in `verity.pack.evidence` with `evidence.test`,
+  `evidence.ci-run`, `evidence.build`, `evidence.review`,
+  `evidence.screenshot`, `evidence.video`, `evidence.qa`,
+  `evidence.playtest`, `evidence.certification-checklist`, and
+  `evidence.artifact` records, readiness gates, reference rules, executable
+  evidence examples, graph coverage, schema-bundle coverage,
+  coverage-dashboard support, CI coverage, public docs, and
+  `verity generate evidence-report`.
+- Added explicit Unity, Godot, and Unreal reference-rule parity for engine
+  validation runners and readiness dashboards that produce or report evidence,
+  plus engine project relationships for implementing progression tracks.
+
 ## 0.44.0
 
 - Added built-in `verity.pack.mobile` with `mobile.app-release`,

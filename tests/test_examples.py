@@ -34,9 +34,11 @@ POSITIVE_EXAMPLES = [
     ROOT / "examples" / "gameplay",
     ROOT / "examples" / "content",
     ROOT / "examples" / "economy",
+    ROOT / "examples" / "progression",
     ROOT / "examples" / "product-delivery",
     ROOT / "examples" / "mobile",
     ROOT / "examples" / "liveops",
+    ROOT / "examples" / "evidence",
 ]
 COMPATIBILITY_WORKSPACES = POSITIVE_EXAMPLES + [
     ROOT / "tests" / "fixtures" / "generator_maturity",

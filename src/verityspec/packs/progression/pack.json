@@ -1,0 +1,267 @@
+{
+  "id": "verity.pack.progression",
+  "version": "0.45.0",
+  "name": "VeritySpec Progression Pack",
+  "description": "Game progression XP model, level, unlock, track, and gate records for executable progression product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "progression.xp-model",
+      "path": "schemas/progression-xp-model.schema.json"
+    },
+    {
+      "kind": "progression.level",
+      "path": "schemas/progression-level.schema.json"
+    },
+    {
+      "kind": "progression.unlock",
+      "path": "schemas/progression-unlock.schema.json"
+    },
+    {
+      "kind": "progression.track",
+      "path": "schemas/progression-track.schema.json"
+    },
+    {
+      "kind": "progression.gate",
+      "path": "schemas/progression-gate.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "progression.xp-model.ready",
+      "kind": "progression.xp-model",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "xpSource",
+        "scaleModel",
+        "formula",
+        "maxLevel"
+      ]
+    },
+    {
+      "id": "progression.level.ready",
+      "kind": "progression.level",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "trackRef",
+        "levelNumber",
+        "xpRequired"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "progression.unlock.ready",
+      "kind": "progression.unlock",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "unlockType",
+        "unlockTargetRef",
+        "trackRef"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "progression.track.ready",
+      "kind": "progression.track",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "trackType",
+        "xpModelRef",
+        "levelRefs",
+        "unlockRefs"
+      ],
+      "minItems": {
+        "levelRefs": 1,
+        "unlockRefs": 1,
+        "references": 3
+      }
+    },
+    {
+      "id": "progression.gate.ready",
+      "kind": "progression.gate",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "gateType",
+        "condition",
+        "trackRef"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasProgressionTrack",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasProgressionTrack",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "game.loop",
+      "relationship": "usesProgressionTrack",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "game.mode",
+      "relationship": "usesProgressionTrack",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "game.prototype-scope",
+      "relationship": "validatesProgression",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "progression.track",
+      "relationship": "usesXpModel",
+      "targetKind": "progression.xp-model"
+    },
+    {
+      "sourceKind": "progression.track",
+      "relationship": "hasLevel",
+      "targetKind": "progression.level"
+    },
+    {
+      "sourceKind": "progression.track",
+      "relationship": "hasUnlock",
+      "targetKind": "progression.unlock"
+    },
+    {
+      "sourceKind": "progression.track",
+      "relationship": "hasProgressionGate",
+      "targetKind": "progression.gate"
+    },
+    {
+      "sourceKind": "progression.level",
+      "relationship": "belongsToTrack",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "progression.level",
+      "relationship": "unlocks",
+      "targetKind": "progression.unlock"
+    },
+    {
+      "sourceKind": "progression.level",
+      "relationship": "grantsReward",
+      "targetKind": "economy.reward"
+    },
+    {
+      "sourceKind": "progression.unlock",
+      "relationship": "belongsToTrack",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "progression.unlock",
+      "relationship": "targetsContent",
+      "targetKind": "game.content-item"
+    },
+    {
+      "sourceKind": "progression.unlock",
+      "relationship": "targetsAbility",
+      "targetKind": "game.ability"
+    },
+    {
+      "sourceKind": "progression.unlock",
+      "relationship": "gatedBy",
+      "targetKind": "progression.gate"
+    },
+    {
+      "sourceKind": "progression.gate",
+      "relationship": "gatesUnlock",
+      "targetKind": "progression.unlock"
+    },
+    {
+      "sourceKind": "progression.gate",
+      "relationship": "gatesLevel",
+      "targetKind": "progression.level"
+    },
+    {
+      "sourceKind": "progression.gate",
+      "relationship": "usesCurrency",
+      "targetKind": "economy.currency"
+    },
+    {
+      "sourceKind": "progression.gate",
+      "relationship": "requiresEvidence",
+      "targetKind": "evidence.requirement"
+    },
+    {
+      "sourceKind": "economy.reward",
+      "relationship": "grantsProgression",
+      "targetKind": "progression.xp-model"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "tunesProgression",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "implementsProgression",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "implementsProgression",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "implementsProgression",
+      "targetKind": "progression.track"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for progression records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "progression.xp-model",
+        "progression.level",
+        "progression.unlock",
+        "progression.track",
+        "progression.gate"
+      ]
+    },
+    {
+      "id": "coverage-dashboard",
+      "name": "Coverage Dashboard",
+      "description": "Count progression records as a first-class product surface.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "progression.xp-model",
+        "progression.level",
+        "progression.unlock",
+        "progression.track",
+        "progression.gate"
+      ]
+    }
+  ]
+}

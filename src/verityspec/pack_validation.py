@@ -34,6 +34,7 @@ KNOWN_GENERATORS = {
     "compliance-matrix",
     "coverage-dashboard",
     "deployment-report",
+    "evidence-report",
     "pack-capability-index",
     "product-impact",
 }

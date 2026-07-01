@@ -980,6 +980,19 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
         "productRelationships": ["hasEconomy"],
     },
     {
+        "id": "progression",
+        "name": "Progression",
+        "packId": "verity.pack.progression",
+        "recordKinds": [
+            "progression.xp-model",
+            "progression.level",
+            "progression.unlock",
+            "progression.track",
+            "progression.gate",
+        ],
+        "productRelationships": ["hasProgressionTrack"],
+    },
+    {
         "id": "product-delivery",
         "name": "Product Delivery",
         "packId": "verity.pack.product-delivery",
@@ -1040,6 +1053,24 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
             "liveops.archive-handling",
         ],
         "productRelationships": ["hasLiveOpsConfig"],
+    },
+    {
+        "id": "evidence",
+        "name": "Evidence",
+        "packId": "verity.pack.evidence",
+        "recordKinds": [
+            "evidence.test",
+            "evidence.ci-run",
+            "evidence.build",
+            "evidence.review",
+            "evidence.screenshot",
+            "evidence.video",
+            "evidence.qa",
+            "evidence.playtest",
+            "evidence.certification-checklist",
+            "evidence.artifact",
+        ],
+        "productRelationships": ["hasEvidence"],
     },
 ]
 PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
@@ -1687,6 +1718,143 @@ def reference_targets(
 
 def security_control_targets(record: Record, records_by_id: dict[str, Record]) -> list[dict[str, str]]:
     return reference_targets(record, records_by_id, "appliesTo")
+
+
+EVIDENCE_KINDS = {
+    "evidence.test",
+    "evidence.ci-run",
+    "evidence.build",
+    "evidence.review",
+    "evidence.screenshot",
+    "evidence.video",
+    "evidence.qa",
+    "evidence.playtest",
+    "evidence.certification-checklist",
+    "evidence.artifact",
+}
+EVIDENCE_URI_FIELDS = [
+    "evidenceUri",
+    "runUrl",
+    "artifactPath",
+    "reviewUri",
+    "imagePath",
+    "videoPath",
+    "reportPath",
+    "checklistPath",
+]
+EVIDENCE_FAILING_VALUES = {"failure", "failing", "blocked", "changes-requested", "rejected"}
+EVIDENCE_INCONCLUSIVE_VALUES = {
+    "inconclusive",
+    "skipped",
+    "cancelled",
+    "neutral",
+    "timed-out",
+    "deferred",
+    "not-started",
+    "in-progress",
+    "mixed",
+}
+
+
+def evidence_status(record: Record) -> str:
+    for field in ["result", "conclusion", "decision", "certificationStatus"]:
+        value = record.data.get(field)
+        if isinstance(value, str) and value:
+            return value
+    return record.data.get("status", "unspecified")
+
+
+def evidence_uri(record: Record) -> str | None:
+    for field in EVIDENCE_URI_FIELDS:
+        value = record.data.get(field)
+        if isinstance(value, str) and value.strip():
+            return value
+    return None
+
+
+def evidence_subject(record: Record, records_by_id: dict[str, Record]) -> dict[str, Any]:
+    subject_ref = record.data.get("subjectRef")
+    subject = records_by_id.get(subject_ref) if isinstance(subject_ref, str) else None
+    return {
+        "id": subject_ref if isinstance(subject_ref, str) else "",
+        "kind": subject.kind if subject and subject.kind else record.data.get("subjectKind", "unknown"),
+        "name": subject.data.get("name", "") if subject else "",
+        "resolved": subject is not None,
+    }
+
+
+def generate_evidence_report(workspace: Workspace, generated_at: str | None = None) -> dict:
+    evidence_records = [record for record in workspace.records if record.kind in EVIDENCE_KINDS]
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    by_kind: dict[str, int] = {}
+    for record in evidence_records:
+        key = record.kind or "unspecified"
+        by_kind[key] = by_kind.get(key, 0) + 1
+    entries: list[dict[str, Any]] = []
+    missing_subjects: list[str] = []
+    missing_artifacts: list[str] = []
+    failing_evidence: list[str] = []
+    inconclusive_evidence: list[str] = []
+
+    for record in sorted(evidence_records, key=lambda item: item.id or ""):
+        status = evidence_status(record)
+        subject = evidence_subject(record, records_by_id)
+        uri = evidence_uri(record)
+        if record.id and not subject["resolved"]:
+            missing_subjects.append(record.id)
+        if record.id and not uri:
+            missing_artifacts.append(record.id)
+        if record.id and status in EVIDENCE_FAILING_VALUES:
+            failing_evidence.append(record.id)
+        if record.id and status in EVIDENCE_INCONCLUSIVE_VALUES:
+            inconclusive_evidence.append(record.id)
+
+        entries.append(
+            {
+                "id": record.id,
+                "kind": record.kind,
+                "name": record.data.get("name"),
+                "status": record.data.get("status"),
+                "owner": record.data.get("owner"),
+                "evidenceStatus": status,
+                "subject": subject,
+                "uri": uri,
+                "references": record.data.get("references", []),
+            }
+        )
+
+    return {
+        "type": "evidence_report",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "evidenceCount": len(evidence_records),
+        "summary": {
+            "byKind": dict(sorted(by_kind.items(), key=lambda item: item[0])),
+            "byStatus": count_by_field(evidence_records, "status"),
+            "byOwner": count_by_field(evidence_records, "owner"),
+            "byEvidenceStatus": dict(
+                sorted(
+                    {
+                        status: sum(
+                            1 for record in evidence_records if evidence_status(record) == status
+                        )
+                        for status in {evidence_status(record) for record in evidence_records}
+                    }.items(),
+                    key=lambda item: item[0],
+                )
+            ),
+            "releaseGaps": {
+                "missingSubjects": sorted(missing_subjects),
+                "missingArtifacts": sorted(missing_artifacts),
+                "failingEvidence": sorted(failing_evidence),
+                "inconclusiveEvidence": sorted(inconclusive_evidence),
+            },
+        },
+        "evidence": entries,
+    }
 
 
 def is_security_control_verified(record: Record) -> bool:

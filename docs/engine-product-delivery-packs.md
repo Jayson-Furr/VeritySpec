@@ -208,16 +208,18 @@ Delivered record kinds:
 - `editor.surface`
 - `agent-context.exporter`
 
-The first follow-on lifecycle slices now live in `verity.pack.mobile` and
-`verity.pack.liveops`. They capture mobile release lifecycle, privacy/store
-posture, SDK inventory, monetization posture, soft-launch and launch-candidate
-records, liveops configuration, remote config, rollback, analytics, support,
-save migration, decommissioning, data deletion, and archive handling without
-turning product-delivery into a catch-all pack.
+The first follow-on lifecycle slices now live in `verity.pack.mobile`,
+`verity.pack.liveops`, `verity.pack.progression`, and `verity.pack.evidence`.
+They capture mobile release lifecycle, privacy/store posture, SDK inventory,
+monetization posture, soft-launch and launch-candidate records, liveops
+configuration, remote config, rollback, analytics, support, save migration,
+decommissioning, data deletion, archive handling, progression XP/level/unlock
+contracts, and concrete implementation evidence without turning
+product-delivery into a catch-all pack.
 
-Future follow-on packs or product-delivery expansions should focus on evidence,
-progression, portfolio, and dependency behavior rather than duplicating mobile
-or liveops records.
+Future follow-on packs or product-delivery expansions should focus on
+portfolio and dependency behavior rather than duplicating mobile, liveops,
+progression, or evidence records.
 
 ## Implementation Acceptance Criteria
 

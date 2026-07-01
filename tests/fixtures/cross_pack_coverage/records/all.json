@@ -84,6 +84,14 @@
         {
           "type": "hasLiveOpsConfig",
           "target": "liveops.config.coverage_live"
+        },
+        {
+          "type": "hasProgressionTrack",
+          "target": "progression.track.coverage_mastery"
+        },
+        {
+          "type": "hasEvidence",
+          "target": "evidence.artifact.coverage_manifest"
         }
       ]
     },
@@ -2946,6 +2954,329 @@
       "artifactPolicy": "Archive final config snapshots, analytics taxonomy, and support policies.",
       "manifestPath": "archive/liveops-manifest.json",
       "references": []
+    },
+    {
+      "id": "progression.xp-model.coverage_session",
+      "kind": "progression.xp-model",
+      "name": "Coverage Session XP Model",
+      "description": "Coverage fixture XP model for progression surface checks.",
+      "status": "ready",
+      "owner": "systems-design",
+      "xpSource": "gameplay",
+      "scaleModel": "linear",
+      "formula": "level_n_xp = 100 * n",
+      "maxLevel": 5,
+      "xpUnitName": "mastery xp",
+      "sourceRefs": [
+        "game.loop.coverage_extract"
+      ],
+      "references": []
+    },
+    {
+      "id": "progression.track.coverage_mastery",
+      "kind": "progression.track",
+      "name": "Coverage Mastery Track",
+      "description": "Coverage fixture progression track linking XP, levels, unlocks, and gates.",
+      "status": "ready",
+      "owner": "systems-design",
+      "trackType": "prototype",
+      "xpModelRef": "progression.xp-model.coverage_session",
+      "levelRefs": [
+        "progression.level.coverage_1"
+      ],
+      "unlockRefs": [
+        "progression.unlock.coverage_dash"
+      ],
+      "gateRefs": [
+        "progression.gate.coverage_currency"
+      ],
+      "resetPolicy": "No reset in coverage fixture.",
+      "references": [
+        {
+          "type": "usesXpModel",
+          "target": "progression.xp-model.coverage_session"
+        },
+        {
+          "type": "hasLevel",
+          "target": "progression.level.coverage_1"
+        },
+        {
+          "type": "hasUnlock",
+          "target": "progression.unlock.coverage_dash"
+        },
+        {
+          "type": "hasProgressionGate",
+          "target": "progression.gate.coverage_currency"
+        }
+      ]
+    },
+    {
+      "id": "progression.level.coverage_1",
+      "kind": "progression.level",
+      "name": "Coverage Level 1",
+      "description": "Coverage fixture first level for progression dashboard checks.",
+      "status": "ready",
+      "owner": "systems-design",
+      "trackRef": "progression.track.coverage_mastery",
+      "levelNumber": 1,
+      "xpRequired": 100,
+      "rewardRefs": [
+        "economy.reward.coverage_extract"
+      ],
+      "unlockRefs": [
+        "progression.unlock.coverage_dash"
+      ],
+      "references": [
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.coverage_extract"
+        }
+      ]
+    },
+    {
+      "id": "progression.unlock.coverage_dash",
+      "kind": "progression.unlock",
+      "name": "Coverage Dash Unlock",
+      "description": "Coverage fixture unlock targeting an existing gameplay ability.",
+      "status": "ready",
+      "owner": "systems-design",
+      "unlockType": "ability",
+      "unlockTargetRef": "game.ability.coverage_dash",
+      "trackRef": "progression.track.coverage_mastery",
+      "levelRef": "progression.level.coverage_1",
+      "gateRefs": [
+        "progression.gate.coverage_currency"
+      ],
+      "deliveryPolicy": "Unlock after first progression level.",
+      "references": [
+        {
+          "type": "targetsAbility",
+          "target": "game.ability.coverage_dash"
+        },
+        {
+          "type": "gatedBy",
+          "target": "progression.gate.coverage_currency"
+        }
+      ]
+    },
+    {
+      "id": "progression.gate.coverage_currency",
+      "kind": "progression.gate",
+      "name": "Coverage Currency Gate",
+      "description": "Coverage fixture gate using an existing economy currency.",
+      "status": "ready",
+      "owner": "systems-design",
+      "gateType": "currency",
+      "condition": "Player has at least five coverage shards.",
+      "trackRef": "progression.track.coverage_mastery",
+      "unlockRef": "progression.unlock.coverage_dash",
+      "enforcementPoint": "session reward resolution",
+      "references": [
+        {
+          "type": "usesCurrency",
+          "target": "economy.currency.coverage_shard"
+        }
+      ]
+    },
+    {
+      "id": "evidence.test.coverage_contracts",
+      "kind": "evidence.test",
+      "name": "Coverage Contract Test Evidence",
+      "description": "Coverage fixture test evidence produced by engine validation runners.",
+      "status": "ready",
+      "owner": "qa",
+      "subjectRef": "release.process.coverage_release",
+      "subjectKind": "release.process",
+      "testType": "integration",
+      "command": "verity validate tests/fixtures/cross_pack_coverage",
+      "result": "passing",
+      "evidenceUri": "build/coverage/test-evidence.json",
+      "executedAt": "2026-07-01T00:00:00Z",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.coverage_release"
+        }
+      ]
+    },
+    {
+      "id": "evidence.ci-run.coverage_ci",
+      "kind": "evidence.ci-run",
+      "name": "Coverage CI Evidence",
+      "description": "Coverage fixture CI evidence for release process checks.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "release.process.coverage_release",
+      "provider": "github-actions",
+      "runId": "coverage-ci",
+      "runUrl": "https://github.com/Jayson-Furr/VeritySpec/actions/runs/coverage-ci",
+      "conclusion": "success",
+      "commit": "coverage",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.coverage_release"
+        }
+      ]
+    },
+    {
+      "id": "evidence.build.coverage_wheel",
+      "kind": "evidence.build",
+      "name": "Coverage Build Evidence",
+      "description": "Coverage fixture build evidence for package artifact checks.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "release.process.coverage_release",
+      "artifactPath": "dist/coverage.whl",
+      "artifactType": "wheel",
+      "platform": "python",
+      "buildVersion": "0.45.0",
+      "result": "passing",
+      "references": [
+        {
+          "type": "proves",
+          "target": "release.process.coverage_release"
+        }
+      ]
+    },
+    {
+      "id": "evidence.review.coverage_decision",
+      "kind": "evidence.review",
+      "name": "Coverage Review Evidence",
+      "description": "Coverage fixture review evidence for a product-delivery decision.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "decision.record.coverage_truth_layer",
+      "reviewType": "release",
+      "reviewer": "maintainer",
+      "decision": "approved",
+      "reviewedAt": "2026-07-01T00:00:00Z",
+      "reviewUri": "https://github.com/Jayson-Furr/VeritySpec/pull/coverage",
+      "references": [
+        {
+          "type": "reviews",
+          "target": "decision.record.coverage_truth_layer"
+        }
+      ]
+    },
+    {
+      "id": "evidence.screenshot.coverage_dashboard",
+      "kind": "evidence.screenshot",
+      "name": "Coverage Screenshot Evidence",
+      "description": "Coverage fixture screenshot evidence for product scope review.",
+      "status": "ready",
+      "owner": "docs",
+      "subjectRef": "product.scope.coverage_delivery",
+      "imagePath": "docs/screenshots/coverage-dashboard.png",
+      "capturedAt": "2026-07-01T00:00:00Z",
+      "purpose": "Capture coverage dashboard state.",
+      "references": [
+        {
+          "type": "captures",
+          "target": "product.scope.coverage_delivery"
+        }
+      ]
+    },
+    {
+      "id": "evidence.video.coverage_walkthrough",
+      "kind": "evidence.video",
+      "name": "Coverage Video Evidence",
+      "description": "Coverage fixture video evidence for product scope review.",
+      "status": "ready",
+      "owner": "docs",
+      "subjectRef": "product.scope.coverage_delivery",
+      "videoPath": "docs/videos/coverage-walkthrough.mp4",
+      "capturedAt": "2026-07-01T00:00:00Z",
+      "purpose": "Capture coverage workflow walkthrough.",
+      "durationSeconds": 90,
+      "references": [
+        {
+          "type": "captures",
+          "target": "product.scope.coverage_delivery"
+        }
+      ]
+    },
+    {
+      "id": "evidence.qa.coverage_release",
+      "kind": "evidence.qa",
+      "name": "Coverage QA Evidence",
+      "description": "Coverage fixture QA evidence for launch candidate checks.",
+      "status": "ready",
+      "owner": "qa",
+      "subjectRef": "mobile.launch-candidate.coverage_candidate",
+      "reportPath": "qa/reports/coverage-release.md",
+      "qaScope": "mobile launch candidate",
+      "result": "passing",
+      "passedChecklistItems": 8,
+      "failedChecklistItems": 0,
+      "references": [
+        {
+          "type": "proves",
+          "target": "mobile.launch-candidate.coverage_candidate"
+        }
+      ]
+    },
+    {
+      "id": "evidence.playtest.coverage_progression",
+      "kind": "evidence.playtest",
+      "name": "Coverage Progression Playtest Evidence",
+      "description": "Coverage fixture playtest evidence for progression track checks.",
+      "status": "ready",
+      "owner": "design",
+      "subjectRef": "progression.track.coverage_mastery",
+      "reportPath": "playtests/coverage-progression.md",
+      "sessionDate": "2026-07-01",
+      "participantCount": 4,
+      "findingsSummary": "Players understood the first progression unlock.",
+      "result": "positive",
+      "references": [
+        {
+          "type": "proves",
+          "target": "progression.track.coverage_mastery"
+        }
+      ]
+    },
+    {
+      "id": "evidence.certification-checklist.coverage_mobile",
+      "kind": "evidence.certification-checklist",
+      "name": "Coverage Mobile Certification Evidence",
+      "description": "Coverage fixture certification checklist evidence for a launch candidate.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "mobile.launch-candidate.coverage_candidate",
+      "platform": "ios-android",
+      "checklistPath": "release/checklists/mobile-coverage.md",
+      "certificationStatus": "passing",
+      "reviewOwner": "release lead",
+      "references": [
+        {
+          "type": "proves",
+          "target": "mobile.launch-candidate.coverage_candidate"
+        }
+      ]
+    },
+    {
+      "id": "evidence.artifact.coverage_manifest",
+      "kind": "evidence.artifact",
+      "name": "Coverage Artifact Evidence",
+      "description": "Coverage fixture artifact evidence for archive policy checks.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "release.process.coverage_release",
+      "artifactPath": "archive/coverage/manifest.json",
+      "artifactType": "manifest",
+      "hash": "sha256:coverage",
+      "retentionPolicy": "Retain with coverage fixture outputs.",
+      "references": [
+        {
+          "type": "archives",
+          "target": "archive.policy.coverage_archive"
+        },
+        {
+          "type": "proves",
+          "target": "release.process.coverage_release"
+        }
+      ]
     }
   ]
 }

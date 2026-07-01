@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(112, report["recordCount"])
+        self.assertEqual(127, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(19, report["summary"]["trackedSurfaces"])
-        self.assertEqual(19, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(19, report["summary"]["coveredSurfaces"])
+        self.assertEqual(21, report["summary"]["trackedSurfaces"])
+        self.assertEqual(21, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(21, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1039,6 +1039,7 @@ class VeritySpecTests(unittest.TestCase):
                 "compliance": 1,
                 "content": 4,
                 "deployment": 2,
+                "evidence": 10,
                 "economy": 5,
                 "events": 1,
                 "game-assets": 4,
@@ -1049,6 +1050,7 @@ class VeritySpecTests(unittest.TestCase):
                 "mobile": 12,
                 "observability": 4,
                 "product-delivery": 17,
+                "progression": 5,
                 "security": 1,
                 "unity": 12,
                 "unreal": 13,
@@ -1068,6 +1070,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("verity.pack.api", surfaces["api"]["packId"])
         self.assertEqual("verity.pack.content", surfaces["content"]["packId"])
         self.assertEqual("verity.pack.economy", surfaces["economy"]["packId"])
+        self.assertEqual("verity.pack.evidence", surfaces["evidence"]["packId"])
         self.assertEqual("verity.pack.game-assets", surfaces["game-assets"]["packId"])
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
@@ -1075,6 +1078,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("verity.pack.liveops", surfaces["liveops"]["packId"])
         self.assertEqual("verity.pack.mobile", surfaces["mobile"]["packId"])
         self.assertEqual("verity.pack.product-delivery", surfaces["product-delivery"]["packId"])
+        self.assertEqual("verity.pack.progression", surfaces["progression"]["packId"])
         self.assertEqual("verity.pack.unity", surfaces["unity"]["packId"])
         self.assertEqual("verity.pack.unreal", surfaces["unreal"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
@@ -1130,6 +1134,16 @@ class VeritySpecTests(unittest.TestCase):
         )
         self.assertEqual(
             [
+                "progression.gate.coverage_currency",
+                "progression.level.coverage_1",
+                "progression.track.coverage_mastery",
+                "progression.unlock.coverage_dash",
+                "progression.xp-model.coverage_session",
+            ],
+            [record["id"] for record in surfaces["progression"]["records"]],
+        )
+        self.assertEqual(
+            [
                 "agent-context.exporter.coverage_agent_context",
                 "archive.policy.coverage_archive",
                 "commercial.posture.coverage_private_alpha",
@@ -1180,6 +1194,21 @@ class VeritySpecTests(unittest.TestCase):
                 "liveops.support-category.coverage_support",
             ],
             [record["id"] for record in surfaces["liveops"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "evidence.artifact.coverage_manifest",
+                "evidence.build.coverage_wheel",
+                "evidence.certification-checklist.coverage_mobile",
+                "evidence.ci-run.coverage_ci",
+                "evidence.playtest.coverage_progression",
+                "evidence.qa.coverage_release",
+                "evidence.review.coverage_decision",
+                "evidence.screenshot.coverage_dashboard",
+                "evidence.test.coverage_contracts",
+                "evidence.video.coverage_walkthrough",
+            ],
+            [record["id"] for record in surfaces["evidence"]["records"]],
         )
         self.assertEqual(
             [

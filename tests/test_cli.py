@@ -20,6 +20,7 @@ MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
+EVIDENCE_REPORT_GOLDEN = ROOT / "tests" / "golden" / "evidence_report" / "evidence_report.json"
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
@@ -82,6 +83,14 @@ def normalize_observability_report_for_golden(report: dict) -> dict:
 
 
 def normalize_deployment_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_evidence_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -956,6 +965,7 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("verity.pack.compliance", pack_ids)
         self.assertIn("verity.pack.content", pack_ids)
         self.assertIn("verity.pack.economy", pack_ids)
+        self.assertIn("verity.pack.evidence", pack_ids)
         self.assertIn("verity.pack.game-assets", pack_ids)
         self.assertIn("verity.pack.game-core", pack_ids)
         self.assertIn("verity.pack.gameplay", pack_ids)
@@ -964,6 +974,7 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("verity.pack.mobile", pack_ids)
         self.assertIn("verity.pack.observability", pack_ids)
         self.assertIn("verity.pack.product-delivery", pack_ids)
+        self.assertIn("verity.pack.progression", pack_ids)
         self.assertIn("verity.pack.security", pack_ids)
         self.assertIn("verity.pack.unity", pack_ids)
         self.assertIn("verity.pack.unreal", pack_ids)
@@ -1576,6 +1587,55 @@ class VerityCliTests(unittest.TestCase):
         self.assertIsInstance(payload["verityVersion"], str)
         self.assertEqual(expected, normalize_deployment_report_for_golden(payload))
 
+    def test_evidence_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "evidence-report.json"
+            result = verity_command(
+                "generate",
+                "evidence-report",
+                "examples/evidence",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("evidence_report", payload["type"])
+        self.assertEqual(10, payload["evidenceCount"])
+        self.assertEqual(1, payload["summary"]["byKind"]["evidence.ci-run"])
+        self.assertEqual({"ready": 10}, payload["summary"]["byStatus"])
+        self.assertEqual(
+            {
+                "missingSubjects": [],
+                "missingArtifacts": [],
+                "failingEvidence": [],
+                "inconclusiveEvidence": [],
+            },
+            payload["summary"]["releaseGaps"],
+        )
+        self.assertEqual("evidence.artifact.release_manifest", payload["evidence"][0]["id"])
+
+    def test_evidence_report_generator_matches_golden_file(self) -> None:
+        expected = json.loads(EVIDENCE_REPORT_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "evidence-report.json"
+            result = verity_command(
+                "generate",
+                "evidence-report",
+                "examples/evidence",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "evidence"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_evidence_report_for_golden(payload))
+
     def test_coverage_dashboard_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "coverage-dashboard.json"
@@ -1591,9 +1651,9 @@ class VerityCliTests(unittest.TestCase):
 
         self.assertEqual(0, result.returncode)
         self.assertEqual("coverage_dashboard", payload["type"])
-        self.assertEqual(112, payload["recordCount"])
-        self.assertEqual(19, payload["summary"]["trackedSurfaces"])
-        self.assertEqual(19, payload["summary"]["coveredSurfaces"])
+        self.assertEqual(127, payload["recordCount"])
+        self.assertEqual(21, payload["summary"]["trackedSurfaces"])
+        self.assertEqual(21, payload["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, payload["summary"]["coveragePercent"])
         self.assertEqual([], payload["summary"]["releaseGaps"]["missingSurfaceRecords"])
         self.assertEqual("product.coverage_dashboard", payload["products"][0]["id"])
