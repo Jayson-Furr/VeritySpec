@@ -1740,12 +1740,12 @@ Sprint 100 releases the completed `v0.41.0` scope:
 
 ## v0.42.0
 
-The `v0.42.0` milestone is active.
+The `v0.42.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 101 | In Progress | Unreal engine and game workspace pack foundation |
-| 102 | Pending | v0.42.0 release preparation |
+| 101 | Complete | Unreal engine and game workspace pack foundation |
+| 102 | Complete | v0.42.0 release preparation |
 
 ## Sprint 101 Priorities
 
@@ -1776,7 +1776,7 @@ foundation:
 
 ## Sprint 102 Priorities
 
-Sprint 102 should release the completed `v0.42.0` scope:
+Sprint 102 releases the completed `v0.42.0` scope:
 
 - Promote Unreleased changelog entries into `0.42.0`.
 - Bump package metadata to `0.42.0`.
