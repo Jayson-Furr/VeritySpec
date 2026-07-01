@@ -36,6 +36,28 @@ These packs should support engine-tooling repositories, engine-specific game
 workspaces, and spec-driven product management without making commercial,
 legal, marketplace-readiness, or certification claims.
 
+## Distribution Direction
+
+The current engine, game, mobile, liveops, and evidence packs are bundled so
+their schemas, examples, tests, and readiness rules can stabilize together with
+the core contract engine. Long term, VeritySpec should separate specialized
+domain packs from the core package as official extension packages.
+
+That split should not happen by simply moving pack folders out of the
+repository. The first product milestone is an installed-pack discovery and
+compatibility contract that lets users install official extension packages and
+load them without manual `packPaths`.
+
+Any future separation sprint should prove that separated Unity, Godot, Unreal,
+game, mobile, or liveops packs:
+
+- validate with the same `verity pack validate` contract;
+- load through installed-pack discovery and existing local `packPaths`;
+- preserve the current record kind IDs, schemas, readiness gates, reference
+  rules, examples, and generated artifacts;
+- declare compatibility metadata for the core `verityspec` package; and
+- include migration or rollback guidance for existing workspaces.
+
 ## Engine Pack Parity Rule
 
 Future engine-specific additions should keep Unity, Godot, and Unreal coverage
