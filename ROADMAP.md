@@ -2269,6 +2269,28 @@ Sprint 122 prepares and verifies the v0.52.0 release:
 - Tag and publish the v0.52.0 GitHub release when checks pass.
 - Close the v0.52.0 milestone after release verification.
 
+## v0.53.0
+
+The `v0.53.0` milestone is focused on workspace migration impact summaries.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 123 | In Progress | Workspace migration impact summaries |
+
+## Sprint 123 Priorities
+
+Sprint 123 adds migration impact summaries for workspace format upgrades:
+
+- Add step-level impact metadata to `verity migrate --list --format json`.
+- Add top-level `impactSummary` output to migration reports for planned paths
+  and same-version repair changes.
+- Call out workspace-format, record, pack, and generator behavior affected by
+  supported migration steps.
+- Preserve existing migration report fields for downstream compatibility.
+- Cover the impact-summary contract with CLI tests and migration fixtures.
+- Update README, migration docs, changelog, roadmap bookkeeping, and Next 20
+  planning.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension
@@ -2300,59 +2322,60 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add workspace migration impact summaries that call out record, pack, and
-   generator behavior affected by a format upgrade.
-2. Add machine-readable issue-code catalog generation from `verity explain`
+1. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-3. Add an agent-context generation design note for bounded AI handoff
+2. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-4. Add an engine full-lifecycle support design note covering Unity, Godot, and
+3. Add an engine full-lifecycle support design note covering Unity, Godot, and
    Unreal game workspaces, shared engine library workspaces, lifecycle
    readiness profiles, evidence, liveops, decommissioning, archive records,
    and portfolio examples.
-5. Add a portfolio-level validation design note for multi-workspace product,
+4. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-6. Add fixture refresh documentation for regenerating golden report outputs
+5. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-7. Add a public architecture decision record template for future major pack,
+6. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-8. Add profile-aware downstream CI template examples for release, regulated,
+7. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-9. Add deployment-target release evidence links that connect deployment
+8. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-10. Add coverage-dashboard Markdown output for maintainers who need a
+9. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
-11. Add local workspace-dependency prototype fixtures for exported records,
+10. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-12. Add engine portfolio example guidance and compatibility fixtures showing
+11. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
-13. Add product-delivery, mobile, and liveops readiness/gap reports for
+12. Add product-delivery, mobile, and liveops readiness/gap reports for
    implementation-ready, soft-launch, launch-candidate, remote-config,
    rollback, support, save-migration, decommission, data-deletion, and
    archive-review summaries without making commercial, legal, privacy-law,
    marketplace, or platform-certification claims.
-14. Add installed-pack health diagnostics that report entry-point resolution
+13. Add installed-pack health diagnostics that report entry-point resolution
     failures, duplicate installed pack IDs, built-in collisions, and local
     override behavior for maintainers debugging extension-pack installs.
-15. Add official-extension package compatibility fixture guidance for
+14. Add official-extension package compatibility fixture guidance for
     validating mirrored pack manifests, schemas, readiness gates, reference
     rules, examples, and generator metadata before any bundled pack detach
     sprint begins.
-16. Add a CLI command module decomposition design note before adding larger
+15. Add a CLI command module decomposition design note before adding larger
     dependency, portfolio, and lifecycle command families.
-17. Add an installed-pack compatibility metadata design note covering supported
+16. Add an installed-pack compatibility metadata design note covering supported
     VeritySpec versions, workspace format versions, pack API level, and
     official extension-package lifecycle states before runtime enforcement.
-18. Add release automation guidance for verifying GitHub release assets,
+17. Add release automation guidance for verifying GitHub release assets,
     skipped PyPI publish jobs, public GitHub install smoke tests, and milestone
     closure evidence as a single post-tag checklist artifact.
-19. Add AI-agent entry-point drift checks that verify adapter files remain thin
+18. Add AI-agent entry-point drift checks that verify adapter files remain thin
     pointers to `AGENTS.md` and repository bookkeeping rules stay discoverable
     from the canonical agent entry point.
-20. Add security-report Markdown output for release reviewers once JSON
+19. Add security-report Markdown output for release reviewers once JSON
     release-gap fields have stabilized.
+20. Add migration-report JSON Schema documentation for CI integrations that
+    need a stable contract for migration paths, impact summaries, changes,
+    manual follow-up, and blocked migration reports.
 
 ## Working Rule
 

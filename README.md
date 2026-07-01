@@ -59,7 +59,8 @@ This implementation provides:
   snapshot-tested type/model output including nested Python dataclasses and
   deterministic timestamp controls for generated JSON reports.
 - A PrismSpec importer that produces a converted workspace and migration report.
-- Workspace migration-chain planning and reporting through `verity migrate`.
+- Workspace migration-chain planning and reporting through `verity migrate`,
+  including record, pack, generator, and workspace-format impact summaries.
 - Migration dry-run fixture coverage for each supported workspace version edge.
 - Fixture compatibility coverage and golden compatibility manifests across
   supported workspace format versions.

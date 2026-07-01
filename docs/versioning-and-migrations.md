@@ -64,6 +64,20 @@ The test suite includes committed dry-run fixtures for each supported migration
 edge so migration reports and non-mutating behavior stay stable as the format
 registry grows.
 
+JSON migration capabilities and reports include impact metadata so maintainers
+can review affected behavior before rewriting a workspace:
+
+- `steps[].impacts.workspaceFormat` describes manifest or format changes.
+- `steps[].impacts.records` describes record-envelope rewrites.
+- `steps[].impacts.packs` describes pack resolution or pack metadata changes.
+- `steps[].impacts.generators` describes generator behavior that can change
+  when packs or pack paths change.
+- `impactSummary` aggregates the planned path and any current-workspace repair
+  changes into the same four categories.
+
+Existing report fields such as `migrationPath`, `changes`, `filesWritten`, and
+`manualFollowUp` remain present for downstream compatibility.
+
 The current migration path from legacy workspaces is:
 
 ```text
