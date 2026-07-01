@@ -7,13 +7,13 @@ the initial boundaries for future GUI, desktop, lifecycle, and game packs.
 `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
 `verity.pack.godot`, `verity.pack.unreal`, `verity.pack.gameplay`,
 `verity.pack.content`, `verity.pack.economy`,
-`verity.pack.product-delivery`, `verity.pack.mobile`, and
-`verity.pack.liveops` now provide the first narrow built-in game, engine,
-economy, spec-driven product-delivery, mobile lifecycle, and live operations
-scopes. The remaining GUI, desktop, progression, evidence, dependency,
-portfolio, and broader game scopes should still use this note to define pack
-ownership, overlap rules, and readiness expectations before implementation
-begins.
+`verity.pack.progression`, `verity.pack.product-delivery`,
+`verity.pack.mobile`, `verity.pack.liveops`, and `verity.pack.evidence` now
+provide the first narrow built-in game, engine, economy, progression,
+spec-driven product-delivery, mobile lifecycle, live operations, and evidence
+scopes. The remaining GUI, desktop, dependency, portfolio, and broader game
+scopes should still use this note to define pack ownership, overlap rules, and
+readiness expectations before implementation begins.
 
 ## Pack Boundary Rule
 
@@ -30,9 +30,9 @@ Cross-cutting concerns stay outside these surface packs:
 - `verity.pack.compliance` owns compliance mappings and compliance matrices.
 - `verity.pack.deployment` owns generic runtime, hosting, release environment,
   rollback, and deployment report concerns.
-- Future release, evidence, dependency, and portfolio packs should own their
-  own lifecycle concerns instead of being embedded into GUI, desktop, mobile,
-  or game packs.
+- The evidence pack owns concrete proof records. Future release, dependency,
+  and portfolio packs should own their own lifecycle concerns instead of being
+  embedded into GUI, desktop, mobile, or game packs.
 
 Surface packs may reference cross-cutting records, but they should not duplicate
 their schemas.
@@ -214,6 +214,10 @@ sources, sinks, rewards, and offers. It composes with gameplay and content
 records without becoming a progression, liveops, pricing approval, or platform
 store pack.
 
+The progression pack describes the first narrow game progression surface: XP
+models, levels, unlocks, tracks, and gates. It composes with gameplay, content,
+economy, liveops, and engine records without owning those surfaces.
+
 The product-delivery pack describes the first narrow spec-driven repository
 delivery surface: product scope, commercial posture, project-management model,
 decision records, readiness profiles, evidence requirements, release process,
@@ -222,6 +226,11 @@ validation-runner, editor-surface, and agent-context exporter records. It
 does not provide legal, privacy-law, marketplace, platform-certification,
 mobile-store, liveops, or pricing-approval guarantees.
 
+The evidence pack describes concrete proof records: tests, CI runs, builds,
+reviews, screenshots, videos, QA reports, playtests, certification checklists,
+and retained artifacts. Product-delivery owns evidence requirements; evidence
+owns the proof records that can satisfy those requirements.
+
 The mobile and liveops packs provide engine-neutral lifecycle and operations
 records that can be referenced by game and engine workspaces. They are not
 Unity-specific; when Unity projects can link to mobile releases or liveops
@@ -229,7 +238,7 @@ configs, Godot and Unreal projects should have equivalent relationship support
 where the concept applies.
 
 Future broader game packs may use pack IDs such as `verity.pack.game`,
-`verity.pack.progression`, or `verity.pack.quest`.
+`verity.pack.quest`, or other domain-specific game packs.
 
 Future game packs should describe game product contracts, especially the bridge
 between game design intent, implementation scope, QA, telemetry, liveops, and

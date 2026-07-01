@@ -230,6 +230,10 @@ verity readiness examples/content --strict
 verity validate examples/economy
 verity lint examples/economy --strict
 verity readiness examples/economy --strict
+verity validate examples/progression
+verity lint examples/progression --strict
+verity readiness examples/progression --strict
+verity graph examples/progression
 verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
@@ -242,6 +246,10 @@ verity validate examples/liveops
 verity lint examples/liveops --strict
 verity readiness examples/liveops --strict
 verity graph examples/liveops
+verity validate examples/evidence
+verity lint examples/evidence --strict
+verity readiness examples/evidence --strict
+verity graph examples/evidence
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -267,9 +275,12 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
+verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
+verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -321,9 +332,11 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `docs/gameplay-pack.md`: built-in gameplay pack behavior.
 - `docs/content-pack.md`: built-in content pack behavior.
 - `docs/economy-pack.md`: built-in economy pack behavior.
+- `docs/progression-pack.md`: built-in progression pack behavior.
 - `docs/product-delivery-pack.md`: built-in product-delivery pack behavior.
 - `docs/mobile-pack.md`: built-in mobile lifecycle pack behavior.
 - `docs/liveops-pack.md`: built-in live operations pack behavior.
+- `docs/evidence-pack.md`: built-in evidence pack behavior.
 - `tests/`: executable behavior coverage.
 - `.github/workflows/ci.yml`: required CI contract.
 - `.github/workflows/release.yml`: release automation.

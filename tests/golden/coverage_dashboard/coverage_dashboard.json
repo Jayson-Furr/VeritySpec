@@ -25,14 +25,16 @@
     "verity.pack.economy",
     "verity.pack.product-delivery",
     "verity.pack.mobile",
-    "verity.pack.liveops"
+    "verity.pack.liveops",
+    "verity.pack.progression",
+    "verity.pack.evidence"
   ],
-  "recordCount": 112,
+  "recordCount": 127,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 19,
-    "loadedSurfacePacks": 19,
-    "coveredSurfaces": 19,
+    "trackedSurfaces": 21,
+    "loadedSurfacePacks": 21,
+    "coveredSurfaces": 21,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -43,6 +45,7 @@
       "deployment": 2,
       "economy": 5,
       "events": 1,
+      "evidence": 10,
       "game-assets": 4,
       "game-core": 4,
       "gameplay": 4,
@@ -51,6 +54,7 @@
       "mobile": 12,
       "observability": 4,
       "product-delivery": 17,
+      "progression": 5,
       "security": 1,
       "unity": 12,
       "unreal": 13
@@ -74,7 +78,17 @@
       "economy.source": 1,
       "editor.surface": 1,
       "event.message": 1,
+      "evidence.artifact": 1,
+      "evidence.build": 1,
+      "evidence.certification-checklist": 1,
+      "evidence.ci-run": 1,
+      "evidence.playtest": 1,
+      "evidence.qa": 1,
       "evidence.requirement": 1,
+      "evidence.review": 1,
+      "evidence.screenshot": 1,
+      "evidence.test": 1,
+      "evidence.video": 1,
       "game.ability": 1,
       "game.concept-art": 1,
       "game.content-item": 1,
@@ -135,6 +149,11 @@
       "operations.model": 1,
       "product": 1,
       "product.scope": 1,
+      "progression.gate": 1,
+      "progression.level": 1,
+      "progression.track": 1,
+      "progression.unlock": 1,
+      "progression.xp-model": 1,
       "project-management.model": 1,
       "readiness.profile": 1,
       "release.process": 1,
@@ -1168,6 +1187,70 @@
       ]
     },
     {
+      "id": "progression",
+      "name": "Progression",
+      "packId": "verity.pack.progression",
+      "packLoaded": true,
+      "recordKinds": [
+        "progression.xp-model",
+        "progression.level",
+        "progression.unlock",
+        "progression.track",
+        "progression.gate"
+      ],
+      "productRelationships": [
+        "hasProgressionTrack"
+      ],
+      "recordCount": 5,
+      "covered": true,
+      "records": [
+        {
+          "id": "progression.gate.coverage_currency",
+          "kind": "progression.gate",
+          "name": "Coverage Currency Gate",
+          "status": "ready",
+          "owner": "systems-design"
+        },
+        {
+          "id": "progression.level.coverage_1",
+          "kind": "progression.level",
+          "name": "Coverage Level 1",
+          "status": "ready",
+          "owner": "systems-design"
+        },
+        {
+          "id": "progression.track.coverage_mastery",
+          "kind": "progression.track",
+          "name": "Coverage Mastery Track",
+          "status": "ready",
+          "owner": "systems-design"
+        },
+        {
+          "id": "progression.unlock.coverage_dash",
+          "kind": "progression.unlock",
+          "name": "Coverage Dash Unlock",
+          "status": "ready",
+          "owner": "systems-design"
+        },
+        {
+          "id": "progression.xp-model.coverage_session",
+          "kind": "progression.xp-model",
+          "name": "Coverage Session XP Model",
+          "status": "ready",
+          "owner": "systems-design"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasProgressionTrack",
+          "targetId": "progression.track.coverage_mastery",
+          "targetKind": "progression.track",
+          "targetName": "Coverage Mastery Track"
+        }
+      ]
+    },
+    {
       "id": "product-delivery",
       "name": "Product Delivery",
       "packId": "verity.pack.product-delivery",
@@ -1542,6 +1625,110 @@
           "targetName": "Coverage LiveOps Config"
         }
       ]
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence",
+      "packId": "verity.pack.evidence",
+      "packLoaded": true,
+      "recordKinds": [
+        "evidence.test",
+        "evidence.ci-run",
+        "evidence.build",
+        "evidence.review",
+        "evidence.screenshot",
+        "evidence.video",
+        "evidence.qa",
+        "evidence.playtest",
+        "evidence.certification-checklist",
+        "evidence.artifact"
+      ],
+      "productRelationships": [
+        "hasEvidence"
+      ],
+      "recordCount": 10,
+      "covered": true,
+      "records": [
+        {
+          "id": "evidence.artifact.coverage_manifest",
+          "kind": "evidence.artifact",
+          "name": "Coverage Artifact Evidence",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "evidence.build.coverage_wheel",
+          "kind": "evidence.build",
+          "name": "Coverage Build Evidence",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "evidence.certification-checklist.coverage_mobile",
+          "kind": "evidence.certification-checklist",
+          "name": "Coverage Mobile Certification Evidence",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "evidence.ci-run.coverage_ci",
+          "kind": "evidence.ci-run",
+          "name": "Coverage CI Evidence",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "evidence.playtest.coverage_progression",
+          "kind": "evidence.playtest",
+          "name": "Coverage Progression Playtest Evidence",
+          "status": "ready",
+          "owner": "design"
+        },
+        {
+          "id": "evidence.qa.coverage_release",
+          "kind": "evidence.qa",
+          "name": "Coverage QA Evidence",
+          "status": "ready",
+          "owner": "qa"
+        },
+        {
+          "id": "evidence.review.coverage_decision",
+          "kind": "evidence.review",
+          "name": "Coverage Review Evidence",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "evidence.screenshot.coverage_dashboard",
+          "kind": "evidence.screenshot",
+          "name": "Coverage Screenshot Evidence",
+          "status": "ready",
+          "owner": "docs"
+        },
+        {
+          "id": "evidence.test.coverage_contracts",
+          "kind": "evidence.test",
+          "name": "Coverage Contract Test Evidence",
+          "status": "ready",
+          "owner": "qa"
+        },
+        {
+          "id": "evidence.video.coverage_walkthrough",
+          "kind": "evidence.video",
+          "name": "Coverage Video Evidence",
+          "status": "ready",
+          "owner": "docs"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasEvidence",
+          "targetId": "evidence.artifact.coverage_manifest",
+          "targetKind": "evidence.artifact",
+          "targetName": "Coverage Artifact Evidence"
+        }
+      ]
     }
   ],
   "products": [
@@ -1695,6 +1882,15 @@
             "targetName": "Coverage Shard Currency"
           }
         ],
+        "progression": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasProgressionTrack",
+            "targetId": "progression.track.coverage_mastery",
+            "targetKind": "progression.track",
+            "targetName": "Coverage Mastery Track"
+          }
+        ],
         "product-delivery": [
           {
             "productId": "product.coverage_dashboard",
@@ -1720,6 +1916,15 @@
             "targetId": "liveops.config.coverage_live",
             "targetKind": "liveops.config",
             "targetName": "Coverage LiveOps Config"
+          }
+        ],
+        "evidence": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasEvidence",
+            "targetId": "evidence.artifact.coverage_manifest",
+            "targetKind": "evidence.artifact",
+            "targetName": "Coverage Artifact Evidence"
           }
         ]
       },

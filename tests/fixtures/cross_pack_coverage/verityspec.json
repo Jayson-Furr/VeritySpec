@@ -21,7 +21,9 @@
     "verity.pack.economy",
     "verity.pack.product-delivery",
     "verity.pack.mobile",
-    "verity.pack.liveops"
+    "verity.pack.liveops",
+    "verity.pack.progression",
+    "verity.pack.evidence"
   ],
   "packPaths": [],
   "records": [

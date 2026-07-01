@@ -1901,7 +1901,7 @@ The `v0.45.0` milestone is planned as the next weekly-sized sprint.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 107 | Planned | Progression and evidence pack foundations |
+| 107 | Complete | Progression and evidence pack foundations |
 
 ## Sprint 107 Priorities
 
@@ -1921,6 +1921,12 @@ by downstream game, engine-tooling, and implementation-readiness workspaces:
 - Preserve the current non-claim posture: VeritySpec can model evidence and
   readiness requirements, but downstream teams own legal, privacy,
   marketplace, platform, certification, support, and store-review approvals.
+
+Sprint 107 delivery added built-in `verity.pack.progression` and
+`verity.pack.evidence`, executable progression and evidence examples,
+`evidence-report` generation, cross-pack coverage-dashboard support, schema
+bundle checks, CI coverage, public docs, changelog entries, release notes, and
+AI-agent guidance.
 
 ## Next 20 Roadmap Points
 

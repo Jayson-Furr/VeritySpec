@@ -215,6 +215,18 @@ verity graph examples/mobile --format json > build/mobile-graph.json
 verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.progression`, include the usual
+contract checks, graph checks, and a schema bundle for XP models, levels,
+unlocks, tracks, and gates:
+
+```bash
+verity validate examples/progression
+verity lint examples/progression --strict
+verity readiness examples/progression --strict
+verity graph examples/progression --format json > build/progression-graph.json
+verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
+```
+
 For workspaces that load `verity.pack.liveops`, include the usual contract
 checks, graph checks, and a schema bundle for remote config, rollback,
 analytics taxonomy, support categories, save migration, decommissioning, data
@@ -226,6 +238,20 @@ verity lint examples/liveops --strict
 verity readiness examples/liveops --strict
 verity graph examples/liveops --format json > build/liveops-graph.json
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
+```
+
+For workspaces that load `verity.pack.evidence`, include the usual contract
+checks, graph checks, an evidence report, and a schema bundle for test, CI,
+build, review, screenshot, video, QA, playtest, certification-checklist, and
+artifact evidence:
+
+```bash
+verity validate examples/evidence
+verity lint examples/evidence --strict
+verity readiness examples/evidence --strict
+verity graph examples/evidence --format json > build/evidence-graph.json
+verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 ```
 
 For release-review workspaces that combine multiple product-surface packs,

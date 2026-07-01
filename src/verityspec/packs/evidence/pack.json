@@ -1,0 +1,497 @@
+{
+  "id": "verity.pack.evidence",
+  "version": "0.45.0",
+  "name": "VeritySpec Evidence Pack",
+  "description": "Concrete implementation, QA, CI, build, review, screenshot, video, playtest, certification, and artifact evidence records for proving product-contract readiness.",
+  "schemas": [
+    {
+      "kind": "evidence.test",
+      "path": "schemas/evidence-test.schema.json"
+    },
+    {
+      "kind": "evidence.ci-run",
+      "path": "schemas/evidence-ci-run.schema.json"
+    },
+    {
+      "kind": "evidence.build",
+      "path": "schemas/evidence-build.schema.json"
+    },
+    {
+      "kind": "evidence.review",
+      "path": "schemas/evidence-review.schema.json"
+    },
+    {
+      "kind": "evidence.screenshot",
+      "path": "schemas/evidence-screenshot.schema.json"
+    },
+    {
+      "kind": "evidence.video",
+      "path": "schemas/evidence-video.schema.json"
+    },
+    {
+      "kind": "evidence.qa",
+      "path": "schemas/evidence-qa.schema.json"
+    },
+    {
+      "kind": "evidence.playtest",
+      "path": "schemas/evidence-playtest.schema.json"
+    },
+    {
+      "kind": "evidence.certification-checklist",
+      "path": "schemas/evidence-certification-checklist.schema.json"
+    },
+    {
+      "kind": "evidence.artifact",
+      "path": "schemas/evidence-artifact.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "evidence.test.ready",
+      "kind": "evidence.test",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "testType",
+        "command",
+        "result",
+        "evidenceUri"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.ci-run.ready",
+      "kind": "evidence.ci-run",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "provider",
+        "runId",
+        "runUrl",
+        "conclusion"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.build.ready",
+      "kind": "evidence.build",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "artifactPath",
+        "artifactType",
+        "platform",
+        "result"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.review.ready",
+      "kind": "evidence.review",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "reviewType",
+        "reviewer",
+        "decision",
+        "reviewedAt"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.screenshot.ready",
+      "kind": "evidence.screenshot",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "imagePath",
+        "capturedAt",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.video.ready",
+      "kind": "evidence.video",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "videoPath",
+        "capturedAt",
+        "purpose"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.qa.ready",
+      "kind": "evidence.qa",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "reportPath",
+        "qaScope",
+        "result"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.playtest.ready",
+      "kind": "evidence.playtest",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "reportPath",
+        "sessionDate",
+        "participantCount",
+        "findingsSummary"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.certification-checklist.ready",
+      "kind": "evidence.certification-checklist",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "platform",
+        "checklistPath",
+        "certificationStatus"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.artifact.ready",
+      "kind": "evidence.artifact",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "subjectRef",
+        "artifactPath",
+        "artifactType",
+        "retentionPolicy"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasEvidence",
+      "targetKind": "evidence.artifact"
+    },
+    {
+      "sourceKind": "readiness.profile",
+      "relationship": "supportedByEvidence",
+      "targetKind": "evidence.ci-run"
+    },
+    {
+      "sourceKind": "readiness.profile",
+      "relationship": "supportedByEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "evidence.requirement",
+      "relationship": "satisfiedBy",
+      "targetKind": "evidence.test"
+    },
+    {
+      "sourceKind": "evidence.requirement",
+      "relationship": "satisfiedBy",
+      "targetKind": "evidence.ci-run"
+    },
+    {
+      "sourceKind": "evidence.requirement",
+      "relationship": "satisfiedBy",
+      "targetKind": "evidence.build"
+    },
+    {
+      "sourceKind": "evidence.requirement",
+      "relationship": "satisfiedBy",
+      "targetKind": "evidence.review"
+    },
+    {
+      "sourceKind": "evidence.requirement",
+      "relationship": "satisfiedBy",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "release.process",
+      "relationship": "hasReleaseEvidence",
+      "targetKind": "evidence.ci-run"
+    },
+    {
+      "sourceKind": "release.process",
+      "relationship": "hasBuildEvidence",
+      "targetKind": "evidence.build"
+    },
+    {
+      "sourceKind": "release.process",
+      "relationship": "hasReviewEvidence",
+      "targetKind": "evidence.review"
+    },
+    {
+      "sourceKind": "mobile.launch-candidate",
+      "relationship": "hasLaunchEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "mobile.launch-candidate",
+      "relationship": "hasCertificationEvidence",
+      "targetKind": "evidence.certification-checklist"
+    },
+    {
+      "sourceKind": "liveops.save-migration-policy",
+      "relationship": "hasTestEvidence",
+      "targetKind": "evidence.test"
+    },
+    {
+      "sourceKind": "progression.gate",
+      "relationship": "supportedByEvidence",
+      "targetKind": "evidence.playtest"
+    },
+    {
+      "sourceKind": "progression.gate",
+      "relationship": "supportedByEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "unity.validation-runner",
+      "relationship": "producesEvidence",
+      "targetKind": "evidence.test"
+    },
+    {
+      "sourceKind": "godot.validation-runner",
+      "relationship": "producesEvidence",
+      "targetKind": "evidence.test"
+    },
+    {
+      "sourceKind": "unreal.validation-runner",
+      "relationship": "producesEvidence",
+      "targetKind": "evidence.test"
+    },
+    {
+      "sourceKind": "unity.readiness-dashboard",
+      "relationship": "reportsEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "godot.readiness-dashboard",
+      "relationship": "reportsEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "unreal.readiness-dashboard",
+      "relationship": "reportsEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "evidence.ci-run",
+      "relationship": "proves",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "evidence.build",
+      "relationship": "proves",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "evidence.review",
+      "relationship": "reviews",
+      "targetKind": "decision.record"
+    },
+    {
+      "sourceKind": "evidence.screenshot",
+      "relationship": "captures",
+      "targetKind": "editor.surface"
+    },
+    {
+      "sourceKind": "evidence.video",
+      "relationship": "captures",
+      "targetKind": "game.prototype-scope"
+    },
+    {
+      "sourceKind": "evidence.qa",
+      "relationship": "proves",
+      "targetKind": "mobile.launch-candidate"
+    },
+    {
+      "sourceKind": "evidence.playtest",
+      "relationship": "proves",
+      "targetKind": "progression.track"
+    },
+    {
+      "sourceKind": "evidence.certification-checklist",
+      "relationship": "proves",
+      "targetKind": "mobile.launch-candidate"
+    },
+    {
+      "sourceKind": "evidence.artifact",
+      "relationship": "archives",
+      "targetKind": "archive.policy"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "evidence.ci-run",
+      "relationship": "proves",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "evidence.build",
+      "relationship": "proves",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "evidence.review",
+      "relationship": "reviews",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "evidence.screenshot",
+      "relationship": "captures",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "evidence.video",
+      "relationship": "captures",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "evidence.qa",
+      "relationship": "proves",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "evidence.playtest",
+      "relationship": "proves",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "evidence.certification-checklist",
+      "relationship": "proves",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "evidence.artifact",
+      "relationship": "proves",
+      "targetKind": "release.process"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for evidence records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "evidence.test",
+        "evidence.ci-run",
+        "evidence.build",
+        "evidence.review",
+        "evidence.screenshot",
+        "evidence.video",
+        "evidence.qa",
+        "evidence.playtest",
+        "evidence.certification-checklist",
+        "evidence.artifact"
+      ]
+    },
+    {
+      "id": "evidence-report",
+      "name": "Evidence Report",
+      "description": "Summarize implementation, CI, QA, review, playtest, certification, and artifact evidence records.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "evidence.test",
+        "evidence.ci-run",
+        "evidence.build",
+        "evidence.review",
+        "evidence.screenshot",
+        "evidence.video",
+        "evidence.qa",
+        "evidence.playtest",
+        "evidence.certification-checklist",
+        "evidence.artifact"
+      ]
+    },
+    {
+      "id": "coverage-dashboard",
+      "name": "Coverage Dashboard",
+      "description": "Count evidence records as a first-class product surface.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "evidence.test",
+        "evidence.ci-run",
+        "evidence.build",
+        "evidence.review",
+        "evidence.screenshot",
+        "evidence.video",
+        "evidence.qa",
+        "evidence.playtest",
+        "evidence.certification-checklist",
+        "evidence.artifact"
+      ]
+    }
+  ]
+}

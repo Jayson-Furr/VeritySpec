@@ -64,6 +64,10 @@ verity readiness examples/content --strict
 verity validate examples/economy
 verity lint examples/economy --strict
 verity readiness examples/economy --strict
+verity validate examples/progression
+verity lint examples/progression --strict
+verity readiness examples/progression --strict
+verity graph examples/progression --format json > build/progression-graph.json
 verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
@@ -76,6 +80,10 @@ verity validate examples/liveops
 verity lint examples/liveops --strict
 verity readiness examples/liveops --strict
 verity graph examples/liveops --format json > build/liveops-graph.json
+verity validate examples/evidence
+verity lint examples/evidence --strict
+verity readiness examples/evidence --strict
+verity graph examples/evidence --format json > build/evidence-graph.json
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity validate tests/fixtures/cross_pack_coverage
@@ -96,6 +104,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
@@ -104,9 +113,11 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
+verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -121,6 +132,9 @@ python -m json.tool build/unreal-graph.json >/dev/null
 python -m json.tool build/product-delivery-graph.json >/dev/null
 python -m json.tool build/mobile-graph.json >/dev/null
 python -m json.tool build/liveops-graph.json >/dev/null
+python -m json.tool build/progression-graph.json >/dev/null
+python -m json.tool build/evidence-graph.json >/dev/null
+python -m json.tool build/evidence-report.json >/dev/null
 python -m build
 twine check dist/*
 ```

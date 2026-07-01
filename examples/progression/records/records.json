@@ -1,0 +1,307 @@
+{
+  "records": [
+    {
+      "id": "product.progression_demo",
+      "kind": "product",
+      "name": "Progression Demo",
+      "description": "Example product contract for XP models, levels, unlocks, tracks, and gates.",
+      "status": "ready",
+      "owner": "design",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "describes",
+          "target": "game.product.progression_demo"
+        },
+        {
+          "type": "hasProgressionTrack",
+          "target": "progression.track.prototype_mastery"
+        },
+        {
+          "type": "hasEconomy",
+          "target": "economy.currency.memory_shard"
+        }
+      ]
+    },
+    {
+      "id": "game.product.progression_demo",
+      "kind": "game.product",
+      "name": "Progression Demo Game",
+      "description": "A small game contract used to demonstrate progression pack records.",
+      "status": "ready",
+      "owner": "design",
+      "pitch": "Earn memory shards, level up a prototype mastery track, and unlock the first utility ability.",
+      "playerFantasy": "Players feel their extraction mastery increasing after each successful run.",
+      "targetAudience": "Prototype designers and gameplay engineers.",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "genres": [
+        "roguelite"
+      ],
+      "references": [
+        {
+          "type": "hasProgressionTrack",
+          "target": "progression.track.prototype_mastery"
+        },
+        {
+          "type": "hasCurrency",
+          "target": "economy.currency.memory_shard"
+        },
+        {
+          "type": "hasAbility",
+          "target": "game.ability.phase_dash"
+        },
+        {
+          "type": "hasReward",
+          "target": "economy.reward.first_level_cache"
+        }
+      ]
+    },
+    {
+      "id": "game.loop.extract_upgrade",
+      "kind": "game.loop",
+      "name": "Extract and Upgrade Loop",
+      "description": "Players extract shards, earn XP, and spend progression unlocks on prototype abilities.",
+      "status": "ready",
+      "owner": "design",
+      "loopType": "progression",
+      "cadence": "session",
+      "steps": [
+        {
+          "name": "Extract",
+          "description": "Complete a prototype run and bank shards."
+        },
+        {
+          "name": "Progress",
+          "description": "Apply session XP to the mastery track."
+        },
+        {
+          "name": "Unlock",
+          "description": "Unlock a utility ability after the first level gate."
+        }
+      ],
+      "references": [
+        {
+          "type": "usesProgressionTrack",
+          "target": "progression.track.prototype_mastery"
+        }
+      ]
+    },
+    {
+      "id": "game.content-item.shard_cache",
+      "kind": "game.content-item",
+      "name": "Shard Cache",
+      "description": "Prototype content item granted by the first progression reward.",
+      "status": "ready",
+      "owner": "content",
+      "itemType": "resource",
+      "rarity": "common",
+      "usage": "Grants a visible prototype reward when the first progression level is reached.",
+      "stackable": true,
+      "references": []
+    },
+    {
+      "id": "game.ability.phase_dash",
+      "kind": "game.ability",
+      "name": "Phase Dash",
+      "description": "First progression unlock used to validate progression-to-gameplay handoff.",
+      "status": "ready",
+      "owner": "gameplay",
+      "abilityType": "movement",
+      "activation": "manual",
+      "effectSummary": "Allows a short dash through unstable hazards during prototype playtests.",
+      "cooldownSeconds": 8,
+      "references": [
+        {
+          "type": "governedBy",
+          "target": "game.rule.phase_dash_cooldown"
+        }
+      ]
+    },
+    {
+      "id": "game.rule.phase_dash_cooldown",
+      "kind": "game.rule",
+      "name": "Phase Dash Cooldown Rule",
+      "description": "Constrains the first movement unlock so prototype playtests can evaluate pacing.",
+      "status": "ready",
+      "owner": "gameplay",
+      "ruleType": "cooldown",
+      "condition": "Player activates Phase Dash.",
+      "outcome": "Phase Dash cannot be activated again until its cooldown expires.",
+      "priority": 1,
+      "references": []
+    },
+    {
+      "id": "economy.currency.memory_shard",
+      "kind": "economy.currency",
+      "name": "Memory Shard",
+      "description": "Primary resource connected to the first progression gate.",
+      "status": "ready",
+      "owner": "economy",
+      "currencyType": "resource",
+      "unitName": "shard",
+      "currencyCode": "MEMORY_SHARD",
+      "precision": 0,
+      "references": []
+    },
+    {
+      "id": "economy.reward.first_level_cache",
+      "kind": "economy.reward",
+      "name": "First Level Cache",
+      "description": "Reward granted when the first prototype level is reached.",
+      "status": "ready",
+      "owner": "economy",
+      "rewardType": "level",
+      "grants": [
+        {
+          "targetRef": "economy.currency.memory_shard",
+          "targetKind": "economy.currency",
+          "quantity": 5
+        },
+        {
+          "targetRef": "game.content-item.shard_cache",
+          "targetKind": "game.content-item",
+          "quantity": 1
+        }
+      ],
+      "references": [
+        {
+          "type": "grantsCurrency",
+          "target": "economy.currency.memory_shard"
+        },
+        {
+          "type": "grantsItem",
+          "target": "game.content-item.shard_cache"
+        },
+        {
+          "type": "grantsProgression",
+          "target": "progression.xp-model.session_xp"
+        }
+      ]
+    },
+    {
+      "id": "progression.xp-model.session_xp",
+      "kind": "progression.xp-model",
+      "name": "Session XP Model",
+      "description": "XP model used to tune prototype progression after each extraction session.",
+      "status": "ready",
+      "owner": "systems-design",
+      "xpSource": "gameplay",
+      "scaleModel": "linear",
+      "formula": "level_n_xp = 100 * n",
+      "maxLevel": 5,
+      "xpUnitName": "mastery xp",
+      "sourceRefs": [
+        "game.loop.extract_upgrade"
+      ],
+      "references": []
+    },
+    {
+      "id": "progression.track.prototype_mastery",
+      "kind": "progression.track",
+      "name": "Prototype Mastery Track",
+      "description": "First prototype progression track connecting session XP, rewards, unlocks, and gates.",
+      "status": "ready",
+      "owner": "systems-design",
+      "trackType": "prototype",
+      "xpModelRef": "progression.xp-model.session_xp",
+      "levelRefs": [
+        "progression.level.mastery_1"
+      ],
+      "unlockRefs": [
+        "progression.unlock.phase_dash"
+      ],
+      "gateRefs": [
+        "progression.gate.memory_shard_gate"
+      ],
+      "resetPolicy": "No reset during the first prototype slice.",
+      "references": [
+        {
+          "type": "usesXpModel",
+          "target": "progression.xp-model.session_xp"
+        },
+        {
+          "type": "hasLevel",
+          "target": "progression.level.mastery_1"
+        },
+        {
+          "type": "hasUnlock",
+          "target": "progression.unlock.phase_dash"
+        },
+        {
+          "type": "hasProgressionGate",
+          "target": "progression.gate.memory_shard_gate"
+        }
+      ]
+    },
+    {
+      "id": "progression.level.mastery_1",
+      "kind": "progression.level",
+      "name": "Mastery Level 1",
+      "description": "The first visible progression level in the prototype mastery track.",
+      "status": "ready",
+      "owner": "systems-design",
+      "trackRef": "progression.track.prototype_mastery",
+      "levelNumber": 1,
+      "xpRequired": 100,
+      "rewardRefs": [
+        "economy.reward.first_level_cache"
+      ],
+      "unlockRefs": [
+        "progression.unlock.phase_dash"
+      ],
+      "references": [
+        {
+          "type": "grantsReward",
+          "target": "economy.reward.first_level_cache"
+        }
+      ]
+    },
+    {
+      "id": "progression.unlock.phase_dash",
+      "kind": "progression.unlock",
+      "name": "Phase Dash Unlock",
+      "description": "Unlocks the first prototype movement ability after the memory shard gate is satisfied.",
+      "status": "ready",
+      "owner": "systems-design",
+      "unlockType": "ability",
+      "unlockTargetRef": "game.ability.phase_dash",
+      "trackRef": "progression.track.prototype_mastery",
+      "levelRef": "progression.level.mastery_1",
+      "gateRefs": [
+        "progression.gate.memory_shard_gate"
+      ],
+      "deliveryPolicy": "Unlock is granted at the end of the session after XP and shard rewards are applied.",
+      "references": [
+        {
+          "type": "targetsAbility",
+          "target": "game.ability.phase_dash"
+        },
+        {
+          "type": "gatedBy",
+          "target": "progression.gate.memory_shard_gate"
+        }
+      ]
+    },
+    {
+      "id": "progression.gate.memory_shard_gate",
+      "kind": "progression.gate",
+      "name": "Memory Shard Gate",
+      "description": "Requires the player to bank enough memory shards before the first ability unlock is valid.",
+      "status": "ready",
+      "owner": "systems-design",
+      "gateType": "currency",
+      "condition": "Player has banked at least five memory shards.",
+      "trackRef": "progression.track.prototype_mastery",
+      "unlockRef": "progression.unlock.phase_dash",
+      "enforcementPoint": "session-end reward resolution",
+      "references": [
+        {
+          "type": "usesCurrency",
+          "target": "economy.currency.memory_shard"
+        }
+      ]
+    }
+  ]
+}
