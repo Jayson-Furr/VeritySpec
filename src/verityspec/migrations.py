@@ -49,13 +49,15 @@ class MigrationStep:
     from_version: str
     to_version: str
     description: str
+    impacts: dict[str, list[str]]
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "fromVersion": self.from_version,
             "toVersion": self.to_version,
             "description": self.description,
+            "impacts": clone_json(self.impacts),
         }
 
 
@@ -65,14 +67,105 @@ MIGRATION_STEPS = [
         from_version=LEGACY_SOURCE_VERSION,
         to_version="v0.1.0",
         description="Normalize legacy VeritySpec workspace and record shapes into v0.1.0.",
+        impacts={
+            "workspaceFormat": [
+                "Renames legacy workspace version fields to specVersion.",
+                "Adds missing workspace records globs when absent.",
+            ],
+            "records": [
+                "Renames known legacy record type fields to kind.",
+                "Renames displayName to name.",
+                "Normalizes known legacy statuses to ready.",
+                "Adds placeholder owner, name, status, or product version fields when required.",
+            ],
+            "packs": [
+                "Adds the default built-in pack set when packs are missing.",
+            ],
+            "generators": [
+                "Generator availability may change when default built-in packs are added.",
+            ],
+        },
     ),
     MigrationStep(
         id="v0.1.0-to-v0.2.0",
         from_version="v0.1.0",
         to_version="v0.2.0",
         description="Promote workspaces to v0.2.0 by making external pack paths explicit.",
+        impacts={
+            "workspaceFormat": [
+                "Upgrades specVersion to v0.2.0.",
+                "Adds explicit packPaths when absent or repairs invalid packPaths values.",
+            ],
+            "records": [],
+            "packs": [
+                "Makes local external pack paths explicit with packPaths.",
+            ],
+            "generators": [
+                "External pack-provided generator availability becomes tied to explicit packPaths.",
+            ],
+        },
     ),
 ]
+
+IMPACT_CATEGORIES = ("workspaceFormat", "records", "packs", "generators")
+
+
+def empty_impact_summary() -> dict[str, list[str]]:
+    return {category: [] for category in IMPACT_CATEGORIES}
+
+
+def add_impact(summary: dict[str, list[str]], category: str, message: str) -> None:
+    if category not in summary:
+        summary[category] = []
+    if message not in summary[category]:
+        summary[category].append(message)
+
+
+def summarize_migration_impacts(
+    steps: list[MigrationStep],
+    changes: list[dict[str, Any]] | None = None,
+) -> dict[str, list[str]]:
+    summary = empty_impact_summary()
+    for step in steps:
+        for category in IMPACT_CATEGORIES:
+            for message in step.impacts.get(category, []):
+                add_impact(summary, category, message)
+
+    for change in changes or []:
+        field = change.get("field")
+        if field in {"specVersion", "version", "version -> specVersion", "workspace", "records", "packPaths"}:
+            add_impact(
+                summary,
+                "workspaceFormat",
+                "Workspace manifest fields are rewritten or repaired.",
+            )
+        if field in {"packs", "packPaths"}:
+            add_impact(
+                summary,
+                "packs",
+                "Resolved pack configuration is rewritten or repaired.",
+            )
+            add_impact(
+                summary,
+                "generators",
+                "Generator availability may change when resolved packs or pack paths change.",
+            )
+        if "recordId" in change or field in {
+            "type -> kind",
+            "type",
+            "displayName -> name",
+            "displayName",
+            "name",
+            "status",
+            "owner",
+        }:
+            add_impact(
+                summary,
+                "records",
+                "Record envelope fields are rewritten or repaired.",
+            )
+
+    return summary
 
 
 def supported_version_entries() -> list[dict[str, str]]:
@@ -96,6 +189,30 @@ def migration_capabilities() -> dict[str, Any]:
     }
 
 
+def impact_summary_to_text_lines(
+    impact_summary: dict[str, Any],
+    *,
+    base_indent: str = "",
+) -> list[str]:
+    lines: list[str] = []
+    has_impacts = False
+    for category, label in [
+        ("workspaceFormat", "Workspace format"),
+        ("records", "Records"),
+        ("packs", "Packs"),
+        ("generators", "Generators"),
+    ]:
+        impacts = impact_summary.get(category, [])
+        if not impacts:
+            continue
+        has_impacts = True
+        lines.append(f"{base_indent}{label}:")
+        lines.extend(f"{base_indent}  - {item}" for item in impacts)
+    if not has_impacts:
+        lines.append(f"{base_indent}none")
+    return lines
+
+
 def migration_capabilities_to_text(capabilities: dict[str, Any]) -> str:
     lines = [
         f"Current workspace version: {capabilities.get('currentVersion')}",
@@ -109,6 +226,10 @@ def migration_capabilities_to_text(capabilities: dict[str, Any]) -> str:
             f"  {step.get('fromVersion')} -> {step.get('toVersion')} ({step.get('id')}): "
             f"{step.get('description')}"
         )
+        impacts = step.get("impacts")
+        if isinstance(impacts, dict):
+            lines.append("    Impacts:")
+            lines.extend(impact_summary_to_text_lines(impacts, base_indent="      "))
     return "\n".join(lines)
 
 
@@ -339,6 +460,7 @@ def migrate_workspace(
             "changes": [],
             "filesWritten": [],
             "migrationPath": [],
+            "impactSummary": empty_impact_summary(),
             "availableTargets": [],
             "manualFollowUp": [
                 f"Target version '{target_version}' is not supported by this VeritySpec release.",
@@ -369,6 +491,7 @@ def migrate_workspace(
             "changes": [],
             "filesWritten": [],
             "migrationPath": [],
+            "impactSummary": empty_impact_summary(),
             "availableTargets": [],
             "manualFollowUp": [
                 "This workspace declares a future specVersion. Install a newer VeritySpec CLI before migrating."
@@ -390,6 +513,7 @@ def migrate_workspace(
             "changes": [],
             "filesWritten": [],
             "migrationPath": [],
+            "impactSummary": empty_impact_summary(),
             "availableTargets": available_targets,
             "manualFollowUp": [
                 f"No migration path is available from {source_key} to {normalized_target}."
@@ -439,6 +563,7 @@ def migrate_workspace(
         "changed": bool(changes) or config_changed,
         "blocked": False,
         "migrationPath": [step.to_dict() for step in migration_path],
+        "impactSummary": summarize_migration_impacts(migration_path, changes),
         "availableTargets": available_targets,
         "changes": changes,
         "changeCount": len(changes),
@@ -465,6 +590,10 @@ def migration_report_to_text(report: dict[str, Any]) -> str:
             )
     else:
         lines.append("Migration path: none")
+    impact_summary = report.get("impactSummary", {})
+    if isinstance(impact_summary, dict):
+        lines.append("Impact summary:")
+        lines.extend(impact_summary_to_text_lines(impact_summary, base_indent="  "))
     lines.append(f"Changes: {report.get('changeCount', len(report.get('changes', [])))}")
     files = report.get("filesWritten", [])
     lines.append(f"Files written: {len(files)}")

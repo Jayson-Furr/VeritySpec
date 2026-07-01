@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added workspace migration impact summaries to `verity migrate --list` and
+  migration reports so format upgrades call out workspace-format, record, pack,
+  and generator behavior affected by the planned migration path.
+
 ## 0.52.0
 
 - Added security-report release-gap summaries for stale evidence and missing

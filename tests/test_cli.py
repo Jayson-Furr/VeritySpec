@@ -713,6 +713,32 @@ class VerityCliTests(unittest.TestCase):
             ["legacy-to-v0.1.0", "v0.1.0-to-v0.2.0"],
             [step["id"] for step in payload["steps"]],
         )
+        steps_by_id = {step["id"]: step for step in payload["steps"]}
+        self.assertIn(
+            "Renames legacy workspace version fields to specVersion.",
+            steps_by_id["legacy-to-v0.1.0"]["impacts"]["workspaceFormat"],
+        )
+        self.assertIn(
+            "Renames known legacy record type fields to kind.",
+            steps_by_id["legacy-to-v0.1.0"]["impacts"]["records"],
+        )
+        self.assertIn(
+            "Makes local external pack paths explicit with packPaths.",
+            steps_by_id["v0.1.0-to-v0.2.0"]["impacts"]["packs"],
+        )
+        self.assertIn(
+            "External pack-provided generator availability becomes tied to explicit packPaths.",
+            steps_by_id["v0.1.0-to-v0.2.0"]["impacts"]["generators"],
+        )
+
+    def test_migrate_list_text_output_includes_impacts(self) -> None:
+        result = verity_command("migrate", "--list")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Migration steps:", result.stdout)
+        self.assertIn("Impacts:", result.stdout)
+        self.assertIn("Workspace format:", result.stdout)
+        self.assertIn("Generators:", result.stdout)
 
     def test_migrate_dry_run_edge_fixtures_report_without_writing(self) -> None:
         cases = [
@@ -720,6 +746,12 @@ class VerityCliTests(unittest.TestCase):
                 "fixture": "legacy_workspace",
                 "target": "v0.1.0",
                 "path": ["legacy-to-v0.1.0"],
+                "impacts": {
+                    "workspaceFormat": "Renames legacy workspace version fields to specVersion.",
+                    "records": "Renames known legacy record type fields to kind.",
+                    "packs": "Adds the default built-in pack set when packs are missing.",
+                    "generators": "Generator availability may change when default built-in packs are added.",
+                },
                 "changes": [
                     ("verityspec.json", "rename", "version -> specVersion", "0.1.0", "v0.1.0"),
                     ("verityspec.json", "remove", "version", "0.1.0", None),
@@ -743,6 +775,11 @@ class VerityCliTests(unittest.TestCase):
                 "fixture": "v0_1_0_workspace",
                 "target": "v0.2.0",
                 "path": ["v0.1.0-to-v0.2.0"],
+                "impacts": {
+                    "workspaceFormat": "Upgrades specVersion to v0.2.0.",
+                    "packs": "Makes local external pack paths explicit with packPaths.",
+                    "generators": "External pack-provided generator availability becomes tied to explicit packPaths.",
+                },
                 "changes": [
                     ("verityspec.json", "upgrade", "specVersion", "v0.1.0", "v0.2.0"),
                     ("verityspec.json", "set", "packPaths", None, []),
@@ -752,6 +789,12 @@ class VerityCliTests(unittest.TestCase):
                 "fixture": "legacy_workspace",
                 "target": "v0.2.0",
                 "path": ["legacy-to-v0.1.0", "v0.1.0-to-v0.2.0"],
+                "impacts": {
+                    "workspaceFormat": "Adds explicit packPaths when absent or repairs invalid packPaths values.",
+                    "records": "Renames displayName to name.",
+                    "packs": "Makes local external pack paths explicit with packPaths.",
+                    "generators": "External pack-provided generator availability becomes tied to explicit packPaths.",
+                },
                 "changes": [
                     ("verityspec.json", "rename", "version -> specVersion", "0.1.0", "v0.1.0"),
                     ("verityspec.json", "remove", "version", "0.1.0", None),
@@ -786,6 +829,12 @@ class VerityCliTests(unittest.TestCase):
                 self.assertTrue(report["changed"])
                 self.assertEqual(case["target"], report["targetVersion"])
                 self.assertEqual(case["path"], [step["id"] for step in report["migrationPath"]])
+                self.assertEqual(
+                    {"workspaceFormat", "records", "packs", "generators"},
+                    set(report["impactSummary"]),
+                )
+                for category, impact in case["impacts"].items():
+                    self.assertIn(impact, report["impactSummary"][category])
                 self.assertEqual([], report["filesWritten"])
                 self.assertEqual(str(resolved_root), report["source"])
 
@@ -918,6 +967,18 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual([], config["packPaths"])
         self.assertEqual([], report["migrationPath"])
         self.assertTrue(report["changed"])
+        self.assertIn(
+            "Workspace manifest fields are rewritten or repaired.",
+            report["impactSummary"]["workspaceFormat"],
+        )
+        self.assertIn(
+            "Resolved pack configuration is rewritten or repaired.",
+            report["impactSummary"]["packs"],
+        )
+        self.assertIn(
+            "Generator availability may change when resolved packs or pack paths change.",
+            report["impactSummary"]["generators"],
+        )
 
     def test_init_templates_create_executable_workspaces(self) -> None:
         expected_packs = {
