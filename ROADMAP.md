@@ -2362,12 +2362,12 @@ Sprint 126 prepares and verifies the v0.54.0 release:
 
 ## v0.55.0
 
-The `v0.55.0` milestone is focused on agent-context generation design,
-architecture decision records, and AI-agent adapter drift checks.
+The `v0.55.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 127 | In Progress | Agent-context and AI governance foundation |
+| 127 | Complete | Agent-context and AI governance foundation |
+| 128 | Complete | v0.55.0 release preparation and verification |
 
 ## Sprint 127 Priorities
 
@@ -2382,6 +2382,27 @@ Sprint 127 is a two-week-sized governance and design sprint:
 - Link the new docs from README and keep adapter policy discoverable from the
   canonical agent entry point.
 - Update changelog, roadmap, and Next 20 planning.
+
+Sprint 127 delivery added the agent-context generation design note, ADR
+process documentation, ADR template, README links, changelog and roadmap
+bookkeeping, and executable tests that keep AI-agent adapter files as thin
+pointers to `AGENTS.md`.
+
+## Sprint 128 Priorities
+
+Sprint 128 prepares and verifies the v0.55.0 release:
+
+- Promote Unreleased changelog entries into `0.55.0`.
+- Bump package metadata to `0.55.0`.
+- Add v0.55.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.55.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.55.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.55.0 GitHub release when checks pass.
+- Close the v0.55.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
