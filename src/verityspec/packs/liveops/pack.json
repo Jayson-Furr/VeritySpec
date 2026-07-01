@@ -272,6 +272,26 @@
         "liveops.data-deletion-policy",
         "liveops.archive-handling"
       ]
+    },
+    {
+      "id": "lifecycle-readiness-report",
+      "name": "Lifecycle Readiness Report",
+      "description": "Summarize liveops lifecycle coverage and gaps across product-delivery, mobile, and liveops records.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category",
+        "liveops.save-migration-policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ]
     }
   ]
 }

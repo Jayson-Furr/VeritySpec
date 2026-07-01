@@ -388,6 +388,29 @@
         "mobile.launch-candidate",
         "mobile.compatibility-matrix"
       ]
+    },
+    {
+      "id": "lifecycle-readiness-report",
+      "name": "Lifecycle Readiness Report",
+      "description": "Summarize mobile lifecycle coverage and gaps across product-delivery, mobile, and liveops records.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.sdk-inventory",
+        "mobile.monetization-posture",
+        "mobile.entitlement",
+        "mobile.soft-launch",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ]
     }
   ]
 }

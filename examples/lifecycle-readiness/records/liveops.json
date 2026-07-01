@@ -1,0 +1,192 @@
+{
+  "records": [
+    {
+      "id": "product.liveops_cat_cafe",
+      "kind": "product",
+      "name": "Cat Cafe LiveOps",
+      "description": "Example liveops product contract for remote config, analytics, support, save migration, and sunset posture.",
+      "status": "ready",
+      "owner": "operations",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "hasLiveOpsConfig",
+          "target": "liveops.config.cat_cafe"
+        }
+      ]
+    },
+    {
+      "id": "liveops.config.cat_cafe",
+      "kind": "liveops.config",
+      "name": "Cat Cafe LiveOps Config",
+      "description": "Production liveops configuration contract for a mobile game.",
+      "status": "ready",
+      "owner": "operations",
+      "configType": "game",
+      "environment": "production",
+      "ownerTeam": "liveops",
+      "cadence": "weekly review during soft launch",
+      "references": [
+        {
+          "type": "usesRemoteConfig",
+          "target": "liveops.remote-config.cat_cafe"
+        },
+        {
+          "type": "hasRollbackPlan",
+          "target": "liveops.rollback-plan.remote_config"
+        },
+        {
+          "type": "usesAnalyticsTaxonomy",
+          "target": "liveops.analytics-taxonomy.cat_cafe"
+        },
+        {
+          "type": "hasSupportCategory",
+          "target": "liveops.support-category.purchase_issue"
+        },
+        {
+          "type": "hasSaveMigrationPolicy",
+          "target": "liveops.save-migration-policy.profile_v2"
+        },
+        {
+          "type": "hasDecommissionPlan",
+          "target": "liveops.decommission-plan.sunset"
+        },
+        {
+          "type": "hasDataDeletionPolicy",
+          "target": "liveops.data-deletion-policy.player_request"
+        },
+        {
+          "type": "hasArchiveHandling",
+          "target": "liveops.archive-handling.final_manifest"
+        }
+      ]
+    },
+    {
+      "id": "liveops.remote-config.cat_cafe",
+      "kind": "liveops.remote-config",
+      "name": "Remote Config Bounds",
+      "description": "Remote config key and bounds policy for live tuning.",
+      "status": "ready",
+      "owner": "liveops",
+      "keyPrefix": "catcafe.",
+      "boundsPolicy": "Numeric values must stay within documented min/max ranges.",
+      "deploymentPolicy": "Stage remote config before production rollout.",
+      "parameterRefs": [
+        "config.daily_reward_multiplier"
+      ],
+      "references": [
+        {
+          "type": "hasRollbackPlan",
+          "target": "liveops.rollback-plan.remote_config"
+        }
+      ]
+    },
+    {
+      "id": "liveops.rollback-plan.remote_config",
+      "kind": "liveops.rollback-plan",
+      "name": "Remote Config Rollback",
+      "description": "Rollback posture for live remote config changes.",
+      "status": "ready",
+      "owner": "liveops",
+      "rollbackTrigger": "retention, crash, or purchase anomaly after rollout",
+      "rollbackMethod": "restore previous config snapshot",
+      "decisionOwner": "liveops lead",
+      "maxRollbackTime": "30 minutes",
+      "references": []
+    },
+    {
+      "id": "liveops.analytics-taxonomy.cat_cafe",
+      "kind": "liveops.analytics-taxonomy",
+      "name": "LiveOps Analytics Taxonomy",
+      "description": "Event and KPI taxonomy for liveops decisions.",
+      "status": "ready",
+      "owner": "analytics",
+      "eventNamespace": "cat_cafe",
+      "eventNames": [
+        "session_started",
+        "purchase_completed",
+        "daily_reward_claimed"
+      ],
+      "kpiRefs": [
+        "kpi.retention_d1",
+        "kpi.crash_free_sessions"
+      ],
+      "dashboardRefs": [
+        "dashboard.liveops_health"
+      ],
+      "references": []
+    },
+    {
+      "id": "liveops.support-category.purchase_issue",
+      "kind": "liveops.support-category",
+      "name": "Purchase Issue Support",
+      "description": "Support category for IAP and entitlement issues.",
+      "status": "ready",
+      "owner": "support",
+      "categoryType": "billing",
+      "responsePolicy": "Triage purchase issues before the next liveops review window.",
+      "routingOwner": "support lead",
+      "references": []
+    },
+    {
+      "id": "liveops.save-migration-policy.profile_v2",
+      "kind": "liveops.save-migration-policy",
+      "name": "Profile Save Migration v2",
+      "description": "Save migration posture for player profile schema v2.",
+      "status": "ready",
+      "owner": "engineering",
+      "schemaVersion": "2",
+      "migrationPolicy": "Migrate profile records on first launch after update.",
+      "rollbackPolicy": "Keep v1 parser until v2 migration evidence is complete.",
+      "testEvidenceRefs": [
+        "evidence.save_migration.profile_v2"
+      ],
+      "references": []
+    },
+    {
+      "id": "liveops.decommission-plan.sunset",
+      "kind": "liveops.decommission-plan",
+      "name": "LiveOps Sunset Plan",
+      "description": "Sunset posture for liveops services and player communications.",
+      "status": "ready",
+      "owner": "operations",
+      "decommissionTrigger": "sunset",
+      "communicationPlan": "Publish support notice and in-app message before disabling liveops services.",
+      "supportHandoff": "Support keeps known issue responses available through archive window.",
+      "references": [
+        {
+          "type": "usesDataDeletionPolicy",
+          "target": "liveops.data-deletion-policy.player_request"
+        },
+        {
+          "type": "usesArchiveHandling",
+          "target": "liveops.archive-handling.final_manifest"
+        }
+      ]
+    },
+    {
+      "id": "liveops.data-deletion-policy.player_request",
+      "kind": "liveops.data-deletion-policy",
+      "name": "Player Request Data Deletion",
+      "description": "Data deletion handling posture for player requests.",
+      "status": "ready",
+      "owner": "privacy",
+      "retentionPolicy": "Retain only records required by support and platform policy during the documented window.",
+      "deletionMethod": "Submit verified deletion request through operations queue.",
+      "requestPath": "support/data-deletion.md",
+      "references": []
+    },
+    {
+      "id": "liveops.archive-handling.final_manifest",
+      "kind": "liveops.archive-handling",
+      "name": "LiveOps Archive Handling",
+      "description": "Archive handling posture for final liveops artifacts.",
+      "status": "ready",
+      "owner": "operations",
+      "archiveLocation": "archive/liveops/final",
+      "artifactPolicy": "Archive final config snapshots, analytics taxonomy, and support policies.",
+      "manifestPath": "archive/liveops-manifest.json",
+      "references": []
+    }
+  ]
+}

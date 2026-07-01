@@ -1,0 +1,82 @@
+{
+  "records": [
+    {
+      "id": "product.product_delivery_toolkit",
+      "kind": "product",
+      "name": "Product Delivery Toolkit",
+      "description": "An example repository that uses VeritySpec as its product-contract source of truth.",
+      "status": "ready",
+      "owner": "platform",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "hasProductScope",
+          "target": "product.scope.engine_toolkit_delivery"
+        }
+      ]
+    },
+    {
+      "id": "product.scope.engine_toolkit_delivery",
+      "kind": "product.scope",
+      "name": "Engine Toolkit Delivery Scope",
+      "description": "Defines the source-of-truth scope for an engine toolkit repository managed through VeritySpec records and GitHub workflow artifacts.",
+      "status": "ready",
+      "owner": "product",
+      "scopeType": "toolkit",
+      "productArea": "engine integration tooling",
+      "intent": "Keep GitHub workflow execution aligned to VeritySpec product-contract truth.",
+      "outOfScope": [
+        "legal approval claims",
+        "marketplace certification claims"
+      ],
+      "repository": "Jason-Furr/verity-spec-engine-toolkit",
+      "targetAudience": [
+        "product owners",
+        "engine-tooling engineers",
+        "AI coding agents"
+      ],
+      "statusTargets": [
+        "private-alpha",
+        "release-candidate"
+      ],
+      "references": [
+        {
+          "type": "hasCommercialPosture",
+          "target": "commercial.posture.private_alpha"
+        },
+        {
+          "type": "managedBy",
+          "target": "project-management.model.github_native"
+        },
+        {
+          "type": "hasReadinessProfile",
+          "target": "readiness.profile.private_alpha"
+        },
+        {
+          "type": "usesReleaseProcess",
+          "target": "release.process.tagged_alpha"
+        },
+        {
+          "type": "usesOperationsModel",
+          "target": "operations.model.maintained_toolkit"
+        },
+        {
+          "type": "hasSupportPolicy",
+          "target": "support.policy.private_alpha"
+        },
+        {
+          "type": "hasMaintenancePolicy",
+          "target": "maintenance.policy.active"
+        },
+        {
+          "type": "hasArchivePolicy",
+          "target": "archive.policy.retained_source"
+        },
+        {
+          "type": "hasDecommissionPolicy",
+          "target": "decommission.policy.sunset"
+        }
+      ]
+    }
+  ]
+}

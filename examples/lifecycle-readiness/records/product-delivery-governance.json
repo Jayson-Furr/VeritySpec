@@ -1,0 +1,95 @@
+{
+  "records": [
+    {
+      "id": "commercial.posture.private_alpha",
+      "kind": "commercial.posture",
+      "name": "Private Alpha Commercial Posture",
+      "description": "Captures proprietary private-alpha posture without asserting external marketplace, legal, or privacy compliance.",
+      "status": "ready",
+      "owner": "product",
+      "posture": "private-proprietary",
+      "visibility": "private",
+      "distributionModel": "private-alpha",
+      "monetization": "paid",
+      "constraints": [
+        "do not publish package artifacts without release approval"
+      ],
+      "policyRefs": [
+        "support.policy.private_alpha"
+      ],
+      "references": []
+    },
+    {
+      "id": "project-management.model.github_native",
+      "kind": "project-management.model",
+      "name": "GitHub Native Project Management",
+      "description": "Uses GitHub Issues, Projects, Milestones, Actions, and pull requests for workflow while VeritySpec records hold product truth.",
+      "status": "ready",
+      "owner": "program",
+      "system": "github",
+      "planningModel": "issues-projects-milestones",
+      "issuePolicy": "Issues track work, decisions, questions, defects, readiness gaps, and evidence requests.",
+      "projectPolicy": "GitHub Projects provide planning boards and portfolio execution views.",
+      "milestonePolicy": "Milestones bound sprint, release, and candidate work.",
+      "repository": "Jason-Furr/verity-spec-engine-toolkit",
+      "references": [
+        {
+          "type": "recordsDecision",
+          "target": "decision.record.github_manages_workflow"
+        }
+      ]
+    },
+    {
+      "id": "decision.record.github_manages_workflow",
+      "kind": "decision.record",
+      "name": "GitHub Manages Workflow",
+      "description": "Records the operating decision that GitHub manages workflow while VeritySpec manages truth.",
+      "status": "ready",
+      "owner": "program",
+      "decisionType": "operations",
+      "decision": "GitHub manages workflow and VeritySpec manages product-contract truth.",
+      "rationale": "This keeps execution state and source-of-truth records explicit without duplicating workflow systems.",
+      "decisionStatus": "accepted",
+      "decidedAt": "2026-06-30",
+      "references": []
+    },
+    {
+      "id": "readiness.profile.private_alpha",
+      "kind": "readiness.profile",
+      "name": "Private Alpha Readiness Profile",
+      "description": "Defines internal readiness checks for a private alpha engine-tooling repository.",
+      "status": "ready",
+      "owner": "release",
+      "profileType": "private-alpha",
+      "strictness": "blocking",
+      "gateRefs": [
+        "product.scope.ready",
+        "release.process.ready",
+        "validation.runner.ready"
+      ],
+      "evidenceRequirementRefs": [
+        "evidence.requirement.local_ci"
+      ],
+      "references": [
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.local_ci"
+        }
+      ]
+    },
+    {
+      "id": "evidence.requirement.local_ci",
+      "kind": "evidence.requirement",
+      "name": "Local CI Evidence Requirement",
+      "description": "Requires recorded local or hosted CI evidence before a private alpha release is treated as ready.",
+      "status": "ready",
+      "owner": "release",
+      "evidenceType": "ci-run",
+      "subjectKind": "release.process",
+      "requiredForStatus": "ready",
+      "verificationMethod": "ci-status",
+      "evidencePath": "build/reports/ci.json",
+      "references": []
+    }
+  ]
+}

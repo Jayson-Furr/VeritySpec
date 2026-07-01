@@ -12,6 +12,7 @@ verity doctor examples/basic --report-out build/doctor-report.json
 verity diff examples/basic examples/basic --format json > build/diff.json
 verity migrate examples/basic --dry-run --format json > build/migration.json
 verity generate validation-report examples/basic --out build/validation-report.json
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
@@ -269,6 +270,19 @@ verity lint tests/fixtures/cross_pack_coverage --strict
 verity readiness tests/fixtures/cross_pack_coverage --strict
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
+```
+
+For product-delivery, mobile, and liveops lifecycle review workspaces,
+generate a lifecycle readiness gap report. The report is a VeritySpec record
+coverage and gap summary; it does not make commercial, legal, privacy-law,
+marketplace, app-store, platform-certification, live-service, support, or
+archival readiness claims.
+
+```bash
+verity validate examples/lifecycle-readiness
+verity lint examples/lifecycle-readiness --strict
+verity readiness examples/lifecycle-readiness --strict
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 ```
 
 For release reviews that compare two workspace snapshots, generate a

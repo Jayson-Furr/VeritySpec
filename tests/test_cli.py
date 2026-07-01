@@ -27,6 +27,9 @@ COMPLIANCE_MATRIX_GOLDEN = (
 )
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 EVIDENCE_REPORT_GOLDEN = ROOT / "tests" / "golden" / "evidence_report" / "evidence_report.json"
+LIFECYCLE_READINESS_GOLDEN = (
+    ROOT / "tests" / "golden" / "lifecycle_readiness" / "lifecycle_readiness_report.json"
+)
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
@@ -37,6 +40,7 @@ PACK_CAPABILITY_INDEX_GOLDEN = (
 PRODUCT_IMPACT_BASELINE = "tests/fixtures/product_impact/baseline"
 PRODUCT_IMPACT_CURRENT = "tests/fixtures/product_impact/current"
 PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
+LIFECYCLE_READINESS_EXAMPLE = "examples/lifecycle-readiness"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 DEFAULT_BUILTIN_PACKS = [
     "verity.core",
@@ -113,6 +117,14 @@ def normalize_deployment_report_for_golden(report: dict) -> dict:
 
 
 def normalize_evidence_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_lifecycle_readiness_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -1877,6 +1889,49 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(str(ROOT / "examples" / "evidence"), payload["workspacePath"])
         self.assertIsInstance(payload["verityVersion"], str)
         self.assertEqual(expected, normalize_evidence_report_for_golden(payload))
+
+    def test_lifecycle_readiness_report_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "lifecycle-readiness-report.json"
+            result = verity_command(
+                "generate",
+                "lifecycle-readiness-report",
+                LIFECYCLE_READINESS_EXAMPLE,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("lifecycle_readiness_report", payload["type"])
+        self.assertEqual(10, payload["summary"]["completeStages"])
+        self.assertEqual(0, payload["summary"]["gapCount"])
+        self.assertEqual(
+            ["implementation-ready", "soft-launch", "launch-candidate"],
+            [stage["id"] for stage in payload["stages"][:3]],
+        )
+        self.assertIn("does not assert commercial", payload["claimBoundaries"][1])
+
+    def test_lifecycle_readiness_report_generator_matches_golden_file(self) -> None:
+        expected = json.loads(LIFECYCLE_READINESS_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "lifecycle-readiness-report.json"
+            result = verity_command(
+                "generate",
+                "lifecycle-readiness-report",
+                LIFECYCLE_READINESS_EXAMPLE,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / LIFECYCLE_READINESS_EXAMPLE), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_lifecycle_readiness_report_for_golden(payload))
 
     def test_coverage_dashboard_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

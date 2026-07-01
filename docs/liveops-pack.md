@@ -58,6 +58,18 @@ verity graph examples/liveops
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 ```
 
+When liveops records are combined with product-delivery and mobile records,
+generate a lifecycle readiness gap report:
+
+```bash
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
+```
+
+The report summarizes remote-config, rollback, support, save-migration,
+decommission, data-deletion, and archive-review coverage without asserting
+live-service, support, legal, privacy-law, marketplace, app-store,
+platform-certification, or archival readiness.
+
 ## Reference Rules
 
 The pack defines reference rules for:

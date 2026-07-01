@@ -48,6 +48,7 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | `tests/golden/compliance_matrix/compliance_matrix.json` | `verity generate compliance-matrix examples/compliance --generated-at "$GENERATED_AT" --out build/compliance-matrix.json` |
 | `tests/golden/deployment/deployment_report.json` | `verity generate deployment-report examples/deployment --generated-at "$GENERATED_AT" --out build/deployment-report.json` |
 | `tests/golden/evidence_report/evidence_report.json` | `verity generate evidence-report examples/evidence --generated-at "$GENERATED_AT" --out build/evidence-report.json` |
+| `tests/golden/lifecycle_readiness/lifecycle_readiness_report.json` | `verity generate lifecycle-readiness-report examples/lifecycle-readiness --generated-at "$GENERATED_AT" --out build/lifecycle-readiness-report.json` |
 | `tests/golden/coverage_dashboard/coverage_dashboard.json` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --generated-at "$GENERATED_AT" --out build/coverage-dashboard.json` |
 | `tests/golden/coverage_dashboard/coverage_dashboard.md` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --generated-at "$GENERATED_AT" --out build/coverage-dashboard.md` |
 | `tests/golden/pack_capability_index/pack_capability_index.json` | `verity generate pack-capability-index tests/fixtures/custom_pack_workspace --generated-at "$GENERATED_AT" --out build/pack-capability-index.json` |
@@ -61,6 +62,7 @@ Use `python -m json.tool` on generated JSON outputs before reviewing them:
 
 ```bash
 python -m json.tool build/security-report.json >/dev/null
+python -m json.tool build/lifecycle-readiness-report.json >/dev/null
 python -m json.tool build/coverage-dashboard.json >/dev/null
 python -m json.tool build/issue-code-catalog.json >/dev/null
 ```

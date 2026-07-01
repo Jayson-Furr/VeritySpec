@@ -656,6 +656,70 @@
       ]
     },
     {
+      "path": "examples/lifecycle-readiness",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.product-delivery",
+        "verity.pack.mobile",
+        "verity.pack.liveops"
+      ],
+      "recordCount": 41,
+      "recordKinds": {
+        "agent-context.exporter": 1,
+        "archive.policy": 1,
+        "commercial.posture": 1,
+        "decision.record": 1,
+        "decommission.policy": 1,
+        "editor.surface": 1,
+        "evidence.requirement": 1,
+        "generator.capability": 1,
+        "liveops.analytics-taxonomy": 1,
+        "liveops.archive-handling": 1,
+        "liveops.config": 1,
+        "liveops.data-deletion-policy": 1,
+        "liveops.decommission-plan": 1,
+        "liveops.remote-config": 1,
+        "liveops.rollback-plan": 1,
+        "liveops.save-migration-policy": 1,
+        "liveops.support-category": 1,
+        "maintenance.policy": 1,
+        "mobile.app-release": 1,
+        "mobile.apple-privacy-details": 1,
+        "mobile.att-consent": 1,
+        "mobile.compatibility-matrix": 1,
+        "mobile.entitlement": 1,
+        "mobile.google-play-data-safety": 1,
+        "mobile.launch-candidate": 1,
+        "mobile.monetization-posture": 1,
+        "mobile.privacy-policy": 1,
+        "mobile.sdk-inventory": 1,
+        "mobile.soft-launch": 1,
+        "mobile.store-listing": 1,
+        "operations.model": 1,
+        "product": 3,
+        "product.scope": 1,
+        "project-management.model": 1,
+        "readiness.profile": 1,
+        "release.process": 1,
+        "scanner.capability": 1,
+        "support.policy": 1,
+        "validation.runner": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "examples/portfolio",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

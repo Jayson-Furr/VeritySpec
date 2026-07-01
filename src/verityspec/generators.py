@@ -2144,6 +2144,374 @@ def generate_evidence_report(workspace: Workspace, generated_at: str | None = No
     }
 
 
+PRODUCT_DELIVERY_KINDS = [
+    "product.scope",
+    "commercial.posture",
+    "project-management.model",
+    "decision.record",
+    "readiness.profile",
+    "evidence.requirement",
+    "release.process",
+    "operations.model",
+    "support.policy",
+    "maintenance.policy",
+    "archive.policy",
+    "decommission.policy",
+    "scanner.capability",
+    "generator.capability",
+    "validation.runner",
+    "editor.surface",
+    "agent-context.exporter",
+]
+MOBILE_KINDS = [
+    "mobile.app-release",
+    "mobile.store-listing",
+    "mobile.privacy-policy",
+    "mobile.apple-privacy-details",
+    "mobile.google-play-data-safety",
+    "mobile.att-consent",
+    "mobile.sdk-inventory",
+    "mobile.monetization-posture",
+    "mobile.entitlement",
+    "mobile.soft-launch",
+    "mobile.launch-candidate",
+    "mobile.compatibility-matrix",
+]
+LIVEOPS_KINDS = [
+    "liveops.config",
+    "liveops.remote-config",
+    "liveops.rollback-plan",
+    "liveops.analytics-taxonomy",
+    "liveops.support-category",
+    "liveops.save-migration-policy",
+    "liveops.decommission-plan",
+    "liveops.data-deletion-policy",
+    "liveops.archive-handling",
+]
+LIFECYCLE_SURFACES = [
+    {
+        "id": "productDelivery",
+        "name": "Product Delivery",
+        "packId": "verity.pack.product-delivery",
+        "recordKinds": PRODUCT_DELIVERY_KINDS,
+    },
+    {
+        "id": "mobile",
+        "name": "Mobile",
+        "packId": "verity.pack.mobile",
+        "recordKinds": MOBILE_KINDS,
+    },
+    {
+        "id": "liveOps",
+        "name": "LiveOps",
+        "packId": "verity.pack.liveops",
+        "recordKinds": LIVEOPS_KINDS,
+    },
+]
+LIFECYCLE_STAGE_DEFINITIONS = [
+    {
+        "id": "implementation-ready",
+        "name": "Implementation Ready",
+        "description": "Spec-driven product-delivery coverage for implementation handoff.",
+        "requiredKinds": [
+            "product.scope",
+            "readiness.profile",
+            "evidence.requirement",
+            "release.process",
+            "operations.model",
+            "support.policy",
+            "maintenance.policy",
+            "scanner.capability",
+            "generator.capability",
+            "validation.runner",
+            "agent-context.exporter",
+        ],
+    },
+    {
+        "id": "soft-launch",
+        "name": "Soft Launch",
+        "description": "Mobile soft-launch, telemetry, support, and compatibility coverage.",
+        "requiredKinds": [
+            "mobile.app-release",
+            "mobile.store-listing",
+            "mobile.privacy-policy",
+            "mobile.sdk-inventory",
+            "mobile.soft-launch",
+            "mobile.compatibility-matrix",
+            "liveops.analytics-taxonomy",
+            "liveops.support-category",
+        ],
+    },
+    {
+        "id": "launch-candidate",
+        "name": "Launch Candidate",
+        "description": "Mobile launch-candidate review coverage without external approval claims.",
+        "requiredKinds": [
+            "release.process",
+            "evidence.requirement",
+            "mobile.app-release",
+            "mobile.store-listing",
+            "mobile.apple-privacy-details",
+            "mobile.google-play-data-safety",
+            "mobile.att-consent",
+            "mobile.monetization-posture",
+            "mobile.launch-candidate",
+            "mobile.compatibility-matrix",
+        ],
+    },
+    {
+        "id": "remote-config",
+        "name": "Remote Config",
+        "description": "LiveOps configuration, remote-config bounds, rollback, and analytics coverage.",
+        "requiredKinds": [
+            "liveops.config",
+            "liveops.remote-config",
+            "liveops.rollback-plan",
+            "liveops.analytics-taxonomy",
+        ],
+    },
+    {
+        "id": "rollback",
+        "name": "Rollback",
+        "description": "Rollback ownership and operating-process coverage.",
+        "requiredKinds": [
+            "release.process",
+            "operations.model",
+            "support.policy",
+            "liveops.rollback-plan",
+        ],
+    },
+    {
+        "id": "support",
+        "name": "Support",
+        "description": "Support-policy and liveops support-category coverage.",
+        "requiredKinds": [
+            "operations.model",
+            "support.policy",
+            "liveops.support-category",
+        ],
+    },
+    {
+        "id": "save-migration",
+        "name": "Save Migration",
+        "description": "Save-migration, compatibility, and maintenance coverage.",
+        "requiredKinds": [
+            "maintenance.policy",
+            "mobile.compatibility-matrix",
+            "liveops.save-migration-policy",
+        ],
+    },
+    {
+        "id": "decommission",
+        "name": "Decommission",
+        "description": "Decommission, data-deletion, and archive-handling coverage.",
+        "requiredKinds": [
+            "decommission.policy",
+            "liveops.decommission-plan",
+            "liveops.data-deletion-policy",
+            "liveops.archive-handling",
+        ],
+    },
+    {
+        "id": "data-deletion",
+        "name": "Data Deletion",
+        "description": "Privacy, data-safety, and deletion-handling coverage.",
+        "requiredKinds": [
+            "mobile.privacy-policy",
+            "mobile.apple-privacy-details",
+            "mobile.google-play-data-safety",
+            "liveops.data-deletion-policy",
+        ],
+    },
+    {
+        "id": "archive-review",
+        "name": "Archive Review",
+        "description": "Archive policy, decommission policy, evidence, and liveops archive coverage.",
+        "requiredKinds": [
+            "archive.policy",
+            "decommission.policy",
+            "evidence.requirement",
+            "liveops.archive-handling",
+        ],
+    },
+]
+LIFECYCLE_CLAIM_BOUNDARIES = [
+    "This report summarizes VeritySpec record coverage, lifecycle gaps, and record status only.",
+    "It does not assert commercial, legal, privacy-law, marketplace, app-store, platform-certification, live-service, support, or archival readiness.",
+    "External approvals, policy review, platform review, legal review, privacy review, marketplace review, and production evidence remain downstream responsibilities.",
+]
+
+
+def lifecycle_record_summary(record: Record) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "kind": record.kind,
+        "name": record.data.get("name"),
+        "status": record.data.get("status"),
+        "owner": record.data.get("owner"),
+    }
+
+
+def lifecycle_surface_entry(
+    surface: dict[str, Any],
+    records_by_kind: dict[str, list[Record]],
+    pack_ids: list[str],
+) -> dict[str, Any]:
+    records = [
+        record
+        for kind in surface["recordKinds"]
+        for record in records_by_kind.get(kind, [])
+    ]
+    present_kinds = [
+        kind for kind in surface["recordKinds"] if records_by_kind.get(kind)
+    ]
+    missing_kinds = [
+        kind for kind in surface["recordKinds"] if not records_by_kind.get(kind)
+    ]
+    return {
+        "id": surface["id"],
+        "name": surface["name"],
+        "packId": surface["packId"],
+        "packLoaded": surface["packId"] in pack_ids,
+        "recordKinds": surface["recordKinds"],
+        "recordCount": len(records),
+        "presentKinds": present_kinds,
+        "missingKinds": missing_kinds,
+        "byKind": {
+            kind: len(records_by_kind.get(kind, []))
+            for kind in surface["recordKinds"]
+            if records_by_kind.get(kind)
+        },
+    }
+
+
+def lifecycle_stage_entry(
+    stage: dict[str, Any],
+    records_by_kind: dict[str, list[Record]],
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    required_kinds = stage["requiredKinds"]
+    present_kinds = [kind for kind in required_kinds if records_by_kind.get(kind)]
+    missing_kinds = [kind for kind in required_kinds if not records_by_kind.get(kind)]
+    stage_records = sorted(
+        [
+            record
+            for kind in required_kinds
+            for record in records_by_kind.get(kind, [])
+        ],
+        key=lambda item: (item.kind or "", item.id or ""),
+    )
+    non_ready_records = [
+        record.id
+        for record in stage_records
+        if record.id and record.data.get("status") != "ready"
+    ]
+    missing_owner_records = [
+        record.id for record in stage_records if record.id and owner_missing(record)
+    ]
+
+    gaps: list[dict[str, Any]] = []
+    for kind in missing_kinds:
+        gaps.append(
+            {
+                "stageId": stage["id"],
+                "reason": "missing-kind",
+                "kind": kind,
+                "message": f"{stage['name']} has no {kind} record.",
+            }
+        )
+    for record_id in non_ready_records:
+        gaps.append(
+            {
+                "stageId": stage["id"],
+                "reason": "record-not-ready",
+                "recordId": record_id,
+                "message": f"{stage['name']} includes {record_id} but it is not status ready.",
+            }
+        )
+    for record_id in missing_owner_records:
+        gaps.append(
+            {
+                "stageId": stage["id"],
+                "reason": "missing-owner",
+                "recordId": record_id,
+                "message": f"{stage['name']} includes {record_id} without a concrete owner.",
+            }
+        )
+
+    entry = {
+        "id": stage["id"],
+        "name": stage["name"],
+        "description": stage["description"],
+        "coverageStatus": "complete" if not gaps else "gaps",
+        "requiredKinds": required_kinds,
+        "presentKinds": present_kinds,
+        "missingKinds": missing_kinds,
+        "recordCount": len(stage_records),
+        "nonReadyRecords": non_ready_records,
+        "missingOwnerRecords": missing_owner_records,
+        "records": [lifecycle_record_summary(record) for record in stage_records],
+    }
+    return entry, gaps
+
+
+def generate_lifecycle_readiness_report(workspace: Workspace, generated_at: str | None = None) -> dict:
+    records_by_kind: dict[str, list[Record]] = {}
+    for record in workspace.records:
+        if record.kind:
+            records_by_kind.setdefault(record.kind, []).append(record)
+
+    tracked_kinds = PRODUCT_DELIVERY_KINDS + MOBILE_KINDS + LIVEOPS_KINDS
+    tracked_records = [
+        record
+        for kind in tracked_kinds
+        for record in records_by_kind.get(kind, [])
+    ]
+    surfaces = [
+        lifecycle_surface_entry(surface, records_by_kind, workspace.pack_ids)
+        for surface in LIFECYCLE_SURFACES
+    ]
+
+    stages: list[dict[str, Any]] = []
+    gaps: list[dict[str, Any]] = []
+    for stage in LIFECYCLE_STAGE_DEFINITIONS:
+        entry, stage_gaps = lifecycle_stage_entry(stage, records_by_kind)
+        stages.append(entry)
+        gaps.extend(stage_gaps)
+
+    return {
+        "type": "lifecycle_readiness_report",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "recordCount": len(workspace.records),
+        "trackedLifecycleRecordCount": len(tracked_records),
+        "summary": {
+            "trackedSurfaces": len(surfaces),
+            "loadedLifecyclePacks": sum(1 for surface in surfaces if surface["packLoaded"]),
+            "trackedLifecycleRecordKinds": len(tracked_kinds),
+            "coveredLifecycleRecordKinds": sum(1 for kind in tracked_kinds if records_by_kind.get(kind)),
+            "stageCount": len(stages),
+            "completeStages": sum(1 for stage in stages if stage["coverageStatus"] == "complete"),
+            "stagesWithGaps": sum(1 for stage in stages if stage["coverageStatus"] == "gaps"),
+            "gapCount": len(gaps),
+            "byRecordKind": {
+                kind: len(records_by_kind.get(kind, []))
+                for kind in tracked_kinds
+                if records_by_kind.get(kind)
+            },
+            "byStatus": count_by_field(tracked_records, "status"),
+            "byOwner": count_by_field(tracked_records, "owner"),
+        },
+        "claimBoundaries": LIFECYCLE_CLAIM_BOUNDARIES,
+        "surfaces": surfaces,
+        "stages": stages,
+        "gaps": gaps,
+    }
+
+
 def is_security_control_verified(record: Record) -> bool:
     verification = record.data.get("verification")
     if not isinstance(verification, dict):
