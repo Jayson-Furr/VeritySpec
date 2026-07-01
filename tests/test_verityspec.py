@@ -13,6 +13,7 @@ from verityspec.generators import (
     generate_compliance_matrix,
     generate_coverage_dashboard,
     generate_deployment_report,
+    generate_issue_code_catalog,
     generate_observability_report,
     generate_openapi,
     generate_pack_capability_index,
@@ -27,6 +28,7 @@ from verityspec.generators import (
     generated_at_value,
 )
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
+from verityspec.explain import ISSUE_EXPLANATIONS
 from verityspec.issues import Issue, escape_github_property, parse_issue_location
 from verityspec.pack_validation import list_pack_summaries, validate_builtin_packs, validate_packs
 from verityspec.packs import PACK_ENTRY_POINT_GROUP, load_pack_registry
@@ -56,6 +58,9 @@ CUSTOM_PACK_WORKSPACE = ROOT / "tests" / "fixtures" / "custom_pack_workspace"
 CUSTOM_PACK = ROOT / "tests" / "fixtures" / "custom_pack"
 PACK_CAPABILITY_INDEX_GOLDEN = (
     ROOT / "tests" / "golden" / "pack_capability_index" / "pack_capability_index.json"
+)
+ISSUE_CODE_CATALOG_GOLDEN = (
+    ROOT / "tests" / "golden" / "issue_code_catalog" / "issue_code_catalog.json"
 )
 PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
@@ -165,6 +170,13 @@ def normalize_pack_capability_index_for_golden(report: dict) -> dict:
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_issue_code_catalog_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
     return normalized
 
 
@@ -932,7 +944,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add machine-readable issue-code catalog generation", markdown)
+        self.assertIn("1. Add an agent-context generation design note", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -995,6 +1007,10 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(
             FIXED_GENERATED_AT,
             generate_roadmap_report(ROOT, generated_at=FIXED_GENERATED_AT)["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_issue_code_catalog(generated_at=FIXED_GENERATED_AT)["generatedAt"],
         )
         self.assertEqual(
             FIXED_GENERATED_AT,
@@ -1575,6 +1591,32 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(str(CUSTOM_PACK_WORKSPACE), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_pack_capability_index_for_golden(report))
+
+    def test_issue_code_catalog_summarizes_explain_metadata(self) -> None:
+        report = generate_issue_code_catalog()
+
+        self.assertEqual("issue_code_catalog", report["type"])
+        self.assertEqual("verity explain", report["source"])
+        self.assertEqual(len(ISSUE_EXPLANATIONS), report["summary"]["issueCodeCount"])
+        self.assertIn("reference", report["summary"]["categories"])
+        self.assertIn("error", report["summary"]["severities"])
+        issue_codes = {entry["code"]: entry for entry in report["issueCodes"]}
+        self.assertEqual(set(ISSUE_EXPLANATIONS), set(issue_codes))
+        self.assertEqual("reference", issue_codes["reference.missing"]["category"])
+        self.assertEqual("Missing reference target", issue_codes["reference.missing"]["title"])
+        self.assertEqual(
+            ISSUE_EXPLANATIONS["reference.missing"]["resolution"],
+            issue_codes["reference.missing"]["resolution"],
+        )
+
+    def test_issue_code_catalog_matches_golden_file(self) -> None:
+        expected = json.loads(ISSUE_CODE_CATALOG_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_issue_code_catalog()
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_issue_code_catalog_for_golden(report))
 
     def test_coverage_dashboard_matches_golden_file(self) -> None:
         workspace = load_workspace(COVERAGE_FIXTURE)

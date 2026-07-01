@@ -52,9 +52,9 @@ This implementation provides:
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices,
   deployment reports, evidence reports, cross-pack coverage dashboards,
-  product-impact reports, pack capability indexes, and roadmap governance
-  reports, including security release-gap summaries for stale evidence and
-  missing verification dates, with OpenAPI
+  product-impact reports, pack capability indexes, roadmap governance
+  reports, and issue-code catalogs, including security release-gap summaries
+  for stale evidence and missing verification dates, with OpenAPI
   path-parameter support and
   snapshot-tested type/model output including nested Python dataclasses and
   deterministic timestamp controls for generated JSON reports.
@@ -216,6 +216,7 @@ verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --ou
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
+verity generate issue-code-catalog --out build/issue-code-catalog.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
@@ -288,6 +289,7 @@ verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --ou
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
+verity generate issue-code-catalog --out build/issue-code-catalog.json
 ```
 
 ## Semantic Validation

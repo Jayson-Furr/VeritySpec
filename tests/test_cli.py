@@ -346,6 +346,64 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("reference.missing", payload["code"])
         self.assertEqual("Missing reference target", payload["title"])
 
+    def test_issue_code_catalog_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "issue-code-catalog.json"
+            result = verity_command(
+                "generate",
+                "issue-code-catalog",
+                "--generated-at",
+                FIXED_GENERATED_AT,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated issue-code-catalog", result.stdout)
+        self.assertEqual("issue_code_catalog", payload["type"])
+        self.assertEqual(FIXED_GENERATED_AT, payload["generatedAt"])
+        self.assertGreater(payload["summary"]["issueCodeCount"], 0)
+        self.assertIn("reference.missing", {item["code"] for item in payload["issueCodes"]})
+
+    def test_issue_code_catalog_matches_explain_metadata_for_sampled_code(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "issue-code-catalog.json"
+            catalog_result = verity_command(
+                "generate",
+                "issue-code-catalog",
+                "--out",
+                str(out_path),
+            )
+            explain_result = verity_command("explain", "reference.missing", "--format", "json")
+
+            catalog = json.loads(out_path.read_text(encoding="utf-8"))
+            explanation = json.loads(explain_result.stdout)
+
+        self.assertEqual(0, catalog_result.returncode)
+        self.assertEqual(0, explain_result.returncode)
+        catalog_entry = {
+            item["code"]: item for item in catalog["issueCodes"]
+        }["reference.missing"]
+        self.assertEqual(explanation["code"], catalog_entry["code"])
+        self.assertEqual(explanation["title"], catalog_entry["title"])
+        self.assertEqual(explanation["severity"], catalog_entry["severity"])
+        self.assertEqual(explanation["description"], catalog_entry["description"])
+        self.assertEqual(explanation["resolution"], catalog_entry["resolution"])
+
+    def test_issue_code_catalog_rejects_workspace_path(self) -> None:
+        result = verity_command("generate", "issue-code-catalog", "examples/basic")
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("does not accept workspace paths", result.stderr)
+
+    def test_workspace_generators_require_workspace_path(self) -> None:
+        result = verity_command("generate", "openapi", "--out", "build/openapi-missing.json")
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("requires a workspace path", result.stderr)
+
     def test_explain_security_issue_code_json_output(self) -> None:
         result = verity_command(
             "explain",

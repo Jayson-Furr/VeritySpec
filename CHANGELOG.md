@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added machine-readable issue-code catalog generation from `verity explain`
+  metadata for documentation sites and CI integrations.
+
 ## 0.53.0
 
 - Added workspace migration impact summaries to `verity migrate --list` and
