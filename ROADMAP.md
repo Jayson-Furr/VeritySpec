@@ -2045,11 +2045,12 @@ Sprint 112 prepares and verifies the v0.47.0 release:
 
 ## v0.48.0
 
-The `v0.48.0` milestone is focused on generator output contract hardening.
+The `v0.48.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 113 | In Progress | Accessibility and compliance report golden fixtures |
+| 113 | Complete | Accessibility and compliance report golden fixtures |
+| 114 | Complete | v0.48.0 release preparation and verification |
 
 ## Sprint 113 Priorities
 
@@ -2062,6 +2063,26 @@ had shape checks but no committed output contracts:
   volatile fields.
 - Compare library-generated report outputs to the same golden fixtures.
 - Update changelog and roadmap bookkeeping.
+
+Sprint 113 delivery added committed golden outputs for accessibility reports
+and compliance matrices, CLI-level golden comparisons, library-level golden
+comparisons, changelog updates, and Next 20 roadmap bookkeeping.
+
+## Sprint 114 Priorities
+
+Sprint 114 prepares and verifies the v0.48.0 release:
+
+- Promote Unreleased changelog entries into `0.48.0`.
+- Bump package metadata to `0.48.0`.
+- Add v0.48.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.48.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.48.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.48.0 GitHub release when checks pass.
+- Close the v0.48.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
