@@ -26,6 +26,9 @@ Small typo fixes and narrow documentation corrections can go straight to a pull
 request. New packs, new record kinds, breaking schema changes, generator
 changes, and readiness policy changes should start with an issue.
 
+Maintainers should review public external pack proposals with the
+[External pack maintainer review checklist](docs/external-pack-review-checklist.md).
+
 ## Proposing a New Pack
 
 Use the `Pack proposal` issue template for new packs.
@@ -52,6 +55,8 @@ Every accepted pack should include:
 - README and roadmap updates when the change is public-facing.
 
 Do not add a large family of skeletal schemas without executable behavior.
+The maintainer checklist defines the acceptance gates for identity, contract,
+executability, documentation, compatibility, and PR review.
 
 ## Proposing a Schema Change
 

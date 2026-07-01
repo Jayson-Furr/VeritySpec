@@ -3,6 +3,10 @@ description: Propose a new VeritySpec pack or major pack expansion.
 title: "Pack: "
 labels: ["enhancement", "pack"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Maintainers review public external pack proposals against the external pack maintainer review checklist: https://github.com/Jason-Furr/verity-spec/blob/main/docs/external-pack-review-checklist.md
   - type: textarea
     id: product_problem
     attributes:

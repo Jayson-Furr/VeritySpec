@@ -75,8 +75,8 @@ This implementation provides:
   public command snippets from drifting.
 - A canonical AI agent entry point with shell discipline, branch/PR/release
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
-- Public contribution guidance and issue templates for pack proposals and
-  schema changes.
+- Public contribution guidance, issue templates, and maintainer review
+  checklist for pack proposals and schema changes.
 - Product-surface pack boundary guidance for future GUI, desktop, and
   additional game packs, with the first narrow game and lifecycle scopes
   delivered through
@@ -390,6 +390,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Roadmap](ROADMAP.md)
 - [Record lifecycle](docs/record-lifecycle.md)
 - [Packs](docs/packs.md)
+- [External pack maintainer review checklist](docs/external-pack-review-checklist.md)
 - [Pack scaffold fixtures](docs/pack-scaffold-fixtures.md)
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
 - [Engine and product-delivery pack direction](docs/engine-product-delivery-packs.md)

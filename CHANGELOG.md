@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added an external pack maintainer review checklist that defines proposal
+  inputs, identity, contract, executability, documentation, compatibility, PR
+  review, and acceptance-outcome gates for public pack proposals.
+
 ## 0.48.0
 
 - Added golden fixtures and generator-level golden comparisons for

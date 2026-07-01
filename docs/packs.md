@@ -283,6 +283,9 @@ Use the `Schema change` issue template for new fields, required-field changes,
 enum changes, reference-shape changes, deprecations, removals, and breaking
 schema behavior.
 
+Maintainers should review public external pack proposals with the
+[External pack maintainer review checklist](external-pack-review-checklist.md).
+
 Pack proposals should define the product surface, record kinds, reference
 rules, readiness gates, generator or report output, executable examples, tests,
 and compatibility boundaries before implementation begins.
