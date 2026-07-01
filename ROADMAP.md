@@ -2084,6 +2084,30 @@ Sprint 114 prepares and verifies the v0.48.0 release:
 - Tag and publish the v0.48.0 GitHub release when checks pass.
 - Close the v0.48.0 milestone after release verification.
 
+## v0.49.0
+
+The `v0.49.0` milestone is focused on public external-pack review governance.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 115 | In Progress | External pack maintainer review checklist |
+
+## Sprint 115 Priorities
+
+Sprint 115 adds a maintainer-facing checklist for reviewing public external
+pack proposals:
+
+- Document proposal inputs required before implementation work begins.
+- Define identity, contract, executability, documentation, compatibility, PR
+  review, and acceptance-outcome gates.
+- Link the checklist from README, pack docs, contribution guidance, and the
+  pack proposal issue template.
+- Add documentation contract tests that keep the checklist discoverable and
+  preserve the review boundaries.
+- Update changelog and roadmap bookkeeping.
+- Keep runtime pack loading, compatibility enforcement, and specialized-pack
+  detachment out of scope for this sprint.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension
@@ -2115,56 +2139,57 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add a maintainer review checklist for accepting external packs once public
-   pack proposals become common.
-2. Add release-integrity consistency checks across package metadata, README,
+1. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-3. Add roadmap-report human-readable Markdown output for maintainer release
+2. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-4. Add security-report release gaps for stale evidence and missing
+3. Add security-report release gaps for stale evidence and missing
    verification dates.
-5. Add workspace migration impact summaries that call out record, pack, and
+4. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-6. Add machine-readable issue-code catalog generation from `verity explain`
+5. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-7. Add an agent-context generation design note for bounded AI handoff
+6. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-8. Add an engine full-lifecycle support design note covering Unity, Godot, and
+7. Add an engine full-lifecycle support design note covering Unity, Godot, and
    Unreal game workspaces, shared engine library workspaces, lifecycle
    readiness profiles, evidence, liveops, decommissioning, archive records,
    and portfolio examples.
-9. Add a portfolio-level validation design note for multi-workspace product,
+8. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-10. Add fixture refresh documentation for regenerating golden report outputs
+9. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-11. Add a public architecture decision record template for future major pack,
+10. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-12. Add profile-aware downstream CI template examples for release, regulated,
+11. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-13. Add deployment-target release evidence links that connect deployment
+12. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-14. Add coverage-dashboard Markdown output for maintainers who need a
+13. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
-15. Add local workspace-dependency prototype fixtures for exported records,
+14. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-16. Add engine portfolio example guidance and compatibility fixtures showing
+15. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
-17. Add product-delivery, mobile, and liveops readiness/gap reports for
+16. Add product-delivery, mobile, and liveops readiness/gap reports for
    implementation-ready, soft-launch, launch-candidate, remote-config,
    rollback, support, save-migration, decommission, data-deletion, and
    archive-review summaries without making commercial, legal, privacy-law,
    marketplace, or platform-certification claims.
-18. Add installed-pack health diagnostics that report entry-point resolution
+17. Add installed-pack health diagnostics that report entry-point resolution
     failures, duplicate installed pack IDs, built-in collisions, and local
     override behavior for maintainers debugging extension-pack installs.
-19. Add official-extension package compatibility fixture guidance for
+18. Add official-extension package compatibility fixture guidance for
     validating mirrored pack manifests, schemas, readiness gates, reference
     rules, examples, and generator metadata before any bundled pack detach
     sprint begins.
-20. Add a CLI command module decomposition design note before adding larger
+19. Add a CLI command module decomposition design note before adding larger
     dependency, portfolio, and lifecycle command families.
+20. Add an installed-pack compatibility metadata design note covering supported
+    VeritySpec versions, workspace format versions, pack API level, and
+    official extension-package lifecycle states before runtime enforcement.
 
 ## Working Rule
 
