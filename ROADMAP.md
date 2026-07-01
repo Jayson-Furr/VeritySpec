@@ -2632,15 +2632,15 @@ Sprint 137 completed a two-week-sized deployment evidence sprint:
 
 ## v0.61.0
 
-The `v0.61.0` milestone is focused on active work.
+The `v0.61.0` milestone is complete.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 138 | In Progress | Coverage-dashboard Markdown output |
+| 138 | Complete | Coverage-dashboard Markdown output |
 
 ## Sprint 138 Priorities
 
-Sprint 138 is a two-week-sized coverage-dashboard Markdown sprint:
+Sprint 138 completed a two-week-sized coverage-dashboard Markdown sprint:
 
 - Add Markdown output to `verity generate coverage-dashboard` for maintainers
   who need a human-readable release-review artifact.
