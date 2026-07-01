@@ -31,9 +31,10 @@ This implementation provides:
   contracts, progression contracts, spec-driven product-delivery contracts,
   mobile lifecycle contracts, live operations contracts, and implementation
   evidence contracts.
-- Pack listing, validation, and scaffolding through `verity pack`, including
-  local external packs, structured generator metadata, and starter reference
-  rules that make generated packs usable from sample workspaces immediately.
+- Pack listing, validation, installed-pack discovery, and scaffolding through
+  `verity pack`, including local external packs, structured generator
+  metadata, and starter reference rules that make generated packs usable from
+  sample workspaces immediately.
 - Executable pack scaffold documentation fixtures that show a generated
   external pack plus a consuming workspace layout.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.

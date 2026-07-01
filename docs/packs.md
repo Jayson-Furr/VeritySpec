@@ -188,6 +188,56 @@ record envelope requirements, readiness gate checks, reference rule checks, and
 registry collision checks as built-in packs. External pack IDs cannot shadow
 built-in pack IDs.
 
+## Installed Packs
+
+VeritySpec can also discover separately installed pack packages through the
+Python package entry-point group `verityspec.packs`. This is the foundation for
+future official extension pack packages.
+
+An installed pack package should expose one entry point per pack ID:
+
+```toml
+[project.entry-points."verityspec.packs"]
+"verity.pack.features" = "verity_pack_features:pack_path"
+```
+
+The loaded object may be a path-like value or a callable that returns a path to
+a pack directory or `pack.json` file:
+
+```python
+from pathlib import Path
+
+
+def pack_path() -> Path:
+    return Path(__file__).resolve().parent / "pack"
+```
+
+The entry-point name must match the `id` field inside the pack manifest. For
+example, the entry point named `verity.pack.features` must resolve to a
+manifest with `"id": "verity.pack.features"`.
+
+Installed packs participate in the same manifest validation, schema checks,
+readiness-gate checks, reference-rule checks, workspace validation, and
+generator metadata summaries as built-in and local external packs:
+
+```bash
+verity pack list
+verity pack list --format json
+verity pack validate verity.pack.features
+verity validate ./workspace
+```
+
+Source precedence is intentionally conservative:
+
+- Built-in pack IDs are reserved and cannot be shadowed by installed packs.
+- Explicit local `packPaths`, `--pack-path`, and `verity pack --path` entries
+  take precedence over an installed pack with the same ID.
+- Installed packs are loaded by ID when a workspace lists the pack in `packs`
+  and no explicit local path supplies that ID.
+
+`verity pack list --format json` includes a `source` field so tools can
+distinguish `built-in`, `installed`, and `external` packs.
+
 ## Long-Term Pack Distribution Goal
 
 VeritySpec's product direction is a small core runtime plus official extension

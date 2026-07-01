@@ -19,6 +19,7 @@
   "summary": {
     "packCount": 2,
     "builtInPackCount": 1,
+    "installedPackCount": 0,
     "externalPackCount": 1,
     "schemaCount": 3,
     "readinessGateCount": 3,

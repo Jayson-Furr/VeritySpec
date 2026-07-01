@@ -38,6 +38,12 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "The requested pack ID is not available.",
         "resolution": "Run `verity pack list` and use one of the listed pack IDs.",
     },
+    "pack.discovery.invalid": {
+        "title": "Pack discovery failed",
+        "severity": "error",
+        "description": "A local or installed pack source could not be resolved into a valid pack manifest.",
+        "resolution": "Check local pack paths and installed `verityspec.packs` entry points, then rerun `verity pack list`.",
+    },
     "profile.required_pack": {
         "title": "Required profile pack missing",
         "severity": "error",

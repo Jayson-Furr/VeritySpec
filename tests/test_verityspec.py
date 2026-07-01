@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from unittest.mock import patch
 
 from verityspec.generators import (
     generate_accessibility_report,
@@ -26,8 +27,8 @@ from verityspec.generators import (
 )
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
 from verityspec.issues import Issue, escape_github_property, parse_issue_location
-from verityspec.pack_validation import validate_builtin_packs
-from verityspec.packs import load_pack_registry
+from verityspec.pack_validation import list_pack_summaries, validate_builtin_packs, validate_packs
+from verityspec.packs import PACK_ENTRY_POINT_GROUP, load_pack_registry
 from verityspec.profiles import PROFILES, profile_issues
 from verityspec.readiness import evaluate_readiness
 from verityspec.validation import validate_workspace
@@ -45,6 +46,7 @@ COVERAGE_DASHBOARD_GOLDEN = (
 )
 COVERAGE_FIXTURE = ROOT / "tests" / "fixtures" / "cross_pack_coverage"
 CUSTOM_PACK_WORKSPACE = ROOT / "tests" / "fixtures" / "custom_pack_workspace"
+CUSTOM_PACK = ROOT / "tests" / "fixtures" / "custom_pack"
 PACK_CAPABILITY_INDEX_GOLDEN = (
     ROOT / "tests" / "golden" / "pack_capability_index" / "pack_capability_index.json"
 )
@@ -52,6 +54,23 @@ PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "base
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
 PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
+
+
+class FakeEntryPoint:
+    def __init__(self, name: str, pack_path: Path) -> None:
+        self.name = name
+        self._pack_path = pack_path
+
+    def load(self):
+        return lambda: self._pack_path
+
+
+class FakeEntryPoints(list):
+    def select(self, **params):
+        group = params.get("group")
+        if group == PACK_ENTRY_POINT_GROUP:
+            return list(self)
+        return []
 
 
 def normalize_security_report_for_golden(report: dict) -> dict:
@@ -222,6 +241,94 @@ class VeritySpecTests(unittest.TestCase):
 
     def test_builtin_packs_validate(self) -> None:
         self.assertEqual([], validate_builtin_packs())
+
+    def test_installed_pack_discovery_loads_entry_point_pack_without_pack_paths(self) -> None:
+        entry_points = FakeEntryPoints([FakeEntryPoint("verity.pack.features", CUSTOM_PACK)])
+        with tempfile.TemporaryDirectory() as tmp, patch(
+            "verityspec.packs.metadata.entry_points",
+            return_value=entry_points,
+        ):
+            root = Path(tmp)
+            records = root / "records"
+            records.mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "installed.pack.workspace",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.features"],
+                        "packPaths": [],
+                        "records": ["records/*.json"],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            (records / "product.json").write_text(
+                json.dumps(
+                    {
+                        "id": "product.flags",
+                        "kind": "product",
+                        "name": "Feature Flag Product",
+                        "description": "A product fixture that loads an installed pack.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "version": "0.1.0",
+                        "references": [{"type": "configures", "target": "feature.checkout"}],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            (records / "feature.checkout.json").write_text(
+                json.dumps(
+                    {
+                        "id": "feature.checkout",
+                        "kind": "feature.flag",
+                        "name": "Checkout Feature",
+                        "description": "Controls access to the checkout flow.",
+                        "status": "ready",
+                        "owner": "growth",
+                        "key": "checkout.enabled",
+                        "enabled": True,
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths, workspace.base_path)
+
+        self.assertEqual("installed", registry.packs["verity.pack.features"].source)
+        self.assertEqual([], validate_workspace(workspace, registry, strict=True))
+        self.assertEqual([], evaluate_readiness(workspace, registry, strict=True))
+
+    def test_installed_pack_list_and_validate_include_installed_source(self) -> None:
+        entry_points = FakeEntryPoints([FakeEntryPoint("verity.pack.features", CUSTOM_PACK)])
+        with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+            summaries = list_pack_summaries()
+            issues = validate_packs("verity.pack.features")
+
+        installed = [summary for summary in summaries if summary["id"] == "verity.pack.features"]
+        self.assertEqual(1, len(installed))
+        self.assertEqual("installed", installed[0]["source"])
+        self.assertEqual([], issues)
+
+    def test_local_pack_path_takes_precedence_over_installed_pack(self) -> None:
+        entry_points = FakeEntryPoints([FakeEntryPoint("verity.pack.features", CUSTOM_PACK)])
+        with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+            summaries = list_pack_summaries([CUSTOM_PACK])
+
+        features = [summary for summary in summaries if summary["id"] == "verity.pack.features"]
+        self.assertEqual(1, len(features))
+        self.assertEqual("external", features[0]["source"])
+
+    def test_installed_pack_entry_point_name_must_match_manifest_id(self) -> None:
+        entry_points = FakeEntryPoints([FakeEntryPoint("verity.pack.wrong", CUSTOM_PACK)])
+        with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+            with self.assertRaisesRegex(ValueError, "must match manifest id"):
+                list_pack_summaries()
 
     def test_builtin_schemas_require_shared_record_envelope(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "basic")

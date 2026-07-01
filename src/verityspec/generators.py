@@ -11,7 +11,7 @@ from . import __version__
 from .diffing import SEVERITY_LEVELS, diff_workspaces
 from .graph import build_graph
 from .issues import Issue, issue_count
-from .packs import PACK_ROOT, Pack, PackRegistry, ReferenceRule, SchemaBinding
+from .packs import Pack, PackRegistry, ReferenceRule, SchemaBinding
 from .workspace import Record, Workspace
 
 
@@ -539,11 +539,7 @@ def sorted_mapping(value: Any) -> dict[str, Any]:
 
 
 def pack_source(pack: Pack) -> str:
-    try:
-        pack.path.resolve().relative_to(PACK_ROOT.resolve())
-    except ValueError:
-        return "external"
-    return "built-in"
+    return pack.source
 
 
 def schema_capability_summary(binding: SchemaBinding) -> dict[str, Any]:
@@ -685,6 +681,7 @@ def generate_pack_capability_index(
         "summary": {
             "packCount": len(packs),
             "builtInPackCount": sum(1 for source in pack_sources.values() if source == "built-in"),
+            "installedPackCount": sum(1 for source in pack_sources.values() if source == "installed"),
             "externalPackCount": sum(1 for source in pack_sources.values() if source == "external"),
             "schemaCount": len(registry.schemas),
             "readinessGateCount": len(readiness_gates),

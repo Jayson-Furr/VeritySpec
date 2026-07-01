@@ -13,6 +13,7 @@ from .packs import (
     PackRegistry,
     available_builtin_packs,
     available_external_packs,
+    available_installed_packs,
     generator_id,
     load_pack,
     load_pack_from_path,
@@ -53,6 +54,7 @@ def pack_summary_from_pack(pack: Pack) -> dict[str, Any]:
         "name": pack.name,
         "description": pack.description,
         "path": str(pack.path),
+        "source": pack.source,
         "kinds": sorted(pack.schemas),
         "readinessGates": [gate.get("id") for gate in pack.readiness_gates],
         "generators": pack.generators,
@@ -74,8 +76,16 @@ def list_pack_summaries(
 ) -> list[dict[str, Any]]:
     summaries = list_builtin_pack_summaries()
     external = available_external_packs(external_pack_paths, base_path)
+    installed = available_installed_packs()
+    for pack_id in sorted(installed):
+        if pack_id not in external:
+            summaries.append(
+                pack_summary_from_pack(load_pack_from_path(installed[pack_id], source="installed"))
+            )
     for pack_id in sorted(external):
-        summaries.append(pack_summary_from_pack(load_pack_from_path(external[pack_id])))
+        summaries.append(
+            pack_summary_from_pack(load_pack_from_path(external[pack_id], source="external"))
+        )
     return summaries
 
 
@@ -271,7 +281,23 @@ def validate_pack_registry_semantics(registry: PackRegistry) -> list[Issue]:
 
 
 def validate_builtin_packs(pack_id: str | None = None) -> list[Issue]:
-    return validate_packs(pack_id)
+    builtin = available_builtin_packs()
+    if pack_id:
+        if pack_id not in builtin:
+            return [Issue("error", "pack.unknown", f"Unknown built-in pack '{pack_id}'.")]
+        return validate_single_pack(pack_id)
+
+    issues: list[Issue] = []
+    pack_ids = sorted(builtin)
+    for candidate in pack_ids:
+        issues.extend(validate_single_pack(candidate))
+    try:
+        registry = load_pack_registry(pack_ids)
+    except ValueError as exc:
+        issues.append(Issue("error", "pack.kind.collision", str(exc)))
+        return issues
+    issues.extend(validate_pack_registry_semantics(registry))
+    return issues
 
 
 def validate_packs(
@@ -285,8 +311,10 @@ def validate_packs(
     pack_ids = sorted(available_builtin_packs())
     try:
         external = available_external_packs(external_pack_paths, base_path)
+        installed = available_installed_packs()
     except ValueError as exc:
-        return [Issue("error", "pack.path.invalid", str(exc))]
+        return [Issue("error", "pack.discovery.invalid", str(exc))]
+    pack_ids.extend(sorted(pack_id for pack_id in installed if pack_id not in external))
     pack_ids.extend(sorted(external))
     issues: list[Issue] = []
     for candidate in pack_ids:
