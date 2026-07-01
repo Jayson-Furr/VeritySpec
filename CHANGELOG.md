@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+## 0.54.0
+
 - Added machine-readable issue-code catalog generation from `verity explain`
   metadata for documentation sites and CI integrations.
+- Updated future sprint planning guidance to use cohesive bundles sized up to
+  roughly two weeks of development effort.
+- Added v0.54.0 release notes and roadmap closeout.
 
 ## 0.53.0
 

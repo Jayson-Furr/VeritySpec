@@ -1,7 +1,7 @@
 # VeritySpec Sprint Roadmap
 
 VeritySpec matures through shippable sprints. Plan sprints as cohesive bundles
-of related work sized up to roughly one week of development effort, while
+of related work sized up to roughly two weeks of development effort, while
 still leaving the repository in a releasable state with tests, examples,
 documentation, and CI checks updated alongside code.
 
@@ -2315,12 +2315,12 @@ Sprint 124 prepares and verifies the v0.53.0 release:
 
 ## v0.54.0
 
-The `v0.54.0` milestone is focused on issue-code catalog generation for
-documentation sites and CI integrations.
+The `v0.54.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 125 | In Progress | Issue-code catalog generation |
+| 125 | Complete | Issue-code catalog generation |
+| 126 | Complete | v0.54.0 release preparation and verification |
 
 ## Sprint 125 Priorities
 
@@ -2335,6 +2335,30 @@ Sprint 125 adds machine-readable issue-code catalog output:
 - Add deterministic tests and committed golden fixture coverage.
 - Update README, generator docs, changelog, roadmap bookkeeping, and Next 20
   planning.
+
+Sprint 125 delivery added `verity generate issue-code-catalog`, reused
+canonical `verity explain` metadata, emitted stable JSON with code, category,
+severity, title, description, resolution, and summary counts, rejected workspace
+paths and non-JSON output, and refreshed CLI tests, library tests, golden
+fixtures, README, generator docs, changelog, roadmap, and Next 20 planning.
+
+## Sprint 126 Priorities
+
+Sprint 126 prepares and verifies the v0.54.0 release:
+
+- Promote Unreleased changelog entries into `0.54.0`.
+- Bump package metadata to `0.54.0`.
+- Add v0.54.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.54.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.54.0`.
+- Update future sprint sizing guidance to use cohesive bundles up to roughly
+  two weeks of development effort.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.54.0 GitHub release when checks pass.
+- Close the v0.54.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
