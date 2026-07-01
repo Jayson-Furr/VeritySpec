@@ -1,0 +1,121 @@
+{
+  "records": [
+    {
+      "id": "scanner.capability.portfolio_workspace_matrix",
+      "kind": "scanner.capability",
+      "name": "Portfolio Workspace Matrix Scanner",
+      "description": "Scans local portfolio fixtures to collect workspace inventory, pack inventory, validation status, readiness status, evidence gaps, and impact warnings.",
+      "status": "ready",
+      "owner": "tooling",
+      "scannerType": "workspace",
+      "entryPoint": "verity validate examples/portfolio",
+      "scannedKinds": [
+        "product.scope",
+        "readiness.profile",
+        "evidence.requirement",
+        "validation.runner"
+      ],
+      "outputPath": "build/reports/portfolio-workspace-matrix.json",
+      "references": [
+        {
+          "type": "scansScope",
+          "target": "product.scope.multi_workspace_portfolio"
+        }
+      ]
+    },
+    {
+      "id": "generator.capability.portfolio_summary",
+      "kind": "generator.capability",
+      "name": "Portfolio Summary Generator Capability",
+      "description": "Represents the future capability to emit deterministic portfolio summaries after JSON report shape is designed.",
+      "status": "ready",
+      "owner": "tooling",
+      "generatorType": "report",
+      "outputArtifacts": [
+        "portfolio-summary.json"
+      ],
+      "command": "verity generate portfolio-report",
+      "outputPath": "build/reports/portfolio-summary.json",
+      "references": [
+        {
+          "type": "generatesForScope",
+          "target": "product.scope.multi_workspace_portfolio"
+        }
+      ]
+    },
+    {
+      "id": "validation.runner.portfolio_local",
+      "kind": "validation.runner",
+      "name": "Portfolio Local Validation Runner",
+      "description": "Runs local portfolio example validation, lint, readiness, and graph checks while hosted CI remains the workflow gate.",
+      "status": "ready",
+      "owner": "tooling",
+      "runnerType": "local",
+      "command": "verity validate examples/portfolio && verity lint examples/portfolio --strict && verity readiness examples/portfolio --strict && verity graph examples/portfolio",
+      "scannerRefs": [
+        "scanner.capability.portfolio_workspace_matrix"
+      ],
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "scanner.capability.portfolio_workspace_matrix"
+        }
+      ]
+    },
+    {
+      "id": "editor.surface.portfolio_dashboard",
+      "kind": "editor.surface",
+      "name": "Portfolio Readiness Dashboard Surface",
+      "description": "Represents a future dashboard surface for reviewing portfolio readiness, evidence, dependency, and impact summaries.",
+      "status": "ready",
+      "owner": "tooling",
+      "surfaceType": "dashboard",
+      "entryPoint": "docs/portfolio-validation.md",
+      "supportedActions": [
+        "view workspace inventory",
+        "review readiness status",
+        "inspect impact warnings",
+        "open follow-up issues"
+      ],
+      "references": [
+        {
+          "type": "runsValidation",
+          "target": "validation.runner.portfolio_local"
+        }
+      ]
+    },
+    {
+      "id": "agent-context.exporter.portfolio_handoff",
+      "kind": "agent-context.exporter",
+      "name": "Portfolio Agent Context Exporter",
+      "description": "Exports bounded context for agents working on future portfolio validation, dependency, and aggregate report implementation.",
+      "status": "ready",
+      "owner": "tooling",
+      "exporterType": "markdown",
+      "outputPath": "build/portfolio-agent-context.md",
+      "includedRecordKinds": [
+        "product.scope",
+        "readiness.profile",
+        "evidence.requirement",
+        "validation.runner",
+        "generator.capability"
+      ],
+      "privacyPolicy": "Do not include secrets, credentials, customer data, or unpublished commercial terms in exported portfolio context.",
+      "redactionPolicy": "Summarize private workspace names when downstream repositories require confidentiality.",
+      "references": [
+        {
+          "type": "describesScope",
+          "target": "product.scope.multi_workspace_portfolio"
+        },
+        {
+          "type": "usesReadinessProfile",
+          "target": "readiness.profile.portfolio_foundation"
+        },
+        {
+          "type": "usesGenerator",
+          "target": "generator.capability.portfolio_summary"
+        }
+      ]
+    }
+  ]
+}

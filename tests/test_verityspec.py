@@ -944,7 +944,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add a portfolio-level validation design note", markdown)
+        self.assertIn("1. Add fixture refresh documentation", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap

@@ -385,6 +385,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/economy](examples/economy/verityspec.json): focused game economy workspace.
 - [examples/progression](examples/progression/verityspec.json): focused game progression workspace.
 - [examples/product-delivery](examples/product-delivery/verityspec.json): focused spec-driven product-delivery workspace.
+- [examples/portfolio](examples/portfolio/verityspec.json): focused multi-workspace portfolio validation foundation workspace.
 - [examples/mobile](examples/mobile/verityspec.json): focused mobile lifecycle workspace.
 - [examples/liveops](examples/liveops/verityspec.json): focused live operations workspace.
 - [examples/evidence](examples/evidence/verityspec.json): focused implementation evidence workspace.
@@ -409,6 +410,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Engine full-lifecycle support design](docs/engine-full-lifecycle-support.md)
 - [Specialized pack separation plan](docs/specialized-pack-separation.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
+- [Portfolio-level validation foundation](docs/portfolio-validation.md)
 - [Product contract profiles](docs/product-contract-profiles.md)
 - [Security pack](docs/security-pack.md)
 - [Observability pack](docs/observability-pack.md)

@@ -1,0 +1,119 @@
+{
+  "records": [
+    {
+      "id": "release.process.portfolio_design",
+      "kind": "release.process",
+      "name": "Portfolio Design Release Process",
+      "description": "Defines release expectations for portfolio validation design and example work before aggregate report behavior ships.",
+      "status": "ready",
+      "owner": "release",
+      "releaseType": "alpha",
+      "branchStrategy": "Sprint branches merge through pull requests into main after local and hosted checks pass.",
+      "tagPolicy": "Version tags are cut only after release-prep PRs merge to main and release checks pass.",
+      "approvalPolicy": "Maintainers review README, changelog, roadmap, examples, tests, and release notes together.",
+      "artifactPolicy": "Portfolio examples and docs ship as package documentation and repository examples.",
+      "readinessProfileRefs": [
+        "readiness.profile.portfolio_foundation"
+      ],
+      "references": [
+        {
+          "type": "usesReadinessProfile",
+          "target": "readiness.profile.portfolio_foundation"
+        },
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.workspace_matrix"
+        }
+      ]
+    },
+    {
+      "id": "operations.model.maintained_portfolio",
+      "kind": "operations.model",
+      "name": "Maintained Portfolio Operations",
+      "description": "Defines lightweight maintenance operations for portfolio examples, docs, and future reports.",
+      "status": "ready",
+      "owner": "operations",
+      "operatingModel": "maintained",
+      "incidentPolicy": "Broken portfolio examples, stale report expectations, or missing README links are tracked as release-blocking defects.",
+      "monitoringPolicy": "Local and hosted validation checks review portfolio examples during each release.",
+      "runbookPath": "docs/release-checklist.md",
+      "escalationOwner": "maintainer",
+      "references": [
+        {
+          "type": "supportedBy",
+          "target": "support.policy.portfolio_foundation"
+        }
+      ]
+    },
+    {
+      "id": "support.policy.portfolio_foundation",
+      "kind": "support.policy",
+      "name": "Portfolio Foundation Support Policy",
+      "description": "Defines support expectations for portfolio validation examples and design notes.",
+      "status": "ready",
+      "owner": "support",
+      "supportModel": "community",
+      "channels": [
+        "GitHub Issues",
+        "pull request review"
+      ],
+      "responsePolicy": "Portfolio validation bugs and documentation drift are triaged through public issues.",
+      "escalationPolicy": "Escalate defects that invalidate example validation or release integrity to the release owner.",
+      "references": []
+    },
+    {
+      "id": "maintenance.policy.portfolio_examples",
+      "kind": "maintenance.policy",
+      "name": "Portfolio Example Maintenance Policy",
+      "description": "Defines how portfolio examples and future aggregate report fixtures stay aligned with built-in packs.",
+      "status": "ready",
+      "owner": "maintenance",
+      "maintenanceModel": "active",
+      "updateCadence": "Review portfolio examples whenever pack schemas, readiness gates, graph behavior, or dependency guidance changes.",
+      "dependencyPolicy": "Keep portfolio examples local-only until workspace dependencies are implemented and documented.",
+      "compatibilityPolicy": "Workspace-format changes must update portfolio examples, roadmap entries, and compatibility manifests together.",
+      "references": [
+        {
+          "type": "usesArchivePolicy",
+          "target": "archive.policy.portfolio_records"
+        },
+        {
+          "type": "usesDecommissionPolicy",
+          "target": "decommission.policy.portfolio_transition"
+        }
+      ]
+    },
+    {
+      "id": "archive.policy.portfolio_records",
+      "kind": "archive.policy",
+      "name": "Portfolio Record Archive Policy",
+      "description": "Defines archive expectations for portfolio examples, report fixtures, and related release notes.",
+      "status": "ready",
+      "owner": "maintenance",
+      "archiveTrigger": "on-major-version",
+      "retentionPolicy": "Retain versioned portfolio examples, docs, report fixtures, and release verification summaries.",
+      "archiveLocation": "repository history and GitHub releases",
+      "artifactManifest": "build/archive-manifest.json",
+      "references": []
+    },
+    {
+      "id": "decommission.policy.portfolio_transition",
+      "kind": "decommission.policy",
+      "name": "Portfolio Transition Decommission Policy",
+      "description": "Defines how transitional portfolio examples should be retired after first-class workspace dependencies and aggregate reports exist.",
+      "status": "ready",
+      "owner": "maintenance",
+      "decommissionTrigger": "replacement",
+      "dataHandling": "No production customer data is represented by this example workspace.",
+      "communicationPlan": "Document replacement guidance in README, portfolio docs, and release notes.",
+      "rollbackWindow": "One release cycle",
+      "archivePolicyRef": "archive.policy.portfolio_records",
+      "references": [
+        {
+          "type": "usesArchivePolicy",
+          "target": "archive.policy.portfolio_records"
+        }
+      ]
+    }
+  ]
+}

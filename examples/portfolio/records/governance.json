@@ -1,0 +1,115 @@
+{
+  "records": [
+    {
+      "id": "commercial.posture.open_source_foundation",
+      "kind": "commercial.posture",
+      "name": "Open Source Foundation Posture",
+      "description": "Captures the public VeritySpec posture for portfolio validation planning without asserting commercial, marketplace, legal, or privacy approval.",
+      "status": "ready",
+      "owner": "product",
+      "posture": "public-open-source",
+      "visibility": "public",
+      "distributionModel": "open-source",
+      "monetization": "none",
+      "constraints": [
+        "do not claim external marketplace or platform approval from portfolio records"
+      ],
+      "policyRefs": [
+        "support.policy.portfolio_foundation"
+      ],
+      "references": []
+    },
+    {
+      "id": "project-management.model.portfolio_github_native",
+      "kind": "project-management.model",
+      "name": "Portfolio GitHub Native Planning",
+      "description": "Uses GitHub Issues, Projects, Milestones, Actions, and pull requests for workflow while VeritySpec records hold portfolio truth.",
+      "status": "ready",
+      "owner": "program",
+      "system": "github",
+      "planningModel": "issues-projects-milestones",
+      "issuePolicy": "Issues track portfolio validation gaps, fixture updates, report design questions, and evidence requests.",
+      "projectPolicy": "GitHub Projects may show portfolio execution state, but VeritySpec records remain the product-contract source of truth.",
+      "milestonePolicy": "Milestones bound sprint and release work for portfolio validation foundations.",
+      "repository": "Jason-Furr/verity-spec",
+      "references": [
+        {
+          "type": "recordsDecision",
+          "target": "decision.record.portfolio_validation_boundary"
+        }
+      ]
+    },
+    {
+      "id": "decision.record.portfolio_validation_boundary",
+      "kind": "decision.record",
+      "name": "Portfolio Validation Boundary",
+      "description": "Records the decision that portfolio validation should orchestrate normal workspace checks before adding aggregate report or dependency resolver behavior.",
+      "status": "ready",
+      "owner": "architecture",
+      "decisionType": "architecture",
+      "decision": "Portfolio validation foundations describe workspace inventory, readiness posture, evidence posture, and impact warnings while single-workspace validation remains authoritative.",
+      "rationale": "This prevents a premature second validation model and keeps future aggregate reports grounded in existing VeritySpec issue codes.",
+      "decisionStatus": "accepted",
+      "decidedAt": "2026-07-01",
+      "references": []
+    },
+    {
+      "id": "readiness.profile.portfolio_foundation",
+      "kind": "readiness.profile",
+      "name": "Portfolio Foundation Readiness",
+      "description": "Defines readiness inputs for a portfolio validation foundation before a portfolio CLI command exists.",
+      "status": "ready",
+      "owner": "release",
+      "profileType": "decision-complete",
+      "strictness": "strict",
+      "gateRefs": [
+        "product.scope.ready",
+        "project-management.model.ready",
+        "release.process.ready",
+        "validation.runner.ready"
+      ],
+      "evidenceRequirementRefs": [
+        "evidence.requirement.workspace_matrix",
+        "evidence.requirement.portfolio_graph"
+      ],
+      "references": [
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.workspace_matrix"
+        },
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.portfolio_graph"
+        }
+      ]
+    },
+    {
+      "id": "evidence.requirement.workspace_matrix",
+      "kind": "evidence.requirement",
+      "name": "Workspace Matrix Evidence",
+      "description": "Requires a deterministic workspace matrix before a portfolio report implementation is treated as ready.",
+      "status": "ready",
+      "owner": "release",
+      "evidenceType": "report",
+      "subjectKind": "product.scope",
+      "requiredForStatus": "ready",
+      "verificationMethod": "automated-check",
+      "evidencePath": "build/reports/portfolio-workspace-matrix.json",
+      "references": []
+    },
+    {
+      "id": "evidence.requirement.portfolio_graph",
+      "kind": "evidence.requirement",
+      "name": "Portfolio Graph Evidence",
+      "description": "Requires graph evidence for local portfolio or integration fixtures before cross-workspace impact reports are claimed.",
+      "status": "ready",
+      "owner": "release",
+      "evidenceType": "report",
+      "subjectKind": "validation.runner",
+      "requiredForStatus": "ready",
+      "verificationMethod": "automated-check",
+      "evidencePath": "build/reports/portfolio-graph.json",
+      "references": []
+    }
+  ]
+}
