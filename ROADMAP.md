@@ -2749,33 +2749,38 @@ release.
 
 ## v0.65.0
 
-The `v0.65.0` milestone is active.
+The `v0.65.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 142 | In Progress | Installed-pack health diagnostics |
+| 142 | Complete | Installed-pack health diagnostics |
 
 ## Sprint 142 Priorities
 
-Sprint 142 should complete a two-week-sized installed-pack diagnostics sprint:
+Sprint 142 completed a two-week-sized installed-pack diagnostics sprint:
 
-- Add a public `verity pack doctor` command that reports pack discovery health
+- Added a public `verity pack doctor` command that reports pack discovery health
   without aborting on the first installed or local pack failure.
-- Report installed `verityspec.packs` entry-point load failures, missing or
+- Reported installed `verityspec.packs` entry-point load failures, missing or
   invalid manifests, entry-point name mismatches, duplicate installed pack IDs,
   and installed pack IDs that collide with built-in packs.
-- Report local external pack path failures, invalid manifests, duplicate local
+- Reported local external pack path failures, invalid manifests, duplicate local
   pack IDs, and local pack IDs that collide with built-in packs.
-- Explain explicit local override behavior where `packPaths`, `--pack-path`,
+- Explained explicit local override behavior where `packPaths`, `--pack-path`,
   or `verity pack --path` entries take precedence over installed packs with
   the same ID.
-- Keep existing strict pack loading behavior compatible for `verity pack list`,
+- Kept existing strict pack loading behavior compatible for `verity pack list`,
   `verity pack validate`, workspace validation, readiness, graph, and
   generator commands.
-- Update tests, README, pack docs, CI guidance, release checklist, changelog,
+- Updated tests, README, pack docs, CI guidance, release checklist, changelog,
   roadmap bookkeeping, and canonical AI-agent commands.
-- Keep bundled specialized packs in place; this sprint is diagnostic
+- Kept bundled specialized packs in place; this sprint is diagnostic
   groundwork for future official extension packages, not a detach sprint.
+
+Sprint 142 delivery added `verity pack doctor`, installed/local pack discovery
+health reports with text and JSON output, stable issue-code explanations,
+issue-code catalog fixture coverage, external-pack review guidance, release
+checklist coverage, and release-bookkeeping updates for the v0.65.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

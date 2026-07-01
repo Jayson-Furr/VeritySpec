@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.65.0
+
 - Added `verity pack doctor` for non-throwing installed and local pack
   discovery diagnostics, including entry-point load failures, duplicate pack
   IDs, built-in collisions, and explicit local override warnings.
+- Added v0.65.0 release notes and roadmap closeout.
 
 ## 0.64.0
 
