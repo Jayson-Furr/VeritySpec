@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.63.0
+
 - Added engine portfolio compatibility fixtures and documentation that validate
   Unity, Godot, Unreal, and shared exported game-core workspaces side by side
   through local readonly workspace dependencies before aggregate portfolio
   reporting is implemented.
+- Added v0.63.0 release notes and roadmap closeout.
 
 ## 0.62.0
 

@@ -2685,15 +2685,15 @@ keeping the boundary local, readonly, and direct:
 
 ## v0.63.0
 
-The `v0.63.0` milestone is active.
+The `v0.63.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 140 | In Progress | Engine portfolio compatibility fixtures |
+| 140 | Complete | Engine portfolio compatibility fixtures |
 
 ## Sprint 140 Priorities
 
-Sprint 140 is a two-week-sized engine portfolio compatibility sprint:
+Sprint 140 completed a two-week-sized engine portfolio compatibility sprint:
 
 - Add local-only fixtures that show Unity, Godot, Unreal, and a shared
   exported game-core workspace side by side.
@@ -2705,6 +2705,13 @@ Sprint 140 is a two-week-sized engine portfolio compatibility sprint:
   non-claims before aggregate portfolio-report work begins.
 - Link the fixture from README and portfolio validation guidance.
 - Keep changelog, ROADMAP, tests, and Next 20 planning aligned.
+
+Sprint 140 delivery added local Unity, Godot, Unreal, shared game-core, and
+portfolio fixture workspaces under `tests/fixtures/engine_portfolio`, documented
+the dependency-alias and engine-parity boundary, linked the fixture from README
+and portfolio guidance, and added regression coverage for validation, strict
+lint, strict readiness, graph nodes, graph edges, and roadmap report
+bookkeeping.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
