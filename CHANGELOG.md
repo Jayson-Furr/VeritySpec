@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.59.0
+
 - Added profile-aware downstream CI workflow support and maintained template
   examples for release, regulated, public API, and internal-tool workspaces.
+- Added v0.59.0 release notes and roadmap closeout.
 
 ## 0.58.0
 
