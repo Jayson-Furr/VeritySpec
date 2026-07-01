@@ -2,9 +2,14 @@
 
 ## Unreleased
 
+## 0.57.0
+
 - Added portfolio-level validation foundation guidance and an executable
   `examples/portfolio` workspace for local-only multi-workspace portfolio
   planning before aggregate reports or workspace dependency resolution.
+- Added organization-wide agent reuse, work-ledger, and content-opportunity
+  guidance to the canonical AI agent entry point.
+- Added v0.57.0 release notes and roadmap closeout.
 
 ## 0.56.0
 
