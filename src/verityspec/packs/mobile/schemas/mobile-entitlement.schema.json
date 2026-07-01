@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/mobile.entitlement.schema.json",
+  "title": "Mobile Entitlement",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "description",
+    "status",
+    "owner",
+    "entitlementType",
+    "fulfillmentModel"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "const": "mobile.entitlement"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "ready",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "entitlementType": {
+      "type": "string",
+      "enum": [
+        "remove-ads",
+        "iap",
+        "subscription",
+        "premium-unlock",
+        "other"
+      ]
+    },
+    "fulfillmentModel": {
+      "type": "string",
+      "enum": [
+        "local",
+        "server-authoritative",
+        "store-receipt",
+        "manual",
+        "other"
+      ]
+    },
+    "restorePolicy": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": [
+        "type",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

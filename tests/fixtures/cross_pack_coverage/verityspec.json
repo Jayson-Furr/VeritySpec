@@ -19,7 +19,9 @@
     "verity.pack.gameplay",
     "verity.pack.content",
     "verity.pack.economy",
-    "verity.pack.product-delivery"
+    "verity.pack.product-delivery",
+    "verity.pack.mobile",
+    "verity.pack.liveops"
   ],
   "packPaths": [],
   "records": [

@@ -1,0 +1,12 @@
+{
+  "workspace": "examples.mobile",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.mobile"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

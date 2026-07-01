@@ -1,0 +1,393 @@
+{
+  "id": "verity.pack.mobile",
+  "version": "0.44.0",
+  "name": "VeritySpec Mobile Pack",
+  "description": "Mobile release lifecycle, store posture, privacy/store evidence references, SDK inventory, monetization, entitlement, soft launch, launch candidate, and compatibility records.",
+  "schemas": [
+    {
+      "kind": "mobile.app-release",
+      "path": "schemas/mobile-app-release.schema.json"
+    },
+    {
+      "kind": "mobile.store-listing",
+      "path": "schemas/mobile-store-listing.schema.json"
+    },
+    {
+      "kind": "mobile.privacy-policy",
+      "path": "schemas/mobile-privacy-policy.schema.json"
+    },
+    {
+      "kind": "mobile.apple-privacy-details",
+      "path": "schemas/mobile-apple-privacy-details.schema.json"
+    },
+    {
+      "kind": "mobile.google-play-data-safety",
+      "path": "schemas/mobile-google-play-data-safety.schema.json"
+    },
+    {
+      "kind": "mobile.att-consent",
+      "path": "schemas/mobile-att-consent.schema.json"
+    },
+    {
+      "kind": "mobile.sdk-inventory",
+      "path": "schemas/mobile-sdk-inventory.schema.json"
+    },
+    {
+      "kind": "mobile.monetization-posture",
+      "path": "schemas/mobile-monetization-posture.schema.json"
+    },
+    {
+      "kind": "mobile.entitlement",
+      "path": "schemas/mobile-entitlement.schema.json"
+    },
+    {
+      "kind": "mobile.soft-launch",
+      "path": "schemas/mobile-soft-launch.schema.json"
+    },
+    {
+      "kind": "mobile.launch-candidate",
+      "path": "schemas/mobile-launch-candidate.schema.json"
+    },
+    {
+      "kind": "mobile.compatibility-matrix",
+      "path": "schemas/mobile-compatibility-matrix.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "mobile.app-release.ready",
+      "kind": "mobile.app-release",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "releaseStage",
+        "releaseTrack",
+        "platformTargets",
+        "versionName"
+      ],
+      "minItems": {
+        "references": 6,
+        "platformTargets": 1
+      }
+    },
+    {
+      "id": "mobile.store-listing.ready",
+      "kind": "mobile.store-listing",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "stores",
+        "metadataStatus",
+        "contentRatingStatus"
+      ],
+      "minItems": {
+        "references": 1,
+        "stores": 1
+      }
+    },
+    {
+      "id": "mobile.privacy-policy.ready",
+      "kind": "mobile.privacy-policy",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "policyUri",
+        "dataUseSummary",
+        "evidenceRefs"
+      ],
+      "minItems": {
+        "references": 1,
+        "evidenceRefs": 1
+      }
+    },
+    {
+      "id": "mobile.apple-privacy-details.ready",
+      "kind": "mobile.apple-privacy-details",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "dataCategories",
+        "collectionPosture",
+        "trackingPosture"
+      ],
+      "minItems": {
+        "dataCategories": 1
+      }
+    },
+    {
+      "id": "mobile.google-play-data-safety.ready",
+      "kind": "mobile.google-play-data-safety",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "dataTypes",
+        "sharingPosture",
+        "securityPractices"
+      ],
+      "minItems": {
+        "dataTypes": 1,
+        "securityPractices": 1
+      }
+    },
+    {
+      "id": "mobile.att-consent.ready",
+      "kind": "mobile.att-consent",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "consentRequired",
+        "promptStatus",
+        "rationale"
+      ]
+    },
+    {
+      "id": "mobile.sdk-inventory.ready",
+      "kind": "mobile.sdk-inventory",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "sdks",
+        "reviewStatus"
+      ],
+      "minItems": {
+        "references": 1,
+        "sdks": 1
+      }
+    },
+    {
+      "id": "mobile.monetization-posture.ready",
+      "kind": "mobile.monetization-posture",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "monetizationTypes",
+        "reviewStatus"
+      ],
+      "minItems": {
+        "references": 1,
+        "monetizationTypes": 1
+      }
+    },
+    {
+      "id": "mobile.entitlement.ready",
+      "kind": "mobile.entitlement",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "entitlementType",
+        "fulfillmentModel"
+      ]
+    },
+    {
+      "id": "mobile.soft-launch.ready",
+      "kind": "mobile.soft-launch",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "markets",
+        "successCriteria",
+        "telemetryRefs"
+      ],
+      "minItems": {
+        "references": 1,
+        "markets": 1,
+        "successCriteria": 1,
+        "telemetryRefs": 1
+      }
+    },
+    {
+      "id": "mobile.launch-candidate.ready",
+      "kind": "mobile.launch-candidate",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "candidateVersion",
+        "readinessProfile",
+        "approvalStatus"
+      ],
+      "minItems": {
+        "references": 2
+      }
+    },
+    {
+      "id": "mobile.compatibility-matrix.ready",
+      "kind": "mobile.compatibility-matrix",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "platforms",
+        "minimumOs",
+        "deviceClasses",
+        "testPolicy"
+      ],
+      "minItems": {
+        "platforms": 1,
+        "deviceClasses": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasMobileRelease",
+      "targetKind": "mobile.app-release"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasMobileRelease",
+      "targetKind": "mobile.app-release"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasMobileRelease",
+      "targetKind": "mobile.app-release"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "targetsMobileRelease",
+      "targetKind": "mobile.app-release"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "targetsMobileRelease",
+      "targetKind": "mobile.app-release"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "targetsMobileRelease",
+      "targetKind": "mobile.app-release"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasStoreListing",
+      "targetKind": "mobile.store-listing"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasPrivacyPolicy",
+      "targetKind": "mobile.privacy-policy"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasApplePrivacyDetails",
+      "targetKind": "mobile.apple-privacy-details"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasGooglePlayDataSafety",
+      "targetKind": "mobile.google-play-data-safety"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasATTConsent",
+      "targetKind": "mobile.att-consent"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasSDKInventory",
+      "targetKind": "mobile.sdk-inventory"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasMonetizationPosture",
+      "targetKind": "mobile.monetization-posture"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasEntitlement",
+      "targetKind": "mobile.entitlement"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasSoftLaunch",
+      "targetKind": "mobile.soft-launch"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasLaunchCandidate",
+      "targetKind": "mobile.launch-candidate"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "hasCompatibilityMatrix",
+      "targetKind": "mobile.compatibility-matrix"
+    },
+    {
+      "sourceKind": "mobile.store-listing",
+      "relationship": "documentsPrivacyPolicy",
+      "targetKind": "mobile.privacy-policy"
+    },
+    {
+      "sourceKind": "mobile.privacy-policy",
+      "relationship": "documentsApplePrivacyDetails",
+      "targetKind": "mobile.apple-privacy-details"
+    },
+    {
+      "sourceKind": "mobile.privacy-policy",
+      "relationship": "documentsGooglePlayDataSafety",
+      "targetKind": "mobile.google-play-data-safety"
+    },
+    {
+      "sourceKind": "mobile.sdk-inventory",
+      "relationship": "informsPrivacyPolicy",
+      "targetKind": "mobile.privacy-policy"
+    },
+    {
+      "sourceKind": "mobile.monetization-posture",
+      "relationship": "grantsEntitlement",
+      "targetKind": "mobile.entitlement"
+    },
+    {
+      "sourceKind": "mobile.soft-launch",
+      "relationship": "promotesLaunchCandidate",
+      "targetKind": "mobile.launch-candidate"
+    },
+    {
+      "sourceKind": "mobile.launch-candidate",
+      "relationship": "usesCompatibilityMatrix",
+      "targetKind": "mobile.compatibility-matrix"
+    },
+    {
+      "sourceKind": "mobile.launch-candidate",
+      "relationship": "hasPrivacyPolicy",
+      "targetKind": "mobile.privacy-policy"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for verityspec mobile pack records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.sdk-inventory",
+        "mobile.monetization-posture",
+        "mobile.entitlement",
+        "mobile.soft-launch",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ]
+    }
+  ]
+}

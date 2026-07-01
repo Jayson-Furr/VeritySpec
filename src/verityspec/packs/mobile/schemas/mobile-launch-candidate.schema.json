@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/mobile.launch-candidate.schema.json",
+  "title": "Mobile Launch Candidate",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "description",
+    "status",
+    "owner",
+    "candidateVersion",
+    "readinessProfile",
+    "approvalStatus"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "const": "mobile.launch-candidate"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "ready",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      },
+      "minItems": 2
+    },
+    "candidateVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "readinessProfile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approvalStatus": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "blocked",
+        "ready",
+        "approved",
+        "other"
+      ]
+    },
+    "knownIssueRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": [
+        "type",
+        "target"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

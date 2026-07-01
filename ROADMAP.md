@@ -1846,38 +1846,54 @@ Sprint 104 prepares and verifies the v0.43.0 release:
 
 ## v0.44.0
 
-The `v0.44.0` milestone is planned as the next weekly-sized sprint.
+The `v0.44.0` milestone is active.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 105 | Planned | Mobile lifecycle, privacy/store posture, and liveops foundation |
+| 105 | Complete | Mobile lifecycle, privacy/store posture, and liveops foundation |
+| 106 | Planned | v0.44.0 release preparation and verification |
 
 ## Sprint 105 Priorities
 
-Sprint 105 should add the next built-in lifecycle vocabulary needed by
-downstream Unity game repositories and engine-tooling products without making
-legal, app-store, platform-certification, privacy-law, or marketplace
-guarantees:
+Sprint 105 implemented the next built-in lifecycle vocabulary needed by
+downstream game repositories and engine-tooling products without making legal,
+app-store, platform-certification, privacy-law, or marketplace guarantees:
 
-- Add a built-in mobile lifecycle pack or product-delivery expansion for app
-  release lifecycle, app-store metadata/readiness posture, privacy policy
-  evidence references, Apple privacy detail records, Google Play Data Safety
-  posture records, ATT/consent readiness posture, third-party SDK inventory,
-  ads/IAP monetization posture, remove-ads entitlement, soft launch readiness,
-  launch-candidate readiness, and compatibility matrices.
-- Add a built-in liveops and game-operations pack or product-delivery
-  expansion for liveops configuration, remote config bounds, rollback,
-  analytics taxonomy, support categories, save-data/schema migration policy,
-  decommissioning, data deletion posture, and archive handling.
-- Include strict schemas, readiness gates, reference rules, executable
+- Added built-in `verity.pack.mobile` with app release lifecycle, app-store
+  metadata/readiness posture, privacy policy evidence references, Apple privacy
+  detail records, Google Play Data Safety posture records, ATT/consent
+  readiness posture, third-party SDK inventory, ads/IAP monetization posture,
+  remove-ads entitlement, soft launch readiness, launch-candidate readiness,
+  and compatibility matrices.
+- Added built-in `verity.pack.liveops` with liveops configuration, remote
+  config bounds, rollback, analytics taxonomy, support categories,
+  save-data/schema migration policy, decommissioning, data deletion posture,
+  and archive handling.
+- Included strict schemas, readiness gates, reference rules, executable
   examples, graph coverage, schema-bundle checks, CI coverage, README/docs,
   changelog, roadmap, release checklist, and AI-agent guidance.
-- Keep Unity, Godot, and Unreal parity for engine-adjacent lifecycle concepts
-  where the concept applies; document explicit exceptions in issues, docs, and
-  tests.
-- Preserve the current non-claim posture: VeritySpec can model readiness
+- Kept Unity, Godot, and Unreal parity for engine-adjacent lifecycle concepts
+  by adding equivalent `targetsMobileRelease` and `usesLiveOpsConfig` project
+  reference rules for all three engine packs.
+- Preserved the current non-claim posture: VeritySpec can model readiness
   evidence and decision records, but downstream teams own legal, privacy,
   platform, marketplace, and store-review approvals.
+
+## Sprint 106 Priorities
+
+Sprint 106 should prepare and verify the v0.44.0 release:
+
+- Promote Unreleased changelog entries into `0.44.0`.
+- Bump package metadata to `0.44.0`.
+- Add v0.44.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.44.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.44.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.44.0 GitHub release when checks pass.
+- Close the v0.44.0 milestone after release verification.
 
 ## Next 20 Roadmap Points
 

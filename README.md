@@ -28,7 +28,8 @@ This implementation provides:
   deployment targets, early game product contracts, and creative game asset
   contracts, Unity, Godot, and Unreal game implementation and engine-tooling
   contracts, gameplay contracts, game content contracts, and economy
-  contracts.
+  contracts, spec-driven product-delivery contracts, mobile lifecycle
+  contracts, and live operations contracts.
 - Pack listing, validation, and scaffolding through `verity pack`, including
   local external packs, structured generator metadata, and starter reference
   rules that make generated packs usable from sample workspaces immediately.
@@ -72,12 +73,14 @@ This implementation provides:
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 - Public contribution guidance and issue templates for pack proposals and
   schema changes.
-- Product-surface pack boundary guidance for future GUI, desktop, mobile, and
-  additional game packs, with the first narrow game scopes delivered through
+- Product-surface pack boundary guidance for future GUI, desktop, and
+  additional game packs, with the first narrow game and lifecycle scopes
+  delivered through
   `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
   `verity.pack.godot`, `verity.pack.unreal`, `verity.pack.gameplay`,
-  `verity.pack.content`, `verity.pack.economy`, and
-  `verity.pack.product-delivery`.
+  `verity.pack.content`, `verity.pack.economy`,
+  `verity.pack.product-delivery`, `verity.pack.mobile`, and
+  `verity.pack.liveops`.
 - Cross-workspace dependency design guidance for future local-only workspace
   dependencies, exported records, reference resolution, and lockfiles.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
@@ -132,6 +135,10 @@ verity validate examples/content
 verity validate examples/economy
 verity validate examples/product-delivery
 verity graph examples/product-delivery
+verity validate examples/mobile
+verity graph examples/mobile
+verity validate examples/liveops
+verity graph examples/liveops
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
 verity doctor examples/basic --profile public-api --format json
@@ -149,6 +156,8 @@ verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
 verity readiness examples/economy --strict
 verity readiness examples/product-delivery --strict
+verity readiness examples/mobile --strict
+verity readiness examples/liveops --strict
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -176,6 +185,8 @@ verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bund
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
+verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -243,6 +254,8 @@ verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bund
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
+verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
@@ -342,6 +355,8 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/content](examples/content/verityspec.json): focused game content manifest workspace.
 - [examples/economy](examples/economy/verityspec.json): focused game economy workspace.
 - [examples/product-delivery](examples/product-delivery/verityspec.json): focused spec-driven product-delivery workspace.
+- [examples/mobile](examples/mobile/verityspec.json): focused mobile lifecycle workspace.
+- [examples/liveops](examples/liveops/verityspec.json): focused live operations workspace.
 - [examples/broken](examples/broken/verityspec.json): intentionally broken validation demo.
 
 ## Documentation
@@ -372,6 +387,8 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Content pack](docs/content-pack.md)
 - [Economy pack](docs/economy-pack.md)
 - [Product delivery pack](docs/product-delivery-pack.md)
+- [Mobile pack](docs/mobile-pack.md)
+- [LiveOps pack](docs/liveops-pack.md)
 - [Readiness](docs/readiness.md)
 - [Generators](docs/generators.md)
 - [Graph checks](docs/graph-checks.md)

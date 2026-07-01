@@ -46,6 +46,14 @@ Built-in packs currently include:
   release process, operations, support, maintenance, archive, decommission,
   scanner, generator, validation-runner, editor-surface, and agent-context
   exporter records for spec-driven product-delivery repositories.
+- `verity.pack.mobile`: mobile app release, store listing, privacy policy,
+  Apple privacy details, Google Play Data Safety, ATT consent, SDK inventory,
+  monetization posture, entitlements, soft launches, launch candidates, and
+  compatibility matrix records for mobile lifecycle coverage.
+- `verity.pack.liveops`: live operations config, remote config, rollback,
+  analytics taxonomy, support category, save migration, decommission, data
+  deletion, and archive handling records for release, maintenance, and
+  retirement coverage.
 
 ## Manifest
 
@@ -193,14 +201,15 @@ Schema changes should explain whether the change is additive, behavioral,
 deprecated, or breaking, and should include before-and-after records, migration
 impact, affected generators or readiness gates, and validation fixtures.
 
-## Future Product Surface Packs
+## Product Surface Pack Boundaries
 
-Future GUI, desktop, mobile, engine, product-delivery, and additional game
-packs should follow the boundary guidance in
+Future GUI, desktop, engine, and additional game packs should follow the
+boundary guidance in
 [Product surface pack boundaries](product-surface-pack-boundaries.md) and
 [Engine and product-delivery pack direction](engine-product-delivery-packs.md)
-before their first schemas are added. The first narrow game and engine scopes
-now live in [`verity.pack.game-core`](game-core-pack.md) and
+before their first schemas are added. The first narrow game, engine,
+product-delivery, mobile, and liveops scopes now live in
+[`verity.pack.game-core`](game-core-pack.md) and
 [`verity.pack.game-assets`](game-assets-pack.md), with Unity game
 implementation and engine-tooling coverage in
 [`verity.pack.unity`](unity-pack.md), Godot game implementation and
@@ -208,8 +217,11 @@ engine-tooling coverage in [`verity.pack.godot`](godot-pack.md), Unreal game
 implementation and engine-tooling coverage in
 [`verity.pack.unreal`](unreal-pack.md), gameplay coverage in
 [`verity.pack.gameplay`](gameplay-pack.md), content coverage in
-[`verity.pack.content`](content-pack.md), and economy coverage in
-[`verity.pack.economy`](economy-pack.md).
+[`verity.pack.content`](content-pack.md), economy coverage in
+[`verity.pack.economy`](economy-pack.md), product-delivery coverage in
+[`verity.pack.product-delivery`](product-delivery-pack.md), mobile lifecycle
+coverage in [`verity.pack.mobile`](mobile-pack.md), and liveops coverage in
+[`verity.pack.liveops`](liveops-pack.md).
 
 That guidance keeps product-surface packs focused on their own domains and
 prevents them from duplicating cross-cutting concerns owned by security,
