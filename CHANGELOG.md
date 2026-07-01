@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added installed-pack discovery through the `verityspec.packs` Python
+  entry-point group so separately installed extension packs can be loaded by
+  pack ID without manual `packPaths`, while preserving built-in packs and
+  explicit local pack path precedence.
+
 ## 0.45.0
 
 - Updated repository owner/name references after moving the canonical public

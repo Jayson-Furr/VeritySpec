@@ -27,7 +27,9 @@ Core concepts:
 
 - Workspace: directory with `verityspec.json` and record files.
 - Pack: extension unit that contributes schemas, readiness gates, reference
-  rules, and generator support.
+  rules, and generator support. Packs may be bundled, discovered from
+  installed Python package entry points, or loaded from explicit local
+  `packPaths`.
 - Record: product-contract object with shared envelope fields.
 - Reference graph: relationships between records.
 - Validation issue: stable issue code plus severity, message, and location.
@@ -67,6 +69,9 @@ fixtures.
   issue, docs, and tests.
 - New packs should include schemas, examples or fixtures, validation coverage,
   readiness gates where relevant, and docs.
+- Installed extension packs should use the `verityspec.packs` Python
+  entry-point group and must keep the entry-point name aligned with the pack
+  manifest `id`.
 - Do not commit secrets, tokens, PyPI credentials, or local environment files.
 - Do not publish releases or PyPI packages unless the user explicitly asks.
 - Preserve user changes. Do not revert unrelated dirty files.

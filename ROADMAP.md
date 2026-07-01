@@ -1945,6 +1945,38 @@ Sprint 108 prepares and verifies the v0.45.0 release:
 - Tag and publish the v0.45.0 GitHub release when checks pass.
 - Close the v0.45.0 milestone after release verification.
 
+## v0.46.0
+
+The `v0.46.0` milestone is in progress as the next weekly-sized sprint.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 109 | Complete | Installed-pack discovery foundation |
+
+## Sprint 109 Priorities
+
+Sprint 109 should add the first stable installed-pack discovery contract needed
+before specialized packs can move into official extension packages:
+
+- Add a Python package entry-point group for VeritySpec packs.
+- Discover installed packs by pack ID while preserving bundled built-in packs.
+- Keep explicit local `packPaths`, `--pack-path`, and `verity pack --path`
+  precedence over installed packs with the same ID.
+- Include installed packs in `verity pack list`, `verity pack validate`,
+  workspace validation, readiness, generators, and pack capability indexes.
+- Add tests that simulate installed pack entry points without requiring a
+  published package.
+- Update docs, README, changelog, roadmap, release notes, and AI-agent context
+  where relevant.
+- Keep separation of existing built-in packs out of scope until compatibility
+  metadata, migration guidance, and non-breaking fixtures exist.
+
+Sprint 109 delivery added the `verityspec.packs` Python entry-point group,
+installed pack loading by pack ID, source-aware pack summaries, installed-pack
+counts in pack capability indexes, local pack path precedence over installed
+packs, simulated entry-point tests, release notes, and public pack
+documentation. Existing built-in packs remain bundled.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension
@@ -1976,55 +2008,55 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add installed-pack discovery using a stable Python package entry-point
-   contract so official extension packs can be installed separately and loaded
-   without manual `packPaths`.
-2. Define the first specialized-pack separation plan for game, mobile, liveops,
+1. Define the first specialized-pack separation plan for game, mobile, liveops,
    Unity, Godot, and Unreal packs, including compatibility metadata, migration
    guidance, package naming, docs, examples, and rollback criteria.
-3. Add golden fixtures for accessibility and compliance report outputs after
+2. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-4. Add a maintainer review checklist for accepting external packs once public
+3. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-5. Add release-integrity consistency checks across package metadata, README,
+4. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-6. Add roadmap-report human-readable Markdown output for maintainer release
+5. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-7. Add security-report release gaps for stale evidence and missing
+6. Add security-report release gaps for stale evidence and missing
    verification dates.
-8. Add workspace migration impact summaries that call out record, pack, and
+7. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-9. Add machine-readable issue-code catalog generation from `verity explain`
+8. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-10. Add an agent-context generation design note for bounded AI handoff
+9. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-11. Add an engine full-lifecycle support design note covering Unity, Godot, and
+10. Add an engine full-lifecycle support design note covering Unity, Godot, and
    Unreal game workspaces, shared engine library workspaces, lifecycle
    readiness profiles, evidence, liveops, decommissioning, archive records,
    and portfolio examples.
-12. Add a portfolio-level validation design note for multi-workspace product,
+11. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-13. Add fixture refresh documentation for regenerating golden report outputs
+12. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-14. Add a public architecture decision record template for future major pack,
+13. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-15. Add profile-aware downstream CI template examples for release, regulated,
+14. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-16. Add deployment-target release evidence links that connect deployment
+15. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-17. Add coverage-dashboard Markdown output for maintainers who need a
+16. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
-18. Add local workspace-dependency prototype fixtures for exported records,
+17. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-19. Add engine portfolio example guidance and compatibility fixtures showing
+18. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
-20. Add product-delivery, mobile, and liveops readiness/gap reports for
+19. Add product-delivery, mobile, and liveops readiness/gap reports for
    implementation-ready, soft-launch, launch-candidate, remote-config,
    rollback, support, save-migration, decommission, data-deletion, and
    archive-review summaries without making commercial, legal, privacy-law,
    marketplace, or platform-certification claims.
+20. Add installed-pack health diagnostics that report entry-point resolution
+    failures, duplicate installed pack IDs, built-in collisions, and local
+    override behavior for maintainers debugging extension-pack installs.
 
 ## Working Rule
 

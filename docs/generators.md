@@ -135,7 +135,7 @@ Pack capability indexes include:
 
 - Workspace and VeritySpec version metadata
 - Requested pack IDs, local `packPaths`, and loaded pack IDs
-- Pack counts split by built-in and external source
+- Pack counts split by built-in, installed, and external source
 - Schema, readiness gate, conditional readiness rule, reference rule, and
   generator declaration counts
 - Per-kind schema ownership and schema file paths
@@ -242,7 +242,8 @@ Coverage dashboard output includes:
 
 Pack capability index output includes:
 
-- Built-in and local external pack summaries from the loaded pack registry
+- Built-in, installed, and local external pack summaries from the loaded pack
+  registry
 - Schema, readiness, reference-rule, and generator capability indexes
 - Legacy external pack generator declarations normalized alongside structured
   generator metadata
