@@ -1947,11 +1947,12 @@ Sprint 108 prepares and verifies the v0.45.0 release:
 
 ## v0.46.0
 
-The `v0.46.0` milestone is in progress as the next weekly-sized sprint.
+The `v0.46.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 109 | Complete | Installed-pack discovery foundation |
+| 110 | Complete | v0.46.0 release preparation and verification |
 
 ## Sprint 109 Priorities
 
@@ -1976,6 +1977,22 @@ installed pack loading by pack ID, source-aware pack summaries, installed-pack
 counts in pack capability indexes, local pack path precedence over installed
 packs, simulated entry-point tests, release notes, and public pack
 documentation. Existing built-in packs remain bundled.
+
+## Sprint 110 Priorities
+
+Sprint 110 prepares and verifies the v0.46.0 release:
+
+- Promote Unreleased changelog entries into `0.46.0`.
+- Bump package metadata to `0.46.0`.
+- Confirm v0.46.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.46.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.46.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.46.0 GitHub release when checks pass.
+- Close the v0.46.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

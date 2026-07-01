@@ -15,6 +15,16 @@ domain-heavy packs can eventually move into official extension packages.
 - Added tests that simulate installed pack entry points without publishing a
   package.
 
+## Installation
+
+```bash
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.46.0"
+verity --version
+```
+
+PyPI publishing is prepared but not enabled yet. GitHub release installation
+remains the canonical public install path for this release.
+
 ## Verification
 
 Release verification should include:

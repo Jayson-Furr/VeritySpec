@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.46.0
+
 - Added installed-pack discovery through the `verityspec.packs` Python
   entry-point group so separately installed extension packs can be loaded by
   pack ID without manual `packPaths`, while preserving built-in packs and
