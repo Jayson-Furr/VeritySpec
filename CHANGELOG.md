@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added agent-context generation design guidance, architecture decision record
+  docs and template, and executable AI-agent adapter drift checks.
+
 ## 0.54.0
 
 - Added machine-readable issue-code catalog generation from `verity explain`
