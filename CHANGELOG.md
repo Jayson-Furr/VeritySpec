@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added release-integrity consistency tests and documentation that keep package
+  metadata, README release surfaces, release notes, downstream pins, release
+  checklist examples, and evidence fixtures aligned with `__version__`.
+
 ## 0.49.0
 
 - Added an external pack maintainer review checklist that defines proposal
