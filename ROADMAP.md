@@ -2180,12 +2180,12 @@ Sprint 118 prepares and verifies the v0.50.0 release:
 
 ## v0.51.0
 
-The `v0.51.0` milestone is focused on human-readable roadmap-report Markdown
-output for maintainer release governance reviews.
+The `v0.51.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 119 | In Progress | Roadmap-report Markdown output |
+| 119 | Complete | Roadmap-report Markdown output |
+| 120 | Complete | v0.51.0 release preparation and verification |
 
 ## Sprint 119 Priorities
 
@@ -2201,6 +2201,28 @@ Sprint 119 adds Markdown output for roadmap governance reports:
 - Update tests, README, generator docs, changelog, and roadmap bookkeeping.
 - Keep the Next 20 roadmap planning section populated after converting this
   item into sprint work.
+
+Sprint 119 delivery added Markdown output for roadmap governance reports,
+preserved JSON as the default report contract, rejected unsupported Markdown
+generator requests, included active/recent milestone and Next 20 planning
+context in generated Markdown, and updated tests, README commands, generator
+docs, changelog, and roadmap bookkeeping.
+
+## Sprint 120 Priorities
+
+Sprint 120 prepares and verifies the v0.51.0 release:
+
+- Promote Unreleased changelog entries into `0.51.0`.
+- Bump package metadata to `0.51.0`.
+- Add v0.51.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.51.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.51.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.51.0 GitHub release when checks pass.
+- Close the v0.51.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
