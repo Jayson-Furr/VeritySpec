@@ -35,6 +35,7 @@ verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out buil
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
+verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
@@ -170,10 +171,17 @@ Roadmap reports include:
   in-progress sprints
 - The latest released milestone and currently active milestones
 - The Next 20 roadmap planning points used for project governance
+- Optional human-readable Markdown output for maintainer release-governance
+  reviews
 
 `roadmap-report` reads a repository directory containing `ROADMAP.md` or a
 direct path to a roadmap file. It does not require the path to be a VeritySpec
 workspace.
+
+```bash
+verity generate roadmap-report . --out build/roadmap-report.json
+verity generate roadmap-report . --format markdown --out build/roadmap-report.md
+```
 
 ## Current Guarantees
 

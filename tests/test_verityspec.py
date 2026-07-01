@@ -19,6 +19,7 @@ from verityspec.generators import (
     generate_product_impact_report,
     generate_python_models,
     generate_roadmap_report,
+    generate_roadmap_report_markdown,
     generate_schema_bundle,
     generate_security_report,
     generate_typescript,
@@ -886,6 +887,51 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual(list(range(1, 21)), [point["number"] for point in report["nextRoadmapPoints"]])
         milestone_versions = {milestone["version"] for milestone in report["milestones"]}
         self.assertIn(report["latestReleasedMilestone"], milestone_versions)
+
+    def test_roadmap_report_markdown_summarizes_release_governance(self) -> None:
+        report = generate_roadmap_report(ROOT, generated_at=FIXED_GENERATED_AT)
+        markdown = generate_roadmap_report_markdown(report)
+
+        self.assertTrue(markdown.startswith("# VeritySpec Roadmap Report\n"))
+        self.assertIn(f"- Generated: `{FIXED_GENERATED_AT}`", markdown)
+        self.assertIn("## Summary", markdown)
+        self.assertIn("| Next roadmap points | 20 |", markdown)
+        self.assertIn("## Recent Milestones", markdown)
+        self.assertIn("## Recent Sprint Rows", markdown)
+        self.assertIn("## Next 20 Roadmap Points", markdown)
+        self.assertIn("1. Add security-report release gaps", markdown)
+
+    def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
+        roadmap = """# Roadmap
+
+## v0.1.0
+
+The `v0.1.0` milestone is released.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 1 | Complete | First sprint |
+
+## v0.2.0
+
+The `v0.2.0` milestone is focused on active work.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 2 | In Progress | Active sprint |
+
+## Next 20 Roadmap Points
+
+1. Add the next thing.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "ROADMAP.md"
+            path.write_text(roadmap, encoding="utf-8")
+            report = generate_roadmap_report(path, generated_at=FIXED_GENERATED_AT)
+
+        self.assertEqual("v0.1.0", report["latestReleasedMilestone"])
+        self.assertEqual(["v0.2.0"], report["activeMilestones"])
+        self.assertEqual(1, report["summary"]["activeMilestones"])
 
     def test_report_generators_accept_explicit_generated_at(self) -> None:
         security_workspace = load_workspace(ROOT / "examples" / "security")

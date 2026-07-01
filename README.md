@@ -213,6 +213,7 @@ verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
+verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
@@ -284,6 +285,7 @@ verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
+verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 ```
 
 ## Semantic Validation
