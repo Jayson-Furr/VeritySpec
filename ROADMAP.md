@@ -1792,12 +1792,12 @@ Sprint 102 releases the completed `v0.42.0` scope:
 
 ## v0.43.0
 
-The `v0.43.0` milestone is active.
+The `v0.43.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 103 | Complete | Product-delivery pack foundation for downstream rebuild blockers |
-| 104 | Planned | v0.43.0 release preparation and verification |
+| 104 | Complete | v0.43.0 release preparation and verification |
 
 ## Sprint 103 Priorities
 
@@ -1831,18 +1831,53 @@ project-management vocabulary needed by downstream spec-driven repositories:
 
 ## Sprint 104 Priorities
 
-Sprint 104 should prepare and verify the v0.43.0 release:
+Sprint 104 prepares and verifies the v0.43.0 release:
 
-- Verify local tests, pack validation, example validation, graph checks,
+- Verified local tests, pack validation, example validation, graph checks,
   schema-bundle generation, coverage-dashboard generation, package build,
   `twine check`, and installed-wheel smoke tests.
-- Confirm README badges, install tag, latest-release text, changelog,
+- Confirmed README badges, install tag, latest-release text, changelog,
   roadmap, release notes, downstream workflow pins, and release checklist
   references align to the intended release.
 - Cut and verify the v0.43.0 GitHub release if CI is green.
 - If hosted checks are unavailable because of billing, quota, credits, or
   platform availability, verify equivalent checks locally and continue with a
   clear PR/release note.
+
+## v0.44.0
+
+The `v0.44.0` milestone is planned as the next weekly-sized sprint.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 105 | Planned | Mobile lifecycle, privacy/store posture, and liveops foundation |
+
+## Sprint 105 Priorities
+
+Sprint 105 should add the next built-in lifecycle vocabulary needed by
+downstream Unity game repositories and engine-tooling products without making
+legal, app-store, platform-certification, privacy-law, or marketplace
+guarantees:
+
+- Add a built-in mobile lifecycle pack or product-delivery expansion for app
+  release lifecycle, app-store metadata/readiness posture, privacy policy
+  evidence references, Apple privacy detail records, Google Play Data Safety
+  posture records, ATT/consent readiness posture, third-party SDK inventory,
+  ads/IAP monetization posture, remove-ads entitlement, soft launch readiness,
+  launch-candidate readiness, and compatibility matrices.
+- Add a built-in liveops and game-operations pack or product-delivery
+  expansion for liveops configuration, remote config bounds, rollback,
+  analytics taxonomy, support categories, save-data/schema migration policy,
+  decommissioning, data deletion posture, and archive handling.
+- Include strict schemas, readiness gates, reference rules, executable
+  examples, graph coverage, schema-bundle checks, CI coverage, README/docs,
+  changelog, roadmap, release checklist, and AI-agent guidance.
+- Keep Unity, Godot, and Unreal parity for engine-adjacent lifecycle concepts
+  where the concept applies; document explicit exceptions in issues, docs, and
+  tests.
+- Preserve the current non-claim posture: VeritySpec can model readiness
+  evidence and decision records, but downstream teams own legal, privacy,
+  platform, marketplace, and store-review approvals.
 
 ## Next 20 Roadmap Points
 
@@ -1859,53 +1894,50 @@ the roadmap does not drift into an empty backlog.
 1. Add a built-in `verity.pack.progression` foundation with XP, level,
    unlock, progression track, and progression gate records plus executable
    examples.
-2. Add a built-in mobile lifecycle pack or product-delivery expansion for app
-   release lifecycle, app-store metadata/readiness, privacy policy evidence,
-   Apple privacy details, Google Play Data Safety, ATT/consent readiness,
-   third-party SDK inventory, ads/IAP posture, remove-ads entitlement, soft
-   launch readiness, launch-candidate readiness, and compatibility matrices.
-3. Add a built-in liveops and game operations pack or product-delivery
-   expansion for liveops configuration, remote config bounds, rollback,
-   analytics taxonomy, support categories, save-data/schema migration policy,
-   decommissioning, data deletion, and archive handling.
-4. Add golden fixtures for accessibility and compliance report outputs after
+2. Add a built-in evidence pack foundation for test, CI, build, review,
+   screenshot, video, QA, playtest, certification-checklist, and artifact
+   evidence records plus an evidence report.
+3. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-5. Add a maintainer review checklist for accepting external packs once public
+4. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-6. Add release-integrity consistency checks across package metadata, README,
+5. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-7. Add roadmap-report human-readable Markdown output for maintainer release
+6. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-8. Add security-report release gaps for stale evidence and missing
+7. Add security-report release gaps for stale evidence and missing
    verification dates.
-9. Add workspace migration impact summaries that call out record, pack, and
+8. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-10. Add machine-readable issue-code catalog generation from `verity explain`
+9. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-11. Add an agent-context generation design note for bounded AI handoff
+10. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-12. Add an engine full-lifecycle support design note covering Unity, Godot, and
+11. Add an engine full-lifecycle support design note covering Unity, Godot, and
    Unreal game workspaces, shared engine library workspaces, lifecycle
    readiness profiles, evidence, liveops, decommissioning, archive records,
    and portfolio examples.
-13. Add a portfolio-level validation design note for multi-workspace product,
+12. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-14. Add fixture refresh documentation for regenerating golden report outputs
+13. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-15. Add a public architecture decision record template for future major pack,
+14. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-16. Add profile-aware downstream CI template examples for release, regulated,
+15. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-17. Add deployment-target release evidence links that connect deployment
+16. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-18. Add coverage-dashboard Markdown output for maintainers who need a
+17. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
-19. Add local workspace-dependency prototype fixtures for exported records,
+18. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-20. Add engine portfolio example guidance and compatibility fixtures showing
+19. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
+20. Add product-delivery readiness and gap reports for downstream repositories
+   that need implementation-ready summaries without making commercial, legal,
+   privacy-law, marketplace, or platform-certification claims.
 
 ## Working Rule
 
