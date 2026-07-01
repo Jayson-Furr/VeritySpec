@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.62.0
+
 - Added a local-only workspace dependency prototype with direct readonly
   dependency declarations, dependency aliases, manifest-level exported
   records, alias-qualified reference validation, dependency-aware graph output,
   smoke fixtures, stable issue codes, and docs.
+- Added v0.62.0 release notes and roadmap closeout.
 
 ## 0.61.0
 
