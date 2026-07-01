@@ -1,7 +1,7 @@
 # VeritySpec
 
 [![CI](https://github.com/Jason-Furr/verity-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/Jason-Furr/verity-spec/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/badge/release-v0.46.0-blue)](https://github.com/Jason-Furr/verity-spec/releases/tag/v0.46.0)
+[![Release](https://img.shields.io/badge/release-v0.47.0-blue)](https://github.com/Jason-Furr/verity-spec/releases/tag/v0.47.0)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml)
 [![License](https://img.shields.io/github/license/Jason-Furr/verity-spec)](LICENSE)
 
@@ -15,7 +15,7 @@ artifacts.
 
 ## Current Scope
 
-Latest release: `v0.46.0`. Release history is tracked in
+Latest release: `v0.47.0`. Release history is tracked in
 [CHANGELOG.md](CHANGELOG.md) and [ROADMAP.md](ROADMAP.md).
 
 This implementation provides:
@@ -100,7 +100,7 @@ This implementation provides:
 Install the latest GitHub release:
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.46.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.47.0"
 verity --version
 ```
 
@@ -332,7 +332,7 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 ## Workspace Shape
 
 Package releases and workspace format versions are intentionally separate.
-VeritySpec package `v0.46.0` supports workspace formats `v0.1.0` and
+VeritySpec package `v0.47.0` supports workspace formats `v0.1.0` and
 `v0.2.0`. The current workspace format is `v0.2.0`.
 
 ```json
@@ -425,6 +425,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Branching strategy](docs/branching.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)
+- [v0.47.0 release notes](docs/release-notes-v0.47.0.md)
 - [v0.46.0 release notes](docs/release-notes-v0.46.0.md)
 - [v0.45.0 release notes](docs/release-notes-v0.45.0.md)
 - [v0.44.0 release notes](docs/release-notes-v0.44.0.md)

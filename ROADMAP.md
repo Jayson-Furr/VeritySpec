@@ -1996,11 +1996,12 @@ Sprint 110 prepares and verifies the v0.46.0 release:
 
 ## v0.47.0
 
-The `v0.47.0` milestone is in progress as the next weekly-sized sprint.
+The `v0.47.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 111 | In Progress | Specialized-pack separation plan |
+| 111 | Complete | Specialized-pack separation plan |
+| 112 | Complete | v0.47.0 release preparation and verification |
 
 ## Sprint 111 Priorities
 
@@ -2019,6 +2020,28 @@ runtime removal or packaging split:
 - Add documentation contract tests that keep the plan discoverable and preserve
   the no-immediate-removal boundary.
 - Update changelog, roadmap, and AI-agent guidance.
+
+Sprint 111 delivery added a public specialized-pack separation plan, candidate
+official package names, compatibility metadata and detach-gate requirements,
+migration guidance, rollback criteria, public docs links, AI-agent guidance,
+and documentation contract tests. Runtime pack separation remains out of scope
+until those gates are implemented and proven.
+
+## Sprint 112 Priorities
+
+Sprint 112 prepares and verifies the v0.47.0 release:
+
+- Promote Unreleased changelog entries into `0.47.0`.
+- Bump package metadata to `0.47.0`.
+- Confirm v0.47.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.47.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.47.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.47.0 GitHub release when checks pass.
+- Close the v0.47.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
