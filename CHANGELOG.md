@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.47.0
+
 - Added a specialized-pack separation plan that defines candidate official
   extension package names, compatibility metadata, staged detach gates,
   migration guidance, rollback criteria, and no-immediate-removal guardrails
