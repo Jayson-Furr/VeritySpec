@@ -2086,11 +2086,12 @@ Sprint 114 prepares and verifies the v0.48.0 release:
 
 ## v0.49.0
 
-The `v0.49.0` milestone is focused on public external-pack review governance.
+The `v0.49.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 115 | In Progress | External pack maintainer review checklist |
+| 115 | Complete | External pack maintainer review checklist |
+| 116 | Complete | v0.49.0 release preparation and verification |
 
 ## Sprint 115 Priorities
 
@@ -2107,6 +2108,27 @@ pack proposals:
 - Update changelog and roadmap bookkeeping.
 - Keep runtime pack loading, compatibility enforcement, and specialized-pack
   detachment out of scope for this sprint.
+
+Sprint 115 delivery added the external pack maintainer review checklist,
+linked it from README, contribution guidance, pack docs, and the pack proposal
+issue template, and added documentation contract tests for the checklist's
+review boundaries.
+
+## Sprint 116 Priorities
+
+Sprint 116 prepares and verifies the v0.49.0 release:
+
+- Promote Unreleased changelog entries into `0.49.0`.
+- Bump package metadata to `0.49.0`.
+- Add v0.49.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.49.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.49.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.49.0 GitHub release when checks pass.
+- Close the v0.49.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

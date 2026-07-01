@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.49.0
+
 - Added an external pack maintainer review checklist that defines proposal
   inputs, identity, contract, executability, documentation, compatibility, PR
   review, and acceptance-outcome gates for public pack proposals.
+- Added v0.49.0 release notes and roadmap closeout.
 
 ## 0.48.0
 
