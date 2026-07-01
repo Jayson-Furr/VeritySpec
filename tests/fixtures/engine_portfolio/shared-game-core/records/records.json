@@ -1,0 +1,140 @@
+{
+  "records": [
+    {
+      "id": "product.shared_engine_portfolio_game_contract",
+      "kind": "product",
+      "name": "Shared Engine Portfolio Game Contract",
+      "description": "Shared game-core product contract used by Unity, Godot, and Unreal compatibility fixtures.",
+      "status": "ready",
+      "owner": "portfolio-design",
+      "version": "1.0.0",
+      "references": [
+        {
+          "type": "describes",
+          "target": "game.product.engine_portfolio_baseline"
+        }
+      ]
+    },
+    {
+      "id": "game.product.engine_portfolio_baseline",
+      "kind": "game.product",
+      "name": "Engine Portfolio Baseline Game",
+      "description": "Engine-neutral game product contract used to prove side-by-side Unity, Godot, and Unreal workspace compatibility.",
+      "status": "ready",
+      "owner": "portfolio-design",
+      "pitch": "Players test a compact prototype loop that can be implemented in Unity, Godot, or Unreal from the same product intent.",
+      "playerFantasy": "A developer can compare engine implementation paths without losing the shared game-design contract.",
+      "targetAudience": "Engine-tooling maintainers and game prototyping teams evaluating cross-engine implementation readiness.",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "genres": [
+        "prototype",
+        "engine-comparison"
+      ],
+      "references": [
+        {
+          "type": "hasMode",
+          "target": "game.mode.engine_portfolio_session"
+        },
+        {
+          "type": "hasLoop",
+          "target": "game.loop.engine_portfolio_validate_ship"
+        },
+        {
+          "type": "prototypeScope",
+          "target": "game.prototype-scope.engine_portfolio_engine_slice"
+        }
+      ]
+    },
+    {
+      "id": "game.mode.engine_portfolio_session",
+      "kind": "game.mode",
+      "name": "Engine Portfolio Session",
+      "description": "Single-player prototype mode for validating equivalent engine implementation records.",
+      "status": "ready",
+      "owner": "portfolio-design",
+      "modeType": "single-player",
+      "summary": "A compact session where the same prototype behavior is described once and implemented by each engine workspace.",
+      "playerCount": {
+        "min": 1,
+        "max": 1,
+        "recommended": 1
+      },
+      "sessionLengthMinutes": {
+        "min": 5,
+        "max": 10
+      },
+      "references": [
+        {
+          "type": "usesLoop",
+          "target": "game.loop.engine_portfolio_validate_ship"
+        }
+      ]
+    },
+    {
+      "id": "game.loop.engine_portfolio_validate_ship",
+      "kind": "game.loop",
+      "name": "Validate, Compare, Ship",
+      "description": "Engine-neutral loop for validating equivalent product-contract coverage across engine workspaces.",
+      "status": "ready",
+      "owner": "portfolio-design",
+      "loopType": "core",
+      "cadence": "session",
+      "steps": [
+        {
+          "name": "Specify",
+          "description": "Capture the shared prototype intent in game-core records."
+        },
+        {
+          "name": "Implement",
+          "description": "Map the shared intent to engine-specific project and tooling records."
+        },
+        {
+          "name": "Validate",
+          "description": "Run validation, lint, readiness, and graph checks for each engine workspace."
+        },
+        {
+          "name": "Compare",
+          "description": "Review the portfolio workspace graph for side-by-side engine coverage."
+        }
+      ],
+      "references": []
+    },
+    {
+      "id": "game.prototype-scope.engine_portfolio_engine_slice",
+      "kind": "game.prototype-scope",
+      "name": "Engine Portfolio Prototype Slice",
+      "description": "Prototype scope that proves shared game intent can be consumed by equivalent Unity, Godot, and Unreal workspaces.",
+      "status": "ready",
+      "owner": "portfolio-production",
+      "prototypeType": "technical",
+      "goal": "Demonstrate that engine workspaces can consume one exported game-core contract through a local dependency alias.",
+      "includedFeatureRefs": [
+        "feature.engine-project-records",
+        "feature.engine-tooling-records",
+        "feature.dependency-alias-graph"
+      ],
+      "outOfScope": [
+        "aggregate portfolio reporting",
+        "remote dependency resolution",
+        "commercial readiness claims"
+      ],
+      "successCriteria": [
+        "Each engine workspace validates independently.",
+        "Each engine workspace passes strict lint and readiness checks.",
+        "The portfolio workspace graph includes all three engine projects and the exported shared game-core records."
+      ],
+      "references": [
+        {
+          "type": "validatesMode",
+          "target": "game.mode.engine_portfolio_session"
+        },
+        {
+          "type": "validatesLoop",
+          "target": "game.loop.engine_portfolio_validate_ship"
+        }
+      ]
+    }
+  ]
+}

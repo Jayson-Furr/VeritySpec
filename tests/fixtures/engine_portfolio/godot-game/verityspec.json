@@ -1,0 +1,23 @@
+{
+  "workspace": "studio.game.engine_portfolio_godot",
+  "version": "0.1.0",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.game-core",
+    "verity.pack.godot"
+  ],
+  "packPaths": [],
+  "dependencies": [
+    {
+      "id": "studio.shared.game_core",
+      "alias": "sharedGame",
+      "version": "^1.0.0",
+      "source": "../shared-game-core",
+      "mode": "readonly"
+    }
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}

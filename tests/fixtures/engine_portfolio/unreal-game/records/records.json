@@ -1,0 +1,270 @@
+{
+  "records": [
+    {
+      "id": "product.engine_portfolio_unreal_game",
+      "kind": "product",
+      "name": "Engine Portfolio Unreal Game",
+      "description": "Unreal product contract that consumes the shared engine portfolio game-core dependency.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "describes",
+          "target": "sharedGame::game.product.engine_portfolio_baseline"
+        },
+        {
+          "type": "hasUnrealProject",
+          "target": "unreal.project.engine_portfolio_game"
+        }
+      ]
+    },
+    {
+      "id": "unreal.project.engine_portfolio_game",
+      "kind": "unreal.project",
+      "name": "Engine Portfolio Unreal Project",
+      "description": "Unreal project contract used in the engine portfolio compatibility fixture.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "engineVersion": "5.4",
+      "projectPath": "Unreal/EnginePortfolioGame/EnginePortfolioGame.uproject",
+      "projectName": "EnginePortfolioGame",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "primaryMapRef": "unreal.map.engine_portfolio_slice",
+      "references": [
+        {
+          "type": "usesPlugin",
+          "target": "unreal.plugin.engine_portfolio_runtime"
+        },
+        {
+          "type": "declaresModule",
+          "target": "unreal.module.engine_portfolio_runtime"
+        },
+        {
+          "type": "buildsTarget",
+          "target": "unreal.target.engine_portfolio_pc"
+        },
+        {
+          "type": "containsMap",
+          "target": "unreal.map.engine_portfolio_slice"
+        },
+        {
+          "type": "usesBlueprint",
+          "target": "unreal.blueprint.engine_portfolio_player"
+        }
+      ]
+    },
+    {
+      "id": "unreal.plugin.engine_portfolio_runtime",
+      "kind": "unreal.plugin",
+      "name": "Engine Portfolio Unreal Runtime Plugin",
+      "description": "Unreal plugin contract for runtime helpers used by the compatibility fixture.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "pluginName": "EnginePortfolioRuntime",
+      "version": "0.1.0",
+      "source": "local",
+      "purpose": "Provides runtime helpers for the engine portfolio Unreal prototype."
+    },
+    {
+      "id": "unreal.module.engine_portfolio_runtime",
+      "kind": "unreal.module",
+      "name": "Engine Portfolio Runtime Module",
+      "description": "Unreal module contract for the engine portfolio runtime plugin.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "moduleName": "EnginePortfolioRuntime",
+      "moduleType": "runtime",
+      "modulePath": "Plugins/EnginePortfolioRuntime/Source/EnginePortfolioRuntime",
+      "references": [
+        {
+          "type": "usesPlugin",
+          "target": "unreal.plugin.engine_portfolio_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unreal.target.engine_portfolio_pc",
+      "kind": "unreal.target",
+      "name": "Engine Portfolio PC Target",
+      "description": "Unreal build target contract for the engine portfolio prototype.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "targetName": "EnginePortfolioGame",
+      "targetType": "game",
+      "platform": "pc",
+      "configuration": "development",
+      "mapRefs": [
+        "unreal.map.engine_portfolio_slice"
+      ],
+      "references": [
+        {
+          "type": "includesMap",
+          "target": "unreal.map.engine_portfolio_slice"
+        },
+        {
+          "type": "usesModule",
+          "target": "unreal.module.engine_portfolio_runtime"
+        },
+        {
+          "type": "usesPlugin",
+          "target": "unreal.plugin.engine_portfolio_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unreal.map.engine_portfolio_slice",
+      "kind": "unreal.map",
+      "name": "Engine Portfolio Slice Map",
+      "description": "Unreal map contract for the engine portfolio prototype slice.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "mapPath": "/Game/Maps/EnginePortfolioSlice",
+      "mapRole": "prototype",
+      "loadMode": "primary",
+      "references": [
+        {
+          "type": "usesBlueprint",
+          "target": "unreal.blueprint.engine_portfolio_player"
+        }
+      ]
+    },
+    {
+      "id": "unreal.blueprint.engine_portfolio_player",
+      "kind": "unreal.blueprint",
+      "name": "Engine Portfolio Player Blueprint",
+      "description": "Unreal blueprint contract for the playable prototype avatar.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "blueprintPath": "/Game/Blueprints/BP_EnginePortfolioPlayer",
+      "blueprintType": "actor",
+      "purpose": "Represents the player avatar used to validate the shared prototype intent.",
+      "references": [
+        {
+          "type": "implementedByModule",
+          "target": "unreal.module.engine_portfolio_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unreal.scanner.engine_portfolio_contracts",
+      "kind": "unreal.scanner",
+      "name": "Engine Portfolio Unreal Scanner",
+      "description": "Unreal scanner contract for project, plugin, map, and blueprint metadata in the engine portfolio fixture.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "scannerType": "commandlet",
+      "entryPoint": "EnginePortfolioContractScanner",
+      "outputPath": "Saved/VeritySpec/engine-portfolio-scan.json",
+      "scannedKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.map",
+        "unreal.blueprint"
+      ],
+      "references": [
+        {
+          "type": "scansProject",
+          "target": "unreal.project.engine_portfolio_game"
+        },
+        {
+          "type": "scansPlugin",
+          "target": "unreal.plugin.engine_portfolio_runtime"
+        },
+        {
+          "type": "scansMap",
+          "target": "unreal.map.engine_portfolio_slice"
+        },
+        {
+          "type": "scansBlueprint",
+          "target": "unreal.blueprint.engine_portfolio_player"
+        }
+      ]
+    },
+    {
+      "id": "unreal.validation-runner.engine_portfolio_contracts",
+      "kind": "unreal.validation-runner",
+      "name": "Engine Portfolio Unreal Validation Runner",
+      "description": "Unreal validation-runner contract for local and CI compatibility checks.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "runnerType": "commandlet",
+      "command": "UnrealEditor-Cmd EnginePortfolioGame.uproject -run=EnginePortfolioValidation",
+      "scannerRefs": [
+        "unreal.scanner.engine_portfolio_contracts"
+      ],
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "unreal.scanner.engine_portfolio_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.readiness-dashboard.engine_portfolio",
+      "kind": "unreal.readiness-dashboard",
+      "name": "Engine Portfolio Unreal Readiness Dashboard",
+      "description": "Unreal readiness dashboard contract for side-by-side portfolio validation.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "dashboardPath": "Docs/EnginePortfolioReadiness.md",
+      "dashboardType": "markdown",
+      "trackedRecordKinds": [
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.module",
+        "unreal.target",
+        "unreal.map",
+        "unreal.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "tracksProject",
+          "target": "unreal.project.engine_portfolio_game"
+        },
+        {
+          "type": "tracksRunner",
+          "target": "unreal.validation-runner.engine_portfolio_contracts"
+        }
+      ]
+    },
+    {
+      "id": "unreal.agent-context-exporter.engine_portfolio",
+      "kind": "unreal.agent-context-exporter",
+      "name": "Engine Portfolio Unreal Agent Context Exporter",
+      "description": "Unreal agent-context exporter contract for bounded implementation handoff.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "exporterType": "markdown",
+      "outputPath": "build/unreal/engine-portfolio-agent-context.md",
+      "includedRecordKinds": [
+        "product",
+        "game.product",
+        "unreal.project",
+        "unreal.plugin",
+        "unreal.map",
+        "unreal.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "describesProject",
+          "target": "unreal.project.engine_portfolio_game"
+        },
+        {
+          "type": "includesDashboard",
+          "target": "unreal.readiness-dashboard.engine_portfolio"
+        },
+        {
+          "type": "includesRunner",
+          "target": "unreal.validation-runner.engine_portfolio_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "unreal.scanner.engine_portfolio_contracts"
+        }
+      ]
+    }
+  ]
+}
