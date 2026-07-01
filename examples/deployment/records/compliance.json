@@ -1,0 +1,28 @@
+{
+  "id": "compliance.mapping.checkout_delivery",
+  "kind": "compliance.mapping",
+  "name": "Checkout Deployment Operational Review Mapping",
+  "description": "Maps checkout deployment release controls to the internal operational review requirement.",
+  "status": "ready",
+  "owner": "governance",
+  "framework": {
+    "name": "Internal Operational Review",
+    "version": "2026",
+    "requirementId": "OPS-DEPLOY-1",
+    "requirementTitle": "Production deployment release evidence"
+  },
+  "mappingType": "operational",
+  "coverage": "evidence-linked",
+  "attestation": false,
+  "verification": {
+    "method": "evidence-review",
+    "evidence": "release/evidence/checkout-deployment-review.md",
+    "lastVerified": "2026-07-01"
+  },
+  "references": [
+    {
+      "type": "covers",
+      "target": "security.control.checkout_access"
+    }
+  ]
+}

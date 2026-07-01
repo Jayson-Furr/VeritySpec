@@ -28,6 +28,10 @@
       "productionWithoutApproval": [],
       "productionWithoutHealthChecks": [],
       "targetsWithoutRollbackPlan": [],
+      "productionWithoutSecurityControls": [],
+      "productionWithoutObservability": [],
+      "productionWithoutComplianceMapping": [],
+      "productionWithoutReleaseEvidence": [],
       "missingOwners": []
     }
   },
@@ -63,7 +67,94 @@
         "freezePolicy": "holiday-freeze"
       },
       "rollbackPlan": "docs/ops/checkout-production-rollback.md",
-      "references": []
+      "securityControls": [
+        {
+          "id": "security.control.checkout_access",
+          "resolved": true,
+          "kind": "security.control",
+          "name": "Checkout Production Access Control",
+          "status": "ready",
+          "owner": "security"
+        }
+      ],
+      "observabilityDashboards": [
+        {
+          "id": "observability.dashboard.checkout_delivery",
+          "resolved": true,
+          "kind": "observability.dashboard",
+          "name": "Checkout Deployment Dashboard",
+          "status": "ready",
+          "owner": "sre"
+        }
+      ],
+      "complianceMappings": [
+        {
+          "id": "compliance.mapping.checkout_delivery",
+          "resolved": true,
+          "kind": "compliance.mapping",
+          "name": "Checkout Deployment Operational Review Mapping",
+          "status": "ready",
+          "owner": "governance"
+        }
+      ],
+      "releaseEvidence": [
+        {
+          "id": "evidence.ci-run.checkout_release",
+          "resolved": true,
+          "kind": "evidence.ci-run",
+          "name": "Checkout Deployment CI Evidence",
+          "status": "ready",
+          "owner": "release",
+          "evidenceStatus": "success",
+          "uri": "https://github.com/Jason-Furr/verity-spec/actions/runs/checkout-release"
+        },
+        {
+          "id": "evidence.qa.checkout_release",
+          "resolved": true,
+          "kind": "evidence.qa",
+          "name": "Checkout Deployment QA Evidence",
+          "status": "ready",
+          "owner": "qa",
+          "evidenceStatus": "passing",
+          "uri": "qa/reports/checkout-deployment.md"
+        },
+        {
+          "id": "evidence.artifact.checkout_release_manifest",
+          "resolved": true,
+          "kind": "evidence.artifact",
+          "name": "Checkout Deployment Release Manifest",
+          "status": "ready",
+          "owner": "release",
+          "evidenceStatus": "ready",
+          "uri": "release/manifests/checkout-production.json"
+        }
+      ],
+      "references": [
+        {
+          "type": "securedBy",
+          "target": "security.control.checkout_access"
+        },
+        {
+          "type": "monitoredBy",
+          "target": "observability.dashboard.checkout_delivery"
+        },
+        {
+          "type": "complianceMappedBy",
+          "target": "compliance.mapping.checkout_delivery"
+        },
+        {
+          "type": "releaseEvidence",
+          "target": "evidence.ci-run.checkout_release"
+        },
+        {
+          "type": "releaseEvidence",
+          "target": "evidence.qa.checkout_release"
+        },
+        {
+          "type": "releaseEvidence",
+          "target": "evidence.artifact.checkout_release_manifest"
+        }
+      ]
     }
   ],
   "runtimes": [

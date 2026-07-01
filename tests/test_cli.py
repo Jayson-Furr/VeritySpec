@@ -1750,11 +1750,23 @@ class VerityCliTests(unittest.TestCase):
                 "productionWithoutApproval": [],
                 "productionWithoutHealthChecks": [],
                 "targetsWithoutRollbackPlan": [],
+                "productionWithoutSecurityControls": [],
+                "productionWithoutObservability": [],
+                "productionWithoutComplianceMapping": [],
+                "productionWithoutReleaseEvidence": [],
                 "missingOwners": [],
             },
             payload["summary"]["releaseGaps"],
         )
         self.assertEqual("deployment.target.checkout_production", payload["targets"][0]["id"])
+        self.assertEqual(
+            [
+                "evidence.ci-run.checkout_release",
+                "evidence.qa.checkout_release",
+                "evidence.artifact.checkout_release_manifest",
+            ],
+            [item["id"] for item in payload["targets"][0]["releaseEvidence"]],
+        )
 
     def test_deployment_report_generator_matches_golden_file(self) -> None:
         expected = json.loads(DEPLOYMENT_GOLDEN.read_text(encoding="utf-8"))

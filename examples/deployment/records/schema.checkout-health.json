@@ -1,0 +1,27 @@
+{
+  "id": "schema.checkout_health",
+  "kind": "schema.object",
+  "name": "Checkout Health Telemetry Schema",
+  "description": "Payload schema for checkout deployment health telemetry.",
+  "status": "ready",
+  "owner": "checkout-platform",
+  "jsonSchema": {
+    "type": "object",
+    "required": [
+      "target",
+      "status"
+    ],
+    "properties": {
+      "target": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string"
+      },
+      "latencyMs": {
+        "type": "number"
+      }
+    }
+  },
+  "references": []
+}

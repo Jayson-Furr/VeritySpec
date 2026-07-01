@@ -9,6 +9,20 @@
   "provider": "aws",
   "platform": "kubernetes",
   "runtimeRef": "deployment.runtime.checkout_api",
+  "securityControlRefs": [
+    "security.control.checkout_access"
+  ],
+  "observabilityDashboardRefs": [
+    "observability.dashboard.checkout_delivery"
+  ],
+  "complianceMappingRefs": [
+    "compliance.mapping.checkout_delivery"
+  ],
+  "releaseEvidenceRefs": [
+    "evidence.ci-run.checkout_release",
+    "evidence.qa.checkout_release",
+    "evidence.artifact.checkout_release_manifest"
+  ],
   "regions": [
     "us-east-1",
     "us-west-2"
@@ -24,5 +38,30 @@
     "freezePolicy": "holiday-freeze"
   },
   "rollbackPlan": "docs/ops/checkout-production-rollback.md",
-  "references": []
+  "references": [
+    {
+      "type": "securedBy",
+      "target": "security.control.checkout_access"
+    },
+    {
+      "type": "monitoredBy",
+      "target": "observability.dashboard.checkout_delivery"
+    },
+    {
+      "type": "complianceMappedBy",
+      "target": "compliance.mapping.checkout_delivery"
+    },
+    {
+      "type": "releaseEvidence",
+      "target": "evidence.ci-run.checkout_release"
+    },
+    {
+      "type": "releaseEvidence",
+      "target": "evidence.qa.checkout_release"
+    },
+    {
+      "type": "releaseEvidence",
+      "target": "evidence.artifact.checkout_release_manifest"
+    }
+  ]
 }
