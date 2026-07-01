@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.56.0
+
 - Added engine full-lifecycle support design guidance for Unity, Godot,
   Unreal, shared engine library workspaces, lifecycle readiness profiles,
   evidence, liveops, decommissioning, archive records, and portfolio examples.
+- Added v0.56.0 release notes and roadmap closeout.
 
 ## 0.55.0
 

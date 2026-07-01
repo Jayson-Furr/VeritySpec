@@ -2406,13 +2406,12 @@ Sprint 128 prepares and verifies the v0.55.0 release:
 
 ## v0.56.0
 
-The `v0.56.0` milestone is focused on engine full-lifecycle support design
-for Unity, Godot, Unreal, shared engine libraries, lifecycle readiness,
-evidence, liveops, decommissioning, archives, and portfolio examples.
+The `v0.56.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 129 | In Progress | Engine full-lifecycle support design |
+| 129 | Complete | Engine full-lifecycle support design |
+| 130 | Complete | v0.56.0 release preparation and verification |
 
 ## Sprint 129 Priorities
 
@@ -2430,6 +2429,29 @@ Sprint 129 is a two-week-sized design sprint:
 - Link the new design note from README and keep the design boundary
   executable through documentation tests.
 - Update changelog, roadmap, and Next 20 planning.
+
+Sprint 129 delivery added engine full-lifecycle support design guidance for
+Unity, Godot, Unreal, shared engine library workspaces, engine toolkit
+workspaces, game workspaces, integration workspaces, portfolio examples,
+lifecycle stages, readiness profiles, evidence, liveops, decommissioning,
+archive, agent-context boundaries, README links, changelog and roadmap
+bookkeeping, and executable documentation tests.
+
+## Sprint 130 Priorities
+
+Sprint 130 prepares and verifies the v0.56.0 release:
+
+- Promote Unreleased changelog entries into `0.56.0`.
+- Bump package metadata to `0.56.0`.
+- Add v0.56.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.56.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.56.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.56.0 GitHub release when checks pass.
+- Close the v0.56.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
