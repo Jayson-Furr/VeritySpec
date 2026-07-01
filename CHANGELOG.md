@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added golden fixtures and generator-level golden comparisons for
+  accessibility report and compliance matrix outputs so those report contracts
+  detect unintended drift.
+
 ## 0.47.0
 
 - Added a specialized-pack separation plan that defines candidate official
