@@ -478,7 +478,8 @@
       "description": "Count evidence records as a first-class product surface.",
       "artifactType": "report",
       "outputFormats": [
-        "json"
+        "json",
+        "markdown"
       ],
       "recordKinds": [
         "evidence.test",

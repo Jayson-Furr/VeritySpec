@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added Markdown output for `verity generate coverage-dashboard` so
+  maintainers can review cross-pack product-surface coverage as a
+  human-readable release-review artifact while preserving the existing JSON
+  contract.
+
 ## 0.60.0
 
 - Added deployment-target release evidence links that connect production

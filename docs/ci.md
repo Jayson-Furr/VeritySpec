@@ -13,6 +13,7 @@ verity diff examples/basic examples/basic --format json > build/diff.json
 verity migrate examples/basic --dry-run --format json > build/migration.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 ```
@@ -256,13 +257,18 @@ verity generate schema-bundle examples/evidence --out build/evidence-schema-bund
 ```
 
 For release-review workspaces that combine multiple product-surface packs,
-generate a cross-pack coverage dashboard:
+generate a cross-pack coverage dashboard. Keep the JSON output as the
+machine-readable contract for CI and downstream tooling; use the Markdown
+output as a human-readable internal release-review artifact. The Markdown
+report does not make legal, commercial, privacy-law, platform-certification,
+marketplace, app-store, store-review, pricing-approval, or support-SLA claims.
 
 ```bash
 verity validate tests/fixtures/cross_pack_coverage
 verity lint tests/fixtures/cross_pack_coverage --strict
 verity readiness tests/fixtures/cross_pack_coverage --strict
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
 ```
 
 For release reviews that compare two workspace snapshots, generate a

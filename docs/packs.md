@@ -136,7 +136,10 @@ verity pack init verity.pack.features --out build/packs/features --kind feature.
 The built-in core pack also advertises `coverage-dashboard`,
 `product-impact`, and `pack-capability-index` generator metadata because those
 reports summarize cross-pack product-contract and pack-registry state while
-remaining available to every workspace.
+remaining available to every workspace. `coverage-dashboard` advertises both
+JSON and Markdown output: JSON is the machine-readable contract for CI and
+downstream tooling, while Markdown is a derived internal release-review
+artifact for maintainers.
 
 The generated pack can be validated immediately:
 

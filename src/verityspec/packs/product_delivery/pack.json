@@ -494,7 +494,8 @@
       "description": "Count product-delivery records as a first-class product surface.",
       "artifactType": "report",
       "outputFormats": [
-        "json"
+        "json",
+        "markdown"
       ],
       "recordKinds": [
         "product.scope",
