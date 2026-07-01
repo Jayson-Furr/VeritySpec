@@ -28,7 +28,7 @@ analysis across two workspace snapshots.
 ## Installation
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.30.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.30.0"
 ```
 
 PyPI publishing remains prepared but disabled until the PyPI project and

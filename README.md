@@ -1,9 +1,9 @@
 # VeritySpec
 
-[![CI](https://github.com/Jayson-Furr/VeritySpec/actions/workflows/ci.yml/badge.svg)](https://github.com/Jayson-Furr/VeritySpec/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/badge/release-v0.44.0-blue)](https://github.com/Jayson-Furr/VeritySpec/releases/tag/v0.44.0)
+[![CI](https://github.com/Jason-Furr/verity-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/Jason-Furr/verity-spec/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/badge/release-v0.44.0-blue)](https://github.com/Jason-Furr/verity-spec/releases/tag/v0.44.0)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml)
-[![License](https://img.shields.io/github/license/Jayson-Furr/VeritySpec)](LICENSE)
+[![License](https://img.shields.io/github/license/Jason-Furr/verity-spec)](LICENSE)
 
 Executable product contracts for humans, tools, and agents.
 
@@ -99,7 +99,7 @@ This implementation provides:
 Install the latest GitHub release:
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.44.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.44.0"
 verity --version
 ```
 

@@ -31,7 +31,7 @@
       "issuePolicy": "Issues track work, decisions, questions, defects, readiness gaps, and evidence requests.",
       "projectPolicy": "GitHub Projects provide planning boards and portfolio execution views.",
       "milestonePolicy": "Milestones bound sprint, release, and candidate work.",
-      "repository": "Jayson-Furr/VeritySpec.EngineToolkit",
+      "repository": "Jason-Furr/verity-spec-engine-toolkit",
       "references": [
         {
           "type": "recordsDecision",
