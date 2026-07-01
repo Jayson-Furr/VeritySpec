@@ -2132,11 +2132,12 @@ Sprint 116 prepares and verifies the v0.49.0 release:
 
 ## v0.50.0
 
-The `v0.50.0` milestone is focused on release-integrity consistency checks.
+The `v0.50.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 117 | In Progress | Release-integrity consistency checks |
+| 117 | Complete | Release-integrity consistency checks |
+| 118 | Complete | v0.50.0 release preparation and verification |
 
 ## Sprint 117 Priorities
 
@@ -2156,6 +2157,26 @@ bookkeeping:
 - Document the release-integrity checks and link them from README and the
   release checklist.
 - Update changelog and roadmap bookkeeping.
+
+Sprint 117 delivery added test-backed release-integrity checks, documentation,
+README links, release-checklist guidance, and evidence fixture coverage so
+public version surfaces are verified against the package version.
+
+## Sprint 118 Priorities
+
+Sprint 118 prepares and verifies the v0.50.0 release:
+
+- Promote Unreleased changelog entries into `0.50.0`.
+- Bump package metadata to `0.50.0`.
+- Add v0.50.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.50.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.50.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.50.0 GitHub release when checks pass.
+- Close the v0.50.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
