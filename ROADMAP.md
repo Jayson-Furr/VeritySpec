@@ -2657,17 +2657,16 @@ Sprint 138 completed a two-week-sized coverage-dashboard Markdown sprint:
 
 ## v0.62.0
 
-The `v0.62.0` milestone is focused on active local workspace dependency
-prototype work.
+The `v0.62.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 139 | In Progress | Local workspace dependency prototype |
+| 139 | Complete | Local workspace dependency prototype |
 
 ## Sprint 139 Priorities
 
-Sprint 139 should make the first cross-workspace dependency behavior
-executable while keeping the boundary local, readonly, and direct:
+Sprint 139 made the first cross-workspace dependency behavior executable while
+keeping the boundary local, readonly, and direct:
 
 - Add optional workspace `dependencies` support for local path dependencies.
 - Resolve alias-qualified references such as
