@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.48.0
+
 - Added golden fixtures and generator-level golden comparisons for
   accessibility report and compliance matrix outputs so those report contracts
   detect unintended drift.
