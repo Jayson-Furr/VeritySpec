@@ -18,6 +18,7 @@ from .generators import (
     generate_coverage_dashboard,
     generate_deployment_report,
     generate_evidence_report,
+    generate_issue_code_catalog,
     generate_openapi,
     generate_observability_report,
     generate_pack_capability_index,
@@ -676,6 +677,27 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(str(exc), file=sys.stderr)
         return EXIT_USAGE_ERROR
 
+    if args.artifact == "issue-code-catalog":
+        if args.workspace or args.comparison_workspace:
+            print(
+                "generate issue-code-catalog does not accept workspace paths.",
+                file=sys.stderr,
+            )
+            return EXIT_USAGE_ERROR
+        if args.format != "json":
+            print(
+                "generate issue-code-catalog supports --format json only.",
+                file=sys.stderr,
+            )
+            return EXIT_USAGE_ERROR
+        report = generate_issue_code_catalog(generated_at=generated_at)
+        text = write_generated(report, args.out)
+        if not args.out:
+            print(text, end="" if text.endswith("\n") else "\n")
+        else:
+            print(f"Generated issue-code-catalog: {args.out}")
+        return EXIT_SUCCESS
+
     if args.artifact != "product-impact" and args.comparison_workspace:
         print(
             f"generate {args.artifact} accepts one workspace path.",
@@ -684,6 +706,12 @@ def cmd_generate(args: argparse.Namespace) -> int:
         return EXIT_USAGE_ERROR
 
     if args.artifact == "roadmap-report":
+        if not args.workspace:
+            print(
+                "generate roadmap-report requires a repository or roadmap path.",
+                file=sys.stderr,
+            )
+            return EXIT_USAGE_ERROR
         report = generate_roadmap_report(args.workspace, generated_at=generated_at)
         value = generate_roadmap_report_markdown(report) if args.format == "markdown" else report
         text = write_generated(value, args.out)
@@ -701,7 +729,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         return EXIT_USAGE_ERROR
 
     if args.artifact == "product-impact":
-        if not args.comparison_workspace:
+        if not args.workspace or not args.comparison_workspace:
             print(
                 "generate product-impact requires OLD and NEW workspace paths.",
                 file=sys.stderr,
@@ -726,6 +754,13 @@ def cmd_generate(args: argparse.Namespace) -> int:
         else:
             print(f"Generated product-impact: {args.out}")
         return issue_exit(old_issues + new_issues)
+
+    if not args.workspace:
+        print(
+            f"generate {args.artifact} requires a workspace path.",
+            file=sys.stderr,
+        )
+        return EXIT_USAGE_ERROR
 
     workspace, registry = load_context(args.workspace, args.pack_path)
     if args.artifact == "validation-report":
@@ -1017,12 +1052,13 @@ def build_parser() -> argparse.ArgumentParser:
             "coverage-dashboard",
             "deployment-report",
             "evidence-report",
+            "issue-code-catalog",
             "pack-capability-index",
             "product-impact",
             "roadmap-report",
         ],
     )
-    generate_parser.add_argument("workspace")
+    generate_parser.add_argument("workspace", nargs="?")
     generate_parser.add_argument("comparison_workspace", nargs="?")
     generate_parser.add_argument("--out")
     generate_parser.add_argument(

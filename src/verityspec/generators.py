@@ -9,6 +9,7 @@ from typing import Any
 
 from . import __version__
 from .diffing import SEVERITY_LEVELS, diff_workspaces
+from .explain import ISSUE_EXPLANATIONS
 from .graph import build_graph
 from .issues import Issue, issue_count
 from .packs import Pack, PackRegistry, ReferenceRule, SchemaBinding
@@ -36,6 +37,51 @@ def generated_at_value(value: str | None = None) -> str:
     except ValueError as exc:
         raise ValueError("--generated-at must be an ISO 8601 datetime.") from exc
     return value
+
+
+def issue_code_category(code: str) -> str:
+    return code.split(".", 1)[0] if "." in code else code
+
+
+def generate_issue_code_catalog(generated_at: str | None = None) -> dict[str, Any]:
+    issue_codes = [
+        {
+            "code": code,
+            "category": issue_code_category(code),
+            "title": explanation.get("title", ""),
+            "severity": explanation.get("severity", ""),
+            "description": explanation.get("description", ""),
+            "resolution": explanation.get("resolution", ""),
+        }
+        for code, explanation in sorted(ISSUE_EXPLANATIONS.items(), key=lambda item: item[0])
+    ]
+    severity_counts = {
+        severity: sum(1 for item in issue_codes if item["severity"] == severity)
+        for severity in SEVERITY_LEVELS
+        if any(item["severity"] == severity for item in issue_codes)
+    }
+    category_counts = {
+        category: sum(1 for item in issue_codes if item["category"] == category)
+        for category in sorted({item["category"] for item in issue_codes})
+    }
+
+    return {
+        "type": "issue_code_catalog",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "source": "verity explain",
+        "summary": {
+            "issueCodeCount": len(issue_codes),
+            "severityCounts": severity_counts,
+            "categoryCounts": category_counts,
+            "categories": sorted(category_counts),
+            "severities": sorted(
+                severity_counts,
+                key=lambda item: SEVERITY_LEVELS.index(item) if item in SEVERITY_LEVELS else 99,
+            ),
+        },
+        "issueCodes": issue_codes,
+    }
 
 
 def sanitize_identifier(value: str) -> str:

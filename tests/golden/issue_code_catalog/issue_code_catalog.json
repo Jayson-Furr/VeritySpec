@@ -1,0 +1,305 @@
+{
+  "type": "issue_code_catalog",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "source": "verity explain",
+  "summary": {
+    "issueCodeCount": 32,
+    "severityCounts": {
+      "warning": 14,
+      "error": 18
+    },
+    "categoryCounts": {
+      "accessibility": 1,
+      "compliance": 1,
+      "deployment": 1,
+      "graph": 2,
+      "lint": 3,
+      "pack": 2,
+      "profile": 2,
+      "readiness": 2,
+      "record": 4,
+      "reference": 4,
+      "schema": 2,
+      "security": 2,
+      "workspace": 6
+    },
+    "categories": [
+      "accessibility",
+      "compliance",
+      "deployment",
+      "graph",
+      "lint",
+      "pack",
+      "profile",
+      "readiness",
+      "record",
+      "reference",
+      "schema",
+      "security",
+      "workspace"
+    ],
+    "severities": [
+      "warning",
+      "error"
+    ]
+  },
+  "issueCodes": [
+    {
+      "code": "accessibility.claim.critical_unverified",
+      "category": "accessibility",
+      "title": "Critical accessibility claim not verified",
+      "severity": "warning",
+      "description": "A critical accessibility claim is release-relevant but is not marked as verified.",
+      "resolution": "Set coverage to verified and provide a verification method other than not-verified with evidence."
+    },
+    {
+      "code": "compliance.mapping.reviewed_unverified",
+      "category": "compliance",
+      "title": "Reviewed compliance mapping not verified",
+      "severity": "warning",
+      "description": "A compliance mapping marked reviewed is missing verification evidence.",
+      "resolution": "Use a verification method other than not-verified and provide evidence, or lower coverage until review is complete."
+    },
+    {
+      "code": "deployment.target.production_release_controls_missing",
+      "category": "deployment",
+      "title": "Production deployment controls missing",
+      "severity": "warning",
+      "description": "A production deployment target is missing required release approval, rollback, or health-check controls.",
+      "resolution": "Require release approval, declare a rollback plan, and add a production healthCheckUrl."
+    },
+    {
+      "code": "graph.cycle",
+      "category": "graph",
+      "title": "Reference cycle",
+      "severity": "warning",
+      "description": "A directed reference path loops back to an earlier record.",
+      "resolution": "Break the cycle by removing or changing one reference edge."
+    },
+    {
+      "code": "graph.orphan",
+      "category": "graph",
+      "title": "Orphan record",
+      "severity": "warning",
+      "description": "A non-product, non-schema record has no incoming or outgoing graph references.",
+      "resolution": "Reference the record from a product or another record, or remove it."
+    },
+    {
+      "code": "lint.description.missing",
+      "category": "lint",
+      "title": "Missing description",
+      "severity": "warning",
+      "description": "A record should include a useful human-readable description.",
+      "resolution": "Add a non-empty description field."
+    },
+    {
+      "code": "lint.owner.placeholder",
+      "category": "lint",
+      "title": "Placeholder owner",
+      "severity": "warning",
+      "description": "The owner field uses a placeholder value.",
+      "resolution": "Set owner to the team, person, or system responsible for the record."
+    },
+    {
+      "code": "lint.status.draft",
+      "category": "lint",
+      "title": "Draft record",
+      "severity": "warning",
+      "description": "Draft records are not considered release-ready.",
+      "resolution": "Move the record to review or ready once the contract is accepted."
+    },
+    {
+      "code": "pack.discovery.invalid",
+      "category": "pack",
+      "title": "Pack discovery failed",
+      "severity": "error",
+      "description": "A local or installed pack source could not be resolved into a valid pack manifest.",
+      "resolution": "Check local pack paths and installed `verityspec.packs` entry points, then rerun `verity pack list`."
+    },
+    {
+      "code": "pack.unknown",
+      "category": "pack",
+      "title": "Unknown pack",
+      "severity": "error",
+      "description": "The requested pack ID is not available.",
+      "resolution": "Run `verity pack list` and use one of the listed pack IDs."
+    },
+    {
+      "code": "profile.required_pack",
+      "category": "profile",
+      "title": "Required profile pack missing",
+      "severity": "error",
+      "description": "The selected product-contract profile requires a pack that is not loaded by the workspace.",
+      "resolution": "Add the required pack to the workspace, or use a profile that matches the workspace scope."
+    },
+    {
+      "code": "profile.required_record_kind",
+      "category": "profile",
+      "title": "Required profile record kind missing",
+      "severity": "error",
+      "description": "The selected product-contract profile requires at least one record of a specific kind.",
+      "resolution": "Add the required record kind, or use a profile that matches the workspace scope."
+    },
+    {
+      "code": "readiness.min_items",
+      "category": "readiness",
+      "title": "Readiness list too small",
+      "severity": "warning",
+      "description": "A readiness gate requires a list field to contain at least a minimum number of items.",
+      "resolution": "Add the required items to the record."
+    },
+    {
+      "code": "readiness.required",
+      "category": "readiness",
+      "title": "Readiness field missing",
+      "severity": "warning",
+      "description": "A readiness gate requires a field that is missing or empty.",
+      "resolution": "Add the required field or adjust the relevant pack readiness gate."
+    },
+    {
+      "code": "record.id.duplicate",
+      "category": "record",
+      "title": "Duplicate record ID",
+      "severity": "error",
+      "description": "Two records use the same ID.",
+      "resolution": "Give each record a unique stable ID."
+    },
+    {
+      "code": "record.id.missing",
+      "category": "record",
+      "title": "Missing record ID",
+      "severity": "error",
+      "description": "A record does not define a string ID.",
+      "resolution": "Add an id field that matches the VeritySpec ID pattern."
+    },
+    {
+      "code": "record.kind.missing",
+      "category": "record",
+      "title": "Missing record kind",
+      "severity": "error",
+      "description": "A record does not define a string kind.",
+      "resolution": "Add a kind field declared by one of the loaded packs."
+    },
+    {
+      "code": "record.kind.unknown",
+      "category": "record",
+      "title": "Unknown record kind",
+      "severity": "error",
+      "description": "A record uses a kind not declared by the loaded packs.",
+      "resolution": "Load the pack that declares the kind or change the record kind."
+    },
+    {
+      "code": "reference.deprecated",
+      "category": "reference",
+      "title": "Deprecated reference",
+      "severity": "warning",
+      "description": "A record references another record marked deprecated.",
+      "resolution": "Move the reference to the replacement record or acknowledge it before release."
+    },
+    {
+      "code": "reference.disallowed",
+      "category": "reference",
+      "title": "Disallowed reference relationship",
+      "severity": "error",
+      "description": "The source kind, relationship, and target kind combination is not allowed by loaded pack rules.",
+      "resolution": "Use an allowed relationship or add a pack rule that explicitly permits it."
+    },
+    {
+      "code": "reference.missing",
+      "category": "reference",
+      "title": "Missing reference target",
+      "severity": "error",
+      "description": "A reference points to a record ID that does not exist in the workspace.",
+      "resolution": "Create the target record or update the reference target."
+    },
+    {
+      "code": "reference.removed",
+      "category": "reference",
+      "title": "Removed reference target",
+      "severity": "error",
+      "description": "A record references another record marked removed.",
+      "resolution": "Remove the reference or point it to an active replacement."
+    },
+    {
+      "code": "schema.unused",
+      "category": "schema",
+      "title": "Unused schema",
+      "severity": "warning",
+      "description": "A schema record has no incoming references.",
+      "resolution": "Reference the schema from a record or remove it."
+    },
+    {
+      "code": "schema.validation",
+      "category": "schema",
+      "title": "Schema validation failure",
+      "severity": "error",
+      "description": "A record does not satisfy the JSON Schema for its kind.",
+      "resolution": "Update the record to match its pack schema."
+    },
+    {
+      "code": "security.control.critical_unverified",
+      "category": "security",
+      "title": "Critical security control not verified",
+      "severity": "warning",
+      "description": "A critical security control is release-relevant but is not marked as verified.",
+      "resolution": "Set coverage to verified and provide a verification method other than not-verified with evidence."
+    },
+    {
+      "code": "security.control.evidence_stale",
+      "category": "security",
+      "title": "Security verification evidence stale",
+      "severity": "warning",
+      "description": "A security control declares a review cadence, but its verification date is missing or older than that cadence.",
+      "resolution": "Update verification.lastVerified after reviewing the evidence, or adjust verification.reviewCadenceDays to the accepted cadence."
+    },
+    {
+      "code": "workspace.packPaths.invalid",
+      "category": "workspace",
+      "title": "Invalid workspace pack paths",
+      "severity": "error",
+      "description": "A v0.2.0 workspace declares packPaths, but it is not an array of strings.",
+      "resolution": "Set packPaths to an array of local pack paths, or [] when no external packs are used."
+    },
+    {
+      "code": "workspace.packPaths.missing",
+      "category": "workspace",
+      "title": "Missing workspace pack paths",
+      "severity": "error",
+      "description": "A v0.2.0 workspace must declare packPaths explicitly.",
+      "resolution": "Run `verity migrate` or add `\"packPaths\": []` to verityspec.json."
+    },
+    {
+      "code": "workspace.version.future",
+      "category": "workspace",
+      "title": "Future workspace version",
+      "severity": "error",
+      "description": "The workspace declares a specVersion newer than this VeritySpec CLI supports.",
+      "resolution": "Install a newer VeritySpec CLI before validating or migrating the workspace."
+    },
+    {
+      "code": "workspace.version.invalid",
+      "category": "workspace",
+      "title": "Invalid workspace version",
+      "severity": "error",
+      "description": "The workspace specVersion does not use vMAJOR.MINOR.PATCH format.",
+      "resolution": "Set specVersion to a supported value such as v0.2.0."
+    },
+    {
+      "code": "workspace.version.missing",
+      "category": "workspace",
+      "title": "Missing workspace version",
+      "severity": "error",
+      "description": "The workspace config does not declare a specVersion.",
+      "resolution": "Run `verity migrate` or add a supported specVersion to verityspec.json."
+    },
+    {
+      "code": "workspace.version.unsupported",
+      "category": "workspace",
+      "title": "Unsupported workspace version",
+      "severity": "error",
+      "description": "The workspace declares a version this VeritySpec CLI does not support.",
+      "resolution": "Run `verity migrate` to produce a supported workspace version."
+    }
+  ]
+}
