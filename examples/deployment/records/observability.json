@@ -1,0 +1,71 @@
+{
+  "records": [
+    {
+      "id": "observability.telemetry.checkout_health",
+      "kind": "observability.telemetry",
+      "name": "Checkout Deployment Health Telemetry",
+      "description": "Telemetry emitted by the checkout production deployment health check.",
+      "status": "ready",
+      "owner": "checkout-platform",
+      "signalName": "checkout.deployment.health",
+      "emittedBy": "deployment.target.checkout_production",
+      "payloadSchema": "schema.checkout_health",
+      "references": []
+    },
+    {
+      "id": "observability.metric.checkout_health_rate",
+      "kind": "observability.metric",
+      "name": "Checkout Health Success Rate",
+      "description": "Success-rate metric for checkout production health checks.",
+      "status": "ready",
+      "owner": "sre",
+      "metricName": "checkout_health_success_rate",
+      "unit": "percent",
+      "aggregation": "average",
+      "references": [
+        {
+          "type": "derivedFrom",
+          "target": "observability.telemetry.checkout_health"
+        }
+      ]
+    },
+    {
+      "id": "observability.alert.checkout_health_drop",
+      "kind": "observability.alert",
+      "name": "Checkout Health Drop Alert",
+      "description": "Alert for failed checkout production health checks.",
+      "status": "ready",
+      "owner": "sre",
+      "severity": "critical",
+      "condition": "checkout_health_success_rate < 99",
+      "ownerTeam": "checkout-sre",
+      "runbook": "docs/runbooks/checkout-health.md",
+      "references": [
+        {
+          "type": "firesOn",
+          "target": "observability.metric.checkout_health_rate"
+        }
+      ]
+    },
+    {
+      "id": "observability.dashboard.checkout_delivery",
+      "kind": "observability.dashboard",
+      "name": "Checkout Deployment Dashboard",
+      "description": "Dashboard used to review checkout production deployment health.",
+      "status": "ready",
+      "owner": "sre",
+      "url": "https://observability.example.com/dashboards/checkout-delivery",
+      "audience": "operations",
+      "references": [
+        {
+          "type": "displays",
+          "target": "observability.metric.checkout_health_rate"
+        },
+        {
+          "type": "tracks",
+          "target": "observability.alert.checkout_health_drop"
+        }
+      ]
+    }
+  ]
+}

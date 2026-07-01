@@ -239,13 +239,27 @@
       "sourceSpecVersion": "v0.2.0",
       "packs": [
         "verity.core",
-        "verity.pack.deployment"
+        "verity.pack.deployment",
+        "verity.pack.security",
+        "verity.pack.observability",
+        "verity.pack.compliance",
+        "verity.pack.evidence"
       ],
-      "recordCount": 3,
+      "recordCount": 13,
       "recordKinds": {
+        "compliance.mapping": 1,
         "deployment.runtime": 1,
         "deployment.target": 1,
-        "product": 1
+        "evidence.artifact": 1,
+        "evidence.ci-run": 1,
+        "evidence.qa": 1,
+        "observability.alert": 1,
+        "observability.dashboard": 1,
+        "observability.metric": 1,
+        "observability.telemetry": 1,
+        "product": 1,
+        "schema.object": 1,
+        "security.control": 1
       },
       "compatibilityVariants": [
         {

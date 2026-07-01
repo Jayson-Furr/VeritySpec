@@ -944,7 +944,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add deployment-target release evidence links", markdown)
+        self.assertIn("1. Add coverage-dashboard Markdown output", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1255,11 +1255,36 @@ The `v0.2.0` milestone is focused on active work.
                 "productionWithoutApproval": [],
                 "productionWithoutHealthChecks": [],
                 "targetsWithoutRollbackPlan": [],
+                "productionWithoutSecurityControls": [],
+                "productionWithoutObservability": [],
+                "productionWithoutComplianceMapping": [],
+                "productionWithoutReleaseEvidence": [],
                 "missingOwners": [],
             },
             report["summary"]["releaseGaps"],
         )
         self.assertEqual("deployment.target.checkout_production", report["targets"][0]["id"])
+        self.assertEqual(
+            ["security.control.checkout_access"],
+            [item["id"] for item in report["targets"][0]["securityControls"]],
+        )
+        self.assertEqual(
+            ["observability.dashboard.checkout_delivery"],
+            [item["id"] for item in report["targets"][0]["observabilityDashboards"]],
+        )
+        self.assertEqual(
+            ["compliance.mapping.checkout_delivery"],
+            [item["id"] for item in report["targets"][0]["complianceMappings"]],
+        )
+        self.assertEqual(
+            [
+                "evidence.ci-run.checkout_release",
+                "evidence.qa.checkout_release",
+                "evidence.artifact.checkout_release_manifest",
+            ],
+            [item["id"] for item in report["targets"][0]["releaseEvidence"]],
+        )
+        self.assertEqual("success", report["targets"][0]["releaseEvidence"][0]["evidenceStatus"])
         self.assertEqual(
             "deployment.runtime.checkout_api",
             report["targets"][0]["runtime"]["id"],
@@ -1733,6 +1758,152 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(str(ROOT / "examples" / "deployment"), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_deployment_report_for_golden(report))
+
+    def test_deployment_readiness_requires_production_evidence_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "test.deployment.evidence.links",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.deployment"],
+                        "packPaths": [],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runtime.json").write_text(
+                json.dumps(
+                    {
+                        "id": "deployment.runtime.api",
+                        "kind": "deployment.runtime",
+                        "name": "API Runtime",
+                        "description": "Runtime for deployment evidence link checks.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "runtimeType": "container",
+                        "runtimeName": "python",
+                        "version": "3.12",
+                        "artifactType": "container-image",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "target.json").write_text(
+                json.dumps(
+                    {
+                        "id": "deployment.target.production",
+                        "kind": "deployment.target",
+                        "name": "Production",
+                        "description": "Production target missing evidence links.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "environment": "production",
+                        "provider": "aws",
+                        "platform": "kubernetes",
+                        "runtimeRef": "deployment.runtime.api",
+                        "securityControlRefs": [],
+                        "observabilityDashboardRefs": [],
+                        "complianceMappingRefs": [],
+                        "releaseEvidenceRefs": [],
+                        "regions": ["us-east-1"],
+                        "healthCheckUrl": "https://example.com/healthz",
+                        "releasePolicy": {
+                            "strategy": "rolling",
+                            "approvalRequired": True,
+                            "owner": "release-management",
+                        },
+                        "rollbackPlan": "docs/rollback.md",
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn(
+            "deployment.target.production_release_controls_missing",
+            [issue.code for issue in issues],
+        )
+        self.assertEqual("deployment.target.production", issues[0].record_id)
+
+    def test_deployment_release_evidence_reference_must_resolve(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "test.deployment.missing.evidence",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.deployment", "verity.pack.evidence"],
+                        "packPaths": [],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runtime.json").write_text(
+                json.dumps(
+                    {
+                        "id": "deployment.runtime.api",
+                        "kind": "deployment.runtime",
+                        "name": "API Runtime",
+                        "description": "Runtime for missing release evidence checks.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "runtimeType": "container",
+                        "runtimeName": "python",
+                        "version": "3.12",
+                        "artifactType": "container-image",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "target.json").write_text(
+                json.dumps(
+                    {
+                        "id": "deployment.target.production",
+                        "kind": "deployment.target",
+                        "name": "Production",
+                        "description": "Production target with an unresolved release evidence reference.",
+                        "status": "ready",
+                        "owner": "platform",
+                        "environment": "production",
+                        "provider": "aws",
+                        "platform": "kubernetes",
+                        "runtimeRef": "deployment.runtime.api",
+                        "releaseEvidenceRefs": ["evidence.ci-run.missing"],
+                        "regions": ["us-east-1"],
+                        "healthCheckUrl": "https://example.com/healthz",
+                        "releasePolicy": {
+                            "strategy": "rolling",
+                            "approvalRequired": True,
+                            "owner": "release-management",
+                        },
+                        "rollbackPlan": "docs/rollback.md",
+                        "references": [
+                            {
+                                "type": "releaseEvidence",
+                                "target": "evidence.ci-run.missing",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = validate_workspace(workspace, registry)
+
+        self.assertIn("reference.missing", [issue.code for issue in issues])
 
     def test_deployment_readiness_requires_production_controls(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

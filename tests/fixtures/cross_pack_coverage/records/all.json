@@ -383,7 +383,37 @@
         {
           "type": "securedBy",
           "target": "security.control.coverage_access"
+        },
+        {
+          "type": "complianceMappedBy",
+          "target": "compliance.mapping.coverage_review"
+        },
+        {
+          "type": "releaseEvidence",
+          "target": "evidence.ci-run.coverage_ci"
+        },
+        {
+          "type": "releaseEvidence",
+          "target": "evidence.qa.coverage_release"
+        },
+        {
+          "type": "releaseEvidence",
+          "target": "evidence.artifact.coverage_manifest"
         }
+      ],
+      "securityControlRefs": [
+        "security.control.coverage_access"
+      ],
+      "observabilityDashboardRefs": [
+        "observability.dashboard.coverage_health"
+      ],
+      "complianceMappingRefs": [
+        "compliance.mapping.coverage_review"
+      ],
+      "releaseEvidenceRefs": [
+        "evidence.ci-run.coverage_ci",
+        "evidence.qa.coverage_release",
+        "evidence.artifact.coverage_manifest"
       ]
     },
     {

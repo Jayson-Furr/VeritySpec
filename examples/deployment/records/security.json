@@ -1,0 +1,25 @@
+{
+  "id": "security.control.checkout_access",
+  "kind": "security.control",
+  "name": "Checkout Production Access Control",
+  "description": "Access control for production checkout deployment operations.",
+  "status": "ready",
+  "owner": "security",
+  "category": "authorization",
+  "controlType": "preventive",
+  "riskLevel": "high",
+  "objective": "Restrict production deployment operations to approved release operators.",
+  "coverage": "verified",
+  "verification": {
+    "method": "manual-review",
+    "evidence": "release/evidence/checkout-access-review.md",
+    "lastVerified": "2026-07-01",
+    "reviewCadenceDays": 365
+  },
+  "references": [
+    {
+      "type": "appliesTo",
+      "target": "schema.checkout_health"
+    }
+  ]
+}

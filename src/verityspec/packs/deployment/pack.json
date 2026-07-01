@@ -2,7 +2,7 @@
   "id": "verity.pack.deployment",
   "version": "0.1.0",
   "name": "VeritySpec Deployment Pack",
-  "description": "Deployment runtime and target records for hosting, release environment, rollback, and operational contract coverage.",
+  "description": "Deployment runtime and target records for hosting, release environment, rollback, operational contract coverage, and release evidence traceability.",
   "schemas": [
     {
       "kind": "deployment.runtime",
@@ -66,9 +66,25 @@
             {
               "field": "healthCheckUrl",
               "present": true
+            },
+            {
+              "field": "securityControlRefs",
+              "present": true
+            },
+            {
+              "field": "observabilityDashboardRefs",
+              "present": true
+            },
+            {
+              "field": "complianceMappingRefs",
+              "present": true
+            },
+            {
+              "field": "releaseEvidenceRefs",
+              "present": true
             }
           ],
-          "message": "Production deployment targets must require approval, declare a rollback plan, and expose a health check URL."
+          "message": "Production deployment targets must require approval, declare a rollback plan, expose a health check URL, and link security, observability, compliance, and release evidence records."
         }
       ]
     }
@@ -93,6 +109,91 @@
       "sourceKind": "deployment.target",
       "relationship": "securedBy",
       "targetKind": "security.control"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "complianceMappedBy",
+      "targetKind": "compliance.mapping"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.test"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.ci-run"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.build"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.review"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.screenshot"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.video"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.qa"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.playtest"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.certification-checklist"
+    },
+    {
+      "sourceKind": "deployment.target",
+      "relationship": "releaseEvidence",
+      "targetKind": "evidence.artifact"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "deployment.runtime"
+    },
+    {
+      "sourceKind": "evidence.ci-run",
+      "relationship": "proves",
+      "targetKind": "deployment.runtime"
+    },
+    {
+      "sourceKind": "evidence.build",
+      "relationship": "proves",
+      "targetKind": "deployment.runtime"
+    },
+    {
+      "sourceKind": "evidence.review",
+      "relationship": "reviews",
+      "targetKind": "deployment.runtime"
+    },
+    {
+      "sourceKind": "evidence.qa",
+      "relationship": "proves",
+      "targetKind": "deployment.runtime"
+    },
+    {
+      "sourceKind": "evidence.artifact",
+      "relationship": "proves",
+      "targetKind": "deployment.runtime"
     }
   ],
   "generators": [
@@ -107,7 +208,7 @@
     {
       "id": "deployment-report",
       "name": "Deployment Report",
-      "description": "Summarize deployment runtimes, targets, ownership, environments, and release gaps.",
+      "description": "Summarize deployment runtimes, targets, linked release evidence, ownership, environments, and release gaps.",
       "artifactType": "report",
       "outputFormats": ["json"],
       "recordKinds": ["deployment.runtime", "deployment.target"]

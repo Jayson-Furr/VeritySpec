@@ -2447,6 +2447,33 @@ def deployment_runtime_summary(record: Record | None) -> dict[str, Any]:
     }
 
 
+def string_ref_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, str) and item.strip()]
+
+
+def linked_record_summaries(record_ids: list[str], records_by_id: dict[str, Record]) -> list[dict[str, Any]]:
+    summaries: list[dict[str, Any]] = []
+    for record_id in record_ids:
+        record = records_by_id.get(record_id)
+        summary: dict[str, Any] = {"id": record_id, "resolved": record is not None}
+        if record is not None:
+            summary.update(
+                {
+                    "kind": record.kind,
+                    "name": record.data.get("name"),
+                    "status": record.data.get("status"),
+                    "owner": record.data.get("owner"),
+                }
+            )
+            if record.kind in EVIDENCE_KINDS:
+                summary["evidenceStatus"] = evidence_status(record)
+                summary["uri"] = evidence_uri(record)
+        summaries.append(summary)
+    return summaries
+
+
 def generate_deployment_report(workspace: Workspace, generated_at: str | None = None) -> dict:
     runtimes = [record for record in workspace.records if record.kind == "deployment.runtime"]
     targets = [record for record in workspace.records if record.kind == "deployment.target"]
@@ -2461,6 +2488,10 @@ def generate_deployment_report(workspace: Workspace, generated_at: str | None = 
     production_without_approval: list[str] = []
     production_without_health_checks: list[str] = []
     targets_without_rollback_plan: list[str] = []
+    production_without_security_controls: list[str] = []
+    production_without_observability: list[str] = []
+    production_without_compliance_mapping: list[str] = []
+    production_without_release_evidence: list[str] = []
 
     for record in targets:
         runtime_ref = record.data.get("runtimeRef")
@@ -2474,6 +2505,10 @@ def generate_deployment_report(workspace: Workspace, generated_at: str | None = 
         is_production = record.data.get("environment") == "production"
         has_health_check = bool(str(record.data.get("healthCheckUrl", "")).strip())
         has_rollback_plan = bool(str(record.data.get("rollbackPlan", "")).strip())
+        security_control_refs = string_ref_list(record.data.get("securityControlRefs"))
+        observability_dashboard_refs = string_ref_list(record.data.get("observabilityDashboardRefs"))
+        compliance_mapping_refs = string_ref_list(record.data.get("complianceMappingRefs"))
+        release_evidence_refs = string_ref_list(record.data.get("releaseEvidenceRefs"))
 
         if record.id and runtime is None:
             targets_without_runtime.append(record.id)
@@ -2483,6 +2518,14 @@ def generate_deployment_report(workspace: Workspace, generated_at: str | None = 
             production_without_health_checks.append(record.id)
         if record.id and not has_rollback_plan:
             targets_without_rollback_plan.append(record.id)
+        if record.id and is_production and not security_control_refs:
+            production_without_security_controls.append(record.id)
+        if record.id and is_production and not observability_dashboard_refs:
+            production_without_observability.append(record.id)
+        if record.id and is_production and not compliance_mapping_refs:
+            production_without_compliance_mapping.append(record.id)
+        if record.id and is_production and not release_evidence_refs:
+            production_without_release_evidence.append(record.id)
 
         target_entries.append(
             {
@@ -2499,6 +2542,12 @@ def generate_deployment_report(workspace: Workspace, generated_at: str | None = 
                 "runtime": deployment_runtime_summary(runtime),
                 "releasePolicy": release_policy if isinstance(release_policy, dict) else {},
                 "rollbackPlan": record.data.get("rollbackPlan"),
+                "securityControls": linked_record_summaries(security_control_refs, records_by_id),
+                "observabilityDashboards": linked_record_summaries(
+                    observability_dashboard_refs, records_by_id
+                ),
+                "complianceMappings": linked_record_summaries(compliance_mapping_refs, records_by_id),
+                "releaseEvidence": linked_record_summaries(release_evidence_refs, records_by_id),
                 "references": record.data.get("references", []),
             }
         )
@@ -2551,6 +2600,10 @@ def generate_deployment_report(workspace: Workspace, generated_at: str | None = 
                 "productionWithoutApproval": production_without_approval,
                 "productionWithoutHealthChecks": production_without_health_checks,
                 "targetsWithoutRollbackPlan": targets_without_rollback_plan,
+                "productionWithoutSecurityControls": production_without_security_controls,
+                "productionWithoutObservability": production_without_observability,
+                "productionWithoutComplianceMapping": production_without_compliance_mapping,
+                "productionWithoutReleaseEvidence": production_without_release_evidence,
                 "missingOwners": missing_owners,
             },
         },

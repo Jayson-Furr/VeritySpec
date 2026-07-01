@@ -25,12 +25,12 @@ This implementation provides:
   validation issue, readiness gate, generator, and migration entry point.
 - Built-in packs for core product records, APIs, CLIs, events, security
   controls, observability signals, accessibility claims, compliance mappings,
-  deployment targets, early game product contracts, and creative game asset
-  contracts, Unity, Godot, and Unreal game implementation and engine-tooling
-  contracts, gameplay contracts, game content contracts, and economy
-  contracts, progression contracts, spec-driven product-delivery contracts,
-  mobile lifecycle contracts, live operations contracts, and implementation
-  evidence contracts.
+  deployment targets with release evidence links, early game product
+  contracts, and creative game asset contracts, Unity, Godot, and Unreal game
+  implementation and engine-tooling contracts, gameplay contracts, game
+  content contracts, and economy contracts, progression contracts,
+  spec-driven product-delivery contracts, mobile lifecycle contracts, live
+  operations contracts, and implementation evidence contracts.
 - Pack listing, validation, installed-pack discovery, and scaffolding through
   `verity pack`, including local external packs, structured generator
   metadata, and starter reference rules that make generated packs usable from
@@ -51,7 +51,8 @@ This implementation provides:
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices,
-  deployment reports, evidence reports, cross-pack coverage dashboards,
+  deployment reports with linked release evidence, evidence reports,
+  cross-pack coverage dashboards,
   product-impact reports, pack capability indexes, roadmap governance
   reports, and issue-code catalogs, including security release-gap summaries
   for stale evidence and missing verification dates, with OpenAPI
@@ -375,7 +376,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/observability](examples/observability/verityspec.json): focused observability workspace.
 - [examples/accessibility](examples/accessibility/verityspec.json): focused accessibility-claim workspace.
 - [examples/compliance](examples/compliance/verityspec.json): focused compliance-mapping workspace.
-- [examples/deployment](examples/deployment/verityspec.json): focused deployment target workspace.
+- [examples/deployment](examples/deployment/verityspec.json): focused deployment target workspace with release evidence links.
 - [examples/game-core](examples/game-core/verityspec.json): focused game product-contract workspace.
 - [examples/game-assets](examples/game-assets/verityspec.json): focused game creative-source workspace.
 - [examples/unity](examples/unity/verityspec.json): focused Unity game implementation and engine-tooling workspace.

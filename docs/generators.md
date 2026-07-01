@@ -254,7 +254,10 @@ Deployment report output includes:
 - `deployment.runtime` and `deployment.target` records from workspaces that
   load `verity.pack.deployment`
 - Runtime links from target `runtimeRef` fields
-- Release gap summaries for production controls and target ownership
+- Linked security controls, observability dashboards, compliance mappings, and
+  release evidence records from deployment targets
+- Release gap summaries for production controls, target ownership, and missing
+  release evidence links
 
 Coverage dashboard output includes:
 

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added deployment-target release evidence links that connect production
+  deployment targets to security controls, observability dashboards,
+  compliance mappings, and release evidence records with readiness,
+  validation, graph, report, example, and fixture coverage.
+
 ## 0.59.0
 
 - Added profile-aware downstream CI workflow support and maintained template

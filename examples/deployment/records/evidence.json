@@ -1,0 +1,63 @@
+{
+  "records": [
+    {
+      "id": "evidence.ci-run.checkout_release",
+      "kind": "evidence.ci-run",
+      "name": "Checkout Deployment CI Evidence",
+      "description": "CI evidence for the checkout production deployment contract.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "deployment.target.checkout_production",
+      "provider": "github-actions",
+      "runId": "checkout-release-2026-07-01",
+      "runUrl": "https://github.com/Jason-Furr/verity-spec/actions/runs/checkout-release",
+      "conclusion": "success",
+      "commit": "checkout-release",
+      "references": [
+        {
+          "type": "proves",
+          "target": "deployment.runtime.checkout_api"
+        }
+      ]
+    },
+    {
+      "id": "evidence.qa.checkout_release",
+      "kind": "evidence.qa",
+      "name": "Checkout Deployment QA Evidence",
+      "description": "QA evidence for checkout production deployment readiness.",
+      "status": "ready",
+      "owner": "qa",
+      "subjectRef": "deployment.target.checkout_production",
+      "reportPath": "qa/reports/checkout-deployment.md",
+      "qaScope": "checkout production deployment",
+      "result": "passing",
+      "passedChecklistItems": 12,
+      "failedChecklistItems": 0,
+      "references": [
+        {
+          "type": "proves",
+          "target": "deployment.runtime.checkout_api"
+        }
+      ]
+    },
+    {
+      "id": "evidence.artifact.checkout_release_manifest",
+      "kind": "evidence.artifact",
+      "name": "Checkout Deployment Release Manifest",
+      "description": "Release manifest evidence for checkout production deployment.",
+      "status": "ready",
+      "owner": "release",
+      "subjectRef": "deployment.target.checkout_production",
+      "artifactPath": "release/manifests/checkout-production.json",
+      "artifactType": "manifest",
+      "hash": "sha256:checkout-release",
+      "retentionPolicy": "Retain with deployment release evidence.",
+      "references": [
+        {
+          "type": "proves",
+          "target": "deployment.runtime.checkout_api"
+        }
+      ]
+    }
+  ]
+}

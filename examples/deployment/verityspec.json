@@ -3,7 +3,11 @@
   "specVersion": "v0.2.0",
   "packs": [
     "verity.core",
-    "verity.pack.deployment"
+    "verity.pack.deployment",
+    "verity.pack.security",
+    "verity.pack.observability",
+    "verity.pack.compliance",
+    "verity.pack.evidence"
   ],
   "packPaths": [],
   "records": [

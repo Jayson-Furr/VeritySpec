@@ -84,7 +84,8 @@ verity generate schema-bundle examples/compliance --out build/compliance-schema-
 ```
 
 For workspaces that load `verity.pack.deployment`, include the usual contract
-checks and keep a deployment report for release and operations review:
+checks and keep a deployment report with linked release evidence for release
+and operations review:
 
 ```bash
 verity validate examples/deployment

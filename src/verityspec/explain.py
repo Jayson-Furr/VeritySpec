@@ -155,8 +155,8 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
     "deployment.target.production_release_controls_missing": {
         "title": "Production deployment controls missing",
         "severity": "warning",
-        "description": "A production deployment target is missing required release approval, rollback, or health-check controls.",
-        "resolution": "Require release approval, declare a rollback plan, and add a production healthCheckUrl.",
+        "description": "A production deployment target is missing required release approval, rollback, health-check, security, observability, compliance, or release evidence links.",
+        "resolution": "Require release approval, declare a rollback plan, add a production healthCheckUrl, and link security controls, observability dashboards, compliance mappings, and release evidence records.",
     },
     "workspace.packPaths.invalid": {
         "title": "Invalid workspace pack paths",

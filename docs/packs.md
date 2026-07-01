@@ -17,7 +17,7 @@ Built-in packs currently include:
 - `verity.pack.accessibility`: accessibility claims, checks, and evidence.
 - `verity.pack.compliance`: compliance mappings and compliance matrix generation.
 - `verity.pack.deployment`: deployment runtimes, targets, release policies,
-  rollback plans, and deployment report generation.
+  rollback plans, release evidence links, and deployment report generation.
 - `verity.pack.game-core`: game product, mode, loop, and prototype-scope
   records for early game product-contract coverage.
 - `verity.pack.game-assets`: GDD source, visual identity, identity image, and
