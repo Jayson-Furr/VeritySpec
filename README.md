@@ -84,6 +84,11 @@ This implementation provides:
   `verity.pack.content`, `verity.pack.economy`,
   `verity.pack.progression`, `verity.pack.product-delivery`,
   `verity.pack.mobile`, `verity.pack.liveops`, and `verity.pack.evidence`.
+- A product direction toward a small core runtime plus official extension pack
+  packages, so specialized game, mobile, liveops, Unity, Godot, and Unreal
+  packs can eventually be separated from the core package after installed-pack
+  discovery, compatibility metadata, migration guidance, and non-breaking
+  fixtures are in place.
 - Cross-workspace dependency design guidance for future local-only workspace
   dependencies, exported records, reference resolution, and lockfiles.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation

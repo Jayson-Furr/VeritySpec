@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added roadmap, README, and pack documentation guidance that makes
+  specialized pack separation an explicit product goal: `verityspec` should
+  remain the core contract runtime while domain-heavy game, mobile, liveops,
+  Unity, Godot, and Unreal packs can eventually become official extension
+  packages after installed-pack discovery, compatibility metadata, migration
+  guidance, and non-breaking fixtures are in place.
 - Added built-in `verity.pack.progression` with `progression.xp-model`,
   `progression.level`, `progression.unlock`, `progression.track`, and
   `progression.gate` records, readiness gates, reference rules, executable

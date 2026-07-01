@@ -1928,6 +1928,25 @@ Sprint 107 delivery added built-in `verity.pack.progression` and
 bundle checks, CI coverage, public docs, changelog entries, release notes, and
 AI-agent guidance.
 
+## Product Goal: Core Runtime and Official Extension Packs
+
+VeritySpec should evolve toward a smaller core runtime plus official extension
+pack packages. The `verityspec` package should remain the executable contract
+engine: CLI, workspace loading, schema validation, semantic validation,
+readiness, graphing, diffing, migration, generator dispatch, pack validation,
+and external-pack discovery.
+
+Broad product-contract packs can stay close to the core while their behavior is
+still stabilizing. Domain-heavy packs such as game, mobile, liveops, Unity,
+Godot, and Unreal should eventually be separable into official extension
+packages once VeritySpec has a stable installed-pack discovery contract, pack
+compatibility metadata, migration guidance, and downstream workspace fixtures
+that prove separated packs behave the same as bundled packs.
+
+This is a product direction, not an immediate removal plan. Existing bundled
+packs should remain available until the extension-pack architecture can support
+users without manual `packPaths` or workspace breakage.
+
 ## Next 20 Roadmap Points
 
 These points define the next backlog once the active roadmap is caught up. They
@@ -1940,53 +1959,55 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add golden fixtures for accessibility and compliance report outputs after
+1. Add installed-pack discovery using a stable Python package entry-point
+   contract so official extension packs can be installed separately and loaded
+   without manual `packPaths`.
+2. Define the first specialized-pack separation plan for game, mobile, liveops,
+   Unity, Godot, and Unreal packs, including compatibility metadata, migration
+   guidance, package naming, docs, examples, and rollback criteria.
+3. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-2. Add a maintainer review checklist for accepting external packs once public
+4. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-3. Add release-integrity consistency checks across package metadata, README,
+5. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-4. Add roadmap-report human-readable Markdown output for maintainer release
+6. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-5. Add security-report release gaps for stale evidence and missing
+7. Add security-report release gaps for stale evidence and missing
    verification dates.
-6. Add workspace migration impact summaries that call out record, pack, and
+8. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-7. Add machine-readable issue-code catalog generation from `verity explain`
+9. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-8. Add an agent-context generation design note for bounded AI handoff
+10. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-9. Add an engine full-lifecycle support design note covering Unity, Godot, and
+11. Add an engine full-lifecycle support design note covering Unity, Godot, and
    Unreal game workspaces, shared engine library workspaces, lifecycle
    readiness profiles, evidence, liveops, decommissioning, archive records,
    and portfolio examples.
-10. Add a portfolio-level validation design note for multi-workspace product,
+12. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-11. Add fixture refresh documentation for regenerating golden report outputs
+13. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-12. Add a public architecture decision record template for future major pack,
+14. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-13. Add profile-aware downstream CI template examples for release, regulated,
+15. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-14. Add deployment-target release evidence links that connect deployment
+16. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-15. Add coverage-dashboard Markdown output for maintainers who need a
+17. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
-16. Add local workspace-dependency prototype fixtures for exported records,
+18. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-17. Add engine portfolio example guidance and compatibility fixtures showing
+19. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
-18. Add product-delivery readiness and gap reports for downstream repositories
-   that need implementation-ready summaries without making commercial, legal,
-   privacy-law, marketplace, or platform-certification claims.
-19. Add mobile/liveops readiness and gap reports for soft launch, launch
-   candidate, remote-config, rollback, support, save-migration, decommission,
-   data-deletion, and archive-review summaries.
-20. Add pack compatibility metadata and compatibility checks so downstream
-   workspaces can declare expected pack versions before dependency locking is
-   implemented.
+20. Add product-delivery, mobile, and liveops readiness/gap reports for
+   implementation-ready, soft-launch, launch-candidate, remote-config,
+   rollback, support, save-migration, decommission, data-deletion, and
+   archive-review summaries without making commercial, legal, privacy-law,
+   marketplace, or platform-certification claims.
 
 ## Working Rule
 

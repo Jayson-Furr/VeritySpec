@@ -188,6 +188,39 @@ record envelope requirements, readiness gate checks, reference rule checks, and
 registry collision checks as built-in packs. External pack IDs cannot shadow
 built-in pack IDs.
 
+## Long-Term Pack Distribution Goal
+
+VeritySpec's product direction is a small core runtime plus official extension
+pack packages. The main `verityspec` package should remain responsible for the
+contract engine: CLI commands, workspace loading, schema validation, semantic
+validation, readiness checks, graphing, diffing, migrations, generator
+dispatch, pack validation, and pack discovery.
+
+Broad product-contract packs may stay bundled while their behavior is still
+stabilizing. Specialized domain packs should eventually be eligible to move
+into separately installable official packages once VeritySpec has stable
+installed-pack discovery, compatibility metadata, migration guidance, and
+fixtures proving separated packs behave the same as bundled packs.
+
+The likely separation boundary is:
+
+- Core or broadly useful packs remain close to `verityspec`: `verity.core`,
+  `verity.pack.api`, `verity.pack.cli`, `verity.pack.events`,
+  `verity.pack.security`, `verity.pack.observability`,
+  `verity.pack.accessibility`, `verity.pack.compliance`,
+  `verity.pack.deployment`, `verity.pack.product-delivery`, and
+  `verity.pack.evidence`.
+- Specialized extension-pack candidates include game, mobile, liveops, and
+  engine packs: `verity.pack.game-core`, `verity.pack.game-assets`,
+  `verity.pack.gameplay`, `verity.pack.content`, `verity.pack.economy`,
+  `verity.pack.progression`, `verity.pack.mobile`, `verity.pack.liveops`,
+  `verity.pack.unity`, `verity.pack.godot`, and `verity.pack.unreal`.
+
+This is not an immediate removal plan. Existing bundled packs should remain
+available until installed official extension packs can be discovered without
+manual `packPaths`, validated with the same pack contract, versioned with
+compatibility metadata, and migrated without breaking existing workspaces.
+
 ## Contributing Packs and Schema Changes
 
 Public pack and schema proposals should start from
