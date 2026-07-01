@@ -75,6 +75,10 @@ verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery --format json > build/product-delivery-graph.json
+verity validate examples/portfolio
+verity lint examples/portfolio --strict
+verity readiness examples/portfolio --strict
+verity graph examples/portfolio --format json > build/portfolio-graph.json
 verity validate examples/mobile
 verity lint examples/mobile --strict
 verity readiness examples/mobile --strict
@@ -118,6 +122,7 @@ verity generate schema-bundle examples/content --out build/content-schema-bundle
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+verity generate schema-bundle examples/portfolio --out build/portfolio-schema-bundle.json
 verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
@@ -134,6 +139,7 @@ python -m json.tool build/unity-graph.json >/dev/null
 python -m json.tool build/godot-graph.json >/dev/null
 python -m json.tool build/unreal-graph.json >/dev/null
 python -m json.tool build/product-delivery-graph.json >/dev/null
+python -m json.tool build/portfolio-graph.json >/dev/null
 python -m json.tool build/mobile-graph.json >/dev/null
 python -m json.tool build/liveops-graph.json >/dev/null
 python -m json.tool build/progression-graph.json >/dev/null
@@ -164,6 +170,7 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/economy
 /tmp/verityspec-wheel/bin/verity validate examples/progression
 /tmp/verityspec-wheel/bin/verity validate examples/product-delivery
+/tmp/verityspec-wheel/bin/verity validate examples/portfolio
 /tmp/verityspec-wheel/bin/verity validate examples/mobile
 /tmp/verityspec-wheel/bin/verity validate examples/liveops
 /tmp/verityspec-wheel/bin/verity validate examples/evidence
@@ -183,7 +190,7 @@ If `twine` is installed but the console script is not on `PATH`, run
 ## Tag
 
 ```bash
-VERSION=v0.56.0
+VERSION=v0.57.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```

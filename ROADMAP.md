@@ -2455,11 +2455,12 @@ Sprint 130 prepares and verifies the v0.56.0 release:
 
 ## v0.57.0
 
-The `v0.57.0` milestone is focused on active work.
+The `v0.57.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 131 | In Progress | Multi-workspace portfolio validation foundation |
+| 131 | Complete | Multi-workspace portfolio validation foundation |
+| 132 | Complete | v0.57.0 release preparation and verification |
 
 ## Sprint 131 Priorities
 
@@ -2481,6 +2482,27 @@ Sprint 131 is a two-week-sized portfolio validation foundation sprint:
   store-review, or support-SLA claims.
 - Link the new docs and example from README, add executable documentation and
   example tests, and keep changelog, roadmap, and Next 20 planning aligned.
+
+Sprint 131 delivery added portfolio-level validation foundation guidance,
+`examples/portfolio`, README links, changelog and roadmap bookkeeping, an
+updated workspace compatibility manifest, and executable tests that keep the
+portfolio guidance, example, and roadmap report from drifting.
+
+## Sprint 132 Priorities
+
+Sprint 132 prepares and verifies the v0.57.0 release:
+
+- Promote Unreleased changelog entries into `0.57.0`.
+- Bump package metadata to `0.57.0`.
+- Add v0.57.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.57.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist,
+  workflow release pins, and evidence fixtures to `v0.57.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.57.0 GitHub release when checks pass.
+- Close the v0.57.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
