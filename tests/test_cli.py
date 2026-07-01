@@ -1884,6 +1884,40 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual(20, payload["summary"]["nextRoadmapPoints"])
         self.assertEqual(list(range(1, 21)), [point["number"] for point in payload["nextRoadmapPoints"]])
 
+    def test_roadmap_report_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "roadmap-report.md"
+            result = verity_command(
+                "generate",
+                "roadmap-report",
+                ".",
+                "--format",
+                "markdown",
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated roadmap-report", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Roadmap Report\n"))
+        self.assertIn("## Summary", text)
+        self.assertIn("| Next roadmap points | 20 |", text)
+        self.assertIn("## Next 20 Roadmap Points", text)
+
+    def test_markdown_format_is_limited_to_roadmap_report(self) -> None:
+        result = verity_command(
+            "generate",
+            "validation-report",
+            "examples/basic",
+            "--format",
+            "markdown",
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("generate validation-report supports --format json only.", result.stderr)
+
     def test_prismspec_import_reports_migration_details(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "imported"

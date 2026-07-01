@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added Markdown output for `verity generate roadmap-report` so maintainers
+  can create human-readable release-governance summaries from `ROADMAP.md`.
+
 ## 0.50.0
 
 - Added release-integrity consistency tests and documentation that keep package

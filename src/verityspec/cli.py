@@ -24,6 +24,7 @@ from .generators import (
     generate_product_impact_report,
     generate_python_models,
     generate_roadmap_report,
+    generate_roadmap_report_markdown,
     generate_schema_bundle,
     generate_security_report,
     generate_typescript,
@@ -684,12 +685,20 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
     if args.artifact == "roadmap-report":
         report = generate_roadmap_report(args.workspace, generated_at=generated_at)
-        text = write_generated(report, args.out)
+        value = generate_roadmap_report_markdown(report) if args.format == "markdown" else report
+        text = write_generated(value, args.out)
         if not args.out:
             print(text, end="" if text.endswith("\n") else "\n")
         else:
             print(f"Generated roadmap-report: {args.out}")
         return EXIT_SUCCESS
+
+    if args.format != "json":
+        print(
+            f"generate {args.artifact} supports --format json only.",
+            file=sys.stderr,
+        )
+        return EXIT_USAGE_ERROR
 
     if args.artifact == "product-impact":
         if not args.comparison_workspace:
@@ -1016,6 +1025,12 @@ def build_parser() -> argparse.ArgumentParser:
     generate_parser.add_argument("workspace")
     generate_parser.add_argument("comparison_workspace", nargs="?")
     generate_parser.add_argument("--out")
+    generate_parser.add_argument(
+        "--format",
+        choices=["json", "markdown"],
+        default="json",
+        help="Output format for supported generated artifacts.",
+    )
     generate_parser.add_argument("--strict", action="store_true")
     generate_parser.add_argument(
         "--generated-at",

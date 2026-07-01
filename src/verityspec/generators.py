@@ -1563,7 +1563,7 @@ def roadmap_path(path: str | Path) -> Path:
 def roadmap_status(lines: list[str]) -> str:
     for line in lines[:8]:
         text = line.strip().lower()
-        if "milestone is active" in text:
+        if "milestone is active" in text or "milestone is focused on" in text:
             return "active"
         if "milestone is released" in text:
             return "released"
@@ -1677,6 +1677,89 @@ def generate_roadmap_report(path: str | Path, generated_at: str | None = None) -
         "milestones": milestones,
         "nextRoadmapPoints": next_points,
     }
+
+
+def markdown_cell(value: Any) -> str:
+    text = str(value) if value not in (None, "") else "none"
+    return text.replace("|", "\\|")
+
+
+def generate_roadmap_report_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    milestones = report.get("milestones", [])
+    next_points = report.get("nextRoadmapPoints", [])
+    recent_milestones = milestones[-5:]
+    active_milestones = report.get("activeMilestones", [])
+
+    lines = [
+        "# VeritySpec Roadmap Report",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Roadmap: `{report.get('roadmapPath')}`",
+        f"- Latest released milestone: `{report.get('latestReleasedMilestone') or 'none'}`",
+        f"- Active milestones: `{', '.join(active_milestones) if active_milestones else 'none'}`",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+    ]
+
+    summary_rows = [
+        ("Milestones", summary.get("milestones", 0)),
+        ("Released milestones", summary.get("releasedMilestones", 0)),
+        ("Active milestones", summary.get("activeMilestones", 0)),
+        ("Sprints", summary.get("sprints", 0)),
+        ("Completed sprints", summary.get("completedSprints", 0)),
+        ("In-progress sprints", summary.get("inProgressSprints", 0)),
+        ("Next roadmap points", summary.get("nextRoadmapPoints", 0)),
+    ]
+    for label, count in summary_rows:
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} |")
+
+    lines.extend(
+        [
+            "",
+            "## Recent Milestones",
+            "",
+            "| Milestone | Status | Sprints | Complete | In Progress |",
+            "|---|---|---:|---:|---:|",
+        ]
+    )
+    for milestone in recent_milestones:
+        lines.append(
+            "| "
+            f"{markdown_cell(milestone.get('version'))} | "
+            f"{markdown_cell(milestone.get('status'))} | "
+            f"{markdown_cell(milestone.get('sprintCount', 0))} | "
+            f"{markdown_cell(milestone.get('completedSprintCount', 0))} | "
+            f"{markdown_cell(milestone.get('inProgressSprintCount', 0))} |"
+        )
+
+    lines.extend(["", "## Recent Sprint Rows", ""])
+    for milestone in recent_milestones:
+        sprints = milestone.get("sprints", [])
+        if not sprints:
+            continue
+        lines.append(f"### {milestone.get('version')}")
+        lines.append("")
+        lines.append("| Sprint | Status | Focus |")
+        lines.append("|---:|---|---|")
+        for sprint in sprints:
+            lines.append(
+                "| "
+                f"{markdown_cell(sprint.get('number'))} | "
+                f"{markdown_cell(sprint.get('status'))} | "
+                f"{markdown_cell(sprint.get('focus'))} |"
+            )
+        lines.append("")
+
+    lines.extend(["## Next 20 Roadmap Points", ""])
+    for point in next_points:
+        lines.append(f"{point.get('number')}. {point.get('text')}")
+
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def count_by_field(records: list[Record], field: str) -> dict[str, int]:
