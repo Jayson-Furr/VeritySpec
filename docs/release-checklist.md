@@ -13,6 +13,9 @@ Use this checklist for public releases.
 - Confirm maintained downstream CI templates, including the monorepo template,
   reference the intended release tag.
 - Confirm `docs/pypi.md` GitHub fallback install tag matches the intended tag.
+- Confirm `tests/test_release_integrity.py` passes so package metadata,
+  README release surfaces, release notes, downstream pins, release checklist
+  examples, and evidence fixtures match the intended tag.
 - Run local checks:
 
 ```bash

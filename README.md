@@ -73,6 +73,9 @@ This implementation provides:
   and release-review reports so generator drift is reviewed intentionally.
 - README command smoke tests that execute safe local CLI examples and keep
   public command snippets from drifting.
+- Release-integrity consistency checks that keep package metadata, README
+  release surfaces, release notes, downstream workflow pins, release checklist
+  examples, and evidence fixtures aligned with the current package version.
 - A canonical AI agent entry point with shell discipline, branch/PR/release
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 - Public contribution guidance, issue templates, and maintainer review
@@ -426,6 +429,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Branching strategy](docs/branching.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)
+- [Release integrity checks](docs/release-integrity.md)
 - [v0.49.0 release notes](docs/release-notes-v0.49.0.md)
 - [v0.48.0 release notes](docs/release-notes-v0.48.0.md)
 - [v0.47.0 release notes](docs/release-notes-v0.47.0.md)
