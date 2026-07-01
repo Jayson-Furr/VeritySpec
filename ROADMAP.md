@@ -2271,11 +2271,12 @@ Sprint 122 prepares and verifies the v0.52.0 release:
 
 ## v0.53.0
 
-The `v0.53.0` milestone is focused on workspace migration impact summaries.
+The `v0.53.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 123 | In Progress | Workspace migration impact summaries |
+| 123 | Complete | Workspace migration impact summaries |
+| 124 | Complete | v0.53.0 release preparation and verification |
 
 ## Sprint 123 Priorities
 
@@ -2290,6 +2291,27 @@ Sprint 123 adds migration impact summaries for workspace format upgrades:
 - Cover the impact-summary contract with CLI tests and migration fixtures.
 - Update README, migration docs, changelog, roadmap bookkeeping, and Next 20
   planning.
+
+Sprint 123 delivery added step-level migration impacts to migration capability
+output, added top-level `impactSummary` output to migration reports, included
+impact details in text output, preserved existing report fields, and refreshed
+CLI tests, README, migration docs, changelog, roadmap, and Next 20 planning.
+
+## Sprint 124 Priorities
+
+Sprint 124 prepares and verifies the v0.53.0 release:
+
+- Promote Unreleased changelog entries into `0.53.0`.
+- Bump package metadata to `0.53.0`.
+- Add v0.53.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.53.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.53.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.53.0 GitHub release when checks pass.
+- Close the v0.53.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

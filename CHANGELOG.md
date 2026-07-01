@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.53.0
+
 - Added workspace migration impact summaries to `verity migrate --list` and
   migration reports so format upgrades call out workspace-format, record, pack,
   and generator behavior affected by the planned migration path.
+- Added v0.53.0 release notes and roadmap closeout.
 
 ## 0.52.0
 
