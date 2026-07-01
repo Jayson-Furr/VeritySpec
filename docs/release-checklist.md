@@ -157,9 +157,11 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/gameplay
 /tmp/verityspec-wheel/bin/verity validate examples/content
 /tmp/verityspec-wheel/bin/verity validate examples/economy
+/tmp/verityspec-wheel/bin/verity validate examples/progression
 /tmp/verityspec-wheel/bin/verity validate examples/product-delivery
 /tmp/verityspec-wheel/bin/verity validate examples/mobile
 /tmp/verityspec-wheel/bin/verity validate examples/liveops
+/tmp/verityspec-wheel/bin/verity validate examples/evidence
 ```
 
 If `twine` is installed but the console script is not on `PATH`, run
@@ -176,7 +178,7 @@ If `twine` is installed but the console script is not on `PATH`, run
 ## Tag
 
 ```bash
-VERSION=v0.44.0
+VERSION=v0.45.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.45.0
+
 - Updated repository owner/name references after moving the canonical public
   repository to `Jason-Furr/verity-spec`, including README badges, GitHub
   install URLs, downstream workflow templates, PyPI trusted-publishing notes,

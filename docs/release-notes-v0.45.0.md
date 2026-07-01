@@ -18,6 +18,16 @@ VeritySpec v0.45.0 adds built-in progression and evidence pack foundations.
   progression implementation and evidence-producing validation/readiness
   tooling.
 
+## Installation
+
+```bash
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.45.0"
+verity --version
+```
+
+PyPI publishing is prepared but not enabled yet. GitHub release installation
+remains the canonical public install path for this release.
+
 ## Verification
 
 Release verification should include:
