@@ -1,0 +1,95 @@
+{
+  "records": [
+    {
+      "id": "product.dream_extraction",
+      "kind": "product",
+      "name": "Dream Extraction",
+      "description": "Unity game contract that consumes a shared runtime package from a local workspace dependency.",
+      "status": "ready",
+      "owner": "design",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "hasUnityProject",
+          "target": "unity.project.dream_extraction"
+        }
+      ]
+    },
+    {
+      "id": "unity.package-dependency.shared_save_system",
+      "kind": "unity.package-dependency",
+      "name": "Shared Save System Dependency",
+      "description": "Local package-dependency declaration for the shared save-system runtime contract.",
+      "status": "ready",
+      "owner": "engineering",
+      "packageName": "com.studio.save-system",
+      "versionRequirement": "^1.2.0",
+      "source": "local",
+      "purpose": "Declares the Unity manifest dependency that corresponds to the exported dependency workspace package.",
+      "requiredCapabilities": [
+        "cloud-save",
+        "local-save"
+      ],
+      "references": []
+    },
+    {
+      "id": "unity.asmdef.gameplay_runtime",
+      "kind": "unity.asmdef",
+      "name": "Gameplay Runtime Assembly",
+      "description": "Unity assembly definition that depends on the shared save-system package declaration.",
+      "status": "ready",
+      "owner": "engineering",
+      "asmdefPath": "Assets/Scripts/Gameplay/Gameplay.Runtime.asmdef",
+      "assemblyName": "Gameplay.Runtime",
+      "referencedAssemblies": [
+        "Studio.SaveSystem"
+      ],
+      "references": [
+        {
+          "type": "usesPackage",
+          "target": "unity.package-dependency.shared_save_system"
+        }
+      ]
+    },
+    {
+      "id": "unity.scanner.project_contracts",
+      "kind": "unity.scanner",
+      "name": "Unity Project Contract Scanner",
+      "description": "Scans the Unity project for VeritySpec dependency and package contract coverage.",
+      "status": "ready",
+      "owner": "engineering",
+      "scannerType": "project",
+      "entryPoint": "Editor/VerityScanner",
+      "outputPath": "build/unity-scan.json",
+      "scannedKinds": [
+        "unity.project",
+        "unity.package"
+      ],
+      "references": [
+        {
+          "type": "scansAssembly",
+          "target": "unity.asmdef.gameplay_runtime"
+        }
+      ]
+    },
+    {
+      "id": "unity.validation-runner.project_contracts",
+      "kind": "unity.validation-runner",
+      "name": "Unity Project Validation Runner",
+      "description": "Runs Unity scanner checks for local and dependency workspace records.",
+      "status": "ready",
+      "owner": "engineering",
+      "runnerType": "ci",
+      "command": "unity -batchmode -executeMethod VerityScanner.Run",
+      "scannerRefs": [
+        "unity.scanner.project_contracts"
+      ],
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "unity.scanner.project_contracts"
+        }
+      ]
+    }
+  ]
+}

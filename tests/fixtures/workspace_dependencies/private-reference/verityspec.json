@@ -1,0 +1,21 @@
+{
+  "workspace": "studio.game.private_reference",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.unity"
+  ],
+  "packPaths": [],
+  "dependencies": [
+    {
+      "id": "studio.library.shared_unity_runtime",
+      "alias": "sharedUnity",
+      "source": "../shared-unity-runtime",
+      "mode": "readonly"
+    }
+  ],
+  "records": [
+    "../support/records/*.json",
+    "records/*.json"
+  ]
+}

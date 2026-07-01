@@ -481,6 +481,47 @@ class VerityCliTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertTrue(payload["cycles"])
 
+    def test_graph_includes_local_workspace_dependency_metadata(self) -> None:
+        result = verity_command(
+            "graph",
+            "tests/fixtures/workspace_dependencies/consumer",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        dependency_nodes = {
+            node["id"]: node
+            for node in payload["nodes"]
+            if node.get("workspaceRole") == "dependency"
+        }
+        self.assertIn("sharedUnity::unity.package.save_system", dependency_nodes)
+        self.assertEqual(
+            "sharedUnity",
+            dependency_nodes["sharedUnity::unity.package.save_system"]["dependencyAlias"],
+        )
+        self.assertEqual(
+            ["unity.package.save_system"],
+            payload["dependencies"][0]["exportedRecords"],
+        )
+
+    def test_validate_dependency_private_reference_json_output(self) -> None:
+        result = verity_command(
+            "validate",
+            "tests/fixtures/workspace_dependencies/private-reference",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertEqual(
+            ["dependency.reference.not_exported"],
+            [issue["code"] for issue in payload["issues"]],
+        )
+
     def test_lint_strict_json_output(self) -> None:
         result = verity_command("lint", "examples/basic", "--strict", "--format", "json")
 

@@ -4,14 +4,15 @@
   "verityVersion": "<verityVersion>",
   "source": "verity explain",
   "summary": {
-    "issueCodeCount": 32,
+    "issueCodeCount": 45,
     "severityCounts": {
       "warning": 14,
-      "error": 18
+      "error": 31
     },
     "categoryCounts": {
       "accessibility": 1,
       "compliance": 1,
+      "dependency": 12,
       "deployment": 1,
       "graph": 2,
       "lint": 3,
@@ -22,11 +23,12 @@
       "reference": 4,
       "schema": 2,
       "security": 2,
-      "workspace": 6
+      "workspace": 7
     },
     "categories": [
       "accessibility",
       "compliance",
+      "dependency",
       "deployment",
       "graph",
       "lint",
@@ -60,6 +62,102 @@
       "severity": "warning",
       "description": "A compliance mapping marked reviewed is missing verification evidence.",
       "resolution": "Use a verification method other than not-verified and provide evidence, or lower coverage until review is complete."
+    },
+    {
+      "code": "dependency.alias.duplicate",
+      "category": "dependency",
+      "title": "Duplicate workspace dependency alias",
+      "severity": "error",
+      "description": "A workspace declares the same dependency alias more than once.",
+      "resolution": "Give each dependency declaration a unique alias."
+    },
+    {
+      "code": "dependency.alias.unknown",
+      "category": "dependency",
+      "title": "Unknown workspace dependency alias",
+      "severity": "error",
+      "description": "A reference uses an alias-qualified dependency target, but the workspace does not declare that dependency alias.",
+      "resolution": "Declare the dependency alias in verityspec.json or update the reference target."
+    },
+    {
+      "code": "dependency.declaration.invalid",
+      "category": "dependency",
+      "title": "Invalid workspace dependency declaration",
+      "severity": "error",
+      "description": "A workspace dependency declaration is missing required local dependency fields or uses an invalid shape.",
+      "resolution": "Declare dependency id, alias, source, optional version, and readonly mode using the supported local dependency shape."
+    },
+    {
+      "code": "dependency.exports.invalid",
+      "category": "dependency",
+      "title": "Invalid dependency exports",
+      "severity": "error",
+      "description": "A dependency workspace exports list is not an array of record ID strings.",
+      "resolution": "Set exports to an array of record IDs that the dependency intentionally exposes to consumers."
+    },
+    {
+      "code": "dependency.id.mismatch",
+      "category": "dependency",
+      "title": "Workspace dependency ID mismatch",
+      "severity": "error",
+      "description": "A declared dependency ID does not match the workspace loaded from the dependency source path.",
+      "resolution": "Update the dependency id or source path so the declaration and loaded workspace agree."
+    },
+    {
+      "code": "dependency.load.failed",
+      "category": "dependency",
+      "title": "Workspace dependency failed to load",
+      "severity": "error",
+      "description": "A declared local workspace dependency could not be parsed or loaded.",
+      "resolution": "Fix the dependency workspace files or point source at a valid VeritySpec workspace."
+    },
+    {
+      "code": "dependency.mode.unsupported",
+      "category": "dependency",
+      "title": "Unsupported workspace dependency mode",
+      "severity": "error",
+      "description": "A workspace dependency declares a mode other than readonly.",
+      "resolution": "Set dependency mode to readonly for the local dependency prototype."
+    },
+    {
+      "code": "dependency.reference.missing",
+      "category": "dependency",
+      "title": "Missing workspace dependency reference target",
+      "severity": "error",
+      "description": "A dependency-qualified reference points to a record ID that does not exist in the dependency workspace.",
+      "resolution": "Create and export the target record in the dependency workspace or update the reference."
+    },
+    {
+      "code": "dependency.reference.not_exported",
+      "category": "dependency",
+      "title": "Workspace dependency reference not exported",
+      "severity": "error",
+      "description": "A dependency-qualified reference points to a record that exists but is not exported by the dependency workspace.",
+      "resolution": "Add the target record ID to the dependency workspace exports list or reference an exported record."
+    },
+    {
+      "code": "dependency.source.missing",
+      "category": "dependency",
+      "title": "Missing workspace dependency source",
+      "severity": "error",
+      "description": "A local workspace dependency source path does not exist.",
+      "resolution": "Create the dependency workspace at the source path or update the dependency declaration."
+    },
+    {
+      "code": "dependency.version.missing",
+      "category": "dependency",
+      "title": "Missing workspace dependency version",
+      "severity": "error",
+      "description": "A dependency declaration includes a version constraint but the loaded dependency workspace has no version.",
+      "resolution": "Add a version to the dependency workspace manifest or remove the version constraint."
+    },
+    {
+      "code": "dependency.version.unsatisfied",
+      "category": "dependency",
+      "title": "Workspace dependency version unsatisfied",
+      "severity": "error",
+      "description": "A loaded dependency workspace version does not satisfy the consuming workspace dependency constraint.",
+      "resolution": "Update the dependency source or version constraint so they agree."
     },
     {
       "code": "deployment.target.production_release_controls_missing",
@@ -252,6 +350,14 @@
       "severity": "warning",
       "description": "A security control declares a review cadence, but its verification date is missing or older than that cadence.",
       "resolution": "Update verification.lastVerified after reviewing the evidence, or adjust verification.reviewCadenceDays to the accepted cadence."
+    },
+    {
+      "code": "workspace.dependencies.invalid",
+      "category": "workspace",
+      "title": "Invalid workspace dependencies",
+      "severity": "error",
+      "description": "The workspace dependencies field is not an array.",
+      "resolution": "Set dependencies to an array of local dependency declarations or remove the field."
     },
     {
       "code": "workspace.packPaths.invalid",

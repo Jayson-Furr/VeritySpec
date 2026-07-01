@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added a local-only workspace dependency prototype with direct readonly
+  dependency declarations, dependency aliases, manifest-level exported
+  records, alias-qualified reference validation, dependency-aware graph output,
+  smoke fixtures, stable issue codes, and docs.
+
 ## 0.61.0
 
 - Added Markdown output for `verity generate coverage-dashboard` so

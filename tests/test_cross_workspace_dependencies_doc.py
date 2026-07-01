@@ -23,13 +23,13 @@ class CrossWorkspaceDependencyDocTests(unittest.TestCase):
         text = DOC.read_text(encoding="utf-8")
 
         for phrase in [
-            "No schema changes are introduced by this design note.",
+            "Current Prototype Boundary",
             "local path dependencies",
             "readonly dependencies",
             "direct dependencies",
             "remote registries",
             "Git authentication",
-            "First-Implementation Gate",
+            "record-level `visibility`",
         ]:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
@@ -44,7 +44,8 @@ class CrossWorkspaceDependencyDocTests(unittest.TestCase):
             "verity://workspace/studio.library.shared_unity_runtime@1.2.4/record/unity.package.save_system",
             "verityspec.lock.json",
             "recordSetHash",
-            "dependency-aware validation",
+            "Validation Issue Codes",
+            "dependency-aware validation and graph reporting",
             "integration workspaces",
         ]:
             with self.subTest(phrase=phrase):

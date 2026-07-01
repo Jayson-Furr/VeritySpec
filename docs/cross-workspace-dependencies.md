@@ -1,13 +1,14 @@
 # Cross-Workspace Dependencies
 
-VeritySpec currently validates one workspace at a time. This note defines the
-first design boundary for future cross-workspace dependencies before any
-workspace schema, resolver, lockfile, or CLI behavior is implemented.
+VeritySpec supports a first local-only workspace dependency prototype. A
+workspace can declare direct local, readonly dependencies, reference exported
+records from those dependency workspaces, and include exported dependency
+records in graph output.
 
-No schema changes are introduced by this design note. The first implementation
-should stay local-only, readonly, and direct-dependency oriented so VeritySpec
-can prove the model before adding Git, registry, remote, or transitive
-dependency behavior.
+This is the first executable step toward a graph of workspaces and records. It
+does not add remote registries, Git authentication, transitive dependency
+policy, lockfiles, dependency update commands, or record-level visibility
+fields yet.
 
 ## Goal
 
@@ -42,50 +43,52 @@ use those packs.
 
 For example, `verity.pack.unity` defines Unity implementation vocabulary such
 as package dependency and scene record kinds. A
-`studio.library.shared_unity_runtime` workspace would contain actual records
-for a studio's shared Unity runtime. A game workspace should depend on the
-shared Unity runtime workspace, not on a copied set of library records or on
-the pack itself.
+`studio.library.shared_unity_runtime` workspace contains actual records for a
+studio's shared Unity runtime. A game workspace should depend on the shared
+Unity runtime workspace, not on a copied set of library records or on the pack
+itself.
 
-## Phase 1 Boundary
+## Current Prototype Boundary
 
-The first implementation should support only:
+The current implementation supports:
 
 - local path dependencies
 - readonly dependencies
 - direct dependencies
 - explicit dependency aliases
-- workspace ID and version checks
-- exported-record visibility checks
-- cross-workspace reference resolution
-- deterministic lockfile generation
+- workspace ID checks
+- exact and caret version checks
+- manifest-level exported-record checks
+- alias-qualified cross-workspace reference resolution
 - dependency-aware validation and graph reporting
 
-The first implementation should not support:
+The current implementation does not support:
 
 - remote registries
 - Git authentication
 - package publishing
 - mutable writes into dependency workspaces
 - transitive dependency override logic
-- cyclic dependency policies beyond failing cycles
+- cyclic dependency policies beyond the existing graph cycle checks
 - partial dependency loading
 - multi-registry resolution
+- `verityspec.lock.json` generation or enforcement
+- record-level `visibility` or `exports` fields
 
-That boundary keeps the first version executable and reviewable.
+This boundary keeps the first version executable and reviewable while leaving
+room for lockfiles, remote dependency sources, and package-level visibility
+rules later.
 
 ## Workspace Dependency Shape
 
-A future workspace manifest could declare local dependencies with a
-`dependencies` array:
+A consuming workspace declares local dependencies with a `dependencies` array:
 
 ```json
 {
   "workspace": "studio.game.dream_extraction",
-  "specVersion": "v0.3.0",
+  "specVersion": "v0.2.0",
   "packs": [
     "verity.core",
-    "verity.pack.game",
     "verity.pack.unity"
   ],
   "packPaths": [],
@@ -104,16 +107,45 @@ A future workspace manifest could declare local dependencies with a
 }
 ```
 
-The exact future `specVersion` is intentionally not chosen here. Adding
-`dependencies` is a workspace-format change and should ship with migration,
-compatibility fixtures, release notes, and validation tests.
+Dependency declarations use these fields:
+
+- `id`: expected workspace ID in the dependency workspace manifest.
+- `alias`: local reference prefix, such as `sharedUnity`.
+- `source`: local filesystem path to the dependency workspace.
+- `mode`: currently only `readonly` is supported.
+- `version`: optional exact or caret version constraint checked against the
+  dependency workspace manifest `version`.
 
 ## Exported Records
 
-Dependency workspaces need visibility rules. A consuming workspace should only
-reference records that the dependency exports.
+Dependency workspaces need visibility rules. The current prototype uses a
+manifest-level `exports` array so existing strict record schemas do not need
+record-field churn.
 
-A future record could expose itself with fields such as:
+```json
+{
+  "workspace": "studio.library.shared_unity_runtime",
+  "version": "1.2.4",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.unity"
+  ],
+  "packPaths": [],
+  "exports": [
+    "unity.package.save_system"
+  ],
+  "records": [
+    "records/**/*.json"
+  ]
+}
+```
+
+Only exported records can be referenced from dependent workspaces. Deprecated
+exported records resolve with the normal deprecated-reference warning. Removed
+exported records fail through the normal removed-reference validation path.
+
+Future record-level visibility could expose itself with fields such as:
 
 ```json
 {
@@ -127,28 +159,19 @@ A future record could expose itself with fields such as:
 }
 ```
 
-Recommended visibility behavior:
-
-- public exported records can be referenced from dependent workspaces
-- internal records remain implementation details
-- deprecated exported records resolve but warn, or fail under strict policy
-- removed records fail when referenced
-
-The first implementation should prefer explicit exported-record fields over
-implicit public-by-default behavior. That keeps dependency workspaces from
-accidentally committing to internal records as public contracts.
+That future shape needs pack schema updates, compatibility fixtures, and
+migration guidance before it replaces manifest-level exports.
 
 ## Reference Forms
 
-Authors need a readable reference form. Resolvers need a canonical form.
-
-Friendly authoring form:
+Authors use alias-qualified references:
 
 ```text
 sharedUnity::unity.package.save_system
 ```
 
-Canonical resolved form:
+The current prototype keeps that friendly form in records and graph output.
+A future resolver can also emit canonical resolved URIs such as:
 
 ```text
 verity://workspace/studio.library.shared_unity_runtime@1.2.4/record/unity.package.save_system
@@ -163,32 +186,96 @@ lockfiles, graph output, diffing, and impact analysis:
 - referenced record ID
 - referenced record kind
 - referenced record status
-- referenced record visibility/export state
+- referenced record export state
 - referenced record content hash or record-set hash
 
 ## Resolution Flow
 
-A conservative resolver should:
+The current resolver:
 
-1. Load the consuming workspace.
-2. Load declared direct dependencies from local paths.
-3. Confirm each dependency workspace ID matches the manifest declaration.
-4. Confirm each dependency version satisfies the declared constraint.
-5. Confirm aliases are unique and stable.
-6. Build a local record index for the consuming workspace.
-7. Build exported-record indexes for dependency workspaces.
-8. Resolve local references against local records.
-9. Resolve alias-qualified references against exported dependency records.
-10. Normalize resolved references into canonical URIs for reports and lockfiles.
-11. Fail cycles in the workspace-dependency graph.
+1. Loads the consuming workspace.
+2. Parses declared direct dependencies from local paths.
+3. Confirms each dependency source path exists.
+4. Loads each dependency workspace.
+5. Confirms each dependency workspace ID matches the declaration.
+6. Confirms each dependency version satisfies the optional constraint.
+7. Confirms aliases are unique and stable.
+8. Builds a local record index for the consuming workspace.
+9. Builds dependency record indexes and manifest-level export sets.
+10. Resolves local references against local records.
+11. Resolves alias-qualified references against dependency records.
+12. Fails when the dependency record is missing or not exported.
+13. Applies normal removed, deprecated, and reference-rule checks to resolved
+    dependency targets.
 
-The resolver should not silently fall back from an alias-qualified reference to
-a local record with the same ID. That would make cross-workspace contracts
-ambiguous.
+The resolver does not silently fall back from an alias-qualified reference to a
+local record with the same ID. That keeps cross-workspace contracts
+unambiguous.
+
+## Validation Issue Codes
+
+Dependency validation uses normal VeritySpec issue output:
+
+- `workspace.dependencies.invalid`
+- `dependency.declaration.invalid`
+- `dependency.alias.duplicate`
+- `dependency.alias.unknown`
+- `dependency.mode.unsupported`
+- `dependency.source.missing`
+- `dependency.load.failed`
+- `dependency.id.mismatch`
+- `dependency.version.missing`
+- `dependency.version.unsatisfied`
+- `dependency.exports.invalid`
+- `dependency.reference.missing`
+- `dependency.reference.not_exported`
+
+These codes are available through `verity explain` and the issue-code catalog.
+
+## Graph Output
+
+`verity graph --format json` includes exported dependency records as
+alias-qualified dependency nodes. Dependency metadata is also included in a
+top-level `dependencies` list.
+
+```bash
+verity graph tests/fixtures/workspace_dependencies/consumer --format json
+```
+
+Dependency nodes include fields such as:
+
+- `workspaceRole: "dependency"`
+- `dependencyAlias`
+- `dependencyWorkspace`
+- `dependencySource`
+- `exported`
+
+This lets downstream tools distinguish local records from dependency records
+while still following reference edges such as:
+
+```text
+unity.project.dream_extraction -> sharedUnity::unity.package.save_system
+```
+
+## Current Smoke Fixture
+
+The committed smoke fixture demonstrates one Unity game workspace consuming an
+exported package from a shared Unity runtime workspace:
+
+```bash
+verity validate tests/fixtures/workspace_dependencies/consumer
+verity lint tests/fixtures/workspace_dependencies/consumer --strict
+verity readiness tests/fixtures/workspace_dependencies/consumer --strict
+verity graph tests/fixtures/workspace_dependencies/consumer --format json
+```
+
+Negative fixtures cover non-exported records, missing dependency records,
+unknown aliases, missing local sources, and workspace ID mismatches.
 
 ## Lockfile Boundary
 
-A dependency lockfile should make validation reproducible in CI.
+A dependency lockfile should make validation reproducible in CI, but lockfile
+generation and enforcement are future work.
 
 Conceptual file:
 
@@ -219,7 +306,7 @@ The lockfile should record what was actually resolved:
 The first lockfile implementation should be deterministic and local-path
 oriented. It should not try to represent every future remote source shape.
 
-Validation should be able to fail when:
+Validation should eventually be able to fail when:
 
 - the lockfile is missing while strict dependency mode requires it
 - the resolved workspace differs from the lockfile
@@ -227,75 +314,24 @@ Validation should be able to fail when:
 - a dependency version no longer satisfies the workspace manifest
 - a referenced exported record was removed or made internal
 
-## Validation Goals
+## Future Work
 
-Future dependency-aware validation should check:
+Future dependency work should add behavior in small executable slices:
 
-- declared dependency paths exist
-- dependency workspaces load successfully
-- dependency workspace IDs match declarations
-- dependency versions satisfy constraints
-- dependency aliases are unique
-- dependency packs are compatible with the consuming workspace
-- cross-workspace references resolve
-- referenced records are exported
-- deprecated dependency records are reported
-- removed dependency records fail validation
-- relationship rules allow the source kind, relationship, and target kind
-- dependency cycles fail validation
-- lockfile contents match resolved dependencies when lockfile checking is
-  enabled
+- dependency lockfile generation and stale-lockfile validation
+- dependency-aware diff and product-impact reports
+- dependency cycle policy across workspace boundaries
+- canonical resolved URI output
+- record-level visibility fields and migrations
+- local dependency command family such as `verity deps list`, `verity deps
+  resolve`, and `verity deps lock`
+- remote registry or Git dependency sources only after local dependency
+  semantics are stable
 
-These checks should use normal VeritySpec issue codes so CI can fail with the
-same product-contract workflow used for local records.
+## Integration Workspaces
 
-## Graph, Diff, And Impact
-
-Dependency-aware graph output should distinguish local records from dependency
-records. It should show which local records consume which exported dependency
-records and which dependency workspace supplied each target.
-
-Dependency-aware diff and product-impact reports should be able to answer:
-
-- which local records changed
-- which dependency records changed
-- which local records consume changed dependency records
-- whether a dependency update is breaking
-- whether docs, generators, readiness gates, or release reviews need to rerun
-
-This is the path from one-workspace validation to ecosystem-level contract
-analysis.
-
-## Future Commands
-
-The first implementation can extend existing commands before adding a full
-dependency command family:
-
-```bash
-verity validate ./workspace --include-dependencies
-verity graph ./workspace --include-dependencies
-verity diff old-workspace new-workspace --include-dependencies
-verity readiness ./workspace --include-dependencies
-```
-
-A later command family could include:
-
-```bash
-verity deps list ./workspace
-verity deps resolve ./workspace
-verity deps lock ./workspace
-verity deps update ./workspace
-verity deps graph ./workspace
-verity deps explain ./workspace sharedUnity::unity.package.save_system
-```
-
-The project should add these commands only when the resolver, lockfile, and
-validation contract are stable enough to test.
-
-## Transitional Pattern
-
-Until first-class dependencies exist, users can model dependency checks through
-integration workspaces that load records from multiple local workspaces:
+Integration workspaces still remain useful for combined validation contexts
+where the user wants to load several local workspaces as one record graph:
 
 ```json
 {
@@ -303,7 +339,6 @@ integration workspaces that load records from multiple local workspaces:
   "specVersion": "v0.2.0",
   "packs": [
     "verity.core",
-    "verity.pack.game",
     "verity.pack.unity"
   ],
   "packPaths": [],
@@ -316,22 +351,5 @@ integration workspaces that load records from multiple local workspaces:
 
 This pattern validates a combined record graph, but it does not model
 dependency aliases, exported-record boundaries, version constraints, or
-lockfiles. It should be treated as a bridge, not the final dependency model.
-
-## First-Implementation Gate
-
-Before implementation begins, the sprint should include:
-
-- a GitHub issue and milestone for the exact first dependency scope
-- workspace-format migration planning for a `dependencies` field
-- JSON Schema changes and compatibility fixtures
-- local dependency fixtures with positive and negative cases
-- exported-record visibility tests
-- alias-qualified reference-resolution tests
-- lockfile generation and stale-lockfile tests
-- validation issue-code documentation
-- graph and diff smoke coverage
-- README, changelog, roadmap, and release-note updates
-
-If any of those pieces are not ready, the project should add narrower fixtures
-or another design note before adding behavior.
+lockfiles. Treat integration workspaces as a bridge for aggregate validation,
+not a replacement for workspace dependencies.

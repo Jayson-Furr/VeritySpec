@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from jsonschema import Draft202012Validator
 
+from .dependencies import (
+    ResolvedWorkspaceDependency,
+    WorkspaceDependencyResolution,
+    resolve_workspace_dependencies,
+    split_dependency_reference,
+)
 from .envelope import RECORD_ENVELOPE_REQUIRED
 from .issues import Issue, apply_strict, location_at
 from .packs import PackRegistry
@@ -81,6 +87,7 @@ def validate_reference_graph(
     registry: PackRegistry,
     by_id: dict[str, Record],
     edges: list[tuple[Record, ReferenceEdge]],
+    dependency_resolution: WorkspaceDependencyResolution,
 ) -> list[Issue]:
     issues: list[Issue] = []
     incoming: dict[str, set[str]] = {record_id: set() for record_id in by_id}
@@ -88,13 +95,22 @@ def validate_reference_graph(
     adjacency: dict[str, list[str]] = {record_id: [] for record_id in by_id}
 
     for record, edge in edges:
+        target_key = edge.target
         target = by_id.get(edge.target)
+        dependency_target = split_dependency_reference(edge.target)
+        if dependency_target is not None:
+            alias, record_id = dependency_target
+            dependency = dependency_resolution.by_alias.get(alias)
+            if dependency is not None:
+                target = dependency.records_by_id.get(record_id)
+                target_key = dependency.qualified_id(record_id)
         if target is None:
             continue
 
-        incoming[edge.target].add(edge.source)
+        if edge.target in incoming:
+            incoming[edge.target].add(edge.source)
         outgoing[edge.source].add(edge.target)
-        adjacency[edge.source].append(edge.target)
+        adjacency[edge.source].append(target_key)
 
         if record.kind and target.kind and not registry.allows_reference(
             record.kind, edge.relationship, target.kind
@@ -150,11 +166,70 @@ def validate_reference_graph(
     return issues
 
 
+def validate_dependency_reference(
+    record: Record,
+    edge: ReferenceEdge,
+    dependency_resolution: WorkspaceDependencyResolution,
+) -> tuple[Record | None, ResolvedWorkspaceDependency | None, list[Issue]]:
+    dependency_target = split_dependency_reference(edge.target)
+    if dependency_target is None:
+        return None, None, []
+
+    alias, record_id = dependency_target
+    dependency = dependency_resolution.by_alias.get(alias)
+    location = location_at(record.location, edge.field)
+    if dependency is None:
+        if alias in dependency_resolution.declared_aliases:
+            return None, None, []
+        return None, None, [
+            Issue(
+                "error",
+                "dependency.alias.unknown",
+                f"Reference '{edge.target}' uses undeclared dependency alias '{alias}'.",
+                location,
+                record.id,
+            )
+        ]
+
+    target = dependency.records_by_id.get(record_id)
+    if target is None:
+        return None, dependency, [
+            Issue(
+                "error",
+                "dependency.reference.missing",
+                (
+                    f"Reference '{edge.target}' does not resolve in dependency "
+                    f"'{dependency.declaration.id}'."
+                ),
+                location,
+                record.id,
+            )
+        ]
+
+    if record_id not in dependency.exported_ids:
+        return target, dependency, [
+            Issue(
+                "error",
+                "dependency.reference.not_exported",
+                (
+                    f"Reference '{edge.target}' points to a dependency record that "
+                    "is not exported by the dependency workspace."
+                ),
+                location,
+                record.id,
+            )
+        ]
+
+    return target, dependency, []
+
+
 def validate_workspace(
     workspace: Workspace, registry: PackRegistry, strict: bool = False
 ) -> list[Issue]:
     issues: list[Issue] = validate_workspace_version(workspace)
     issues.extend(validate_builtin_schema_envelope(registry))
+    dependency_resolution = resolve_workspace_dependencies(workspace)
+    issues.extend(dependency_resolution.issues)
     ids: dict[str, str] = {}
 
     for record in workspace.records:
@@ -209,8 +284,17 @@ def validate_workspace(
     for record in workspace.records:
         for edge in extract_reference_edges(record):
             edges.append((record, edge))
-            target = by_id.get(edge.target)
+            dependency_target, _dependency, dependency_issues = validate_dependency_reference(
+                record, edge, dependency_resolution
+            )
+            issues.extend(dependency_issues)
+            if split_dependency_reference(edge.target) is not None:
+                target = dependency_target
+            else:
+                target = by_id.get(edge.target)
             if target is None:
+                if split_dependency_reference(edge.target) is not None:
+                    continue
                 issues.append(
                     Issue(
                         "error",
@@ -244,7 +328,9 @@ def validate_workspace(
                     )
                 )
 
-    issues.extend(validate_reference_graph(workspace, registry, by_id, edges))
+    issues.extend(
+        validate_reference_graph(workspace, registry, by_id, edges, dependency_resolution)
+    )
 
     return apply_strict(issues) if strict else issues
 

@@ -15,6 +15,13 @@ The CLI validates this version before treating a workspace as an executable
 contract. VeritySpec currently supports both `v0.1.0` and `v0.2.0`; `v0.2.0`
 is the current format.
 
+Optional local workspace dependencies are available in the current `v0.2.0`
+format through manifest-level `dependencies` and dependency-workspace
+`exports` fields. This prototype is direct, local-path, and readonly only, so
+it does not require a workspace format migration. Future lockfile enforcement,
+record-level visibility fields, or remote dependency sources may require a new
+workspace format version and explicit migration guidance.
+
 ## Version Checks
 
 Validation reports workspace version problems as normal issues:
