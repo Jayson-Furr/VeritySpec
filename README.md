@@ -101,6 +101,9 @@ This implementation provides:
   declarations, dependency aliases, manifest-level exported records,
   alias-qualified reference validation, and dependency-aware graph output,
   with lockfiles and remote dependency sources kept as future work.
+- Engine portfolio compatibility fixtures that show Unity, Godot, Unreal, and
+  a shared exported game-core workspace side by side before aggregate
+  portfolio-report behavior is implemented.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
   retained as the canonical public install path until publishing is enabled.
 
@@ -392,6 +395,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [examples/progression](examples/progression/verityspec.json): focused game progression workspace.
 - [examples/product-delivery](examples/product-delivery/verityspec.json): focused spec-driven product-delivery workspace.
 - [examples/portfolio](examples/portfolio/verityspec.json): focused multi-workspace portfolio validation foundation workspace.
+- [tests/fixtures/engine_portfolio/portfolio](tests/fixtures/engine_portfolio/portfolio/verityspec.json): engine portfolio compatibility fixture with Unity, Godot, Unreal, and shared game-core workspaces.
 - [examples/mobile](examples/mobile/verityspec.json): focused mobile lifecycle workspace.
 - [examples/liveops](examples/liveops/verityspec.json): focused live operations workspace.
 - [examples/evidence](examples/evidence/verityspec.json): focused implementation evidence workspace.
@@ -418,6 +422,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Specialized pack separation plan](docs/specialized-pack-separation.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
 - [Portfolio-level validation foundation](docs/portfolio-validation.md)
+- [Engine portfolio compatibility fixtures](docs/engine-portfolio-compatibility.md)
 - [Product contract profiles](docs/product-contract-profiles.md)
 - [Security pack](docs/security-pack.md)
 - [Observability pack](docs/observability-pack.md)

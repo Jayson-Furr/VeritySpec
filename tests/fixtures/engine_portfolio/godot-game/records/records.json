@@ -1,0 +1,193 @@
+{
+  "records": [
+    {
+      "id": "product.engine_portfolio_godot_game",
+      "kind": "product",
+      "name": "Engine Portfolio Godot Game",
+      "description": "Godot product contract that consumes the shared engine portfolio game-core dependency.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "describes",
+          "target": "sharedGame::game.product.engine_portfolio_baseline"
+        },
+        {
+          "type": "hasGodotProject",
+          "target": "godot.project.engine_portfolio_game"
+        }
+      ]
+    },
+    {
+      "id": "godot.project.engine_portfolio_game",
+      "kind": "godot.project",
+      "name": "Engine Portfolio Godot Project",
+      "description": "Godot project contract used in the engine portfolio compatibility fixture.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "godotVersion": "4.3",
+      "projectPath": "godot/EnginePortfolioGame",
+      "renderer": "forward-plus",
+      "targetPlatforms": [
+        "pc"
+      ],
+      "mainSceneRef": "godot.scene.engine_portfolio_slice",
+      "references": [
+        {
+          "type": "usesAddon",
+          "target": "godot.addon.engine_portfolio_tools"
+        },
+        {
+          "type": "containsScene",
+          "target": "godot.scene.engine_portfolio_slice"
+        },
+        {
+          "type": "scannedBy",
+          "target": "godot.scanner.engine_portfolio_contracts"
+        },
+        {
+          "type": "validatedBy",
+          "target": "godot.validation-runner.engine_portfolio_contracts"
+        },
+        {
+          "type": "reportsReadinessTo",
+          "target": "godot.readiness-dashboard.engine_portfolio"
+        },
+        {
+          "type": "exportsAgentContextWith",
+          "target": "godot.agent-context-exporter.engine_portfolio"
+        }
+      ]
+    },
+    {
+      "id": "godot.addon.engine_portfolio_tools",
+      "kind": "godot.addon",
+      "name": "Engine Portfolio Godot Tools",
+      "description": "Godot addon contract for scanner, validation, and editor tooling used by the compatibility fixture.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "addonName": "engine_portfolio_tools",
+      "version": "0.1.0",
+      "source": "local",
+      "purpose": "Provides editor tooling for validating Godot engine portfolio records.",
+      "references": []
+    },
+    {
+      "id": "godot.scene.engine_portfolio_slice",
+      "kind": "godot.scene",
+      "name": "Engine Portfolio Slice Scene",
+      "description": "Godot scene contract for the engine portfolio prototype slice.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "scenePath": "res://scenes/engine_portfolio_slice.tscn",
+      "sceneRole": "prototype",
+      "rootNode": "EnginePortfolioRoot",
+      "loadMode": "main",
+      "references": [
+        {
+          "type": "usesAddon",
+          "target": "godot.addon.engine_portfolio_tools"
+        }
+      ]
+    },
+    {
+      "id": "godot.scanner.engine_portfolio_contracts",
+      "kind": "godot.scanner",
+      "name": "Engine Portfolio Godot Scanner",
+      "description": "Godot scanner contract for project and scene metadata in the engine portfolio fixture.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "scannerType": "project",
+      "entryPoint": "addons/engine_portfolio_tools/scanner.gd",
+      "outputPath": "build/godot/engine-portfolio-scan.json",
+      "scannedKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.scene"
+      ],
+      "references": [
+        {
+          "type": "scansAddon",
+          "target": "godot.addon.engine_portfolio_tools"
+        },
+        {
+          "type": "scansScene",
+          "target": "godot.scene.engine_portfolio_slice"
+        }
+      ]
+    },
+    {
+      "id": "godot.validation-runner.engine_portfolio_contracts",
+      "kind": "godot.validation-runner",
+      "name": "Engine Portfolio Godot Validation Runner",
+      "description": "Godot validation-runner contract for local and CI compatibility checks.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "runnerType": "ci",
+      "command": "godot --headless --path godot/EnginePortfolioGame --script addons/engine_portfolio_tools/run_validation.gd",
+      "scannerRefs": [
+        "godot.scanner.engine_portfolio_contracts"
+      ],
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "godot.scanner.engine_portfolio_contracts"
+        }
+      ]
+    },
+    {
+      "id": "godot.readiness-dashboard.engine_portfolio",
+      "kind": "godot.readiness-dashboard",
+      "name": "Engine Portfolio Godot Readiness Dashboard",
+      "description": "Godot readiness dashboard contract for side-by-side portfolio validation.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "dashboardPath": "addons/engine_portfolio_tools/readiness_dashboard.gd",
+      "dashboardType": "editor",
+      "trackedRecordKinds": [
+        "godot.project",
+        "godot.addon",
+        "godot.scene",
+        "godot.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "tracksRunner",
+          "target": "godot.validation-runner.engine_portfolio_contracts"
+        }
+      ]
+    },
+    {
+      "id": "godot.agent-context-exporter.engine_portfolio",
+      "kind": "godot.agent-context-exporter",
+      "name": "Engine Portfolio Godot Agent Context Exporter",
+      "description": "Godot agent-context exporter contract for bounded implementation handoff.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "exporterType": "markdown",
+      "outputPath": "build/godot/engine-portfolio-agent-context.md",
+      "includedRecordKinds": [
+        "product",
+        "game.product",
+        "godot.project",
+        "godot.scene",
+        "godot.validation-runner"
+      ],
+      "references": [
+        {
+          "type": "includesDashboard",
+          "target": "godot.readiness-dashboard.engine_portfolio"
+        },
+        {
+          "type": "includesRunner",
+          "target": "godot.validation-runner.engine_portfolio_contracts"
+        },
+        {
+          "type": "includesScanner",
+          "target": "godot.scanner.engine_portfolio_contracts"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "workspace": "studio.shared.game_core",
+  "version": "1.0.0",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.game-core"
+  ],
+  "packPaths": [],
+  "exports": [
+    "game.product.engine_portfolio_baseline",
+    "game.mode.engine_portfolio_session",
+    "game.loop.engine_portfolio_validate_ship",
+    "game.prototype-scope.engine_portfolio_engine_slice"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}

@@ -160,3 +160,10 @@ The first implementation sprint after this design note should include:
 
 The first implementation should fail loudly on ambiguous scope. It should not
 silently infer portfolio membership from unrelated directories.
+
+The first local engine portfolio compatibility fixture now lives at
+`tests/fixtures/engine_portfolio/portfolio/verityspec.json`. It shows Unity,
+Godot, Unreal, and a shared exported game-core workspace side by side using the
+`sharedGame` dependency alias. See
+[engine portfolio compatibility fixtures](engine-portfolio-compatibility.md)
+for the fixture boundary and local check commands.

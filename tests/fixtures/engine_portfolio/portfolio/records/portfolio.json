@@ -1,0 +1,27 @@
+{
+  "id": "product.engine_portfolio_matrix",
+  "kind": "product",
+  "name": "Engine Portfolio Compatibility Matrix",
+  "description": "Portfolio workspace product contract that loads Unity, Godot, Unreal, and shared game-core records side by side.",
+  "status": "ready",
+  "owner": "portfolio-production",
+  "version": "0.1.0",
+  "references": [
+    {
+      "type": "describes",
+      "target": "sharedGame::game.product.engine_portfolio_baseline"
+    },
+    {
+      "type": "hasUnityProject",
+      "target": "unity.project.engine_portfolio_game"
+    },
+    {
+      "type": "hasGodotProject",
+      "target": "godot.project.engine_portfolio_game"
+    },
+    {
+      "type": "hasUnrealProject",
+      "target": "unreal.project.engine_portfolio_game"
+    }
+  ]
+}
