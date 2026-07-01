@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added fixture refresh guidance for deterministic golden report regeneration,
+  intentional output drift review, release-version fixture updates, and
+  maintainer checklist coverage.
+
 ## 0.57.0
 
 - Added portfolio-level validation foundation guidance and an executable

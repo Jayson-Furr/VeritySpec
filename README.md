@@ -405,6 +405,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Packs](docs/packs.md)
 - [External pack maintainer review checklist](docs/external-pack-review-checklist.md)
 - [Pack scaffold fixtures](docs/pack-scaffold-fixtures.md)
+- [Fixture refresh guide](docs/fixture-refresh.md)
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
 - [Engine and product-delivery pack direction](docs/engine-product-delivery-packs.md)
 - [Engine full-lifecycle support design](docs/engine-full-lifecycle-support.md)

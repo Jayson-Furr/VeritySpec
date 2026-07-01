@@ -306,8 +306,13 @@ and product-impact report are also covered by committed golden fixtures. Game-co
 game-assets, Unity, Godot, Unreal, gameplay, content, economy,
 progression, product-delivery, mobile, liveops, and evidence schema-bundle
 smoke checks cover bundled schema generation for the built-in game, engine,
-progression, delivery, mobile, liveops, and evidence packs. Changes to those generators should update the golden files only when the
-output contract intentionally changes.
+progression, delivery, mobile, liveops, and evidence packs.
+
+When generator behavior intentionally changes, follow the
+[fixture refresh guide](fixture-refresh.md). It documents deterministic
+`--generated-at` usage, the committed golden fixture locations, placeholder
+normalization, and intentional output drift review before updating
+`tests/golden`.
 
 Known limits:
 
