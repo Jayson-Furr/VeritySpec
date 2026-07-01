@@ -58,6 +58,11 @@ game, mobile, or liveops packs:
 - declare compatibility metadata for the core `verityspec` package; and
 - include migration or rollback guidance for existing workspaces.
 
+The staged product plan is maintained in
+[Specialized pack separation plan](specialized-pack-separation.md). That plan
+keeps the current bundled packs available until official extension packages
+can prove compatibility, parity, migration, and rollback behavior.
+
 ## Engine Pack Parity Rule
 
 Future engine-specific additions should keep Unity, Godot, and Unreal coverage

@@ -72,6 +72,9 @@ fixtures.
 - Installed extension packs should use the `verityspec.packs` Python
   entry-point group and must keep the entry-point name aligned with the pack
   manifest `id`.
+- Do not remove or detach bundled specialized packs from the core package
+  until `docs/specialized-pack-separation.md` gates are implemented, tested,
+  documented, and covered by migration and rollback guidance.
 - Do not commit secrets, tokens, PyPI credentials, or local environment files.
 - Do not publish releases or PyPI packages unless the user explicitly asks.
 - Preserve user changes. Do not revert unrelated dirty files.

@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "docs" / "product-surface-pack-boundaries.md"
 ENGINE_DOC = ROOT / "docs" / "engine-product-delivery-packs.md"
+SEPARATION_DOC = ROOT / "docs" / "specialized-pack-separation.md"
 
 
 class ProductSurfaceBoundaryTests(unittest.TestCase):
@@ -16,8 +17,10 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
 
         self.assertIn("docs/product-surface-pack-boundaries.md", readme)
         self.assertIn("docs/engine-product-delivery-packs.md", readme)
+        self.assertIn("docs/specialized-pack-separation.md", readme)
         self.assertIn("product-surface-pack-boundaries.md", packs)
         self.assertIn("engine-product-delivery-packs.md", packs)
+        self.assertIn("specialized-pack-separation.md", packs)
 
     def test_boundary_note_defines_expected_surface_packs(self) -> None:
         text = DOC.read_text(encoding="utf-8")
@@ -35,6 +38,49 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
             "verity.pack.game",
             "First-Schema Gate",
             "strict JSON Schemas using the shared record envelope",
+        ]:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_specialized_pack_separation_plan_defines_candidate_packages(self) -> None:
+        text = SEPARATION_DOC.read_text(encoding="utf-8")
+
+        for phrase in [
+            "verityspec-pack-game",
+            "verityspec-pack-mobile",
+            "verityspec-pack-liveops",
+            "verityspec-pack-unity",
+            "verityspec-pack-godot",
+            "verityspec-pack-unreal",
+            "verity.pack.game-core",
+            "verity.pack.game-assets",
+            "verity.pack.gameplay",
+            "verity.pack.content",
+            "verity.pack.economy",
+            "verity.pack.progression",
+            "verity.pack.mobile",
+            "verity.pack.liveops",
+            "verity.pack.unity",
+            "verity.pack.godot",
+            "verity.pack.unreal",
+        ]:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_specialized_pack_separation_plan_preserves_detach_gates(self) -> None:
+        text = SEPARATION_DOC.read_text(encoding="utf-8")
+
+        for phrase in [
+            "This is not an immediate removal plan.",
+            "Existing bundled packs remain available",
+            "Built-in pack IDs are reserved until an official detach gate exists.",
+            "compatibility metadata",
+            "bundled-versus-installed parity tests",
+            "migration guidance",
+            "rollback criteria",
+            "Do not remove specialized bundled packs in the first separation sprint.",
+            "Do not rename pack IDs or record kinds for packaging reasons.",
+            "Do not make arbitrary installed packages shadow built-in pack IDs.",
         ]:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)

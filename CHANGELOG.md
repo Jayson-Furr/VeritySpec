@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added a specialized-pack separation plan that defines candidate official
+  extension package names, compatibility metadata, staged detach gates,
+  migration guidance, rollback criteria, and no-immediate-removal guardrails
+  for game, mobile, liveops, Unity, Godot, and Unreal packs.
+
 ## 0.46.0
 
 - Added installed-pack discovery through the `verityspec.packs` Python

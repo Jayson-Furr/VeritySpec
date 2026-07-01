@@ -250,7 +250,9 @@ Broad product-contract packs may stay bundled while their behavior is still
 stabilizing. Specialized domain packs should eventually be eligible to move
 into separately installable official packages once VeritySpec has stable
 installed-pack discovery, compatibility metadata, migration guidance, and
-fixtures proving separated packs behave the same as bundled packs.
+fixtures proving separated packs behave the same as bundled packs. The staged
+guardrails for that work are defined in
+[Specialized pack separation plan](specialized-pack-separation.md).
 
 The likely separation boundary is:
 
@@ -295,8 +297,10 @@ Future GUI, desktop, engine, and additional game packs should follow the
 boundary guidance in
 [Product surface pack boundaries](product-surface-pack-boundaries.md) and
 [Engine and product-delivery pack direction](engine-product-delivery-packs.md)
-before their first schemas are added. The first narrow game, engine,
-product-delivery, mobile, and liveops scopes now live in
+before their first schemas are added. Specialized pack extraction should also
+follow the staged gates in
+[Specialized pack separation plan](specialized-pack-separation.md). The first
+narrow game, engine, product-delivery, mobile, and liveops scopes now live in
 [`verity.pack.game-core`](game-core-pack.md) and
 [`verity.pack.game-assets`](game-assets-pack.md), with Unity game
 implementation and engine-tooling coverage in
