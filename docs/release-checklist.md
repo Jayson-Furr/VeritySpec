@@ -126,6 +126,7 @@ verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
+verity generate issue-code-catalog --out build/issue-code-catalog.json
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
@@ -138,6 +139,7 @@ python -m json.tool build/liveops-graph.json >/dev/null
 python -m json.tool build/progression-graph.json >/dev/null
 python -m json.tool build/evidence-graph.json >/dev/null
 python -m json.tool build/evidence-report.json >/dev/null
+python -m json.tool build/issue-code-catalog.json >/dev/null
 python -m build
 twine check dist/*
 ```
@@ -181,7 +183,7 @@ If `twine` is installed but the console script is not on `PATH`, run
 ## Tag
 
 ```bash
-VERSION=v0.53.0
+VERSION=v0.54.0
 git tag -a "$VERSION" -m "VeritySpec $VERSION"
 git push origin "$VERSION"
 ```
