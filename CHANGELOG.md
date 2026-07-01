@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.55.0
+
 - Added agent-context generation design guidance, architecture decision record
   docs and template, and executable AI-agent adapter drift checks.
+- Added v0.55.0 release notes and roadmap closeout.
 
 ## 0.54.0
 
