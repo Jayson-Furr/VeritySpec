@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.43.0
+
 - Added built-in `verity.pack.product-delivery` with `product.scope`,
   `commercial.posture`, `project-management.model`, `decision.record`,
   `readiness.profile`, `evidence.requirement`, `release.process`,
@@ -12,6 +14,7 @@
   executable product-delivery example, graph coverage, schema-bundle coverage,
   coverage-dashboard support, CI coverage, and public docs for spec-driven
   product-delivery repositories.
+- Added v0.43.0 release notes and roadmap closeout.
 
 ## 0.42.0
 
