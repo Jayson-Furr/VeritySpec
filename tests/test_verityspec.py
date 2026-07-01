@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 import unittest
 from datetime import date, datetime, timedelta
@@ -34,6 +35,7 @@ from verityspec.explain import ISSUE_EXPLANATIONS
 from verityspec.graph import build_graph
 from verityspec.issues import Issue, escape_github_property, parse_issue_location
 from verityspec.pack_validation import list_pack_summaries, validate_builtin_packs, validate_packs
+from verityspec.pack_diagnostics import diagnose_pack_discovery
 from verityspec.packs import PACK_ENTRY_POINT_GROUP, load_pack_registry
 from verityspec.profiles import PROFILES, profile_issues
 from verityspec.readiness import evaluate_readiness
@@ -86,6 +88,15 @@ class FakeEntryPoint:
 
     def load(self):
         return lambda: self._pack_path
+
+
+class BrokenEntryPoint:
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self.value = "broken.module:pack_path"
+
+    def load(self):
+        raise RuntimeError("entry point exploded")
 
 
 class FakeEntryPoints(list):
@@ -388,6 +399,72 @@ class VeritySpecTests(unittest.TestCase):
         with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
             with self.assertRaisesRegex(ValueError, "must match manifest id"):
                 list_pack_summaries()
+
+    def test_pack_discovery_diagnostics_reports_clean_state(self) -> None:
+        with patch("verityspec.packs.metadata.entry_points", return_value=FakeEntryPoints()):
+            report, issues = diagnose_pack_discovery()
+
+        self.assertTrue(report["passed"])
+        self.assertEqual([], issues)
+        self.assertEqual("verityspec.packs", report["entryPointGroup"])
+        self.assertGreater(report["summary"]["builtInPackCount"], 0)
+        self.assertEqual(0, report["summary"]["installedEntryPointCount"])
+
+    def test_pack_discovery_diagnostics_reports_entry_point_load_failures(self) -> None:
+        entry_points = FakeEntryPoints([BrokenEntryPoint("verity.pack.broken")])
+        with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+            report, issues = diagnose_pack_discovery()
+
+        self.assertFalse(report["passed"])
+        self.assertEqual(["pack.installed.entry_point_load_failed"], [issue.code for issue in issues])
+        self.assertEqual("error", report["installedEntryPoints"][0]["status"])
+
+    def test_pack_discovery_diagnostics_reports_duplicate_installed_pack_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            first_pack = Path(tmp) / "features-one"
+            second_pack = Path(tmp) / "features-two"
+            shutil.copytree(CUSTOM_PACK, first_pack)
+            shutil.copytree(CUSTOM_PACK, second_pack)
+            entry_points = FakeEntryPoints(
+                [
+                    FakeEntryPoint("verity.pack.features", first_pack),
+                    FakeEntryPoint("verity.pack.features", second_pack),
+                ]
+            )
+            with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+                report, issues = diagnose_pack_discovery()
+
+        self.assertFalse(report["passed"])
+        self.assertIn("pack.installed.duplicate_id", [issue.code for issue in issues])
+        self.assertEqual(2, report["summary"]["installedEntryPointCount"])
+
+    def test_pack_discovery_diagnostics_reports_builtin_collisions(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pack_path = Path(tmp) / "core-collision"
+            shutil.copytree(CUSTOM_PACK, pack_path)
+            manifest_path = pack_path / "pack.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["id"] = "verity.core"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+            entry_points = FakeEntryPoints([FakeEntryPoint("verity.core", pack_path)])
+            with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+                report, issues = diagnose_pack_discovery()
+
+        self.assertFalse(report["passed"])
+        self.assertIn("pack.installed.builtin_collision", [issue.code for issue in issues])
+        self.assertEqual("error", report["installedEntryPoints"][0]["status"])
+
+    def test_pack_discovery_diagnostics_reports_external_override_behavior(self) -> None:
+        entry_points = FakeEntryPoints([FakeEntryPoint("verity.pack.features", CUSTOM_PACK)])
+        with patch("verityspec.packs.metadata.entry_points", return_value=entry_points):
+            report, issues = diagnose_pack_discovery([CUSTOM_PACK])
+
+        self.assertTrue(report["passed"])
+        self.assertEqual(["pack.external.overrides_installed"], [issue.code for issue in issues])
+        self.assertEqual("warning", report["externalPacks"][0]["status"])
+        self.assertEqual(1, report["summary"]["overrideCount"])
+        self.assertEqual("verity.pack.features", report["overrides"][0]["packId"])
 
     def test_builtin_schemas_require_shared_record_envelope(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "basic")
@@ -1030,7 +1107,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add installed-pack health diagnostics", markdown)
+        self.assertIn("1. Add official-extension package compatibility fixture guidance", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap

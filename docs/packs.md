@@ -118,6 +118,8 @@ Every pack should include:
 ```bash
 verity pack list
 verity pack list --format json
+verity pack doctor
+verity pack doctor --format json
 verity pack validate
 verity pack validate verity.pack.api --format json
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
@@ -226,6 +228,8 @@ generator metadata summaries as built-in and local external packs:
 ```bash
 verity pack list
 verity pack list --format json
+verity pack doctor
+verity pack doctor --format json
 verity pack validate verity.pack.features
 verity validate ./workspace
 ```
@@ -240,6 +244,33 @@ Source precedence is intentionally conservative:
 
 `verity pack list --format json` includes a `source` field so tools can
 distinguish `built-in`, `installed`, and `external` packs.
+
+`verity pack doctor` is the non-throwing diagnostics surface for pack
+discovery. It reports:
+
+- installed `verityspec.packs` entry-point load failures;
+- installed entry points that resolve to missing or invalid `pack.json`
+  manifests;
+- installed entry-point names that do not match pack manifest IDs;
+- duplicate installed pack IDs;
+- installed or local packs that attempt to shadow built-in pack IDs;
+- duplicate local pack IDs; and
+- explicit local path overrides where `packPaths`, `--pack-path`, or
+  `verity pack --path` entries take precedence over installed packs with the
+  same ID.
+
+Use the JSON form in CI or issue reports:
+
+```bash
+verity pack doctor --format json
+verity pack doctor --path ./packs/features --format json
+```
+
+Local overrides are reported as warnings because explicit local paths are a
+supported workflow. Built-in collisions, invalid manifests, load failures, and
+duplicate pack IDs with conflicting paths are errors. The command does not
+detach bundled packs or allow arbitrary installed packages to shadow built-in
+pack IDs.
 
 ## Long-Term Pack Distribution Goal
 

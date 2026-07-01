@@ -51,6 +51,7 @@ from .migrations import (
     migration_capabilities_to_text,
     migration_report_to_text,
 )
+from .pack_diagnostics import diagnose_pack_discovery, pack_discovery_report_to_text
 from .pack_validation import list_pack_summaries, validate_packs
 from .packs import load_pack_registry
 from .profiles import PROFILE_CHOICES, profile_issues, resolve_profile
@@ -930,6 +931,15 @@ def cmd_pack_validate(args: argparse.Namespace) -> int:
     return issue_exit(issues)
 
 
+def cmd_pack_doctor(args: argparse.Namespace) -> int:
+    report, issues = diagnose_pack_discovery(args.path)
+    if args.format == "json":
+        print(json.dumps(report, indent=2))
+    else:
+        print(pack_discovery_report_to_text(report))
+    return issue_exit(issues)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="verity", description="VeritySpec product-contract CLI.")
     parser.add_argument("--version", action="version", version=f"verity {__version__}")
@@ -1104,6 +1114,14 @@ def build_parser() -> argparse.ArgumentParser:
     pack_validate_parser.add_argument("--format", choices=["text", "json"], default="text")
     pack_validate_parser.add_argument("--path", action="append", default=[], help="Local pack directory or pack.json path.")
     pack_validate_parser.set_defaults(func=cmd_pack_validate)
+
+    pack_doctor_parser = pack_subparsers.add_parser(
+        "doctor",
+        help="Run non-throwing diagnostics for installed and local pack discovery.",
+    )
+    pack_doctor_parser.add_argument("--format", choices=["text", "json"], default="text")
+    pack_doctor_parser.add_argument("--path", action="append", default=[], help="Local pack directory or pack.json path.")
+    pack_doctor_parser.set_defaults(func=cmd_pack_doctor)
 
     pack_init_parser = pack_subparsers.add_parser("init", help="Create a local pack scaffold.")
     pack_init_parser.add_argument("pack_id")

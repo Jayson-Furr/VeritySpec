@@ -1202,6 +1202,48 @@ class VerityCliTests(unittest.TestCase):
         self.assertFalse(payload["passed"])
         self.assertEqual("pack.unknown", payload["issues"][0]["code"])
 
+    def test_pack_doctor_json_output(self) -> None:
+        result = verity_command("pack", "doctor", "--format", "json")
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("pack.doctor", payload["command"])
+        self.assertEqual("verityspec.packs", payload["entryPointGroup"])
+        self.assertGreater(payload["summary"]["builtInPackCount"], 0)
+        self.assertEqual([], payload["issues"])
+
+    def test_pack_doctor_text_output(self) -> None:
+        result = verity_command("pack", "doctor")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Pack diagnostics passed.", result.stdout)
+        self.assertIn("Entry point group: verityspec.packs", result.stdout)
+
+    def test_pack_doctor_reports_external_builtin_collision_without_internal_error(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pack_path = Path(tmp) / "core-collision"
+            shutil.copytree(ROOT / CUSTOM_PACK, pack_path)
+            manifest_path = pack_path / "pack.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["id"] = "verity.core"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+            result = verity_command(
+                "pack",
+                "doctor",
+                "--path",
+                str(pack_path),
+                "--format",
+                "json",
+            )
+
+        self.assertEqual(1, result.returncode)
+        self.assertEqual("", result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertEqual("pack.external.builtin_collision", payload["issues"][0]["code"])
+
     def test_pack_init_creates_valid_external_pack(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             pack_path = Path(tmp) / "features"

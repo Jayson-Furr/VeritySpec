@@ -65,7 +65,9 @@ Accepted implementation work should prove the pack is executable:
 - generator or report output is tested when the pack advertises a generator;
 - negative fixtures cover important validation, readiness, or reference-rule
   failures;
-- `verity pack validate` passes for the pack manifest and schemas.
+- `verity pack validate` passes for the pack manifest and schemas;
+- `verity pack doctor --path <pack>` reports no discovery errors for the local
+  pack path.
 
 ## Documentation Gate
 

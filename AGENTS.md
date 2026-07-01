@@ -206,6 +206,7 @@ CLI smoke checks from `README.md`, `docs/ci.md`, and `docs/release-checklist.md`
 verity --version
 verity init build/init-api --template api --owner platform --force
 verity pack list
+verity pack doctor
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity validate examples/basic
@@ -321,6 +322,7 @@ External pack checks:
 
 ```bash
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
+verity pack doctor --path tests/fixtures/custom_pack --format json
 verity pack validate verity.pack.features --path docs/fixtures/pack-scaffold/packs/features
 verity validate tests/fixtures/custom_pack_workspace
 verity lint tests/fixtures/custom_pack_workspace --strict
