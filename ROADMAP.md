@@ -1897,11 +1897,12 @@ Sprint 106 prepares and verifies the v0.44.0 release:
 
 ## v0.45.0
 
-The `v0.45.0` milestone is planned as the next weekly-sized sprint.
+The `v0.45.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
 | 107 | Complete | Progression and evidence pack foundations |
+| 108 | Complete | v0.45.0 release preparation and verification |
 
 ## Sprint 107 Priorities
 
@@ -1927,6 +1928,22 @@ Sprint 107 delivery added built-in `verity.pack.progression` and
 `evidence-report` generation, cross-pack coverage-dashboard support, schema
 bundle checks, CI coverage, public docs, changelog entries, release notes, and
 AI-agent guidance.
+
+## Sprint 108 Priorities
+
+Sprint 108 prepares and verifies the v0.45.0 release:
+
+- Promote Unreleased changelog entries into `0.45.0`.
+- Bump package metadata to `0.45.0`.
+- Confirm v0.45.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.45.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.45.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.45.0 GitHub release when checks pass.
+- Close the v0.45.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
