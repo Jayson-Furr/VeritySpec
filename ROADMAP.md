@@ -1994,6 +1994,32 @@ Sprint 110 prepares and verifies the v0.46.0 release:
 - Tag and publish the v0.46.0 GitHub release when checks pass.
 - Close the v0.46.0 milestone after release verification.
 
+## v0.47.0
+
+The `v0.47.0` milestone is in progress as the next weekly-sized sprint.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 111 | In Progress | Specialized-pack separation plan |
+
+## Sprint 111 Priorities
+
+Sprint 111 defines the first specialized-pack separation plan before any
+runtime removal or packaging split:
+
+- Document candidate official extension package names for game, mobile,
+  liveops, Unity, Godot, and Unreal packs while preserving existing pack IDs
+  and record kinds.
+- Define required runtime gates: installed-pack discovery, compatibility
+  metadata, official registry policy, detach gating, parity tests, migration
+  guidance, and rollback criteria.
+- Keep bundled specialized packs available until installed official extension
+  packages can prove compatibility and behavior parity.
+- Link the plan from README, pack docs, and engine/product-delivery guidance.
+- Add documentation contract tests that keep the plan discoverable and preserve
+  the no-immediate-removal boundary.
+- Update changelog, roadmap, and AI-agent guidance.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension
@@ -2025,55 +2051,56 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Define the first specialized-pack separation plan for game, mobile, liveops,
-   Unity, Godot, and Unreal packs, including compatibility metadata, migration
-   guidance, package naming, docs, examples, and rollback criteria.
-2. Add golden fixtures for accessibility and compliance report outputs after
+1. Add golden fixtures for accessibility and compliance report outputs after
    their report shapes stabilize.
-3. Add a maintainer review checklist for accepting external packs once public
+2. Add a maintainer review checklist for accepting external packs once public
    pack proposals become common.
-4. Add release-integrity consistency checks across package metadata, README,
+3. Add release-integrity consistency checks across package metadata, README,
    changelog, release notes, downstream pins, and release checklist examples.
-5. Add roadmap-report human-readable Markdown output for maintainer release
+4. Add roadmap-report human-readable Markdown output for maintainer release
    governance reviews.
-6. Add security-report release gaps for stale evidence and missing
+5. Add security-report release gaps for stale evidence and missing
    verification dates.
-7. Add workspace migration impact summaries that call out record, pack, and
+6. Add workspace migration impact summaries that call out record, pack, and
    generator behavior affected by a format upgrade.
-8. Add machine-readable issue-code catalog generation from `verity explain`
+7. Add machine-readable issue-code catalog generation from `verity explain`
    metadata for docs sites and CI integrations.
-9. Add an agent-context generation design note for bounded AI handoff
+8. Add an agent-context generation design note for bounded AI handoff
    artifacts before implementing generator behavior.
-10. Add an engine full-lifecycle support design note covering Unity, Godot, and
+9. Add an engine full-lifecycle support design note covering Unity, Godot, and
    Unreal game workspaces, shared engine library workspaces, lifecycle
    readiness profiles, evidence, liveops, decommissioning, archive records,
    and portfolio examples.
-11. Add a portfolio-level validation design note for multi-workspace product,
+10. Add a portfolio-level validation design note for multi-workspace product,
    service, library, and game portfolios before implementing aggregate reports.
-12. Add fixture refresh documentation for regenerating golden report outputs
+11. Add fixture refresh documentation for regenerating golden report outputs
    with deterministic timestamps and reviewing intentional output drift.
-13. Add a public architecture decision record template for future major pack,
+12. Add a public architecture decision record template for future major pack,
    generator, migration, and workspace-dependency decisions.
-14. Add profile-aware downstream CI template examples for release, regulated,
+13. Add profile-aware downstream CI template examples for release, regulated,
    public API, and internal-tool workspaces.
-15. Add deployment-target release evidence links that connect deployment
+14. Add deployment-target release evidence links that connect deployment
    records to security, observability, compliance, and future evidence packs.
-16. Add coverage-dashboard Markdown output for maintainers who need a
+15. Add coverage-dashboard Markdown output for maintainers who need a
    human-readable release-review artifact.
-17. Add local workspace-dependency prototype fixtures for exported records,
+16. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-18. Add engine portfolio example guidance and compatibility fixtures showing
+17. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
-19. Add product-delivery, mobile, and liveops readiness/gap reports for
+18. Add product-delivery, mobile, and liveops readiness/gap reports for
    implementation-ready, soft-launch, launch-candidate, remote-config,
    rollback, support, save-migration, decommission, data-deletion, and
    archive-review summaries without making commercial, legal, privacy-law,
    marketplace, or platform-certification claims.
-20. Add installed-pack health diagnostics that report entry-point resolution
+19. Add installed-pack health diagnostics that report entry-point resolution
     failures, duplicate installed pack IDs, built-in collisions, and local
     override behavior for maintainers debugging extension-pack installs.
+20. Add official-extension package compatibility fixture guidance for
+    validating mirrored pack manifests, schemas, readiness gates, reference
+    rules, examples, and generator metadata before any bundled pack detach
+    sprint begins.
 
 ## Working Rule
 
