@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.58.0
+
 - Added fixture refresh guidance for deterministic golden report regeneration,
   intentional output drift review, release-version fixture updates, and
   maintainer checklist coverage.
+- Added v0.58.0 release notes and roadmap closeout.
 
 ## 0.57.0
 
