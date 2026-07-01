@@ -261,6 +261,10 @@ verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery
+verity validate examples/lifecycle-readiness
+verity lint examples/lifecycle-readiness --strict
+verity readiness examples/lifecycle-readiness --strict
+verity graph examples/lifecycle-readiness
 verity validate examples/mobile
 verity lint examples/mobile --strict
 verity readiness examples/mobile --strict
@@ -300,6 +304,7 @@ verity generate schema-bundle examples/content --out build/content-schema-bundle
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate schema-bundle examples/progression --out build/progression-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json

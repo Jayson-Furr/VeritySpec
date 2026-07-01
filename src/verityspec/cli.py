@@ -20,6 +20,7 @@ from .generators import (
     generate_deployment_report,
     generate_evidence_report,
     generate_issue_code_catalog,
+    generate_lifecycle_readiness_report,
     generate_openapi,
     generate_observability_report,
     generate_pack_capability_index,
@@ -806,6 +807,10 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "coverage-dashboard": lambda: generate_coverage_dashboard(workspace, generated_at=generated_at),
         "deployment-report": lambda: generate_deployment_report(workspace, generated_at=generated_at),
         "evidence-report": lambda: generate_evidence_report(workspace, generated_at=generated_at),
+        "lifecycle-readiness-report": lambda: generate_lifecycle_readiness_report(
+            workspace,
+            generated_at=generated_at,
+        ),
         "pack-capability-index": lambda: generate_pack_capability_index(
             workspace,
             registry,
@@ -1057,6 +1062,7 @@ def build_parser() -> argparse.ArgumentParser:
             "deployment-report",
             "evidence-report",
             "issue-code-catalog",
+            "lifecycle-readiness-report",
             "pack-capability-index",
             "product-impact",
             "roadmap-report",

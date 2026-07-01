@@ -46,6 +46,7 @@ class FixtureRefreshDocTests(unittest.TestCase):
             "compliance-matrix examples/compliance",
             "deployment-report examples/deployment",
             "evidence-report examples/evidence",
+            "lifecycle-readiness-report examples/lifecycle-readiness",
             "coverage-dashboard tests/fixtures/cross_pack_coverage",
             "pack-capability-index tests/fixtures/custom_pack_workspace",
             "product-impact tests/fixtures/product_impact/baseline",
@@ -74,4 +75,3 @@ class FixtureRefreshDocTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

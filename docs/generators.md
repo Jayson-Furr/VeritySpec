@@ -18,6 +18,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
@@ -111,6 +112,19 @@ Evidence reports include:
 - Release gaps for missing subjects, missing artifact or URI fields, failing
   evidence, and inconclusive evidence
 - Per-evidence subject resolution, URI, and reference detail
+
+Lifecycle readiness reports include:
+
+- Workspace and VeritySpec version metadata
+- Loaded lifecycle pack IDs for product-delivery, mobile, and liveops records
+- Product-delivery, mobile, and liveops surface coverage
+- Stage coverage for implementation-ready, soft-launch, launch-candidate,
+  remote-config, rollback, support, save-migration, decommission,
+  data-deletion, and archive-review summaries
+- Gap entries for missing record kinds, non-ready records, and missing owners
+- Claim boundaries stating that the report does not assert commercial, legal,
+  privacy-law, marketplace, app-store, platform-certification, live-service,
+  support, or archival readiness
 
 Deployment reports include:
 
@@ -313,9 +327,10 @@ TypeScript and Python model generators support:
 OpenAPI, TypeScript, and Python output for `tests/fixtures/generator_maturity`
 is covered by golden-file tests. The `examples/security` security report,
 `examples/observability` observability report and schema bundle, deployment
-report, evidence report, cross-pack coverage dashboard, pack capability index,
-and product-impact report are also covered by committed golden fixtures. Game-core,
-game-assets, Unity, Godot, Unreal, gameplay, content, economy,
+report, evidence report, lifecycle readiness report, cross-pack coverage
+dashboard, pack capability index, and product-impact report are also covered
+by committed golden fixtures. Game-core, game-assets, Unity, Godot, Unreal,
+gameplay, content, economy,
 progression, product-delivery, mobile, liveops, and evidence schema-bundle
 smoke checks cover bundled schema generation for the built-in game, engine,
 progression, delivery, mobile, liveops, and evidence packs.

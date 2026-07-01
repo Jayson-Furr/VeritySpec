@@ -15,6 +15,7 @@ from verityspec.generators import (
     generate_coverage_dashboard_markdown,
     generate_deployment_report,
     generate_issue_code_catalog,
+    generate_lifecycle_readiness_report,
     generate_observability_report,
     generate_openapi,
     generate_pack_capability_index,
@@ -70,6 +71,10 @@ ISSUE_CODE_CATALOG_GOLDEN = (
 PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
 PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
+LIFECYCLE_READINESS_EXAMPLE = ROOT / "examples" / "lifecycle-readiness"
+LIFECYCLE_READINESS_GOLDEN = (
+    ROOT / "tests" / "golden" / "lifecycle_readiness" / "lifecycle_readiness_report.json"
+)
 WORKSPACE_DEPENDENCY_FIXTURES = ROOT / "tests" / "fixtures" / "workspace_dependencies"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 
@@ -124,6 +129,14 @@ def normalize_compliance_matrix_for_golden(report: dict) -> dict:
 
 
 def normalize_deployment_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_lifecycle_readiness_report_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -1017,7 +1030,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add product-delivery, mobile, and liveops", markdown)
+        self.assertIn("1. Add installed-pack health diagnostics", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1055,6 +1068,7 @@ The `v0.2.0` milestone is focused on active work.
         security_workspace = load_workspace(ROOT / "examples" / "security")
         observability_workspace = load_workspace(ROOT / "examples" / "observability")
         deployment_workspace = load_workspace(ROOT / "examples" / "deployment")
+        lifecycle_workspace = load_workspace(LIFECYCLE_READINESS_EXAMPLE)
         registry = load_pack_registry(security_workspace.pack_ids, security_workspace.pack_paths)
 
         self.assertEqual(
@@ -1089,6 +1103,13 @@ The `v0.2.0` milestone is focused on active work.
             FIXED_GENERATED_AT,
             generate_deployment_report(
                 deployment_workspace,
+                generated_at=FIXED_GENERATED_AT,
+            )["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_lifecycle_readiness_report(
+                lifecycle_workspace,
                 generated_at=FIXED_GENERATED_AT,
             )["generatedAt"],
         )
@@ -1848,6 +1869,56 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(str(ROOT / "examples" / "deployment"), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_deployment_report_for_golden(report))
+
+    def test_lifecycle_readiness_report_summarizes_complete_stages(self) -> None:
+        workspace = load_workspace(LIFECYCLE_READINESS_EXAMPLE)
+
+        report = generate_lifecycle_readiness_report(workspace, generated_at=FIXED_GENERATED_AT)
+
+        self.assertEqual("lifecycle_readiness_report", report["type"])
+        self.assertEqual(3, report["summary"]["trackedSurfaces"])
+        self.assertEqual(3, report["summary"]["loadedLifecyclePacks"])
+        self.assertEqual(10, report["summary"]["completeStages"])
+        self.assertEqual(0, report["summary"]["stagesWithGaps"])
+        self.assertEqual(0, report["summary"]["gapCount"])
+        self.assertIn("does not assert commercial", report["claimBoundaries"][1])
+        self.assertEqual(
+            ["productDelivery", "mobile", "liveOps"],
+            [surface["id"] for surface in report["surfaces"]],
+        )
+        self.assertEqual(
+            "implementation-ready",
+            report["stages"][0]["id"],
+        )
+
+    def test_lifecycle_readiness_report_summarizes_missing_lifecycle_kinds(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        report = generate_lifecycle_readiness_report(workspace, generated_at=FIXED_GENERATED_AT)
+
+        self.assertEqual("gaps", report["stages"][1]["coverageStatus"])
+        self.assertGreater(report["summary"]["gapCount"], 0)
+        self.assertIn("mobile.app-release", report["stages"][1]["missingKinds"])
+        self.assertEqual(
+            {
+                "stageId": "soft-launch",
+                "reason": "missing-kind",
+                "kind": "mobile.app-release",
+                "message": "Soft Launch has no mobile.app-release record.",
+            },
+            report["gaps"][0],
+        )
+
+    def test_lifecycle_readiness_report_matches_golden_file(self) -> None:
+        workspace = load_workspace(LIFECYCLE_READINESS_EXAMPLE)
+        expected = json.loads(LIFECYCLE_READINESS_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_lifecycle_readiness_report(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(LIFECYCLE_READINESS_EXAMPLE), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_lifecycle_readiness_report_for_golden(report))
 
     def test_deployment_readiness_requires_production_evidence_links(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

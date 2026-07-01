@@ -1,0 +1,307 @@
+{
+  "records": [
+    {
+      "id": "product.mobile_cat_cafe",
+      "kind": "product",
+      "name": "Mobile Cat Cafe",
+      "description": "Example mobile game release contract for store and lifecycle readiness posture.",
+      "status": "ready",
+      "owner": "product",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "hasMobileRelease",
+          "target": "mobile.app-release.cat_cafe_soft_launch"
+        }
+      ]
+    },
+    {
+      "id": "mobile.app-release.cat_cafe_soft_launch",
+      "kind": "mobile.app-release",
+      "name": "Cat Cafe Soft Launch Release",
+      "description": "Mobile release posture for a soft launch candidate without asserting store approval.",
+      "status": "ready",
+      "owner": "release",
+      "releaseStage": "soft-launch",
+      "releaseTrack": "closed-testing",
+      "platformTargets": [
+        "ios",
+        "android"
+      ],
+      "versionName": "0.5.0",
+      "buildNumber": "105",
+      "readinessProfileRefs": [
+        "readiness.profile.mobile_soft_launch"
+      ],
+      "references": [
+        {
+          "type": "hasStoreListing",
+          "target": "mobile.store-listing.cat_cafe"
+        },
+        {
+          "type": "hasPrivacyPolicy",
+          "target": "mobile.privacy-policy.cat_cafe"
+        },
+        {
+          "type": "hasApplePrivacyDetails",
+          "target": "mobile.apple-privacy-details.cat_cafe"
+        },
+        {
+          "type": "hasGooglePlayDataSafety",
+          "target": "mobile.google-play-data-safety.cat_cafe"
+        },
+        {
+          "type": "hasATTConsent",
+          "target": "mobile.att-consent.cat_cafe"
+        },
+        {
+          "type": "hasSDKInventory",
+          "target": "mobile.sdk-inventory.cat_cafe"
+        },
+        {
+          "type": "hasMonetizationPosture",
+          "target": "mobile.monetization-posture.cat_cafe"
+        },
+        {
+          "type": "hasEntitlement",
+          "target": "mobile.entitlement.remove_ads"
+        },
+        {
+          "type": "hasSoftLaunch",
+          "target": "mobile.soft-launch.canada"
+        },
+        {
+          "type": "hasLaunchCandidate",
+          "target": "mobile.launch-candidate.soft_launch_050"
+        },
+        {
+          "type": "hasCompatibilityMatrix",
+          "target": "mobile.compatibility-matrix.mobile_baseline"
+        }
+      ]
+    },
+    {
+      "id": "mobile.store-listing.cat_cafe",
+      "kind": "mobile.store-listing",
+      "name": "Cat Cafe Store Listing",
+      "description": "Draft listing metadata posture for iOS and Android stores.",
+      "status": "ready",
+      "owner": "marketing",
+      "stores": [
+        "apple-app-store",
+        "google-play"
+      ],
+      "metadataStatus": "review",
+      "contentRatingStatus": "draft",
+      "assetRefs": [
+        "asset.identity.key_art"
+      ],
+      "notes": "Listing metadata is reviewed internally before submission.",
+      "references": [
+        {
+          "type": "documentsPrivacyPolicy",
+          "target": "mobile.privacy-policy.cat_cafe"
+        }
+      ]
+    },
+    {
+      "id": "mobile.privacy-policy.cat_cafe",
+      "kind": "mobile.privacy-policy",
+      "name": "Cat Cafe Privacy Policy",
+      "description": "Privacy policy evidence reference for the mobile release posture.",
+      "status": "ready",
+      "owner": "privacy",
+      "policyUri": "docs/privacy-policy.md",
+      "dataUseSummary": "Documents analytics, purchases, ads posture, and support data handling for review.",
+      "evidenceRefs": [
+        "evidence.requirement.privacy_review"
+      ],
+      "reviewStatus": "review",
+      "references": [
+        {
+          "type": "documentsApplePrivacyDetails",
+          "target": "mobile.apple-privacy-details.cat_cafe"
+        },
+        {
+          "type": "documentsGooglePlayDataSafety",
+          "target": "mobile.google-play-data-safety.cat_cafe"
+        }
+      ]
+    },
+    {
+      "id": "mobile.apple-privacy-details.cat_cafe",
+      "kind": "mobile.apple-privacy-details",
+      "name": "Apple Privacy Details",
+      "description": "Apple privacy detail posture for review; not a store approval claim.",
+      "status": "ready",
+      "owner": "privacy",
+      "dataCategories": [
+        "purchases",
+        "usage-data",
+        "diagnostics"
+      ],
+      "collectionPosture": "collected",
+      "trackingPosture": "no-tracking",
+      "nutritionLabelStatus": "review",
+      "references": []
+    },
+    {
+      "id": "mobile.google-play-data-safety.cat_cafe",
+      "kind": "mobile.google-play-data-safety",
+      "name": "Google Play Data Safety",
+      "description": "Google Play Data Safety posture for review; not a store approval claim.",
+      "status": "ready",
+      "owner": "privacy",
+      "dataTypes": [
+        "purchases",
+        "app-activity",
+        "diagnostics"
+      ],
+      "sharingPosture": "not-shared",
+      "securityPractices": [
+        "encrypted-in-transit",
+        "user-data-deletion-request-path"
+      ],
+      "formStatus": "review",
+      "references": []
+    },
+    {
+      "id": "mobile.att-consent.cat_cafe",
+      "kind": "mobile.att-consent",
+      "name": "ATT Consent Posture",
+      "description": "ATT consent posture for the mobile release.",
+      "status": "ready",
+      "owner": "privacy",
+      "consentRequired": false,
+      "promptStatus": "not-required",
+      "rationale": "The example release does not declare cross-app tracking.",
+      "copyRefs": [],
+      "references": []
+    },
+    {
+      "id": "mobile.sdk-inventory.cat_cafe",
+      "kind": "mobile.sdk-inventory",
+      "name": "Mobile SDK Inventory",
+      "description": "SDK inventory used to inform privacy and data-safety records.",
+      "status": "ready",
+      "owner": "engineering",
+      "sdks": [
+        "engine-runtime",
+        "analytics-client",
+        "iap-client"
+      ],
+      "reviewStatus": "review",
+      "dataCollectionNotes": "SDK declarations are reviewed before launch-candidate readiness.",
+      "references": [
+        {
+          "type": "informsPrivacyPolicy",
+          "target": "mobile.privacy-policy.cat_cafe"
+        }
+      ]
+    },
+    {
+      "id": "mobile.monetization-posture.cat_cafe",
+      "kind": "mobile.monetization-posture",
+      "name": "Mobile Monetization Posture",
+      "description": "Ads and in-app-purchase posture for the soft launch.",
+      "status": "ready",
+      "owner": "monetization",
+      "monetizationTypes": [
+        "ads",
+        "iap"
+      ],
+      "reviewStatus": "review",
+      "storeProductRefs": [
+        "store.product.remove_ads"
+      ],
+      "notes": "Pricing approval is tracked outside this example.",
+      "references": [
+        {
+          "type": "grantsEntitlement",
+          "target": "mobile.entitlement.remove_ads"
+        }
+      ]
+    },
+    {
+      "id": "mobile.entitlement.remove_ads",
+      "kind": "mobile.entitlement",
+      "name": "Remove Ads Entitlement",
+      "description": "Remove Ads entitlement contract for IAP fulfillment posture.",
+      "status": "ready",
+      "owner": "monetization",
+      "entitlementType": "remove-ads",
+      "fulfillmentModel": "store-receipt",
+      "restorePolicy": "Restore purchases from store receipt state.",
+      "references": []
+    },
+    {
+      "id": "mobile.soft-launch.canada",
+      "kind": "mobile.soft-launch",
+      "name": "Canada Soft Launch",
+      "description": "Soft launch posture for one market and explicit telemetry success criteria.",
+      "status": "ready",
+      "owner": "release",
+      "markets": [
+        "CA"
+      ],
+      "successCriteria": [
+        "day-1-retention-watchlist",
+        "crash-free-session-watchlist"
+      ],
+      "telemetryRefs": [
+        "telemetry.event.session_started"
+      ],
+      "durationPolicy": "Review after two weekly cohorts.",
+      "references": [
+        {
+          "type": "promotesLaunchCandidate",
+          "target": "mobile.launch-candidate.soft_launch_050"
+        }
+      ]
+    },
+    {
+      "id": "mobile.launch-candidate.soft_launch_050",
+      "kind": "mobile.launch-candidate",
+      "name": "Soft Launch 0.5.0 Candidate",
+      "description": "Launch-candidate readiness posture for soft launch build 0.5.0.",
+      "status": "ready",
+      "owner": "release",
+      "candidateVersion": "0.5.0",
+      "readinessProfile": "mobile-soft-launch",
+      "approvalStatus": "review",
+      "knownIssueRefs": [],
+      "references": [
+        {
+          "type": "usesCompatibilityMatrix",
+          "target": "mobile.compatibility-matrix.mobile_baseline"
+        },
+        {
+          "type": "hasPrivacyPolicy",
+          "target": "mobile.privacy-policy.cat_cafe"
+        }
+      ]
+    },
+    {
+      "id": "mobile.compatibility-matrix.mobile_baseline",
+      "kind": "mobile.compatibility-matrix",
+      "name": "Mobile Compatibility Baseline",
+      "description": "Compatibility posture for supported mobile platforms and device classes.",
+      "status": "ready",
+      "owner": "qa",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "minimumOs": {
+        "ios": "16.0",
+        "android": "10"
+      },
+      "deviceClasses": [
+        "phone",
+        "tablet"
+      ],
+      "testPolicy": "Smoke-test representative low, mid, and high memory devices before launch candidate.",
+      "references": []
+    }
+  ]
+}

@@ -1,0 +1,906 @@
+{
+  "type": "lifecycle_readiness_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.lifecycle_readiness",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.product-delivery",
+    "verity.pack.mobile",
+    "verity.pack.liveops"
+  ],
+  "recordCount": 41,
+  "trackedLifecycleRecordCount": 38,
+  "summary": {
+    "trackedSurfaces": 3,
+    "loadedLifecyclePacks": 3,
+    "trackedLifecycleRecordKinds": 38,
+    "coveredLifecycleRecordKinds": 38,
+    "stageCount": 10,
+    "completeStages": 10,
+    "stagesWithGaps": 0,
+    "gapCount": 0,
+    "byRecordKind": {
+      "product.scope": 1,
+      "commercial.posture": 1,
+      "project-management.model": 1,
+      "decision.record": 1,
+      "readiness.profile": 1,
+      "evidence.requirement": 1,
+      "release.process": 1,
+      "operations.model": 1,
+      "support.policy": 1,
+      "maintenance.policy": 1,
+      "archive.policy": 1,
+      "decommission.policy": 1,
+      "scanner.capability": 1,
+      "generator.capability": 1,
+      "validation.runner": 1,
+      "editor.surface": 1,
+      "agent-context.exporter": 1,
+      "mobile.app-release": 1,
+      "mobile.store-listing": 1,
+      "mobile.privacy-policy": 1,
+      "mobile.apple-privacy-details": 1,
+      "mobile.google-play-data-safety": 1,
+      "mobile.att-consent": 1,
+      "mobile.sdk-inventory": 1,
+      "mobile.monetization-posture": 1,
+      "mobile.entitlement": 1,
+      "mobile.soft-launch": 1,
+      "mobile.launch-candidate": 1,
+      "mobile.compatibility-matrix": 1,
+      "liveops.config": 1,
+      "liveops.remote-config": 1,
+      "liveops.rollback-plan": 1,
+      "liveops.analytics-taxonomy": 1,
+      "liveops.support-category": 1,
+      "liveops.save-migration-policy": 1,
+      "liveops.decommission-plan": 1,
+      "liveops.data-deletion-policy": 1,
+      "liveops.archive-handling": 1
+    },
+    "byStatus": {
+      "ready": 38
+    },
+    "byOwner": {
+      "analytics": 1,
+      "engineering": 2,
+      "liveops": 2,
+      "maintenance": 3,
+      "marketing": 1,
+      "monetization": 2,
+      "operations": 4,
+      "privacy": 5,
+      "product": 2,
+      "program": 2,
+      "qa": 1,
+      "release": 6,
+      "support": 2,
+      "tooling": 5
+    }
+  },
+  "claimBoundaries": [
+    "This report summarizes VeritySpec record coverage, lifecycle gaps, and record status only.",
+    "It does not assert commercial, legal, privacy-law, marketplace, app-store, platform-certification, live-service, support, or archival readiness.",
+    "External approvals, policy review, platform review, legal review, privacy review, marketplace review, and production evidence remain downstream responsibilities."
+  ],
+  "surfaces": [
+    {
+      "id": "productDelivery",
+      "name": "Product Delivery",
+      "packId": "verity.pack.product-delivery",
+      "packLoaded": true,
+      "recordKinds": [
+        "product.scope",
+        "commercial.posture",
+        "project-management.model",
+        "decision.record",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "archive.policy",
+        "decommission.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "editor.surface",
+        "agent-context.exporter"
+      ],
+      "recordCount": 17,
+      "presentKinds": [
+        "product.scope",
+        "commercial.posture",
+        "project-management.model",
+        "decision.record",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "archive.policy",
+        "decommission.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "editor.surface",
+        "agent-context.exporter"
+      ],
+      "missingKinds": [],
+      "byKind": {
+        "product.scope": 1,
+        "commercial.posture": 1,
+        "project-management.model": 1,
+        "decision.record": 1,
+        "readiness.profile": 1,
+        "evidence.requirement": 1,
+        "release.process": 1,
+        "operations.model": 1,
+        "support.policy": 1,
+        "maintenance.policy": 1,
+        "archive.policy": 1,
+        "decommission.policy": 1,
+        "scanner.capability": 1,
+        "generator.capability": 1,
+        "validation.runner": 1,
+        "editor.surface": 1,
+        "agent-context.exporter": 1
+      }
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile",
+      "packId": "verity.pack.mobile",
+      "packLoaded": true,
+      "recordKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.sdk-inventory",
+        "mobile.monetization-posture",
+        "mobile.entitlement",
+        "mobile.soft-launch",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ],
+      "recordCount": 12,
+      "presentKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.sdk-inventory",
+        "mobile.monetization-posture",
+        "mobile.entitlement",
+        "mobile.soft-launch",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ],
+      "missingKinds": [],
+      "byKind": {
+        "mobile.app-release": 1,
+        "mobile.store-listing": 1,
+        "mobile.privacy-policy": 1,
+        "mobile.apple-privacy-details": 1,
+        "mobile.google-play-data-safety": 1,
+        "mobile.att-consent": 1,
+        "mobile.sdk-inventory": 1,
+        "mobile.monetization-posture": 1,
+        "mobile.entitlement": 1,
+        "mobile.soft-launch": 1,
+        "mobile.launch-candidate": 1,
+        "mobile.compatibility-matrix": 1
+      }
+    },
+    {
+      "id": "liveOps",
+      "name": "LiveOps",
+      "packId": "verity.pack.liveops",
+      "packLoaded": true,
+      "recordKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category",
+        "liveops.save-migration-policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ],
+      "recordCount": 9,
+      "presentKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category",
+        "liveops.save-migration-policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ],
+      "missingKinds": [],
+      "byKind": {
+        "liveops.config": 1,
+        "liveops.remote-config": 1,
+        "liveops.rollback-plan": 1,
+        "liveops.analytics-taxonomy": 1,
+        "liveops.support-category": 1,
+        "liveops.save-migration-policy": 1,
+        "liveops.decommission-plan": 1,
+        "liveops.data-deletion-policy": 1,
+        "liveops.archive-handling": 1
+      }
+    }
+  ],
+  "stages": [
+    {
+      "id": "implementation-ready",
+      "name": "Implementation Ready",
+      "description": "Spec-driven product-delivery coverage for implementation handoff.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "product.scope",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "agent-context.exporter"
+      ],
+      "presentKinds": [
+        "product.scope",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "agent-context.exporter"
+      ],
+      "missingKinds": [],
+      "recordCount": 11,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "agent-context.exporter.implementation_bundle",
+          "kind": "agent-context.exporter",
+          "name": "Implementation Agent Context Exporter",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "evidence.requirement.local_ci",
+          "kind": "evidence.requirement",
+          "name": "Local CI Evidence Requirement",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "generator.capability.agent_context",
+          "kind": "generator.capability",
+          "name": "Agent Context Generator Capability",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "maintenance.policy.active",
+          "kind": "maintenance.policy",
+          "name": "Active Maintenance Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "operations.model.maintained_toolkit",
+          "kind": "operations.model",
+          "name": "Maintained Toolkit Operations",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "product.scope.engine_toolkit_delivery",
+          "kind": "product.scope",
+          "name": "Engine Toolkit Delivery Scope",
+          "status": "ready",
+          "owner": "product"
+        },
+        {
+          "id": "readiness.profile.private_alpha",
+          "kind": "readiness.profile",
+          "name": "Private Alpha Readiness Profile",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "release.process.tagged_alpha",
+          "kind": "release.process",
+          "name": "Tagged Alpha Release Process",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "scanner.capability.workspace_contracts",
+          "kind": "scanner.capability",
+          "name": "Workspace Contract Scanner",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "support.policy.private_alpha",
+          "kind": "support.policy",
+          "name": "Private Alpha Support Policy",
+          "status": "ready",
+          "owner": "support"
+        },
+        {
+          "id": "validation.runner.local_ci",
+          "kind": "validation.runner",
+          "name": "Local CI Validation Runner",
+          "status": "ready",
+          "owner": "tooling"
+        }
+      ]
+    },
+    {
+      "id": "soft-launch",
+      "name": "Soft Launch",
+      "description": "Mobile soft-launch, telemetry, support, and compatibility coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.sdk-inventory",
+        "mobile.soft-launch",
+        "mobile.compatibility-matrix",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category"
+      ],
+      "presentKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.sdk-inventory",
+        "mobile.soft-launch",
+        "mobile.compatibility-matrix",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category"
+      ],
+      "missingKinds": [],
+      "recordCount": 8,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "liveops.analytics-taxonomy.cat_cafe",
+          "kind": "liveops.analytics-taxonomy",
+          "name": "LiveOps Analytics Taxonomy",
+          "status": "ready",
+          "owner": "analytics"
+        },
+        {
+          "id": "liveops.support-category.purchase_issue",
+          "kind": "liveops.support-category",
+          "name": "Purchase Issue Support",
+          "status": "ready",
+          "owner": "support"
+        },
+        {
+          "id": "mobile.app-release.cat_cafe_soft_launch",
+          "kind": "mobile.app-release",
+          "name": "Cat Cafe Soft Launch Release",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.compatibility-matrix.mobile_baseline",
+          "kind": "mobile.compatibility-matrix",
+          "name": "Mobile Compatibility Baseline",
+          "status": "ready",
+          "owner": "qa"
+        },
+        {
+          "id": "mobile.privacy-policy.cat_cafe",
+          "kind": "mobile.privacy-policy",
+          "name": "Cat Cafe Privacy Policy",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.sdk-inventory.cat_cafe",
+          "kind": "mobile.sdk-inventory",
+          "name": "Mobile SDK Inventory",
+          "status": "ready",
+          "owner": "engineering"
+        },
+        {
+          "id": "mobile.soft-launch.canada",
+          "kind": "mobile.soft-launch",
+          "name": "Canada Soft Launch",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.store-listing.cat_cafe",
+          "kind": "mobile.store-listing",
+          "name": "Cat Cafe Store Listing",
+          "status": "ready",
+          "owner": "marketing"
+        }
+      ]
+    },
+    {
+      "id": "launch-candidate",
+      "name": "Launch Candidate",
+      "description": "Mobile launch-candidate review coverage without external approval claims.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "release.process",
+        "evidence.requirement",
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.monetization-posture",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ],
+      "presentKinds": [
+        "release.process",
+        "evidence.requirement",
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.monetization-posture",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ],
+      "missingKinds": [],
+      "recordCount": 10,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "evidence.requirement.local_ci",
+          "kind": "evidence.requirement",
+          "name": "Local CI Evidence Requirement",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.app-release.cat_cafe_soft_launch",
+          "kind": "mobile.app-release",
+          "name": "Cat Cafe Soft Launch Release",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.apple-privacy-details.cat_cafe",
+          "kind": "mobile.apple-privacy-details",
+          "name": "Apple Privacy Details",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.att-consent.cat_cafe",
+          "kind": "mobile.att-consent",
+          "name": "ATT Consent Posture",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.compatibility-matrix.mobile_baseline",
+          "kind": "mobile.compatibility-matrix",
+          "name": "Mobile Compatibility Baseline",
+          "status": "ready",
+          "owner": "qa"
+        },
+        {
+          "id": "mobile.google-play-data-safety.cat_cafe",
+          "kind": "mobile.google-play-data-safety",
+          "name": "Google Play Data Safety",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.launch-candidate.soft_launch_050",
+          "kind": "mobile.launch-candidate",
+          "name": "Soft Launch 0.5.0 Candidate",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.monetization-posture.cat_cafe",
+          "kind": "mobile.monetization-posture",
+          "name": "Mobile Monetization Posture",
+          "status": "ready",
+          "owner": "monetization"
+        },
+        {
+          "id": "mobile.store-listing.cat_cafe",
+          "kind": "mobile.store-listing",
+          "name": "Cat Cafe Store Listing",
+          "status": "ready",
+          "owner": "marketing"
+        },
+        {
+          "id": "release.process.tagged_alpha",
+          "kind": "release.process",
+          "name": "Tagged Alpha Release Process",
+          "status": "ready",
+          "owner": "release"
+        }
+      ]
+    },
+    {
+      "id": "remote-config",
+      "name": "Remote Config",
+      "description": "LiveOps configuration, remote-config bounds, rollback, and analytics coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy"
+      ],
+      "presentKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy"
+      ],
+      "missingKinds": [],
+      "recordCount": 4,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "liveops.analytics-taxonomy.cat_cafe",
+          "kind": "liveops.analytics-taxonomy",
+          "name": "LiveOps Analytics Taxonomy",
+          "status": "ready",
+          "owner": "analytics"
+        },
+        {
+          "id": "liveops.config.cat_cafe",
+          "kind": "liveops.config",
+          "name": "Cat Cafe LiveOps Config",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "liveops.remote-config.cat_cafe",
+          "kind": "liveops.remote-config",
+          "name": "Remote Config Bounds",
+          "status": "ready",
+          "owner": "liveops"
+        },
+        {
+          "id": "liveops.rollback-plan.remote_config",
+          "kind": "liveops.rollback-plan",
+          "name": "Remote Config Rollback",
+          "status": "ready",
+          "owner": "liveops"
+        }
+      ]
+    },
+    {
+      "id": "rollback",
+      "name": "Rollback",
+      "description": "Rollback ownership and operating-process coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "liveops.rollback-plan"
+      ],
+      "presentKinds": [
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "liveops.rollback-plan"
+      ],
+      "missingKinds": [],
+      "recordCount": 4,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "liveops.rollback-plan.remote_config",
+          "kind": "liveops.rollback-plan",
+          "name": "Remote Config Rollback",
+          "status": "ready",
+          "owner": "liveops"
+        },
+        {
+          "id": "operations.model.maintained_toolkit",
+          "kind": "operations.model",
+          "name": "Maintained Toolkit Operations",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "release.process.tagged_alpha",
+          "kind": "release.process",
+          "name": "Tagged Alpha Release Process",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "support.policy.private_alpha",
+          "kind": "support.policy",
+          "name": "Private Alpha Support Policy",
+          "status": "ready",
+          "owner": "support"
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "name": "Support",
+      "description": "Support-policy and liveops support-category coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "operations.model",
+        "support.policy",
+        "liveops.support-category"
+      ],
+      "presentKinds": [
+        "operations.model",
+        "support.policy",
+        "liveops.support-category"
+      ],
+      "missingKinds": [],
+      "recordCount": 3,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "liveops.support-category.purchase_issue",
+          "kind": "liveops.support-category",
+          "name": "Purchase Issue Support",
+          "status": "ready",
+          "owner": "support"
+        },
+        {
+          "id": "operations.model.maintained_toolkit",
+          "kind": "operations.model",
+          "name": "Maintained Toolkit Operations",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "support.policy.private_alpha",
+          "kind": "support.policy",
+          "name": "Private Alpha Support Policy",
+          "status": "ready",
+          "owner": "support"
+        }
+      ]
+    },
+    {
+      "id": "save-migration",
+      "name": "Save Migration",
+      "description": "Save-migration, compatibility, and maintenance coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "maintenance.policy",
+        "mobile.compatibility-matrix",
+        "liveops.save-migration-policy"
+      ],
+      "presentKinds": [
+        "maintenance.policy",
+        "mobile.compatibility-matrix",
+        "liveops.save-migration-policy"
+      ],
+      "missingKinds": [],
+      "recordCount": 3,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "liveops.save-migration-policy.profile_v2",
+          "kind": "liveops.save-migration-policy",
+          "name": "Profile Save Migration v2",
+          "status": "ready",
+          "owner": "engineering"
+        },
+        {
+          "id": "maintenance.policy.active",
+          "kind": "maintenance.policy",
+          "name": "Active Maintenance Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "mobile.compatibility-matrix.mobile_baseline",
+          "kind": "mobile.compatibility-matrix",
+          "name": "Mobile Compatibility Baseline",
+          "status": "ready",
+          "owner": "qa"
+        }
+      ]
+    },
+    {
+      "id": "decommission",
+      "name": "Decommission",
+      "description": "Decommission, data-deletion, and archive-handling coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "decommission.policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ],
+      "presentKinds": [
+        "decommission.policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ],
+      "missingKinds": [],
+      "recordCount": 4,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "decommission.policy.sunset",
+          "kind": "decommission.policy",
+          "name": "Sunset Decommission Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "liveops.archive-handling.final_manifest",
+          "kind": "liveops.archive-handling",
+          "name": "LiveOps Archive Handling",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "liveops.data-deletion-policy.player_request",
+          "kind": "liveops.data-deletion-policy",
+          "name": "Player Request Data Deletion",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "liveops.decommission-plan.sunset",
+          "kind": "liveops.decommission-plan",
+          "name": "LiveOps Sunset Plan",
+          "status": "ready",
+          "owner": "operations"
+        }
+      ]
+    },
+    {
+      "id": "data-deletion",
+      "name": "Data Deletion",
+      "description": "Privacy, data-safety, and deletion-handling coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "liveops.data-deletion-policy"
+      ],
+      "presentKinds": [
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "liveops.data-deletion-policy"
+      ],
+      "missingKinds": [],
+      "recordCount": 4,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "liveops.data-deletion-policy.player_request",
+          "kind": "liveops.data-deletion-policy",
+          "name": "Player Request Data Deletion",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.apple-privacy-details.cat_cafe",
+          "kind": "mobile.apple-privacy-details",
+          "name": "Apple Privacy Details",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.google-play-data-safety.cat_cafe",
+          "kind": "mobile.google-play-data-safety",
+          "name": "Google Play Data Safety",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.privacy-policy.cat_cafe",
+          "kind": "mobile.privacy-policy",
+          "name": "Cat Cafe Privacy Policy",
+          "status": "ready",
+          "owner": "privacy"
+        }
+      ]
+    },
+    {
+      "id": "archive-review",
+      "name": "Archive Review",
+      "description": "Archive policy, decommission policy, evidence, and liveops archive coverage.",
+      "coverageStatus": "complete",
+      "requiredKinds": [
+        "archive.policy",
+        "decommission.policy",
+        "evidence.requirement",
+        "liveops.archive-handling"
+      ],
+      "presentKinds": [
+        "archive.policy",
+        "decommission.policy",
+        "evidence.requirement",
+        "liveops.archive-handling"
+      ],
+      "missingKinds": [],
+      "recordCount": 4,
+      "nonReadyRecords": [],
+      "missingOwnerRecords": [],
+      "records": [
+        {
+          "id": "archive.policy.retained_source",
+          "kind": "archive.policy",
+          "name": "Retained Source Archive Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "decommission.policy.sunset",
+          "kind": "decommission.policy",
+          "name": "Sunset Decommission Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "evidence.requirement.local_ci",
+          "kind": "evidence.requirement",
+          "name": "Local CI Evidence Requirement",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "liveops.archive-handling.final_manifest",
+          "kind": "liveops.archive-handling",
+          "name": "LiveOps Archive Handling",
+          "status": "ready",
+          "owner": "operations"
+        }
+      ]
+    }
+  ],
+  "gaps": []
+}

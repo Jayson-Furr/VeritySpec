@@ -516,6 +516,34 @@
         "editor.surface",
         "agent-context.exporter"
       ]
+    },
+    {
+      "id": "lifecycle-readiness-report",
+      "name": "Lifecycle Readiness Report",
+      "description": "Summarize product-delivery lifecycle coverage and gaps across product-delivery, mobile, and liveops records.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "product.scope",
+        "commercial.posture",
+        "project-management.model",
+        "decision.record",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "archive.policy",
+        "decommission.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "editor.surface",
+        "agent-context.exporter"
+      ]
     }
   ]
 }

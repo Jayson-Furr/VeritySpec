@@ -1,0 +1,14 @@
+{
+  "workspace": "examples.lifecycle_readiness",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.product-delivery",
+    "verity.pack.mobile",
+    "verity.pack.liveops"
+  ],
+  "packPaths": [],
+  "records": [
+    "records/*.json"
+  ]
+}

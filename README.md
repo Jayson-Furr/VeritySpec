@@ -52,7 +52,8 @@ This implementation provides:
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices,
   deployment reports with linked release evidence, evidence reports,
-  cross-pack coverage dashboards with JSON and Markdown output,
+  lifecycle readiness gap reports for product-delivery, mobile, and liveops
+  surfaces, cross-pack coverage dashboards with JSON and Markdown output,
   product-impact reports, pack capability indexes, roadmap governance
   reports, and issue-code catalogs, including security release-gap summaries
   for stale evidence and missing verification dates, with OpenAPI
@@ -157,6 +158,8 @@ verity validate examples/economy
 verity validate examples/progression
 verity validate examples/product-delivery
 verity graph examples/product-delivery
+verity validate examples/lifecycle-readiness
+verity graph examples/lifecycle-readiness
 verity validate examples/mobile
 verity graph examples/mobile
 verity validate examples/liveops
@@ -181,6 +184,7 @@ verity readiness examples/content --strict
 verity readiness examples/economy --strict
 verity readiness examples/progression --strict
 verity readiness examples/product-delivery --strict
+verity readiness examples/lifecycle-readiness --strict
 verity readiness examples/mobile --strict
 verity readiness examples/liveops --strict
 verity readiness examples/evidence --strict
@@ -203,6 +207,7 @@ verity generate accessibility-report examples/accessibility --out build/accessib
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
@@ -278,6 +283,7 @@ verity generate openapi examples/basic --out build/openapi.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
 verity generate schema-bundle examples/unity --out build/unity-schema-bundle.json
