@@ -36,6 +36,7 @@ POSITIVE_EXAMPLES = [
     ROOT / "examples" / "economy",
     ROOT / "examples" / "progression",
     ROOT / "examples" / "product-delivery",
+    ROOT / "examples" / "portfolio",
     ROOT / "examples" / "mobile",
     ROOT / "examples" / "liveops",
     ROOT / "examples" / "evidence",

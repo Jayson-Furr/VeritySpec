@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added portfolio-level validation foundation guidance and an executable
+  `examples/portfolio` workspace for local-only multi-workspace portfolio
+  planning before aggregate reports or workspace dependency resolution.
+
 ## 0.56.0
 
 - Added engine full-lifecycle support design guidance for Unity, Godot,

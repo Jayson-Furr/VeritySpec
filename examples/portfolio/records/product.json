@@ -1,0 +1,84 @@
+{
+  "records": [
+    {
+      "id": "product.portfolio_validation",
+      "kind": "product",
+      "name": "Portfolio Validation Foundation",
+      "description": "An example portfolio workspace that describes multi-workspace validation posture without implementing aggregate report behavior.",
+      "status": "ready",
+      "owner": "platform",
+      "version": "0.1.0",
+      "references": [
+        {
+          "type": "hasProductScope",
+          "target": "product.scope.multi_workspace_portfolio"
+        }
+      ]
+    },
+    {
+      "id": "product.scope.multi_workspace_portfolio",
+      "kind": "product.scope",
+      "name": "Multi-Workspace Portfolio Scope",
+      "description": "Defines a local-only portfolio review scope for product, service, library, game, engine-toolkit, shared-library, integration, and portfolio workspaces.",
+      "status": "ready",
+      "owner": "product",
+      "scopeType": "portfolio",
+      "productArea": "multi-workspace validation",
+      "intent": "Keep portfolio validation planning explicit while normal workspace validation remains the source of executable truth.",
+      "outOfScope": [
+        "workspace dependency resolver behavior",
+        "remote registry behavior",
+        "legal, privacy-law, marketplace, app-store, or platform-certification guarantees"
+      ],
+      "repository": "Jason-Furr/verity-spec",
+      "targetAudience": [
+        "product owners",
+        "platform maintainers",
+        "engine-tooling engineers",
+        "AI coding agents"
+      ],
+      "statusTargets": [
+        "portfolio-design",
+        "aggregate-report-foundation"
+      ],
+      "references": [
+        {
+          "type": "hasCommercialPosture",
+          "target": "commercial.posture.open_source_foundation"
+        },
+        {
+          "type": "managedBy",
+          "target": "project-management.model.portfolio_github_native"
+        },
+        {
+          "type": "hasReadinessProfile",
+          "target": "readiness.profile.portfolio_foundation"
+        },
+        {
+          "type": "usesReleaseProcess",
+          "target": "release.process.portfolio_design"
+        },
+        {
+          "type": "usesOperationsModel",
+          "target": "operations.model.maintained_portfolio"
+        },
+        {
+          "type": "hasSupportPolicy",
+          "target": "support.policy.portfolio_foundation"
+        },
+        {
+          "type": "hasMaintenancePolicy",
+          "target": "maintenance.policy.portfolio_examples"
+        },
+        {
+          "type": "hasArchivePolicy",
+          "target": "archive.policy.portfolio_records"
+        },
+        {
+          "type": "hasDecommissionPolicy",
+          "target": "decommission.policy.portfolio_transition"
+        }
+      ]
+    }
+  ]
+}
