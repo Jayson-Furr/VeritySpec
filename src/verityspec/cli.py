@@ -16,6 +16,7 @@ from .generators import (
     generate_cli_reference,
     generate_compliance_matrix,
     generate_coverage_dashboard,
+    generate_coverage_dashboard_markdown,
     generate_deployment_report,
     generate_evidence_report,
     generate_issue_code_catalog,
@@ -721,7 +722,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
             print(f"Generated roadmap-report: {args.out}")
         return EXIT_SUCCESS
 
-    if args.format != "json":
+    markdown_workspace_artifacts = {"coverage-dashboard"}
+    if args.format != "json" and args.artifact not in markdown_workspace_artifacts:
         print(
             f"generate {args.artifact} supports --format json only.",
             file=sys.stderr,
@@ -811,6 +813,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         ),
     }
     value = generators[args.artifact]()
+    if args.artifact == "coverage-dashboard" and args.format == "markdown":
+        value = generate_coverage_dashboard_markdown(value)
     text = write_generated(value, args.out)
     if not args.out:
         print(text, end="" if text.endswith("\n") else "\n")

@@ -49,6 +49,7 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | `tests/golden/deployment/deployment_report.json` | `verity generate deployment-report examples/deployment --generated-at "$GENERATED_AT" --out build/deployment-report.json` |
 | `tests/golden/evidence_report/evidence_report.json` | `verity generate evidence-report examples/evidence --generated-at "$GENERATED_AT" --out build/evidence-report.json` |
 | `tests/golden/coverage_dashboard/coverage_dashboard.json` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --generated-at "$GENERATED_AT" --out build/coverage-dashboard.json` |
+| `tests/golden/coverage_dashboard/coverage_dashboard.md` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --generated-at "$GENERATED_AT" --out build/coverage-dashboard.md` |
 | `tests/golden/pack_capability_index/pack_capability_index.json` | `verity generate pack-capability-index tests/fixtures/custom_pack_workspace --generated-at "$GENERATED_AT" --out build/pack-capability-index.json` |
 | `tests/golden/product_impact/product_impact.json` | `verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --generated-at "$GENERATED_AT" --out build/product-impact.json` |
 | `tests/golden/issue_code_catalog/issue_code_catalog.json` | `verity generate issue-code-catalog --generated-at "$GENERATED_AT" --out build/issue-code-catalog.json` |
@@ -63,6 +64,10 @@ python -m json.tool build/security-report.json >/dev/null
 python -m json.tool build/coverage-dashboard.json >/dev/null
 python -m json.tool build/issue-code-catalog.json >/dev/null
 ```
+
+Markdown golden fixtures preserve normalized placeholder values for dynamic
+fields such as `<generatedAt>`, `<verityVersion>`, and `<workspacePath>` when
+tests compare committed output.
 
 ## Review Procedure
 

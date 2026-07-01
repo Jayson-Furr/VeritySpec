@@ -61,7 +61,7 @@
       "name": "Coverage Dashboard",
       "description": "Summarize cross-pack product-surface coverage for release review.",
       "artifactType": "report",
-      "outputFormats": ["json"],
+      "outputFormats": ["json", "markdown"],
       "recordKinds": ["product", "schema.object"]
     },
     {

@@ -1307,6 +1307,167 @@ def generate_coverage_dashboard(workspace: Workspace, generated_at: str | None =
     }
 
 
+def markdown_join(values: list[Any], *, empty: str = "none") -> str:
+    items = [markdown_cell(value) for value in values if value not in (None, "")]
+    return ", ".join(items) if items else empty
+
+
+def markdown_bool(value: Any) -> str:
+    return "yes" if bool(value) else "no"
+
+
+def coverage_dashboard_markdown_gap_rows(gaps: dict[str, Any]) -> list[tuple[str, int, str]]:
+    missing_surface_records = gaps.get("missingSurfaceRecords", [])
+    loaded_without_records = gaps.get("loadedPacksWithoutSurfaceRecords", [])
+    products_without_refs = gaps.get("productsWithoutSurfaceReferences", [])
+    product_surface_gaps = gaps.get("productSurfaceGaps", [])
+
+    product_gap_summaries = []
+    if isinstance(product_surface_gaps, list):
+        for item in product_surface_gaps:
+            if not isinstance(item, dict):
+                continue
+            product_id = item.get("productId")
+            missing = item.get("missingSurfaces", [])
+            if isinstance(product_id, str) and isinstance(missing, list):
+                product_gap_summaries.append(
+                    f"{product_id}: {', '.join(str(surface) for surface in missing)}"
+                )
+
+    return [
+        (
+            "Missing surface records",
+            len(missing_surface_records) if isinstance(missing_surface_records, list) else 0,
+            markdown_join(missing_surface_records if isinstance(missing_surface_records, list) else []),
+        ),
+        (
+            "Loaded packs without surface records",
+            len(loaded_without_records) if isinstance(loaded_without_records, list) else 0,
+            markdown_join(loaded_without_records if isinstance(loaded_without_records, list) else []),
+        ),
+        (
+            "Products without surface references",
+            len(products_without_refs) if isinstance(products_without_refs, list) else 0,
+            markdown_join(products_without_refs if isinstance(products_without_refs, list) else []),
+        ),
+        (
+            "Product surface gaps",
+            len(product_gap_summaries),
+            markdown_join(product_gap_summaries),
+        ),
+    ]
+
+
+def generate_coverage_dashboard_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    gaps = summary.get("releaseGaps", {})
+    surfaces = report.get("surfaces", [])
+    products = report.get("products", [])
+
+    lines = [
+        "# VeritySpec Coverage Dashboard",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Workspace: `{report.get('workspace')}`",
+        f"- Workspace path: `{report.get('workspacePath')}`",
+        f"- Spec version: `{report.get('specVersion')}`",
+        "",
+        (
+            "> This report summarizes internal VeritySpec product-contract coverage "
+            "for release review. It does not make legal, commercial, privacy-law, "
+            "platform-certification, marketplace, app-store, store-review, "
+            "pricing-approval, or support-SLA claims."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+    ]
+
+    summary_rows = [
+        ("Records", report.get("recordCount", 0)),
+        ("Products", report.get("productCount", 0)),
+        ("Tracked surfaces", summary.get("trackedSurfaces", 0)),
+        ("Loaded surface packs", summary.get("loadedSurfacePacks", 0)),
+        ("Covered surfaces", summary.get("coveredSurfaces", 0)),
+        ("Coverage percent", f"{summary.get('coveragePercent', 0)}%"),
+    ]
+    for label, count in summary_rows:
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} |")
+
+    lines.extend(
+        [
+            "",
+            "## Release Gaps",
+            "",
+            "| Gap | Count | Items |",
+            "|---|---:|---|",
+        ]
+    )
+    if isinstance(gaps, dict):
+        for label, count, items in coverage_dashboard_markdown_gap_rows(gaps):
+            lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} | {items} |")
+
+    lines.extend(
+        [
+            "",
+            "## Surface Coverage",
+            "",
+            "| Surface | Pack | Loaded | Records | Product refs | Covered | Relationships |",
+            "|---|---|---|---:|---:|---|---|",
+        ]
+    )
+    if isinstance(surfaces, list):
+        for surface in surfaces:
+            if not isinstance(surface, dict):
+                continue
+            relationships = surface.get("productRelationships", [])
+            product_references = surface.get("productReferences", [])
+            lines.append(
+                "| "
+                f"{markdown_cell(surface.get('name'))} | "
+                f"{markdown_cell(surface.get('packId'))} | "
+                f"{markdown_bool(surface.get('packLoaded'))} | "
+                f"{markdown_cell(surface.get('recordCount', 0))} | "
+                f"{markdown_cell(len(product_references) if isinstance(product_references, list) else 0)} | "
+                f"{markdown_bool(surface.get('covered'))} | "
+                f"{markdown_join(relationships if isinstance(relationships, list) else [])} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Product Surface References",
+            "",
+            "| Product | Status | Owner | Missing surfaces | Surface refs |",
+            "|---|---|---|---|---:|",
+        ]
+    )
+    if isinstance(products, list):
+        for product in products:
+            if not isinstance(product, dict):
+                continue
+            surface_references = product.get("surfaceReferences", {})
+            ref_count = 0
+            if isinstance(surface_references, dict):
+                ref_count = sum(
+                    len(value) for value in surface_references.values() if isinstance(value, list)
+                )
+            missing = product.get("missingSurfaces", [])
+            lines.append(
+                "| "
+                f"{markdown_cell(product.get('id'))} | "
+                f"{markdown_cell(product.get('status'))} | "
+                f"{markdown_cell(product.get('owner'))} | "
+                f"{markdown_join(missing if isinstance(missing, list) else [])} | "
+                f"{markdown_cell(ref_count)} |"
+            )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def workspace_report_summary(workspace: Workspace) -> dict[str, Any]:
     return {
         "workspace": workspace.config.get("workspace", workspace.base_path.name),

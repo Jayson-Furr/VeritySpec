@@ -253,7 +253,8 @@
       "description": "Count progression records as a first-class product surface.",
       "artifactType": "report",
       "outputFormats": [
-        "json"
+        "json",
+        "markdown"
       ],
       "recordKinds": [
         "progression.xp-model",

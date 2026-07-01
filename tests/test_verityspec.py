@@ -12,6 +12,7 @@ from verityspec.generators import (
     generate_asyncapi,
     generate_compliance_matrix,
     generate_coverage_dashboard,
+    generate_coverage_dashboard_markdown,
     generate_deployment_report,
     generate_issue_code_catalog,
     generate_observability_report,
@@ -52,6 +53,9 @@ COMPLIANCE_MATRIX_GOLDEN = (
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
+)
+COVERAGE_DASHBOARD_MARKDOWN_GOLDEN = (
+    ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.md"
 )
 COVERAGE_FIXTURE = ROOT / "tests" / "fixtures" / "cross_pack_coverage"
 CUSTOM_PACK_WORKSPACE = ROOT / "tests" / "fixtures" / "custom_pack_workspace"
@@ -130,6 +134,11 @@ def normalize_coverage_dashboard_for_golden(report: dict) -> dict:
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_coverage_dashboard_for_markdown_golden(report: dict) -> dict:
+    normalized = normalize_coverage_dashboard_for_golden(report)
     return normalized
 
 
@@ -944,7 +953,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add coverage-dashboard Markdown output", markdown)
+        self.assertIn("1. Add local workspace-dependency prototype fixtures", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1653,6 +1662,23 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(str(COVERAGE_FIXTURE), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_coverage_dashboard_for_golden(report))
+
+    def test_coverage_dashboard_markdown_matches_golden_file(self) -> None:
+        workspace = load_workspace(COVERAGE_FIXTURE)
+        expected = COVERAGE_DASHBOARD_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+
+        report = generate_coverage_dashboard(workspace, generated_at=FIXED_GENERATED_AT)
+        markdown = generate_coverage_dashboard_markdown(
+            normalize_coverage_dashboard_for_markdown_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Coverage Dashboard\n"))
+        self.assertIn("## Summary", markdown)
+        self.assertIn("## Release Gaps", markdown)
+        self.assertIn("## Surface Coverage", markdown)
+        self.assertIn("## Product Surface References", markdown)
+        self.assertIn("does not make legal, commercial", markdown)
+        self.assertEqual(expected, markdown)
 
     def test_product_impact_report_expands_changed_record_graph(self) -> None:
         old_workspace = load_workspace(PRODUCT_IMPACT_BASELINE)

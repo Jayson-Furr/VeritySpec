@@ -1879,6 +1879,31 @@ class VerityCliTests(unittest.TestCase):
         self.assertIsInstance(payload["verityVersion"], str)
         self.assertEqual(expected, normalize_coverage_dashboard_for_golden(payload))
 
+    def test_coverage_dashboard_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "coverage-dashboard.md"
+            result = verity_command(
+                "generate",
+                "coverage-dashboard",
+                COVERAGE_FIXTURE,
+                "--format",
+                "markdown",
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated coverage-dashboard", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Coverage Dashboard\n"))
+        self.assertIn("## Summary", text)
+        self.assertIn("| Coverage percent | 100.0% |", text)
+        self.assertIn("## Release Gaps", text)
+        self.assertIn("## Surface Coverage", text)
+        self.assertIn("## Product Surface References", text)
+        self.assertIn("does not make legal, commercial", text)
+
     def test_pack_capability_index_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "pack-capability-index.json"
@@ -2045,7 +2070,7 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("| Next roadmap points | 20 |", text)
         self.assertIn("## Next 20 Roadmap Points", text)
 
-    def test_markdown_format_is_limited_to_roadmap_report(self) -> None:
+    def test_markdown_format_is_limited_to_supported_report_artifacts(self) -> None:
         result = verity_command(
             "generate",
             "validation-report",

@@ -32,6 +32,7 @@ verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.j
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate roadmap-report . --out build/roadmap-report.json
@@ -134,6 +135,14 @@ Coverage dashboards include:
   records, products without surface references, and product-specific missing
   surface references
 - Per-surface records and product relationship targets for release review
+- Optional Markdown output for maintainers who need a human-readable
+  release-review artifact
+
+The JSON coverage-dashboard output remains the machine-readable contract for
+CI and downstream tooling. The Markdown output is a derived internal review
+artifact and does not make legal, commercial, privacy-law,
+platform-certification, marketplace, app-store, store-review, pricing-approval,
+or support-SLA claims.
 
 Pack capability indexes include:
 

@@ -2630,6 +2630,31 @@ Sprint 137 completed a two-week-sized deployment evidence sprint:
 - Update README, changelog, deployment pack docs, ROADMAP, and Next 20
   planning.
 
+## v0.61.0
+
+The `v0.61.0` milestone is focused on active work.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 138 | In Progress | Coverage-dashboard Markdown output |
+
+## Sprint 138 Priorities
+
+Sprint 138 is a two-week-sized coverage-dashboard Markdown sprint:
+
+- Add Markdown output to `verity generate coverage-dashboard` for maintainers
+  who need a human-readable release-review artifact.
+- Preserve the existing JSON coverage-dashboard contract for CI and downstream
+  tooling.
+- Keep coverage-dashboard metadata, CLI format handling, golden fixtures, and
+  unsupported-format errors deterministic and tested.
+- Document that coverage-dashboard Markdown is an internal release-review
+  artifact and does not make legal, commercial, privacy-law,
+  platform-certification, marketplace, app-store, store-review,
+  pricing-approval, or support-SLA claims.
+- Update README, changelog, generator docs, CI docs, release checklist,
+  fixture-refresh guidance, ROADMAP, and Next 20 planning.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension
@@ -2661,65 +2686,65 @@ improvements, continuation work, and expansion. When points are converted into
 sprint issues or milestones, replace them with new future planning inputs so
 the roadmap does not drift into an empty backlog.
 
-1. Add coverage-dashboard Markdown output for maintainers who need a
-   human-readable release-review artifact.
-2. Add local workspace-dependency prototype fixtures for exported records,
+1. Add local workspace-dependency prototype fixtures for exported records,
    dependency aliases, and dependency-aware graph validation before adding
    remote registry behavior.
-3. Add engine portfolio example guidance and compatibility fixtures showing
+2. Add engine portfolio example guidance and compatibility fixtures showing
    Unity, Godot, Unreal, and shared game-core workspaces side by side before
    implementing aggregate portfolio reports.
-4. Add product-delivery, mobile, and liveops readiness/gap reports for
+3. Add product-delivery, mobile, and liveops readiness/gap reports for
    implementation-ready, soft-launch, launch-candidate, remote-config,
    rollback, support, save-migration, decommission, data-deletion, and
    archive-review summaries without making commercial, legal, privacy-law,
    marketplace, or platform-certification claims.
-5. Add installed-pack health diagnostics that report entry-point resolution
+4. Add installed-pack health diagnostics that report entry-point resolution
    failures, duplicate installed pack IDs, built-in collisions, and local
    override behavior for maintainers debugging extension-pack installs.
-6. Add official-extension package compatibility fixture guidance for
+5. Add official-extension package compatibility fixture guidance for
    validating mirrored pack manifests, schemas, readiness gates, reference
    rules, examples, and generator metadata before any bundled pack detach
    sprint begins.
-7. Add a CLI command module decomposition design note before adding larger
+6. Add a CLI command module decomposition design note before adding larger
    dependency, portfolio, and lifecycle command families.
-8. Add an installed-pack compatibility metadata design note covering supported
+7. Add an installed-pack compatibility metadata design note covering supported
    VeritySpec versions, workspace format versions, pack API level, and
    official extension-package lifecycle states before runtime enforcement.
-9. Add release automation guidance for verifying GitHub release assets,
+8. Add release automation guidance for verifying GitHub release assets,
    skipped PyPI publish jobs, public GitHub install smoke tests, and milestone
    closure evidence as a single post-tag checklist artifact.
-10. Add security-report Markdown output for release reviewers once JSON
+9. Add security-report Markdown output for release reviewers once JSON
     release-gap fields have stabilized.
-11. Add migration-report JSON Schema documentation for CI integrations that
+10. Add migration-report JSON Schema documentation for CI integrations that
     need a stable contract for migration paths, impact summaries, changes,
     manual follow-up, and blocked migration reports.
-12. Add issue-code catalog Markdown or schema documentation output for
+11. Add issue-code catalog Markdown or schema documentation output for
     documentation-site publishing after the JSON catalog contract stabilizes.
-13. Add a first agent-context generator prototype from `agent-context.exporter`
+12. Add a first agent-context generator prototype from `agent-context.exporter`
     and engine exporter records after the design note has been reviewed.
-14. Add ADR index guidance or generated reports once accepted decision records
+13. Add ADR index guidance or generated reports once accepted decision records
     exist in the repository.
-15. Add downstream AI-adapter drift-check guidance for sibling repositories
+14. Add downstream AI-adapter drift-check guidance for sibling repositories
     that maintain their own Codex, Claude, Gemini, or ChatGPT adapter files.
-16. Add lifecycle-readiness fixture planning for the first engine
+15. Add lifecycle-readiness fixture planning for the first engine
     implementation slice after the engine full-lifecycle design note is
     reviewed, with Unity, Godot, and Unreal parity expectations documented up
     front.
-17. Add portfolio report JSON contract planning after the portfolio validation
+16. Add portfolio report JSON contract planning after the portfolio validation
     foundation is reviewed, including workspace inventory, validation status,
     readiness status, impact warnings, evidence gaps, and agent-context refresh
     needs.
-18. Add golden-fixture refresh automation planning after fixture refresh
+17. Add golden-fixture refresh automation planning after fixture refresh
     documentation is adopted, including dry-run diff summaries, generator
     allowlists, placeholder preservation, and maintainer approval gates before
     any rewrite command ships.
-19. Add downstream CI profile artifact guidance for preserving validation
+18. Add downstream CI profile artifact guidance for preserving validation
     reports, doctor reports, graph outputs, and profile-specific evidence
     bundles across release, regulated, public API, and internal-tool workflows.
-20. Add deployment-report Markdown output after linked release evidence fields
+19. Add deployment-report Markdown output after linked release evidence fields
     stabilize so operations and release reviewers can read deployment evidence
     summaries without opening JSON.
+20. Add evidence-report Markdown output for implementation and release proof
+    review once evidence-report JSON fields stabilize.
 
 ## Working Rule
 

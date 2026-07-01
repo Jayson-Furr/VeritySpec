@@ -129,6 +129,7 @@ verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.j
 verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
+verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
