@@ -14,6 +14,7 @@ DOWNSTREAM_FILES = [
     ROOT / "docs" / "downstream-ci.md",
     ROOT / "templates" / "github-actions" / "product-contract-direct.yml",
     ROOT / "templates" / "github-actions" / "product-contract-monorepo.yml",
+    ROOT / "templates" / "github-actions" / "product-contract-profiles.yml",
     ROOT / "templates" / "github-actions" / "product-contract-reusable.yml",
     ROOT / "templates" / "github-actions" / "product-contract-with-local-packs.yml",
 ]
@@ -90,6 +91,55 @@ class DownstreamTemplateTests(unittest.TestCase):
         self.assertIn("packs/shared", text)
         self.assertIn("pack-paths: ${{ matrix.pack_paths }}", text)
         self.assertIn("strict: ${{ matrix.strict }}", text)
+
+    def test_reusable_workflow_accepts_profile_input(self) -> None:
+        text = (ROOT / ".github" / "workflows" / "product-contract.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("profile:", text)
+        self.assertIn("PROFILE: ${{ inputs.profile }}", text)
+        self.assertIn("profile_args=()", text)
+        self.assertIn('profile_args+=(--profile "$PROFILE")', text)
+        self.assertIn('"${profile_args[@]}"', text)
+        self.assertIn('verity doctor "$WORKSPACE" --format json', text)
+
+    def test_profile_downstream_template_covers_builtin_enforcement_profiles(self) -> None:
+        text = (ROOT / "templates" / "github-actions" / "product-contract-profiles.yml").read_text(
+            encoding="utf-8"
+        )
+
+        reusable_ref = f"Jason-Furr/verity-spec/.github/workflows/product-contract.yml@{CURRENT_TAG}"
+        self.assertIn(reusable_ref, text)
+        self.assertIn("fail-fast: false", text)
+        self.assertIn("profile: release", text)
+        self.assertIn("profile: regulated", text)
+        self.assertIn("profile: public-api", text)
+        self.assertIn("profile: internal-tool", text)
+        self.assertIn("workspace: specs/release", text)
+        self.assertIn("workspace: specs/regulated", text)
+        self.assertIn("workspace: specs/public-api", text)
+        self.assertIn("workspace: specs/internal-tool", text)
+        self.assertRegex(text, r"profile: internal-tool\n\s+strict: false")
+        self.assertIn("profile: ${{ matrix.profile }}", text)
+
+    def test_downstream_profile_docs_preserve_profile_guidance_and_non_claims(self) -> None:
+        text = (ROOT / "docs" / "downstream-ci.md").read_text(encoding="utf-8")
+
+        for phrase in [
+            "templates/github-actions/product-contract-profiles.yml",
+            "profile: release",
+            "profile: regulated",
+            "profile: public-api",
+            "profile: internal-tool",
+            "strict: false",
+            "The reusable workflow passes `profile` to `verity validate`, `verity lint`,",
+            "These profiles are VeritySpec enforcement postures only.",
+            "commercial, legal, privacy-law, marketplace, platform-certification,",
+            "app-store, store-review, pricing-approval, or support-SLA readiness",
+        ]:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
 
     def test_pypi_docs_reference_current_release_tag_and_safeguards(self) -> None:
         text = PYPI_DOC.read_text(encoding="utf-8")

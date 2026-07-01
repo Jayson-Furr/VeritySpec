@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added profile-aware downstream CI workflow support and maintained template
+  examples for release, regulated, public API, and internal-tool workspaces.
+
 ## 0.58.0
 
 - Added fixture refresh guidance for deterministic golden report regeneration,

@@ -23,6 +23,11 @@ on:
         required: false
         default: ""
         type: string
+      profile:
+        description: "Optional product-contract enforcement profile"
+        required: false
+        default: ""
+        type: string
       strict:
         description: "Run lint and readiness in strict mode"
         required: false
@@ -52,6 +57,7 @@ jobs:
         env:
           WORKSPACE: ${{ inputs.workspace }}
           PACK_PATHS: ${{ inputs.pack-paths }}
+          PROFILE: ${{ inputs.profile }}
           STRICT: ${{ inputs.strict }}
         run: |
           mkdir -p build
@@ -59,23 +65,27 @@ jobs:
           for pack_path in $PACK_PATHS; do
             pack_args+=(--pack-path "$pack_path")
           done
+          profile_args=()
+          if [ -n "$PROFILE" ]; then
+            profile_args+=(--profile "$PROFILE")
+          fi
           annotation_args=()
           if verity validate --help | grep -q -- "--github-annotations"; then
             annotation_args+=(--github-annotations)
           fi
 
           verity --version
-          verity validate "$WORKSPACE" "${pack_args[@]}" "${annotation_args[@]}"
+          verity validate "$WORKSPACE" "${pack_args[@]}" "${profile_args[@]}" "${annotation_args[@]}"
 
           if [ "$STRICT" = "true" ]; then
-            verity lint "$WORKSPACE" --strict "${pack_args[@]}" "${annotation_args[@]}"
-            verity readiness "$WORKSPACE" --strict "${pack_args[@]}" "${annotation_args[@]}"
+            verity lint "$WORKSPACE" --strict "${pack_args[@]}" "${profile_args[@]}" "${annotation_args[@]}"
+            verity readiness "$WORKSPACE" --strict "${pack_args[@]}" "${profile_args[@]}" "${annotation_args[@]}"
           else
-            verity lint "$WORKSPACE" "${pack_args[@]}" "${annotation_args[@]}"
-            verity readiness "$WORKSPACE" "${pack_args[@]}" "${annotation_args[@]}"
+            verity lint "$WORKSPACE" "${pack_args[@]}" "${profile_args[@]}" "${annotation_args[@]}"
+            verity readiness "$WORKSPACE" "${pack_args[@]}" "${profile_args[@]}" "${annotation_args[@]}"
           fi
 
-          verity doctor "$WORKSPACE" --format json "${pack_args[@]}" > build/verity-doctor.json
+          verity doctor "$WORKSPACE" --format json "${pack_args[@]}" "${profile_args[@]}" > build/verity-doctor.json
           verity generate validation-report "$WORKSPACE" --out build/verity-validation-report.json "${pack_args[@]}"
           python -m json.tool build/verity-doctor.json >/dev/null
           python -m json.tool build/verity-validation-report.json >/dev/null
