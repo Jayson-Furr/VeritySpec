@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added engine full-lifecycle support design guidance for Unity, Godot,
+  Unreal, shared engine library workspaces, lifecycle readiness profiles,
+  evidence, liveops, decommissioning, archive records, and portfolio examples.
+
 ## 0.55.0
 
 - Added agent-context generation design guidance, architecture decision record
