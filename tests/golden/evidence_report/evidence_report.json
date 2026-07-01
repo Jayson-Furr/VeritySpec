@@ -81,7 +81,7 @@
         "name": "Evidence Demo Release Process",
         "resolved": true
       },
-      "uri": "dist/verityspec-0.48.0-py3-none-any.whl",
+      "uri": "dist/verityspec-0.49.0-py3-none-any.whl",
       "references": [
         {
           "type": "proves",
