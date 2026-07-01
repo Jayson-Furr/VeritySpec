@@ -40,6 +40,12 @@ GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
 GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
+ACCESSIBILITY_REPORT_GOLDEN = (
+    ROOT / "tests" / "golden" / "accessibility_report" / "accessibility_report.json"
+)
+COMPLIANCE_MATRIX_GOLDEN = (
+    ROOT / "tests" / "golden" / "compliance_matrix" / "compliance_matrix.json"
+)
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
@@ -82,6 +88,22 @@ def normalize_security_report_for_golden(report: dict) -> dict:
 
 
 def normalize_observability_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_accessibility_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_compliance_matrix_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -975,6 +997,17 @@ class VeritySpecTests(unittest.TestCase):
             [target["id"] for target in claim["targets"]],
         )
 
+    def test_accessibility_report_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "accessibility")
+        expected = json.loads(ACCESSIBILITY_REPORT_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_accessibility_report(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "accessibility"), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_accessibility_report_for_golden(report))
+
     def test_compliance_matrix_summarizes_compliance_mappings(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "compliance")
 
@@ -1022,6 +1055,17 @@ class VeritySpecTests(unittest.TestCase):
             ["observability.metric.checkout_success_rate"],
             [item["id"] for item in row["evidence"]["observabilitySignals"]],
         )
+
+    def test_compliance_matrix_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "compliance")
+        expected = json.loads(COMPLIANCE_MATRIX_GOLDEN.read_text(encoding="utf-8"))
+
+        matrix = generate_compliance_matrix(workspace)
+
+        datetime.fromisoformat(matrix["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "compliance"), matrix["workspacePath"])
+        self.assertIsInstance(matrix["verityVersion"], str)
+        self.assertEqual(expected, normalize_compliance_matrix_for_golden(matrix))
 
     def test_compliance_matrix_reports_release_gaps(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

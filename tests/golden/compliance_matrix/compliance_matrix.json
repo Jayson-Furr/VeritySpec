@@ -1,0 +1,136 @@
+{
+  "type": "compliance_matrix",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.compliance",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "mappingCount": 1,
+  "summary": {
+    "byOwner": {
+      "risk-and-compliance": 1
+    },
+    "byFramework": {
+      "internal-access-review": 1
+    },
+    "byRequirement": {
+      "internal-access-review:IAR-1": 1
+    },
+    "byMappingType": {
+      "control": 1
+    },
+    "byCoverage": {
+      "reviewed": 1
+    },
+    "verifiedMappings": 1,
+    "releaseGaps": {
+      "mappingsWithoutTargets": [],
+      "mappingsWithoutEvidence": [],
+      "reviewedUnverified": [],
+      "missingOwners": [],
+      "targetsWithoutOwners": []
+    }
+  },
+  "matrix": [
+    {
+      "id": "compliance.mapping.checkout_access_review",
+      "name": "Checkout Access Review Mapping",
+      "status": "ready",
+      "owner": "risk-and-compliance",
+      "framework": {
+        "name": "internal-access-review",
+        "version": "2026.1",
+        "requirementId": "IAR-1",
+        "requirementTitle": "Access and evidence review",
+        "requirementText": "Privileged product access and release evidence are reviewed before release."
+      },
+      "requirement": "internal-access-review:IAR-1",
+      "mappingType": "control",
+      "coverage": "reviewed",
+      "attestation": false,
+      "verified": true,
+      "verification": {
+        "method": "evidence-review",
+        "evidence": "reviews/compliance/checkout-access-review-2026-06-30.md",
+        "lastVerified": "2026-06-30"
+      },
+      "targets": [
+        {
+          "id": "security.control.checkout_access",
+          "kind": "security.control",
+          "name": "Checkout Access Control",
+          "owner": "platform-security",
+          "status": "ready"
+        },
+        {
+          "id": "accessibility.claim.checkout_keyboard",
+          "kind": "accessibility.claim",
+          "name": "Checkout Keyboard Operation",
+          "owner": "checkout-platform",
+          "status": "ready"
+        },
+        {
+          "id": "observability.metric.checkout_success_rate",
+          "kind": "observability.metric",
+          "name": "Checkout Success Rate",
+          "owner": "checkout-platform",
+          "status": "ready"
+        }
+      ],
+      "evidence": {
+        "securityControls": [
+          {
+            "id": "security.control.checkout_access",
+            "name": "Checkout Access Control",
+            "owner": "platform-security",
+            "riskLevel": "high",
+            "coverage": "verified",
+            "verified": true,
+            "verification": {
+              "method": "automated-test",
+              "evidence": "tests/security/test_checkout_access.py::test_admin_access_required",
+              "lastVerified": "2026-06-30"
+            }
+          }
+        ],
+        "accessibilityClaims": [
+          {
+            "id": "accessibility.claim.checkout_keyboard",
+            "name": "Checkout Keyboard Operation",
+            "owner": "checkout-platform",
+            "standard": "wcag-2.2",
+            "criterion": "2.1.1 Keyboard",
+            "level": "a",
+            "impact": "high",
+            "coverage": "verified",
+            "verified": true,
+            "verification": {
+              "method": "assistive-technology-test",
+              "evidence": "tests/accessibility/test_checkout_keyboard.py::test_checkout_keyboard_only",
+              "lastVerified": "2026-06-30"
+            }
+          }
+        ],
+        "observabilitySignals": [
+          {
+            "id": "observability.metric.checkout_success_rate",
+            "kind": "observability.metric",
+            "name": "Checkout Success Rate",
+            "owner": "checkout-platform",
+            "metricName": "checkout.success_rate",
+            "unit": "percent",
+            "aggregation": "rate",
+            "sources": [
+              {
+                "id": "observability.telemetry.checkout_completed",
+                "kind": "observability.telemetry",
+                "name": "Checkout Completed"
+              }
+            ]
+          }
+        ],
+        "otherTargets": []
+      }
+    }
+  ]
+}

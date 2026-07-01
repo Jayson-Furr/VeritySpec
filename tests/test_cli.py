@@ -19,6 +19,12 @@ CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
 MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
+ACCESSIBILITY_REPORT_GOLDEN = (
+    ROOT / "tests" / "golden" / "accessibility_report" / "accessibility_report.json"
+)
+COMPLIANCE_MATRIX_GOLDEN = (
+    ROOT / "tests" / "golden" / "compliance_matrix" / "compliance_matrix.json"
+)
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 EVIDENCE_REPORT_GOLDEN = ROOT / "tests" / "golden" / "evidence_report" / "evidence_report.json"
 COVERAGE_DASHBOARD_GOLDEN = (
@@ -75,6 +81,22 @@ def normalize_security_report_for_golden(report: dict) -> dict:
 
 
 def normalize_observability_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_accessibility_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_compliance_matrix_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -1507,6 +1529,26 @@ class VerityCliTests(unittest.TestCase):
         )
         self.assertEqual("accessibility.claim.checkout_keyboard", payload["claims"][0]["id"])
 
+    def test_accessibility_report_generator_matches_golden_file(self) -> None:
+        expected = json.loads(ACCESSIBILITY_REPORT_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "accessibility-report.json"
+            result = verity_command(
+                "generate",
+                "accessibility-report",
+                "examples/accessibility",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "accessibility"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_accessibility_report_for_golden(payload))
+
     def test_compliance_matrix_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "compliance-matrix.json"
@@ -1535,6 +1577,26 @@ class VerityCliTests(unittest.TestCase):
             payload["summary"]["releaseGaps"],
         )
         self.assertEqual("compliance.mapping.checkout_access_review", payload["matrix"][0]["id"])
+
+    def test_compliance_matrix_generator_matches_golden_file(self) -> None:
+        expected = json.loads(COMPLIANCE_MATRIX_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "compliance-matrix.json"
+            result = verity_command(
+                "generate",
+                "compliance-matrix",
+                "examples/compliance",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "compliance"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_compliance_matrix_for_golden(payload))
 
     def test_deployment_report_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

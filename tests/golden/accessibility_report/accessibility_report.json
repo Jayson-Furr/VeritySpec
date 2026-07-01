@@ -1,0 +1,70 @@
+{
+  "type": "accessibility_report",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.accessibility",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "claimCount": 1,
+  "summary": {
+    "byOwner": {
+      "checkout-platform": 1
+    },
+    "byStandard": {
+      "wcag-2.2": 1
+    },
+    "byLevel": {
+      "a": 1
+    },
+    "byImpact": {
+      "high": 1
+    },
+    "byCoverage": {
+      "verified": 1
+    },
+    "verifiedClaims": 1,
+    "criticalUnverified": [],
+    "releaseGaps": {
+      "criticalUnverified": [],
+      "claimsWithoutTargets": [],
+      "missingOwners": [],
+      "missingVerificationDates": []
+    }
+  },
+  "claims": [
+    {
+      "id": "accessibility.claim.checkout_keyboard",
+      "name": "Checkout Keyboard Operation",
+      "status": "ready",
+      "owner": "checkout-platform",
+      "standard": "wcag-2.2",
+      "criterion": "2.1.1 Keyboard",
+      "level": "a",
+      "userNeed": "Keyboard and switch-control users can complete checkout without pointer-only interactions.",
+      "surface": "checkout flow",
+      "impact": "high",
+      "coverage": "verified",
+      "verified": true,
+      "verification": {
+        "method": "assistive-technology-test",
+        "evidence": "tests/accessibility/test_checkout_keyboard.py::test_checkout_keyboard_only",
+        "lastVerified": "2026-06-30"
+      },
+      "assistiveTechnologies": [
+        "keyboard",
+        "screen-reader"
+      ],
+      "acceptanceCriteria": [
+        "All checkout controls can receive visible focus.",
+        "Checkout can be completed without mouse, touch, or pointer input."
+      ],
+      "targets": [
+        {
+          "id": "product.accessible_checkout",
+          "kind": "product",
+          "name": "Accessible Checkout"
+        }
+      ]
+    }
+  ]
+}
