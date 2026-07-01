@@ -62,6 +62,7 @@ class ReleaseIntegrityTests(unittest.TestCase):
             ROOT / "docs" / "release-checklist.md",
             ROOT / "templates" / "github-actions" / "product-contract-direct.yml",
             ROOT / "templates" / "github-actions" / "product-contract-monorepo.yml",
+            ROOT / "templates" / "github-actions" / "product-contract-profiles.yml",
             ROOT / "templates" / "github-actions" / "product-contract-reusable.yml",
             ROOT / "templates" / "github-actions" / "product-contract-with-local-packs.yml",
         ]

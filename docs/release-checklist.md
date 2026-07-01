@@ -11,7 +11,7 @@ Use this checklist for public releases.
   workspace package-version text, and release-notes link match the intended
   tag.
 - Confirm maintained downstream CI templates, including the monorepo template,
-  reference the intended release tag.
+  profile-aware template, reference the intended release tag.
 - Confirm `docs/pypi.md` GitHub fallback install tag matches the intended tag.
 - Review [fixture refresh guidance](fixture-refresh.md) when release-version
   fixture updates or generator-output drift are part of the release.

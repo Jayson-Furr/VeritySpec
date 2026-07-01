@@ -13,6 +13,9 @@ Copy one of the maintained templates into a downstream repository as
   reusable workflow with local external pack paths.
 - `templates/github-actions/product-contract-monorepo.yml`: calls the reusable
   workflow once per workspace in a monorepo matrix, with shared local packs.
+- `templates/github-actions/product-contract-profiles.yml`: calls the reusable
+  workflow once per profile-specific workspace for release, regulated, public
+  API, and internal-tool enforcement examples.
 - `templates/github-actions/product-contract-direct.yml`: installs VeritySpec
   directly and runs the contract commands inline.
 
@@ -106,6 +109,34 @@ jobs:
       pack-paths: packs/features packs/security
 ```
 
+For an enforcement profile:
+
+```yaml
+jobs:
+  verity:
+    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.58.0
+    with:
+      workspace: specs/product
+      profile: release
+```
+
+The reusable workflow passes `profile` to `verity validate`, `verity lint`,
+`verity readiness`, and `verity doctor`. If no profile is supplied, the
+workflow keeps the existing strict product-contract behavior.
+
+When using `profile: internal-tool`, set `strict: false` if warnings should
+remain advisory:
+
+```yaml
+jobs:
+  verity:
+    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.58.0
+    with:
+      workspace: specs/internal-tool
+      profile: internal-tool
+      strict: false
+```
+
 ## Monorepo Workflow
 
 For a monorepo with several VeritySpec workspaces and shared local packs, copy
@@ -149,3 +180,60 @@ jobs:
 
 Use `packs/shared` for pack contracts reused by multiple workspaces, and add
 workspace-specific pack paths only where those product surfaces need them.
+
+## Profile Matrix Workflow
+
+For repositories that keep separate workspaces for different enforcement
+postures, copy `templates/github-actions/product-contract-profiles.yml` and
+replace the workspace paths:
+
+```yaml
+name: Product Contract Profiles
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verity:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: release
+            workspace: specs/release
+            profile: release
+            strict: true
+          - name: regulated
+            workspace: specs/regulated
+            profile: regulated
+            strict: true
+          - name: public-api
+            workspace: specs/public-api
+            profile: public-api
+            strict: true
+          - name: internal-tool
+            workspace: specs/internal-tool
+            profile: internal-tool
+            strict: false
+    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.58.0
+    with:
+      workspace: ${{ matrix.workspace }}
+      profile: ${{ matrix.profile }}
+      strict: ${{ matrix.strict }}
+```
+
+Use `release` for normal shippable product-contract checks, `public-api` when
+API contract coverage is required, `regulated` when governance pack coverage
+is required, and `internal-tool` for early internal tooling where warnings
+should guide work without failing the command.
+
+These profiles are VeritySpec enforcement postures only. They do not prove
+commercial, legal, privacy-law, marketplace, platform-certification,
+app-store, store-review, pricing-approval, or support-SLA readiness.

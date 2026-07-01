@@ -67,7 +67,8 @@ This implementation provides:
 - Doctor diagnostics that can be printed to stdout or written as JSON reports.
 - Downstream GitHub Actions templates and a reusable workflow for
   product-contract enforcement, including monorepo matrix checks for multiple
-  workspaces with shared local packs.
+  workspaces with shared local packs and profile-aware examples for release,
+  regulated, public API, and internal-tool workspaces.
 - Opt-in GitHub Actions annotation output for validation, lint, and readiness
   issues in CI logs.
 - Golden fixture coverage for security reports, observability report/schema
