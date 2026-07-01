@@ -3130,7 +3130,7 @@
       "artifactPath": "dist/coverage.whl",
       "artifactType": "wheel",
       "platform": "python",
-      "buildVersion": "0.49.0",
+      "buildVersion": "0.50.0",
       "result": "passing",
       "references": [
         {

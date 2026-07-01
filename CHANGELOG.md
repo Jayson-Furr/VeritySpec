@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.50.0
+
 - Added release-integrity consistency tests and documentation that keep package
   metadata, README release surfaces, release notes, downstream pins, release
   checklist examples, and evidence fixtures aligned with `__version__`.
+- Added v0.50.0 release notes and roadmap closeout.
 
 ## 0.49.0
 
