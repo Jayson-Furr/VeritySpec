@@ -406,6 +406,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Pack scaffold fixtures](docs/pack-scaffold-fixtures.md)
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
 - [Engine and product-delivery pack direction](docs/engine-product-delivery-packs.md)
+- [Engine full-lifecycle support design](docs/engine-full-lifecycle-support.md)
 - [Specialized pack separation plan](docs/specialized-pack-separation.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
 - [Product contract profiles](docs/product-contract-profiles.md)
