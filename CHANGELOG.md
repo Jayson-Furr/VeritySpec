@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Updated repository owner/name references after moving the canonical public
+  repository to `Jason-Furr/verity-spec`, including README badges, GitHub
+  install URLs, downstream workflow templates, PyPI trusted-publishing notes,
+  evidence fixtures, and release-note install snippets.
 - Added roadmap, README, and pack documentation guidance that makes
   specialized pack separation an explicit product goal: `verityspec` should
   remain the core contract runtime while domain-heavy game, mobile, liveops,

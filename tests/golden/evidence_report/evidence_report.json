@@ -123,7 +123,7 @@
         "name": "Evidence Demo Release Process",
         "resolved": true
       },
-      "uri": "https://github.com/Jayson-Furr/VeritySpec/actions/runs/28489756302",
+      "uri": "https://github.com/Jason-Furr/verity-spec/actions/runs/28489756302",
       "references": [
         {
           "type": "proves",
@@ -186,7 +186,7 @@
         "name": "Release Evidence Is Required",
         "resolved": true
       },
-      "uri": "https://github.com/Jayson-Furr/VeritySpec/pull/208",
+      "uri": "https://github.com/Jason-Furr/verity-spec/pull/208",
       "references": [
         {
           "type": "reviews",

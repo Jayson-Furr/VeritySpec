@@ -26,7 +26,7 @@ and machine clients.
 ## Installation
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.10.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.10.0"
 verity --version
 ```
 

@@ -25,7 +25,7 @@ agents can inspect sprint and planning state through a machine-readable report.
 ## Installation
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.18.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.18.0"
 verity --version
 ```
 

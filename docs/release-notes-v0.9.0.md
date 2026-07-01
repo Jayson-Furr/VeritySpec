@@ -28,7 +28,7 @@ compliance mappings reportable through an executable matrix generator.
 ## Installation
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jayson-Furr/VeritySpec.git@v0.9.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.9.0"
 verity --version
 ```
 

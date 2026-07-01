@@ -6,7 +6,7 @@
   "status": "ready",
   "owner": "unity-engineering",
   "libraryName": "DreamExtraction.Runtime",
-  "repository": "Jayson-Furr/VeritySpec.Unity",
+  "repository": "Jason-Furr/verity-spec-unity",
   "versionRequirement": "^0.1.0",
   "packageRefs": [
     "unity.package.input_system"

@@ -29,7 +29,7 @@
       "scopeType": "repository",
       "productArea": "evidence",
       "intent": "Model concrete proof artifacts without making external legal, platform, or marketplace claims.",
-      "repository": "Jayson-Furr/VeritySpec",
+      "repository": "Jason-Furr/verity-spec",
       "references": [
         {
           "type": "hasReadinessProfile",
@@ -160,7 +160,7 @@
       "subjectRef": "release.process.evidence_demo",
       "provider": "github-actions",
       "runId": "28489756302",
-      "runUrl": "https://github.com/Jayson-Furr/VeritySpec/actions/runs/28489756302",
+      "runUrl": "https://github.com/Jason-Furr/verity-spec/actions/runs/28489756302",
       "conclusion": "success",
       "commit": "fafb85b",
       "references": [
@@ -202,7 +202,7 @@
       "reviewer": "maintainer",
       "decision": "approved",
       "reviewedAt": "2026-07-01T00:00:00Z",
-      "reviewUri": "https://github.com/Jayson-Furr/VeritySpec/pull/208",
+      "reviewUri": "https://github.com/Jason-Furr/verity-spec/pull/208",
       "references": [
         {
           "type": "reviews",

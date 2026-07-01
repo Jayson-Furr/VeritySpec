@@ -19,7 +19,7 @@ DOWNSTREAM_FILES = [
 ]
 PYPI_DOC = ROOT / "docs" / "pypi.md"
 RELEASE_REF_PATTERN = re.compile(
-    r"Jayson-Furr/VeritySpec(?:\.git)?(?:/\.github/workflows/product-contract\.yml)?@"
+    r"Jason-Furr/verity-spec(?:\.git)?(?:/\.github/workflows/product-contract\.yml)?@"
     r"(v\d+\.\d+\.\d+)"
 )
 
@@ -70,7 +70,7 @@ class DownstreamTemplateTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        reusable_ref = f"Jayson-Furr/VeritySpec/.github/workflows/product-contract.yml@{CURRENT_TAG}"
+        reusable_ref = f"Jason-Furr/verity-spec/.github/workflows/product-contract.yml@{CURRENT_TAG}"
         self.assertIn(reusable_ref, reusable_template)
         self.assertIn(reusable_ref, local_pack_template)
         self.assertIn(reusable_ref, monorepo_template)

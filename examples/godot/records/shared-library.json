@@ -6,7 +6,7 @@
   "status": "ready",
   "owner": "godot-engineering",
   "libraryName": "DreamExtraction.Runtime",
-  "repository": "Jayson-Furr/VeritySpec.Godot",
+  "repository": "Jason-Furr/verity-spec-godot",
   "versionRequirement": "^0.1.0",
   "addonRefs": [
     "godot.addon.contract_tools"

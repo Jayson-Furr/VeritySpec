@@ -1073,7 +1073,7 @@
       "status": "ready",
       "owner": "unity-engineering",
       "libraryName": "CoverageAdventure.Runtime",
-      "repository": "Jayson-Furr/VeritySpec.Unity",
+      "repository": "Jason-Furr/verity-spec-unity",
       "versionRequirement": "^0.1.0",
       "packageRefs": [
         "unity.package.coverage_input"
@@ -1395,7 +1395,7 @@
       "status": "ready",
       "owner": "godot-engineering",
       "libraryName": "Coverage.Runtime",
-      "repository": "Jayson-Furr/VeritySpec.Godot",
+      "repository": "Jason-Furr/verity-spec-godot",
       "versionRequirement": "^0.1.0",
       "addonRefs": [
         "godot.addon.coverage_tools"
@@ -2125,7 +2125,7 @@
         "legal approval claims",
         "marketplace certification claims"
       ],
-      "repository": "Jayson-Furr/VeritySpec.EngineToolkit",
+      "repository": "Jason-Furr/verity-spec-engine-toolkit",
       "targetAudience": [
         "product owners",
         "engine-tooling engineers",
@@ -2205,7 +2205,7 @@
       "issuePolicy": "Issues track work, decisions, questions, defects, readiness gaps, and evidence requests.",
       "projectPolicy": "GitHub Projects provide planning boards and portfolio execution views.",
       "milestonePolicy": "Milestones bound sprint, release, and candidate work.",
-      "repository": "Jayson-Furr/VeritySpec.EngineToolkit",
+      "repository": "Jason-Furr/verity-spec-engine-toolkit",
       "references": [
         {
           "type": "recordsDecision",
@@ -3109,7 +3109,7 @@
       "subjectRef": "release.process.coverage_release",
       "provider": "github-actions",
       "runId": "coverage-ci",
-      "runUrl": "https://github.com/Jayson-Furr/VeritySpec/actions/runs/coverage-ci",
+      "runUrl": "https://github.com/Jason-Furr/verity-spec/actions/runs/coverage-ci",
       "conclusion": "success",
       "commit": "coverage",
       "references": [
@@ -3151,7 +3151,7 @@
       "reviewer": "maintainer",
       "decision": "approved",
       "reviewedAt": "2026-07-01T00:00:00Z",
-      "reviewUri": "https://github.com/Jayson-Furr/VeritySpec/pull/coverage",
+      "reviewUri": "https://github.com/Jason-Furr/verity-spec/pull/coverage",
       "references": [
         {
           "type": "reviews",
