@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(91, report["recordCount"])
+        self.assertEqual(112, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(17, report["summary"]["trackedSurfaces"])
-        self.assertEqual(17, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(17, report["summary"]["coveredSurfaces"])
+        self.assertEqual(19, report["summary"]["trackedSurfaces"])
+        self.assertEqual(19, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(19, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1045,6 +1045,8 @@ class VeritySpecTests(unittest.TestCase):
                 "game-core": 4,
                 "gameplay": 4,
                 "godot": 14,
+                "liveops": 9,
+                "mobile": 12,
                 "observability": 4,
                 "product-delivery": 17,
                 "security": 1,
@@ -1070,6 +1072,8 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
         self.assertEqual("verity.pack.godot", surfaces["godot"]["packId"])
+        self.assertEqual("verity.pack.liveops", surfaces["liveops"]["packId"])
+        self.assertEqual("verity.pack.mobile", surfaces["mobile"]["packId"])
         self.assertEqual("verity.pack.product-delivery", surfaces["product-delivery"]["packId"])
         self.assertEqual("verity.pack.unity", surfaces["unity"]["packId"])
         self.assertEqual("verity.pack.unreal", surfaces["unreal"]["packId"])
@@ -1148,6 +1152,37 @@ class VeritySpecTests(unittest.TestCase):
         )
         self.assertEqual(
             [
+                "mobile.app-release.coverage_soft_launch",
+                "mobile.apple-privacy-details.coverage_apple",
+                "mobile.att-consent.coverage_att",
+                "mobile.compatibility-matrix.coverage_devices",
+                "mobile.entitlement.coverage_remove_ads",
+                "mobile.google-play-data-safety.coverage_google",
+                "mobile.launch-candidate.coverage_candidate",
+                "mobile.monetization-posture.coverage_monetization",
+                "mobile.privacy-policy.coverage_policy",
+                "mobile.sdk-inventory.coverage_sdks",
+                "mobile.soft-launch.coverage_market",
+                "mobile.store-listing.coverage_listing",
+            ],
+            [record["id"] for record in surfaces["mobile"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "liveops.analytics-taxonomy.coverage_events",
+                "liveops.archive-handling.coverage_archive",
+                "liveops.config.coverage_live",
+                "liveops.data-deletion-policy.coverage_deletion",
+                "liveops.decommission-plan.coverage_sunset",
+                "liveops.remote-config.coverage_bounds",
+                "liveops.rollback-plan.coverage_rollback",
+                "liveops.save-migration-policy.coverage_save_v2",
+                "liveops.support-category.coverage_support",
+            ],
+            [record["id"] for record in surfaces["liveops"]["records"]],
+        )
+        self.assertEqual(
+            [
                 "godot.addon.coverage_tools",
                 "godot.agent-context-exporter.coverage_context",
                 "godot.autoload.coverage_registry",
@@ -1201,6 +1236,29 @@ class VeritySpecTests(unittest.TestCase):
             [record["id"] for record in surfaces["unreal"]["records"]],
         )
         self.assertEqual([], report["products"][0]["missingSurfaces"])
+
+    def test_mobile_and_liveops_project_reference_rules_keep_engine_parity(self) -> None:
+        registry = load_pack_registry(
+            [
+                "verity.pack.mobile",
+                "verity.pack.liveops",
+            ]
+        )
+        rules = {
+            (rule.source_kind, rule.relationship, rule.target_kind)
+            for rule in registry.reference_rules
+        }
+
+        for engine_kind in ["unity.project", "godot.project", "unreal.project"]:
+            with self.subTest(engine_kind=engine_kind):
+                self.assertIn(
+                    (engine_kind, "targetsMobileRelease", "mobile.app-release"),
+                    rules,
+                )
+                self.assertIn(
+                    (engine_kind, "usesLiveOpsConfig", "liveops.config"),
+                    rules,
+                )
 
     def test_pack_capability_index_summarizes_builtin_and_external_packs(self) -> None:
         workspace = load_workspace(CUSTOM_PACK_WORKSPACE)
@@ -1855,6 +1913,87 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.required", [issue.code for issue in issues])
         self.assertIn("validation.runner.missing_scanners", [issue.record_id for issue in issues])
+
+    def test_mobile_readiness_requires_app_release_contract_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "mobile-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.mobile"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "release.json").write_text(
+                json.dumps(
+                    {
+                        "id": "mobile.app-release.missing_links",
+                        "kind": "mobile.app-release",
+                        "name": "Missing Links",
+                        "description": "Mobile app release missing store, privacy, SDK, launch, and compatibility links.",
+                        "status": "ready",
+                        "owner": "mobile-release",
+                        "releaseStage": "soft-launch",
+                        "releaseTrack": "testflight",
+                        "platformTargets": ["ios"],
+                        "versionName": "0.5.0",
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("mobile.app-release.missing_links", [issue.record_id for issue in issues])
+
+    def test_liveops_readiness_requires_config_contract_links(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "liveops-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.liveops"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "config.json").write_text(
+                json.dumps(
+                    {
+                        "id": "liveops.config.missing_links",
+                        "kind": "liveops.config",
+                        "name": "Missing Links",
+                        "description": "LiveOps config missing remote config, rollback, analytics, support, and lifecycle links.",
+                        "status": "ready",
+                        "owner": "liveops",
+                        "configType": "remote-config",
+                        "environment": "production",
+                        "ownerTeam": "liveops",
+                        "references": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn("liveops.config.missing_links", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

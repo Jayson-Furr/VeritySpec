@@ -202,6 +202,32 @@ verity graph examples/product-delivery --format json > build/product-delivery-gr
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.mobile`, include the usual contract
+checks, graph checks, and a schema bundle for app release, store listing,
+privacy and data-safety posture, SDK inventory, monetization, entitlements,
+soft-launch, launch-candidate, and compatibility review:
+
+```bash
+verity validate examples/mobile
+verity lint examples/mobile --strict
+verity readiness examples/mobile --strict
+verity graph examples/mobile --format json > build/mobile-graph.json
+verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
+```
+
+For workspaces that load `verity.pack.liveops`, include the usual contract
+checks, graph checks, and a schema bundle for remote config, rollback,
+analytics taxonomy, support categories, save migration, decommissioning, data
+deletion, and archive handling:
+
+```bash
+verity validate examples/liveops
+verity lint examples/liveops --strict
+verity readiness examples/liveops --strict
+verity graph examples/liveops --format json > build/liveops-graph.json
+verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 

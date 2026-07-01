@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.mobile` with `mobile.app-release`,
+  `mobile.store-listing`, `mobile.privacy-policy`,
+  `mobile.apple-privacy-details`, `mobile.google-play-data-safety`,
+  `mobile.att-consent`, `mobile.sdk-inventory`,
+  `mobile.monetization-posture`, `mobile.entitlement`,
+  `mobile.soft-launch`, `mobile.launch-candidate`, and
+  `mobile.compatibility-matrix` records, readiness gates, reference rules,
+  executable mobile examples, graph coverage, schema-bundle coverage,
+  coverage-dashboard support, CI coverage, and public docs for mobile
+  lifecycle contracts.
+- Added built-in `verity.pack.liveops` with `liveops.config`,
+  `liveops.remote-config`, `liveops.rollback-plan`,
+  `liveops.analytics-taxonomy`, `liveops.support-category`,
+  `liveops.save-migration-policy`, `liveops.decommission-plan`,
+  `liveops.data-deletion-policy`, and `liveops.archive-handling` records,
+  readiness gates, reference rules, executable liveops examples, graph
+  coverage, schema-bundle coverage, coverage-dashboard support, CI coverage,
+  and public docs for live operations contracts.
+- Added explicit Unity, Godot, and Unreal reference-rule parity for mobile
+  release and liveops config relationships.
+
 ## 0.43.0
 
 - Added built-in `verity.pack.product-delivery` with `product.scope`,

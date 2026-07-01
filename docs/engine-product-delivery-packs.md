@@ -208,10 +208,16 @@ Delivered record kinds:
 - `editor.surface`
 - `agent-context.exporter`
 
-Follow-on lifecycle packs or product-delivery expansions should capture the
-remaining mobile game lifecycle, privacy/store, liveops, support, save-data,
-compatibility, decommissioning, and archive vocabulary once the first
-product-delivery slice exists.
+The first follow-on lifecycle slices now live in `verity.pack.mobile` and
+`verity.pack.liveops`. They capture mobile release lifecycle, privacy/store
+posture, SDK inventory, monetization posture, soft-launch and launch-candidate
+records, liveops configuration, remote config, rollback, analytics, support,
+save migration, decommissioning, data deletion, and archive handling without
+turning product-delivery into a catch-all pack.
+
+Future follow-on packs or product-delivery expansions should focus on evidence,
+progression, portfolio, and dependency behavior rather than duplicating mobile
+or liveops records.
 
 ## Implementation Acceptance Criteria
 

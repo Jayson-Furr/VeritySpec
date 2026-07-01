@@ -23,14 +23,16 @@
     "verity.pack.gameplay",
     "verity.pack.content",
     "verity.pack.economy",
-    "verity.pack.product-delivery"
+    "verity.pack.product-delivery",
+    "verity.pack.mobile",
+    "verity.pack.liveops"
   ],
-  "recordCount": 91,
+  "recordCount": 112,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 17,
-    "loadedSurfacePacks": 17,
-    "coveredSurfaces": 17,
+    "trackedSurfaces": 19,
+    "loadedSurfacePacks": 19,
+    "coveredSurfaces": 19,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -45,6 +47,8 @@
       "game-core": 4,
       "gameplay": 4,
       "godot": 14,
+      "liveops": 9,
+      "mobile": 12,
       "observability": 4,
       "product-delivery": 17,
       "security": 1,
@@ -102,7 +106,28 @@
       "godot.script": 1,
       "godot.shared-library": 1,
       "godot.validation-runner": 1,
+      "liveops.analytics-taxonomy": 1,
+      "liveops.archive-handling": 1,
+      "liveops.config": 1,
+      "liveops.data-deletion-policy": 1,
+      "liveops.decommission-plan": 1,
+      "liveops.remote-config": 1,
+      "liveops.rollback-plan": 1,
+      "liveops.save-migration-policy": 1,
+      "liveops.support-category": 1,
       "maintenance.policy": 1,
+      "mobile.app-release": 1,
+      "mobile.apple-privacy-details": 1,
+      "mobile.att-consent": 1,
+      "mobile.compatibility-matrix": 1,
+      "mobile.entitlement": 1,
+      "mobile.google-play-data-safety": 1,
+      "mobile.launch-candidate": 1,
+      "mobile.monetization-posture": 1,
+      "mobile.privacy-policy": 1,
+      "mobile.sdk-inventory": 1,
+      "mobile.soft-launch": 1,
+      "mobile.store-listing": 1,
       "observability.alert": 1,
       "observability.dashboard": 1,
       "observability.metric": 1,
@@ -1301,6 +1326,222 @@
           "targetName": "Coverage Delivery Scope"
         }
       ]
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile",
+      "packId": "verity.pack.mobile",
+      "packLoaded": true,
+      "recordKinds": [
+        "mobile.app-release",
+        "mobile.store-listing",
+        "mobile.privacy-policy",
+        "mobile.apple-privacy-details",
+        "mobile.google-play-data-safety",
+        "mobile.att-consent",
+        "mobile.sdk-inventory",
+        "mobile.monetization-posture",
+        "mobile.entitlement",
+        "mobile.soft-launch",
+        "mobile.launch-candidate",
+        "mobile.compatibility-matrix"
+      ],
+      "productRelationships": [
+        "hasMobileRelease"
+      ],
+      "recordCount": 12,
+      "covered": true,
+      "records": [
+        {
+          "id": "mobile.app-release.coverage_soft_launch",
+          "kind": "mobile.app-release",
+          "name": "Coverage Soft Launch Release",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.apple-privacy-details.coverage_apple",
+          "kind": "mobile.apple-privacy-details",
+          "name": "Apple Privacy Details",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.att-consent.coverage_att",
+          "kind": "mobile.att-consent",
+          "name": "ATT Consent Posture",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.compatibility-matrix.coverage_devices",
+          "kind": "mobile.compatibility-matrix",
+          "name": "Mobile Coverage Compatibility Baseline",
+          "status": "ready",
+          "owner": "qa"
+        },
+        {
+          "id": "mobile.entitlement.coverage_remove_ads",
+          "kind": "mobile.entitlement",
+          "name": "Remove Ads Entitlement",
+          "status": "ready",
+          "owner": "monetization"
+        },
+        {
+          "id": "mobile.google-play-data-safety.coverage_google",
+          "kind": "mobile.google-play-data-safety",
+          "name": "Google Play Data Safety",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.launch-candidate.coverage_candidate",
+          "kind": "mobile.launch-candidate",
+          "name": "Soft Launch 0.5.0 Candidate",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.monetization-posture.coverage_monetization",
+          "kind": "mobile.monetization-posture",
+          "name": "Mobile Coverage Monetization Posture",
+          "status": "ready",
+          "owner": "monetization"
+        },
+        {
+          "id": "mobile.privacy-policy.coverage_policy",
+          "kind": "mobile.privacy-policy",
+          "name": "Coverage Privacy Policy",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "mobile.sdk-inventory.coverage_sdks",
+          "kind": "mobile.sdk-inventory",
+          "name": "Mobile Coverage SDK Inventory",
+          "status": "ready",
+          "owner": "engineering"
+        },
+        {
+          "id": "mobile.soft-launch.coverage_market",
+          "kind": "mobile.soft-launch",
+          "name": "Canada Soft Launch",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "mobile.store-listing.coverage_listing",
+          "kind": "mobile.store-listing",
+          "name": "Coverage Store Listing",
+          "status": "ready",
+          "owner": "marketing"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasMobileRelease",
+          "targetId": "mobile.app-release.coverage_soft_launch",
+          "targetKind": "mobile.app-release",
+          "targetName": "Coverage Soft Launch Release"
+        }
+      ]
+    },
+    {
+      "id": "liveops",
+      "name": "LiveOps",
+      "packId": "verity.pack.liveops",
+      "packLoaded": true,
+      "recordKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category",
+        "liveops.save-migration-policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ],
+      "productRelationships": [
+        "hasLiveOpsConfig"
+      ],
+      "recordCount": 9,
+      "covered": true,
+      "records": [
+        {
+          "id": "liveops.analytics-taxonomy.coverage_events",
+          "kind": "liveops.analytics-taxonomy",
+          "name": "LiveOps Analytics Taxonomy",
+          "status": "ready",
+          "owner": "analytics"
+        },
+        {
+          "id": "liveops.archive-handling.coverage_archive",
+          "kind": "liveops.archive-handling",
+          "name": "LiveOps Archive Handling",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "liveops.config.coverage_live",
+          "kind": "liveops.config",
+          "name": "Coverage LiveOps Config",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "liveops.data-deletion-policy.coverage_deletion",
+          "kind": "liveops.data-deletion-policy",
+          "name": "Player Request Data Deletion",
+          "status": "ready",
+          "owner": "privacy"
+        },
+        {
+          "id": "liveops.decommission-plan.coverage_sunset",
+          "kind": "liveops.decommission-plan",
+          "name": "LiveOps Sunset Plan",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "liveops.remote-config.coverage_bounds",
+          "kind": "liveops.remote-config",
+          "name": "Remote Config Bounds",
+          "status": "ready",
+          "owner": "liveops"
+        },
+        {
+          "id": "liveops.rollback-plan.coverage_rollback",
+          "kind": "liveops.rollback-plan",
+          "name": "Remote Config Rollback",
+          "status": "ready",
+          "owner": "liveops"
+        },
+        {
+          "id": "liveops.save-migration-policy.coverage_save_v2",
+          "kind": "liveops.save-migration-policy",
+          "name": "Profile Save Migration v2",
+          "status": "ready",
+          "owner": "engineering"
+        },
+        {
+          "id": "liveops.support-category.coverage_support",
+          "kind": "liveops.support-category",
+          "name": "Purchase Issue Support",
+          "status": "ready",
+          "owner": "support"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasLiveOpsConfig",
+          "targetId": "liveops.config.coverage_live",
+          "targetKind": "liveops.config",
+          "targetName": "Coverage LiveOps Config"
+        }
+      ]
     }
   ],
   "products": [
@@ -1461,6 +1702,24 @@
             "targetId": "product.scope.coverage_delivery",
             "targetKind": "product.scope",
             "targetName": "Coverage Delivery Scope"
+          }
+        ],
+        "mobile": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasMobileRelease",
+            "targetId": "mobile.app-release.coverage_soft_launch",
+            "targetKind": "mobile.app-release",
+            "targetName": "Coverage Soft Launch Release"
+          }
+        ],
+        "liveops": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasLiveOpsConfig",
+            "targetId": "liveops.config.coverage_live",
+            "targetKind": "liveops.config",
+            "targetName": "Coverage LiveOps Config"
           }
         ]
       },

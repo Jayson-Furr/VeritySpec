@@ -1004,6 +1004,43 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
         ],
         "productRelationships": ["hasProductScope"],
     },
+    {
+        "id": "mobile",
+        "name": "Mobile",
+        "packId": "verity.pack.mobile",
+        "recordKinds": [
+            "mobile.app-release",
+            "mobile.store-listing",
+            "mobile.privacy-policy",
+            "mobile.apple-privacy-details",
+            "mobile.google-play-data-safety",
+            "mobile.att-consent",
+            "mobile.sdk-inventory",
+            "mobile.monetization-posture",
+            "mobile.entitlement",
+            "mobile.soft-launch",
+            "mobile.launch-candidate",
+            "mobile.compatibility-matrix",
+        ],
+        "productRelationships": ["hasMobileRelease"],
+    },
+    {
+        "id": "liveops",
+        "name": "LiveOps",
+        "packId": "verity.pack.liveops",
+        "recordKinds": [
+            "liveops.config",
+            "liveops.remote-config",
+            "liveops.rollback-plan",
+            "liveops.analytics-taxonomy",
+            "liveops.support-category",
+            "liveops.save-migration-policy",
+            "liveops.decommission-plan",
+            "liveops.data-deletion-policy",
+            "liveops.archive-handling",
+        ],
+        "productRelationships": ["hasLiveOpsConfig"],
+    },
 ]
 PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
 

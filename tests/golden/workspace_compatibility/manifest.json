@@ -602,6 +602,75 @@
       ]
     },
     {
+      "path": "examples/mobile",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.mobile"
+      ],
+      "recordCount": 13,
+      "recordKinds": {
+        "mobile.app-release": 1,
+        "mobile.apple-privacy-details": 1,
+        "mobile.att-consent": 1,
+        "mobile.compatibility-matrix": 1,
+        "mobile.entitlement": 1,
+        "mobile.google-play-data-safety": 1,
+        "mobile.launch-candidate": 1,
+        "mobile.monetization-posture": 1,
+        "mobile.privacy-policy": 1,
+        "mobile.sdk-inventory": 1,
+        "mobile.soft-launch": 1,
+        "mobile.store-listing": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
+      "path": "examples/liveops",
+      "sourceSpecVersion": "v0.2.0",
+      "packs": [
+        "verity.core",
+        "verity.pack.liveops"
+      ],
+      "recordCount": 10,
+      "recordKinds": {
+        "liveops.analytics-taxonomy": 1,
+        "liveops.archive-handling": 1,
+        "liveops.config": 1,
+        "liveops.data-deletion-policy": 1,
+        "liveops.decommission-plan": 1,
+        "liveops.remote-config": 1,
+        "liveops.rollback-plan": 1,
+        "liveops.save-migration-policy": 1,
+        "liveops.support-category": 1,
+        "product": 1
+      },
+      "compatibilityVariants": [
+        {
+          "specVersion": "v0.1.0",
+          "packPaths": "omitted",
+          "expected": "pass"
+        },
+        {
+          "specVersion": "v0.2.0",
+          "packPaths": "required",
+          "expected": "pass"
+        }
+      ]
+    },
+    {
       "path": "tests/fixtures/generator_maturity",
       "sourceSpecVersion": "v0.2.0",
       "packs": [

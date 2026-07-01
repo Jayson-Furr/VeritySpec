@@ -68,6 +68,14 @@ verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery --format json > build/product-delivery-graph.json
+verity validate examples/mobile
+verity lint examples/mobile --strict
+verity readiness examples/mobile --strict
+verity graph examples/mobile --format json > build/mobile-graph.json
+verity validate examples/liveops
+verity lint examples/liveops --strict
+verity readiness examples/liveops --strict
+verity graph examples/liveops --format json > build/liveops-graph.json
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity validate tests/fixtures/cross_pack_coverage
@@ -97,6 +105,8 @@ verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bund
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
+verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -109,6 +119,8 @@ python -m json.tool build/unity-graph.json >/dev/null
 python -m json.tool build/godot-graph.json >/dev/null
 python -m json.tool build/unreal-graph.json >/dev/null
 python -m json.tool build/product-delivery-graph.json >/dev/null
+python -m json.tool build/mobile-graph.json >/dev/null
+python -m json.tool build/liveops-graph.json >/dev/null
 python -m build
 twine check dist/*
 ```
@@ -132,6 +144,8 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/content
 /tmp/verityspec-wheel/bin/verity validate examples/economy
 /tmp/verityspec-wheel/bin/verity validate examples/product-delivery
+/tmp/verityspec-wheel/bin/verity validate examples/mobile
+/tmp/verityspec-wheel/bin/verity validate examples/liveops
 ```
 
 If `twine` is installed but the console script is not on `PATH`, run

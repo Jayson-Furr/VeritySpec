@@ -31,6 +31,7 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
             "verity.pack.gui",
             "verity.pack.desktop",
             "verity.pack.mobile",
+            "verity.pack.liveops",
             "verity.pack.game",
             "First-Schema Gate",
             "strict JSON Schemas using the shared record envelope",

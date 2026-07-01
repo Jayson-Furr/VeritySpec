@@ -1,0 +1,277 @@
+{
+  "id": "verity.pack.liveops",
+  "version": "0.44.0",
+  "name": "VeritySpec LiveOps Pack",
+  "description": "Live operations configuration, remote config, rollback, analytics taxonomy, support category, save migration, decommissioning, data deletion posture, and archive handling records.",
+  "schemas": [
+    {
+      "kind": "liveops.config",
+      "path": "schemas/liveops-config.schema.json"
+    },
+    {
+      "kind": "liveops.remote-config",
+      "path": "schemas/liveops-remote-config.schema.json"
+    },
+    {
+      "kind": "liveops.rollback-plan",
+      "path": "schemas/liveops-rollback-plan.schema.json"
+    },
+    {
+      "kind": "liveops.analytics-taxonomy",
+      "path": "schemas/liveops-analytics-taxonomy.schema.json"
+    },
+    {
+      "kind": "liveops.support-category",
+      "path": "schemas/liveops-support-category.schema.json"
+    },
+    {
+      "kind": "liveops.save-migration-policy",
+      "path": "schemas/liveops-save-migration-policy.schema.json"
+    },
+    {
+      "kind": "liveops.decommission-plan",
+      "path": "schemas/liveops-decommission-plan.schema.json"
+    },
+    {
+      "kind": "liveops.data-deletion-policy",
+      "path": "schemas/liveops-data-deletion-policy.schema.json"
+    },
+    {
+      "kind": "liveops.archive-handling",
+      "path": "schemas/liveops-archive-handling.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "liveops.config.ready",
+      "kind": "liveops.config",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "configType",
+        "environment",
+        "ownerTeam"
+      ],
+      "minItems": {
+        "references": 5
+      }
+    },
+    {
+      "id": "liveops.remote-config.ready",
+      "kind": "liveops.remote-config",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "keyPrefix",
+        "boundsPolicy",
+        "deploymentPolicy"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "liveops.rollback-plan.ready",
+      "kind": "liveops.rollback-plan",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "rollbackTrigger",
+        "rollbackMethod",
+        "decisionOwner"
+      ]
+    },
+    {
+      "id": "liveops.analytics-taxonomy.ready",
+      "kind": "liveops.analytics-taxonomy",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "eventNamespace",
+        "eventNames",
+        "kpiRefs"
+      ],
+      "minItems": {
+        "eventNames": 1,
+        "kpiRefs": 1
+      }
+    },
+    {
+      "id": "liveops.support-category.ready",
+      "kind": "liveops.support-category",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "categoryType",
+        "responsePolicy"
+      ]
+    },
+    {
+      "id": "liveops.save-migration-policy.ready",
+      "kind": "liveops.save-migration-policy",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "schemaVersion",
+        "migrationPolicy",
+        "rollbackPolicy"
+      ]
+    },
+    {
+      "id": "liveops.decommission-plan.ready",
+      "kind": "liveops.decommission-plan",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "decommissionTrigger",
+        "communicationPlan"
+      ],
+      "minItems": {
+        "references": 2
+      }
+    },
+    {
+      "id": "liveops.data-deletion-policy.ready",
+      "kind": "liveops.data-deletion-policy",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "retentionPolicy",
+        "deletionMethod"
+      ]
+    },
+    {
+      "id": "liveops.archive-handling.ready",
+      "kind": "liveops.archive-handling",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "archiveLocation",
+        "artifactPolicy"
+      ]
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "hasLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "usesLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "godot.project",
+      "relationship": "usesLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "unreal.project",
+      "relationship": "usesLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "mobile.app-release",
+      "relationship": "usesLiveOpsConfig",
+      "targetKind": "liveops.config"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "usesRemoteConfig",
+      "targetKind": "liveops.remote-config"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "hasRollbackPlan",
+      "targetKind": "liveops.rollback-plan"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "usesAnalyticsTaxonomy",
+      "targetKind": "liveops.analytics-taxonomy"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "hasSupportCategory",
+      "targetKind": "liveops.support-category"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "hasSaveMigrationPolicy",
+      "targetKind": "liveops.save-migration-policy"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "hasDecommissionPlan",
+      "targetKind": "liveops.decommission-plan"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "hasDataDeletionPolicy",
+      "targetKind": "liveops.data-deletion-policy"
+    },
+    {
+      "sourceKind": "liveops.config",
+      "relationship": "hasArchiveHandling",
+      "targetKind": "liveops.archive-handling"
+    },
+    {
+      "sourceKind": "liveops.remote-config",
+      "relationship": "hasRollbackPlan",
+      "targetKind": "liveops.rollback-plan"
+    },
+    {
+      "sourceKind": "liveops.decommission-plan",
+      "relationship": "usesDataDeletionPolicy",
+      "targetKind": "liveops.data-deletion-policy"
+    },
+    {
+      "sourceKind": "liveops.decommission-plan",
+      "relationship": "usesArchiveHandling",
+      "targetKind": "liveops.archive-handling"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for verityspec liveops pack records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "liveops.config",
+        "liveops.remote-config",
+        "liveops.rollback-plan",
+        "liveops.analytics-taxonomy",
+        "liveops.support-category",
+        "liveops.save-migration-policy",
+        "liveops.decommission-plan",
+        "liveops.data-deletion-policy",
+        "liveops.archive-handling"
+      ]
+    }
+  ]
+}

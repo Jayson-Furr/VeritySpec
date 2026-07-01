@@ -234,6 +234,14 @@ verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery
+verity validate examples/mobile
+verity lint examples/mobile --strict
+verity readiness examples/mobile --strict
+verity graph examples/mobile
+verity validate examples/liveops
+verity lint examples/liveops --strict
+verity readiness examples/liveops --strict
+verity graph examples/liveops
 verity doctor examples/basic
 verity doctor examples/basic --report-out build/doctor-report.json
 verity explain reference.missing
@@ -260,6 +268,8 @@ verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bund
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+verity generate schema-bundle examples/mobile --out build/mobile-schema-bundle.json
+verity generate schema-bundle examples/liveops --out build/liveops-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -312,6 +322,8 @@ verity generate python-models tests/fixtures/generator_maturity --out build/gene
 - `docs/content-pack.md`: built-in content pack behavior.
 - `docs/economy-pack.md`: built-in economy pack behavior.
 - `docs/product-delivery-pack.md`: built-in product-delivery pack behavior.
+- `docs/mobile-pack.md`: built-in mobile lifecycle pack behavior.
+- `docs/liveops-pack.md`: built-in live operations pack behavior.
 - `tests/`: executable behavior coverage.
 - `.github/workflows/ci.yml`: required CI contract.
 - `.github/workflows/release.yml`: release automation.

@@ -76,6 +76,14 @@
         {
           "type": "hasProductScope",
           "target": "product.scope.coverage_delivery"
+        },
+        {
+          "type": "hasMobileRelease",
+          "target": "mobile.app-release.coverage_soft_launch"
+        },
+        {
+          "type": "hasLiveOpsConfig",
+          "target": "liveops.config.coverage_live"
         }
       ]
     },
@@ -2477,6 +2485,467 @@
           "target": "generator.capability.coverage_schema_bundle"
         }
       ]
+    },
+    {
+      "id": "mobile.app-release.coverage_soft_launch",
+      "kind": "mobile.app-release",
+      "name": "Coverage Soft Launch Release",
+      "description": "Mobile release posture for a soft launch candidate without asserting store approval.",
+      "status": "ready",
+      "owner": "release",
+      "releaseStage": "soft-launch",
+      "releaseTrack": "closed-testing",
+      "platformTargets": [
+        "ios",
+        "android"
+      ],
+      "versionName": "0.5.0",
+      "buildNumber": "105",
+      "readinessProfileRefs": [
+        "readiness.profile.mobile_soft_launch"
+      ],
+      "references": [
+        {
+          "type": "hasStoreListing",
+          "target": "mobile.store-listing.coverage_listing"
+        },
+        {
+          "type": "hasPrivacyPolicy",
+          "target": "mobile.privacy-policy.coverage_policy"
+        },
+        {
+          "type": "hasApplePrivacyDetails",
+          "target": "mobile.apple-privacy-details.coverage_apple"
+        },
+        {
+          "type": "hasGooglePlayDataSafety",
+          "target": "mobile.google-play-data-safety.coverage_google"
+        },
+        {
+          "type": "hasATTConsent",
+          "target": "mobile.att-consent.coverage_att"
+        },
+        {
+          "type": "hasSDKInventory",
+          "target": "mobile.sdk-inventory.coverage_sdks"
+        },
+        {
+          "type": "hasMonetizationPosture",
+          "target": "mobile.monetization-posture.coverage_monetization"
+        },
+        {
+          "type": "hasEntitlement",
+          "target": "mobile.entitlement.coverage_remove_ads"
+        },
+        {
+          "type": "hasSoftLaunch",
+          "target": "mobile.soft-launch.coverage_market"
+        },
+        {
+          "type": "hasLaunchCandidate",
+          "target": "mobile.launch-candidate.coverage_candidate"
+        },
+        {
+          "type": "hasCompatibilityMatrix",
+          "target": "mobile.compatibility-matrix.coverage_devices"
+        }
+      ]
+    },
+    {
+      "id": "mobile.store-listing.coverage_listing",
+      "kind": "mobile.store-listing",
+      "name": "Coverage Store Listing",
+      "description": "Draft listing metadata posture for iOS and Android stores.",
+      "status": "ready",
+      "owner": "marketing",
+      "stores": [
+        "apple-app-store",
+        "google-play"
+      ],
+      "metadataStatus": "review",
+      "contentRatingStatus": "draft",
+      "assetRefs": [
+        "asset.identity.key_art"
+      ],
+      "notes": "Listing metadata is reviewed internally before submission.",
+      "references": [
+        {
+          "type": "documentsPrivacyPolicy",
+          "target": "mobile.privacy-policy.coverage_policy"
+        }
+      ]
+    },
+    {
+      "id": "mobile.privacy-policy.coverage_policy",
+      "kind": "mobile.privacy-policy",
+      "name": "Coverage Privacy Policy",
+      "description": "Privacy policy evidence reference for the mobile release posture.",
+      "status": "ready",
+      "owner": "privacy",
+      "policyUri": "docs/privacy-policy.md",
+      "dataUseSummary": "Documents analytics, purchases, ads posture, and support data handling for review.",
+      "evidenceRefs": [
+        "evidence.requirement.privacy_review"
+      ],
+      "reviewStatus": "review",
+      "references": [
+        {
+          "type": "documentsApplePrivacyDetails",
+          "target": "mobile.apple-privacy-details.coverage_apple"
+        },
+        {
+          "type": "documentsGooglePlayDataSafety",
+          "target": "mobile.google-play-data-safety.coverage_google"
+        }
+      ]
+    },
+    {
+      "id": "mobile.apple-privacy-details.coverage_apple",
+      "kind": "mobile.apple-privacy-details",
+      "name": "Apple Privacy Details",
+      "description": "Apple privacy detail posture for review; not a store approval claim.",
+      "status": "ready",
+      "owner": "privacy",
+      "dataCategories": [
+        "purchases",
+        "usage-data",
+        "diagnostics"
+      ],
+      "collectionPosture": "collected",
+      "trackingPosture": "no-tracking",
+      "nutritionLabelStatus": "review",
+      "references": []
+    },
+    {
+      "id": "mobile.google-play-data-safety.coverage_google",
+      "kind": "mobile.google-play-data-safety",
+      "name": "Google Play Data Safety",
+      "description": "Google Play Data Safety posture for review; not a store approval claim.",
+      "status": "ready",
+      "owner": "privacy",
+      "dataTypes": [
+        "purchases",
+        "app-activity",
+        "diagnostics"
+      ],
+      "sharingPosture": "not-shared",
+      "securityPractices": [
+        "encrypted-in-transit",
+        "user-data-deletion-request-path"
+      ],
+      "formStatus": "review",
+      "references": []
+    },
+    {
+      "id": "mobile.att-consent.coverage_att",
+      "kind": "mobile.att-consent",
+      "name": "ATT Consent Posture",
+      "description": "ATT consent posture for the mobile release.",
+      "status": "ready",
+      "owner": "privacy",
+      "consentRequired": false,
+      "promptStatus": "not-required",
+      "rationale": "The example release does not declare cross-app tracking.",
+      "copyRefs": [],
+      "references": []
+    },
+    {
+      "id": "mobile.sdk-inventory.coverage_sdks",
+      "kind": "mobile.sdk-inventory",
+      "name": "Mobile Coverage SDK Inventory",
+      "description": "SDK inventory used to inform privacy and data-safety records.",
+      "status": "ready",
+      "owner": "engineering",
+      "sdks": [
+        "engine-runtime",
+        "analytics-client",
+        "iap-client"
+      ],
+      "reviewStatus": "review",
+      "dataCollectionNotes": "SDK declarations are reviewed before launch-candidate readiness.",
+      "references": [
+        {
+          "type": "informsPrivacyPolicy",
+          "target": "mobile.privacy-policy.coverage_policy"
+        }
+      ]
+    },
+    {
+      "id": "mobile.monetization-posture.coverage_monetization",
+      "kind": "mobile.monetization-posture",
+      "name": "Mobile Coverage Monetization Posture",
+      "description": "Ads and in-app-purchase posture for the soft launch.",
+      "status": "ready",
+      "owner": "monetization",
+      "monetizationTypes": [
+        "ads",
+        "iap"
+      ],
+      "reviewStatus": "review",
+      "storeProductRefs": [
+        "store.product.remove_ads"
+      ],
+      "notes": "Pricing approval is tracked outside this example.",
+      "references": [
+        {
+          "type": "grantsEntitlement",
+          "target": "mobile.entitlement.coverage_remove_ads"
+        }
+      ]
+    },
+    {
+      "id": "mobile.entitlement.coverage_remove_ads",
+      "kind": "mobile.entitlement",
+      "name": "Remove Ads Entitlement",
+      "description": "Remove Ads entitlement contract for IAP fulfillment posture.",
+      "status": "ready",
+      "owner": "monetization",
+      "entitlementType": "remove-ads",
+      "fulfillmentModel": "store-receipt",
+      "restorePolicy": "Restore purchases from store receipt state.",
+      "references": []
+    },
+    {
+      "id": "mobile.soft-launch.coverage_market",
+      "kind": "mobile.soft-launch",
+      "name": "Canada Soft Launch",
+      "description": "Soft launch posture for one market and explicit telemetry success criteria.",
+      "status": "ready",
+      "owner": "release",
+      "markets": [
+        "CA"
+      ],
+      "successCriteria": [
+        "day-1-retention-watchlist",
+        "crash-free-session-watchlist"
+      ],
+      "telemetryRefs": [
+        "telemetry.event.session_started"
+      ],
+      "durationPolicy": "Review after two weekly cohorts.",
+      "references": [
+        {
+          "type": "promotesLaunchCandidate",
+          "target": "mobile.launch-candidate.coverage_candidate"
+        }
+      ]
+    },
+    {
+      "id": "mobile.launch-candidate.coverage_candidate",
+      "kind": "mobile.launch-candidate",
+      "name": "Soft Launch 0.5.0 Candidate",
+      "description": "Launch-candidate readiness posture for soft launch build 0.5.0.",
+      "status": "ready",
+      "owner": "release",
+      "candidateVersion": "0.5.0",
+      "readinessProfile": "mobile-soft-launch",
+      "approvalStatus": "review",
+      "knownIssueRefs": [],
+      "references": [
+        {
+          "type": "usesCompatibilityMatrix",
+          "target": "mobile.compatibility-matrix.coverage_devices"
+        },
+        {
+          "type": "hasPrivacyPolicy",
+          "target": "mobile.privacy-policy.coverage_policy"
+        }
+      ]
+    },
+    {
+      "id": "mobile.compatibility-matrix.coverage_devices",
+      "kind": "mobile.compatibility-matrix",
+      "name": "Mobile Coverage Compatibility Baseline",
+      "description": "Compatibility posture for supported mobile platforms and device classes.",
+      "status": "ready",
+      "owner": "qa",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "minimumOs": {
+        "ios": "16.0",
+        "android": "10"
+      },
+      "deviceClasses": [
+        "phone",
+        "tablet"
+      ],
+      "testPolicy": "Smoke-test representative low, mid, and high memory devices before launch candidate.",
+      "references": []
+    },
+    {
+      "id": "liveops.config.coverage_live",
+      "kind": "liveops.config",
+      "name": "Coverage LiveOps Config",
+      "description": "Production liveops configuration contract for a mobile game.",
+      "status": "ready",
+      "owner": "operations",
+      "configType": "game",
+      "environment": "production",
+      "ownerTeam": "liveops",
+      "cadence": "weekly review during soft launch",
+      "references": [
+        {
+          "type": "usesRemoteConfig",
+          "target": "liveops.remote-config.coverage_bounds"
+        },
+        {
+          "type": "hasRollbackPlan",
+          "target": "liveops.rollback-plan.coverage_rollback"
+        },
+        {
+          "type": "usesAnalyticsTaxonomy",
+          "target": "liveops.analytics-taxonomy.coverage_events"
+        },
+        {
+          "type": "hasSupportCategory",
+          "target": "liveops.support-category.coverage_support"
+        },
+        {
+          "type": "hasSaveMigrationPolicy",
+          "target": "liveops.save-migration-policy.coverage_save_v2"
+        },
+        {
+          "type": "hasDecommissionPlan",
+          "target": "liveops.decommission-plan.coverage_sunset"
+        },
+        {
+          "type": "hasDataDeletionPolicy",
+          "target": "liveops.data-deletion-policy.coverage_deletion"
+        },
+        {
+          "type": "hasArchiveHandling",
+          "target": "liveops.archive-handling.coverage_archive"
+        }
+      ]
+    },
+    {
+      "id": "liveops.remote-config.coverage_bounds",
+      "kind": "liveops.remote-config",
+      "name": "Remote Config Bounds",
+      "description": "Remote config key and bounds policy for live tuning.",
+      "status": "ready",
+      "owner": "liveops",
+      "keyPrefix": "catcafe.",
+      "boundsPolicy": "Numeric values must stay within documented min/max ranges.",
+      "deploymentPolicy": "Stage remote config before production rollout.",
+      "parameterRefs": [
+        "config.daily_reward_multiplier"
+      ],
+      "references": [
+        {
+          "type": "hasRollbackPlan",
+          "target": "liveops.rollback-plan.coverage_rollback"
+        }
+      ]
+    },
+    {
+      "id": "liveops.rollback-plan.coverage_rollback",
+      "kind": "liveops.rollback-plan",
+      "name": "Remote Config Rollback",
+      "description": "Rollback posture for live remote config changes.",
+      "status": "ready",
+      "owner": "liveops",
+      "rollbackTrigger": "retention, crash, or purchase anomaly after rollout",
+      "rollbackMethod": "restore previous config snapshot",
+      "decisionOwner": "liveops lead",
+      "maxRollbackTime": "30 minutes",
+      "references": []
+    },
+    {
+      "id": "liveops.analytics-taxonomy.coverage_events",
+      "kind": "liveops.analytics-taxonomy",
+      "name": "LiveOps Analytics Taxonomy",
+      "description": "Event and KPI taxonomy for liveops decisions.",
+      "status": "ready",
+      "owner": "analytics",
+      "eventNamespace": "cat_cafe",
+      "eventNames": [
+        "session_started",
+        "purchase_completed",
+        "daily_reward_claimed"
+      ],
+      "kpiRefs": [
+        "kpi.retention_d1",
+        "kpi.crash_free_sessions"
+      ],
+      "dashboardRefs": [
+        "dashboard.liveops_health"
+      ],
+      "references": []
+    },
+    {
+      "id": "liveops.support-category.coverage_support",
+      "kind": "liveops.support-category",
+      "name": "Purchase Issue Support",
+      "description": "Support category for IAP and entitlement issues.",
+      "status": "ready",
+      "owner": "support",
+      "categoryType": "billing",
+      "responsePolicy": "Triage purchase issues before the next liveops review window.",
+      "routingOwner": "support lead",
+      "references": []
+    },
+    {
+      "id": "liveops.save-migration-policy.coverage_save_v2",
+      "kind": "liveops.save-migration-policy",
+      "name": "Profile Save Migration v2",
+      "description": "Save migration posture for player profile schema v2.",
+      "status": "ready",
+      "owner": "engineering",
+      "schemaVersion": "2",
+      "migrationPolicy": "Migrate profile records on first launch after update.",
+      "rollbackPolicy": "Keep v1 parser until v2 migration evidence is complete.",
+      "testEvidenceRefs": [
+        "evidence.save_migration.profile_v2"
+      ],
+      "references": []
+    },
+    {
+      "id": "liveops.decommission-plan.coverage_sunset",
+      "kind": "liveops.decommission-plan",
+      "name": "LiveOps Sunset Plan",
+      "description": "Sunset posture for liveops services and player communications.",
+      "status": "ready",
+      "owner": "operations",
+      "decommissionTrigger": "sunset",
+      "communicationPlan": "Publish support notice and in-app message before disabling liveops services.",
+      "supportHandoff": "Support keeps known issue responses available through archive window.",
+      "references": [
+        {
+          "type": "usesDataDeletionPolicy",
+          "target": "liveops.data-deletion-policy.coverage_deletion"
+        },
+        {
+          "type": "usesArchiveHandling",
+          "target": "liveops.archive-handling.coverage_archive"
+        }
+      ]
+    },
+    {
+      "id": "liveops.data-deletion-policy.coverage_deletion",
+      "kind": "liveops.data-deletion-policy",
+      "name": "Player Request Data Deletion",
+      "description": "Data deletion handling posture for player requests.",
+      "status": "ready",
+      "owner": "privacy",
+      "retentionPolicy": "Retain only records required by support and platform policy during the documented window.",
+      "deletionMethod": "Submit verified deletion request through operations queue.",
+      "requestPath": "support/data-deletion.md",
+      "references": []
+    },
+    {
+      "id": "liveops.archive-handling.coverage_archive",
+      "kind": "liveops.archive-handling",
+      "name": "LiveOps Archive Handling",
+      "description": "Archive handling posture for final liveops artifacts.",
+      "status": "ready",
+      "owner": "operations",
+      "archiveLocation": "archive/liveops/final",
+      "artifactPolicy": "Archive final config snapshots, analytics taxonomy, and support policies.",
+      "manifestPath": "archive/liveops-manifest.json",
+      "references": []
     }
   ]
 }

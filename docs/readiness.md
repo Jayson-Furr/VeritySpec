@@ -116,6 +116,17 @@ Tooling records such as `scanner.capability`, `validation.runner`,
 `editor.surface`, and `agent-context.exporter` should declare the records they
 scan, run, expose, or describe before strict readiness passes.
 
+Mobile records use readiness gates to keep app release, store, privacy,
+data-safety, SDK inventory, monetization, entitlement, soft-launch,
+launch-candidate, and compatibility contracts traceable. A `mobile.app-release`
+should link to the store, privacy, SDK, monetization, launch, compatibility,
+and liveops records that support mobile release review.
+
+LiveOps records use readiness gates to keep remote config, rollback, analytics,
+support, save-migration, decommission, data-deletion, and archive handling
+contracts traceable. A `liveops.config` should link to the operational records
+that make a liveops posture reviewable.
+
 Run readiness checks:
 
 ```bash
@@ -132,6 +143,8 @@ verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
 verity readiness examples/economy --strict
 verity readiness examples/product-delivery --strict
+verity readiness examples/mobile --strict
+verity readiness examples/liveops --strict
 verity readiness examples/basic --strict --format json
 ```
 

@@ -2,16 +2,18 @@
 
 VeritySpec should add large product surfaces through deliberate packs, not by
 expanding the core kernel or creating a broad static catalog. This note defines
-the initial boundaries for future GUI, desktop, mobile, and game packs.
+the initial boundaries for future GUI, desktop, lifecycle, and game packs.
 
 `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
 `verity.pack.godot`, `verity.pack.unreal`, `verity.pack.gameplay`,
-`verity.pack.content`, `verity.pack.economy`, and
-`verity.pack.product-delivery` now provide the first narrow built-in game,
-engine, economy, and spec-driven product-delivery scopes. The remaining GUI,
-desktop, mobile, progression, liveops, evidence, dependency, portfolio, and
-broader game scopes should still use this note to define pack ownership,
-overlap rules, and readiness expectations before implementation begins.
+`verity.pack.content`, `verity.pack.economy`,
+`verity.pack.product-delivery`, `verity.pack.mobile`, and
+`verity.pack.liveops` now provide the first narrow built-in game, engine,
+economy, spec-driven product-delivery, mobile lifecycle, and live operations
+scopes. The remaining GUI, desktop, progression, evidence, dependency,
+portfolio, and broader game scopes should still use this note to define pack
+ownership, overlap rules, and readiness expectations before implementation
+begins.
 
 ## Pack Boundary Rule
 
@@ -92,24 +94,26 @@ The first desktop schemas should wait until the pack has examples that validate
 at least one native application shell, one supported operating-system target,
 and one readiness gate for release-impacting desktop metadata.
 
-## Future Mobile Pack
+## Mobile Pack
 
-Proposed pack ID: `verity.pack.mobile`.
+Current pack ID: `verity.pack.mobile`.
 
-The mobile pack should describe mobile application contracts and mobile-specific
-platform obligations.
+The mobile pack describes the first narrow mobile lifecycle surface: app
+releases, store listings, privacy policy evidence references, Apple privacy
+details, Google Play Data Safety posture, ATT consent, SDK inventory,
+monetization posture, entitlements, soft launches, launch candidates, and
+compatibility matrices.
 
-Likely ownership:
+It owns:
 
-- mobile app manifests, app lifecycle states, foreground/background behavior,
-  and deep-link contracts
-- iOS and Android platform targets, minimum versions, entitlements,
-  permissions, and store submission metadata
-- device capability requirements such as camera, location, Bluetooth, push
-  notifications, biometrics, and offline storage
-- mobile release-channel records such as beta, staged rollout, and store
-  review gates
-- mobile-specific crash, performance, and compatibility evidence references
+- app release records and release-track posture
+- store listing metadata posture
+- privacy policy, Apple privacy details, Google Play Data Safety, and ATT
+  consent posture records
+- SDK inventory, monetization posture, and entitlement records
+- soft-launch, launch-candidate, and compatibility matrix records
+- engine-neutral links from Unity, Godot, and Unreal projects to mobile
+  releases where those products target mobile platforms
 
 The mobile pack should not own:
 
@@ -118,17 +122,52 @@ The mobile pack should not own:
   records
 - game mechanics or liveops records, even when a game ships on mobile
 - generic deployment infrastructure records
+- legal, privacy-law, app-store, platform-certification, marketplace, or
+  pricing-approval guarantees
 
-The first mobile schemas should wait until the pack includes store-submission
-readiness examples and validates at least one iOS or Android platform target
-with explicit permission rationale.
+The first mobile schemas intentionally model reviewable product-contract
+posture and evidence references. Downstream teams remain responsible for legal,
+privacy, store, platform, marketplace, and pricing approvals.
+
+## LiveOps Pack
+
+Current pack ID: `verity.pack.liveops`.
+
+The liveops pack describes the first narrow live operations lifecycle surface:
+liveops configuration, remote config bounds, rollback plans, analytics
+taxonomy, support categories, save migration policy, decommissioning, data
+deletion posture, and archive handling.
+
+It owns:
+
+- liveops config and remote-config contract records
+- rollback plan and bounded deployment posture records
+- analytics taxonomy and support category records
+- save-migration policy records
+- decommission, data-deletion, and archive-handling records
+- engine-neutral links from Unity, Godot, and Unreal projects to liveops
+  configs where those products use live operations or remote configuration
+
+The liveops pack should not own:
+
+- generic gameplay, content, economy, platform-store, or deployment records
+- security, privacy-law, compliance, observability, evidence, or support
+  approval claims
+- workspace-dependency semantics or portfolio impact analysis
+- legal, platform, marketplace, store-review, support-readiness, or archival
+  guarantees
+
+The first liveops schemas intentionally model reviewable operational posture
+and lifecycle links. Downstream teams remain responsible for operational,
+support, legal, privacy, store, platform, marketplace, and archive approvals.
 
 ## Game Core, Game Assets, Engine, Gameplay, Content, Economy, Product Delivery, and Future Game Packs
 
 Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`,
 `verity.pack.unity`, `verity.pack.godot`, `verity.pack.unreal`,
 `verity.pack.gameplay`, `verity.pack.content`, `verity.pack.economy`,
-`verity.pack.product-delivery`.
+`verity.pack.product-delivery`, `verity.pack.mobile`, and
+`verity.pack.liveops`.
 
 The game-core pack describes the first narrow game product-contract surface:
 game product identity, playable modes, game loops, and prototype scope. It is
@@ -183,8 +222,14 @@ validation-runner, editor-surface, and agent-context exporter records. It
 does not provide legal, privacy-law, marketplace, platform-certification,
 mobile-store, liveops, or pricing-approval guarantees.
 
+The mobile and liveops packs provide engine-neutral lifecycle and operations
+records that can be referenced by game and engine workspaces. They are not
+Unity-specific; when Unity projects can link to mobile releases or liveops
+configs, Godot and Unreal projects should have equivalent relationship support
+where the concept applies.
+
 Future broader game packs may use pack IDs such as `verity.pack.game`,
-`verity.pack.progression`, `verity.pack.quest`, or `verity.pack.liveops`.
+`verity.pack.progression`, or `verity.pack.quest`.
 
 Future game packs should describe game product contracts, especially the bridge
 between game design intent, implementation scope, QA, telemetry, liveops, and
