@@ -25,6 +25,7 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
@@ -109,7 +110,7 @@ Coverage dashboards include:
 - Loaded pack IDs and total product-contract record count
 - Tracked product-surface coverage for API, CLI, events, security,
   accessibility, observability, compliance, deployment, game-core, game-assets,
-  Unity, Godot, Unreal, gameplay, content, and economy records
+  Unity, Godot, Unreal, gameplay, content, economy, and product-delivery records
 - Counts by product surface and record kind
 - Release gaps for missing surface records, loaded surface packs without
   records, products without surface references, and product-specific missing

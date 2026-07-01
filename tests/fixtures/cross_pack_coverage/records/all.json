@@ -72,6 +72,10 @@
         {
           "type": "hasEconomy",
           "target": "economy.currency.coverage_shard"
+        },
+        {
+          "type": "hasProductScope",
+          "target": "product.scope.coverage_delivery"
         }
       ]
     },
@@ -2088,6 +2092,389 @@
         {
           "type": "includesScanner",
           "target": "unreal.scanner.coverage_contracts"
+        }
+      ]
+    },
+    {
+      "id": "product.scope.coverage_delivery",
+      "kind": "product.scope",
+      "name": "Coverage Delivery Scope",
+      "description": "Defines the source-of-truth scope for an engine toolkit repository managed through VeritySpec records and GitHub workflow artifacts.",
+      "status": "ready",
+      "owner": "product",
+      "scopeType": "toolkit",
+      "productArea": "engine integration tooling",
+      "intent": "Keep GitHub workflow execution aligned to VeritySpec product-contract truth.",
+      "outOfScope": [
+        "legal approval claims",
+        "marketplace certification claims"
+      ],
+      "repository": "Jayson-Furr/VeritySpec.EngineToolkit",
+      "targetAudience": [
+        "product owners",
+        "engine-tooling engineers",
+        "AI coding agents"
+      ],
+      "statusTargets": [
+        "private-alpha",
+        "release-candidate"
+      ],
+      "references": [
+        {
+          "type": "hasCommercialPosture",
+          "target": "commercial.posture.coverage_private_alpha"
+        },
+        {
+          "type": "managedBy",
+          "target": "project-management.model.coverage_github"
+        },
+        {
+          "type": "hasReadinessProfile",
+          "target": "readiness.profile.coverage_private_alpha"
+        },
+        {
+          "type": "usesReleaseProcess",
+          "target": "release.process.coverage_release"
+        },
+        {
+          "type": "usesOperationsModel",
+          "target": "operations.model.coverage_maintained"
+        },
+        {
+          "type": "hasSupportPolicy",
+          "target": "support.policy.coverage_support"
+        },
+        {
+          "type": "hasMaintenancePolicy",
+          "target": "maintenance.policy.coverage_active"
+        },
+        {
+          "type": "hasArchivePolicy",
+          "target": "archive.policy.coverage_archive"
+        },
+        {
+          "type": "hasDecommissionPolicy",
+          "target": "decommission.policy.coverage_sunset"
+        }
+      ]
+    },
+    {
+      "id": "commercial.posture.coverage_private_alpha",
+      "kind": "commercial.posture",
+      "name": "Coverage Commercial Posture",
+      "description": "Captures proprietary private-alpha posture without asserting external marketplace, legal, or privacy compliance.",
+      "status": "ready",
+      "owner": "product",
+      "posture": "private-proprietary",
+      "visibility": "private",
+      "distributionModel": "private-alpha",
+      "monetization": "paid",
+      "constraints": [
+        "do not publish package artifacts without release approval"
+      ],
+      "policyRefs": [
+        "support.policy.coverage_support"
+      ],
+      "references": []
+    },
+    {
+      "id": "project-management.model.coverage_github",
+      "kind": "project-management.model",
+      "name": "GitHub Native Project Management",
+      "description": "Uses GitHub Issues, Projects, Milestones, Actions, and pull requests for workflow while VeritySpec records hold product truth.",
+      "status": "ready",
+      "owner": "program",
+      "system": "github",
+      "planningModel": "issues-projects-milestones",
+      "issuePolicy": "Issues track work, decisions, questions, defects, readiness gaps, and evidence requests.",
+      "projectPolicy": "GitHub Projects provide planning boards and portfolio execution views.",
+      "milestonePolicy": "Milestones bound sprint, release, and candidate work.",
+      "repository": "Jayson-Furr/VeritySpec.EngineToolkit",
+      "references": [
+        {
+          "type": "recordsDecision",
+          "target": "decision.record.coverage_truth_layer"
+        }
+      ]
+    },
+    {
+      "id": "decision.record.coverage_truth_layer",
+      "kind": "decision.record",
+      "name": "GitHub Manages Workflow",
+      "description": "Records the operating decision that GitHub manages workflow while VeritySpec manages truth.",
+      "status": "ready",
+      "owner": "program",
+      "decisionType": "operations",
+      "decision": "GitHub manages workflow and VeritySpec manages product-contract truth.",
+      "rationale": "This keeps execution state and source-of-truth records explicit without duplicating workflow systems.",
+      "decisionStatus": "accepted",
+      "decidedAt": "2026-06-30",
+      "references": []
+    },
+    {
+      "id": "readiness.profile.coverage_private_alpha",
+      "kind": "readiness.profile",
+      "name": "Coverage Readiness Profile",
+      "description": "Defines internal readiness checks for a private alpha engine-tooling repository.",
+      "status": "ready",
+      "owner": "release",
+      "profileType": "private-alpha",
+      "strictness": "blocking",
+      "gateRefs": [
+        "product.scope.ready",
+        "release.process.ready",
+        "validation.runner.ready"
+      ],
+      "evidenceRequirementRefs": [
+        "evidence.requirement.coverage_ci"
+      ],
+      "references": [
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.coverage_ci"
+        }
+      ]
+    },
+    {
+      "id": "evidence.requirement.coverage_ci",
+      "kind": "evidence.requirement",
+      "name": "Coverage CI Evidence Requirement",
+      "description": "Requires recorded local or hosted CI evidence before a private alpha release is treated as ready.",
+      "status": "ready",
+      "owner": "release",
+      "evidenceType": "ci-run",
+      "subjectKind": "release.process",
+      "requiredForStatus": "ready",
+      "verificationMethod": "ci-status",
+      "evidencePath": "build/reports/ci.json",
+      "references": []
+    },
+    {
+      "id": "release.process.coverage_release",
+      "kind": "release.process",
+      "name": "Tagged Alpha Release Process",
+      "description": "Defines branch, tag, approval, and artifact rules for private alpha releases.",
+      "status": "ready",
+      "owner": "release",
+      "releaseType": "alpha",
+      "branchStrategy": "feature branches merge through pull requests into main.",
+      "tagPolicy": "Alpha releases use annotated version tags after local and hosted verification pass.",
+      "approvalPolicy": "A maintainer reviews the release notes, changelog, roadmap, and generated artifacts.",
+      "artifactPolicy": "Distribution artifacts are built from the release tag.",
+      "readinessProfileRefs": [
+        "readiness.profile.coverage_private_alpha"
+      ],
+      "references": [
+        {
+          "type": "usesReadinessProfile",
+          "target": "readiness.profile.coverage_private_alpha"
+        },
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.coverage_ci"
+        }
+      ]
+    },
+    {
+      "id": "operations.model.coverage_maintained",
+      "kind": "operations.model",
+      "name": "Maintained Toolkit Operations",
+      "description": "Defines lightweight operational ownership for a maintained engine-tooling repository.",
+      "status": "ready",
+      "owner": "operations",
+      "operatingModel": "maintained",
+      "incidentPolicy": "Release-blocking failures are tracked as defects and linked to readiness gaps.",
+      "monitoringPolicy": "CI and local verification reports are reviewed before release.",
+      "runbookPath": "docs/release-checklist.md",
+      "escalationOwner": "maintainer",
+      "references": [
+        {
+          "type": "supportedBy",
+          "target": "support.policy.coverage_support"
+        }
+      ]
+    },
+    {
+      "id": "support.policy.coverage_support",
+      "kind": "support.policy",
+      "name": "Coverage Support Policy",
+      "description": "Defines support expectations for private alpha users and maintainers.",
+      "status": "ready",
+      "owner": "support",
+      "supportModel": "managed",
+      "channels": [
+        "GitHub Issues",
+        "private maintainer review"
+      ],
+      "responsePolicy": "Release-blocking support issues are triaged before the next candidate.",
+      "escalationPolicy": "Escalate defects that invalidate readiness evidence to the release owner.",
+      "references": []
+    },
+    {
+      "id": "maintenance.policy.coverage_active",
+      "kind": "maintenance.policy",
+      "name": "Active Maintenance Policy",
+      "description": "Defines dependency, compatibility, and update expectations while the toolkit is actively maintained.",
+      "status": "ready",
+      "owner": "maintenance",
+      "maintenanceModel": "active",
+      "updateCadence": "Review dependencies and generated artifacts each release cycle.",
+      "dependencyPolicy": "Update dependencies through pull requests with local verification evidence.",
+      "compatibilityPolicy": "Breaking changes require changelog and migration notes.",
+      "references": [
+        {
+          "type": "usesArchivePolicy",
+          "target": "archive.policy.coverage_archive"
+        },
+        {
+          "type": "usesDecommissionPolicy",
+          "target": "decommission.policy.coverage_sunset"
+        }
+      ]
+    },
+    {
+      "id": "archive.policy.coverage_archive",
+      "kind": "archive.policy",
+      "name": "Retained Source Archive Policy",
+      "description": "Defines source, release, and generated-artifact archival expectations for the repository.",
+      "status": "ready",
+      "owner": "maintenance",
+      "archiveTrigger": "on-sunset",
+      "retentionPolicy": "Retain tagged source, release notes, generated schemas, and verification summaries.",
+      "archiveLocation": "repository releases and archive storage",
+      "artifactManifest": "build/archive-manifest.json",
+      "references": []
+    },
+    {
+      "id": "decommission.policy.coverage_sunset",
+      "kind": "decommission.policy",
+      "name": "Sunset Decommission Policy",
+      "description": "Defines the handoff and archival path if the toolkit is replaced or retired.",
+      "status": "ready",
+      "owner": "maintenance",
+      "decommissionTrigger": "replacement",
+      "dataHandling": "No production customer data is represented by this example workspace.",
+      "communicationPlan": "Document replacement guidance in release notes and README.",
+      "rollbackWindow": "One maintenance release cycle",
+      "archivePolicyRef": "archive.policy.coverage_archive",
+      "references": [
+        {
+          "type": "usesArchivePolicy",
+          "target": "archive.policy.coverage_archive"
+        }
+      ]
+    },
+    {
+      "id": "scanner.capability.coverage_contract_scan",
+      "kind": "scanner.capability",
+      "name": "Workspace Contract Scanner",
+      "description": "Scans VeritySpec workspace records to find missing product-delivery coverage.",
+      "status": "ready",
+      "owner": "tooling",
+      "scannerType": "workspace",
+      "entryPoint": "verity validate",
+      "scannedKinds": [
+        "product.scope",
+        "release.process",
+        "evidence.requirement"
+      ],
+      "outputPath": "build/reports/validation.json",
+      "references": [
+        {
+          "type": "scansScope",
+          "target": "product.scope.coverage_delivery"
+        }
+      ]
+    },
+    {
+      "id": "generator.capability.coverage_schema_bundle",
+      "kind": "generator.capability",
+      "name": "Agent Context Generator Capability",
+      "description": "Generates bounded implementation context from product-delivery and readiness records.",
+      "status": "ready",
+      "owner": "tooling",
+      "generatorType": "agent-context",
+      "outputArtifacts": [
+        "agent-context.md"
+      ],
+      "command": "verity generate schema-bundle",
+      "outputPath": "build/agent-context.md",
+      "references": [
+        {
+          "type": "generatesForScope",
+          "target": "product.scope.coverage_delivery"
+        }
+      ]
+    },
+    {
+      "id": "validation.runner.coverage_ci",
+      "kind": "validation.runner",
+      "name": "Coverage CI Validation Runner",
+      "description": "Runs local validation, lint, readiness, graph, and generation checks when hosted CI is unavailable.",
+      "status": "ready",
+      "owner": "tooling",
+      "runnerType": "local",
+      "command": "python -m pytest",
+      "scannerRefs": [
+        "scanner.capability.coverage_contract_scan"
+      ],
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "scanner.capability.coverage_contract_scan"
+        }
+      ]
+    },
+    {
+      "id": "editor.surface.coverage_dashboard",
+      "kind": "editor.surface",
+      "name": "Readiness Dashboard Surface",
+      "description": "Represents an editor or dashboard surface for reviewing product-delivery readiness and evidence gaps.",
+      "status": "ready",
+      "owner": "tooling",
+      "surfaceType": "dashboard",
+      "entryPoint": "docs/readiness-dashboard.md",
+      "supportedActions": [
+        "view readiness gaps",
+        "open linked evidence requests",
+        "export agent context"
+      ],
+      "references": [
+        {
+          "type": "runsValidation",
+          "target": "validation.runner.coverage_ci"
+        }
+      ]
+    },
+    {
+      "id": "agent-context.exporter.coverage_agent_context",
+      "kind": "agent-context.exporter",
+      "name": "Implementation Agent Context Exporter",
+      "description": "Exports scoped product-delivery context for AI agents working in the repository.",
+      "status": "ready",
+      "owner": "tooling",
+      "exporterType": "markdown",
+      "outputPath": "build/agent-context.md",
+      "includedRecordKinds": [
+        "product.scope",
+        "release.process",
+        "readiness.profile",
+        "evidence.requirement"
+      ],
+      "privacyPolicy": "Do not include secrets, credentials, or private customer data in exported context.",
+      "redactionPolicy": "Exclude environment-specific secrets and unpublished commercial terms.",
+      "references": [
+        {
+          "type": "describesScope",
+          "target": "product.scope.coverage_delivery"
+        },
+        {
+          "type": "usesReadinessProfile",
+          "target": "readiness.profile.coverage_private_alpha"
+        },
+        {
+          "type": "usesGenerator",
+          "target": "generator.capability.coverage_schema_bundle"
         }
       ]
     }

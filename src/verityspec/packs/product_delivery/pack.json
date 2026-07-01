@@ -1,0 +1,520 @@
+{
+  "id": "verity.pack.product-delivery",
+  "version": "0.43.0",
+  "name": "VeritySpec Product Delivery Pack",
+  "description": "Built-in records for spec-driven product delivery, project management truth, release process, evidence requirements, support, maintenance, archive, decommissioning, scanners, generators, editor surfaces, validation runners, and agent-context exporters.",
+  "schemas": [
+    {
+      "kind": "product.scope",
+      "path": "schemas/product.scope.schema.json"
+    },
+    {
+      "kind": "commercial.posture",
+      "path": "schemas/commercial.posture.schema.json"
+    },
+    {
+      "kind": "project-management.model",
+      "path": "schemas/project-management.model.schema.json"
+    },
+    {
+      "kind": "decision.record",
+      "path": "schemas/decision.record.schema.json"
+    },
+    {
+      "kind": "readiness.profile",
+      "path": "schemas/readiness.profile.schema.json"
+    },
+    {
+      "kind": "evidence.requirement",
+      "path": "schemas/evidence.requirement.schema.json"
+    },
+    {
+      "kind": "release.process",
+      "path": "schemas/release.process.schema.json"
+    },
+    {
+      "kind": "operations.model",
+      "path": "schemas/operations.model.schema.json"
+    },
+    {
+      "kind": "support.policy",
+      "path": "schemas/support.policy.schema.json"
+    },
+    {
+      "kind": "maintenance.policy",
+      "path": "schemas/maintenance.policy.schema.json"
+    },
+    {
+      "kind": "archive.policy",
+      "path": "schemas/archive.policy.schema.json"
+    },
+    {
+      "kind": "decommission.policy",
+      "path": "schemas/decommission.policy.schema.json"
+    },
+    {
+      "kind": "scanner.capability",
+      "path": "schemas/scanner.capability.schema.json"
+    },
+    {
+      "kind": "generator.capability",
+      "path": "schemas/generator.capability.schema.json"
+    },
+    {
+      "kind": "validation.runner",
+      "path": "schemas/validation.runner.schema.json"
+    },
+    {
+      "kind": "editor.surface",
+      "path": "schemas/editor.surface.schema.json"
+    },
+    {
+      "kind": "agent-context.exporter",
+      "path": "schemas/agent-context.exporter.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "product.scope.ready",
+      "kind": "product.scope",
+      "required": [
+        "description",
+        "owner",
+        "scopeType",
+        "productArea",
+        "intent"
+      ],
+      "minItems": {
+        "references": 3
+      }
+    },
+    {
+      "id": "commercial.posture.ready",
+      "kind": "commercial.posture",
+      "required": [
+        "description",
+        "owner",
+        "posture",
+        "visibility",
+        "distributionModel"
+      ]
+    },
+    {
+      "id": "project-management.model.ready",
+      "kind": "project-management.model",
+      "required": [
+        "description",
+        "owner",
+        "system",
+        "planningModel",
+        "issuePolicy",
+        "projectPolicy",
+        "milestonePolicy"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "decision.record.ready",
+      "kind": "decision.record",
+      "required": [
+        "description",
+        "owner",
+        "decisionType",
+        "decision",
+        "rationale",
+        "decisionStatus"
+      ]
+    },
+    {
+      "id": "readiness.profile.ready",
+      "kind": "readiness.profile",
+      "required": [
+        "description",
+        "owner",
+        "profileType",
+        "strictness",
+        "gateRefs",
+        "evidenceRequirementRefs"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "evidence.requirement.ready",
+      "kind": "evidence.requirement",
+      "required": [
+        "description",
+        "owner",
+        "evidenceType",
+        "subjectKind",
+        "requiredForStatus",
+        "verificationMethod"
+      ]
+    },
+    {
+      "id": "release.process.ready",
+      "kind": "release.process",
+      "required": [
+        "description",
+        "owner",
+        "releaseType",
+        "branchStrategy",
+        "tagPolicy",
+        "approvalPolicy",
+        "readinessProfileRefs"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "operations.model.ready",
+      "kind": "operations.model",
+      "required": [
+        "description",
+        "owner",
+        "operatingModel",
+        "incidentPolicy",
+        "monitoringPolicy"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "support.policy.ready",
+      "kind": "support.policy",
+      "required": [
+        "description",
+        "owner",
+        "supportModel",
+        "channels",
+        "responsePolicy"
+      ]
+    },
+    {
+      "id": "maintenance.policy.ready",
+      "kind": "maintenance.policy",
+      "required": [
+        "description",
+        "owner",
+        "maintenanceModel",
+        "updateCadence",
+        "dependencyPolicy"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "archive.policy.ready",
+      "kind": "archive.policy",
+      "required": [
+        "description",
+        "owner",
+        "archiveTrigger",
+        "retentionPolicy",
+        "archiveLocation"
+      ]
+    },
+    {
+      "id": "decommission.policy.ready",
+      "kind": "decommission.policy",
+      "required": [
+        "description",
+        "owner",
+        "decommissionTrigger",
+        "dataHandling",
+        "communicationPlan"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "scanner.capability.ready",
+      "kind": "scanner.capability",
+      "required": [
+        "description",
+        "owner",
+        "scannerType",
+        "entryPoint",
+        "scannedKinds",
+        "outputPath"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "generator.capability.ready",
+      "kind": "generator.capability",
+      "required": [
+        "description",
+        "owner",
+        "generatorType",
+        "outputArtifacts",
+        "command",
+        "outputPath"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "validation.runner.ready",
+      "kind": "validation.runner",
+      "required": [
+        "description",
+        "owner",
+        "runnerType",
+        "command",
+        "scannerRefs"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "editor.surface.ready",
+      "kind": "editor.surface",
+      "required": [
+        "description",
+        "owner",
+        "surfaceType",
+        "entryPoint",
+        "supportedActions"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "agent-context.exporter.ready",
+      "kind": "agent-context.exporter",
+      "required": [
+        "description",
+        "owner",
+        "exporterType",
+        "outputPath",
+        "includedRecordKinds"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasProductScope",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasCommercialPosture",
+      "targetKind": "commercial.posture"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "managedBy",
+      "targetKind": "project-management.model"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasReadinessProfile",
+      "targetKind": "readiness.profile"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "usesReleaseProcess",
+      "targetKind": "release.process"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "usesOperationsModel",
+      "targetKind": "operations.model"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasSupportPolicy",
+      "targetKind": "support.policy"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasMaintenancePolicy",
+      "targetKind": "maintenance.policy"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasArchivePolicy",
+      "targetKind": "archive.policy"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "hasDecommissionPolicy",
+      "targetKind": "decommission.policy"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "scannedBy",
+      "targetKind": "scanner.capability"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "generatedBy",
+      "targetKind": "generator.capability"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "validatedBy",
+      "targetKind": "validation.runner"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "editedWith",
+      "targetKind": "editor.surface"
+    },
+    {
+      "sourceKind": "product.scope",
+      "relationship": "exportsAgentContextWith",
+      "targetKind": "agent-context.exporter"
+    },
+    {
+      "sourceKind": "project-management.model",
+      "relationship": "recordsDecision",
+      "targetKind": "decision.record"
+    },
+    {
+      "sourceKind": "readiness.profile",
+      "relationship": "requiresEvidence",
+      "targetKind": "evidence.requirement"
+    },
+    {
+      "sourceKind": "release.process",
+      "relationship": "usesReadinessProfile",
+      "targetKind": "readiness.profile"
+    },
+    {
+      "sourceKind": "release.process",
+      "relationship": "requiresEvidence",
+      "targetKind": "evidence.requirement"
+    },
+    {
+      "sourceKind": "operations.model",
+      "relationship": "supportedBy",
+      "targetKind": "support.policy"
+    },
+    {
+      "sourceKind": "maintenance.policy",
+      "relationship": "usesArchivePolicy",
+      "targetKind": "archive.policy"
+    },
+    {
+      "sourceKind": "maintenance.policy",
+      "relationship": "usesDecommissionPolicy",
+      "targetKind": "decommission.policy"
+    },
+    {
+      "sourceKind": "decommission.policy",
+      "relationship": "usesArchivePolicy",
+      "targetKind": "archive.policy"
+    },
+    {
+      "sourceKind": "scanner.capability",
+      "relationship": "scansScope",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "generator.capability",
+      "relationship": "generatesForScope",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "validation.runner",
+      "relationship": "runsScanner",
+      "targetKind": "scanner.capability"
+    },
+    {
+      "sourceKind": "editor.surface",
+      "relationship": "runsValidation",
+      "targetKind": "validation.runner"
+    },
+    {
+      "sourceKind": "agent-context.exporter",
+      "relationship": "describesScope",
+      "targetKind": "product.scope"
+    },
+    {
+      "sourceKind": "agent-context.exporter",
+      "relationship": "usesReadinessProfile",
+      "targetKind": "readiness.profile"
+    },
+    {
+      "sourceKind": "agent-context.exporter",
+      "relationship": "usesGenerator",
+      "targetKind": "generator.capability"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for product-delivery records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "product.scope",
+        "commercial.posture",
+        "project-management.model",
+        "decision.record",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "archive.policy",
+        "decommission.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "editor.surface",
+        "agent-context.exporter"
+      ]
+    },
+    {
+      "id": "coverage-dashboard",
+      "name": "Coverage Dashboard",
+      "description": "Count product-delivery records as a first-class product surface.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "product.scope",
+        "commercial.posture",
+        "project-management.model",
+        "decision.record",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "archive.policy",
+        "decommission.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "editor.surface",
+        "agent-context.exporter"
+      ]
+    }
+  ]
+}

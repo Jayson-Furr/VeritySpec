@@ -979,6 +979,31 @@ SURFACE_DEFINITIONS: list[dict[str, Any]] = [
         ],
         "productRelationships": ["hasEconomy"],
     },
+    {
+        "id": "product-delivery",
+        "name": "Product Delivery",
+        "packId": "verity.pack.product-delivery",
+        "recordKinds": [
+            "product.scope",
+            "commercial.posture",
+            "project-management.model",
+            "decision.record",
+            "readiness.profile",
+            "evidence.requirement",
+            "release.process",
+            "operations.model",
+            "support.policy",
+            "maintenance.policy",
+            "archive.policy",
+            "decommission.policy",
+            "scanner.capability",
+            "generator.capability",
+            "validation.runner",
+            "editor.surface",
+            "agent-context.exporter",
+        ],
+        "productRelationships": ["hasProductScope"],
+    },
 ]
 PRODUCT_SURFACE_IDS = [surface["id"] for surface in SURFACE_DEFINITIONS if surface["id"] != "core"]
 

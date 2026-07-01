@@ -39,7 +39,7 @@ jobs:
 
       - name: Check all example workspaces
         run: |
-          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity examples/godot examples/unreal examples/gameplay examples/content examples/economy; do
+          for workspace in examples/basic examples/api-service examples/cli-tool examples/events examples/security examples/observability examples/accessibility examples/compliance examples/deployment examples/game-core examples/game-assets examples/unity examples/godot examples/unreal examples/gameplay examples/content examples/economy examples/product-delivery; do
             verity validate "$workspace"
             verity lint "$workspace" --strict
             verity readiness "$workspace" --strict
@@ -103,6 +103,10 @@ jobs:
           verity validate examples/economy --format json > build/economy-validate.json
           verity lint examples/economy --strict --format json > build/economy-lint.json
           verity readiness examples/economy --strict --format json > build/economy-readiness.json
+          verity validate examples/product-delivery --format json > build/product-delivery-validate.json
+          verity lint examples/product-delivery --strict --format json > build/product-delivery-lint.json
+          verity readiness examples/product-delivery --strict --format json > build/product-delivery-readiness.json
+          verity graph examples/product-delivery --format json > build/product-delivery-graph.json
           verity validate tests/fixtures/custom_pack_workspace --format json > build/custom-pack-validate.json
           verity lint tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-lint.json
           verity readiness tests/fixtures/custom_pack_workspace --strict --format json > build/custom-pack-readiness.json
@@ -179,6 +183,10 @@ jobs:
           python -m json.tool build/economy-validate.json >/dev/null
           python -m json.tool build/economy-lint.json >/dev/null
           python -m json.tool build/economy-readiness.json >/dev/null
+          python -m json.tool build/product-delivery-validate.json >/dev/null
+          python -m json.tool build/product-delivery-lint.json >/dev/null
+          python -m json.tool build/product-delivery-readiness.json >/dev/null
+          python -m json.tool build/product-delivery-graph.json >/dev/null
           python -m json.tool build/custom-pack-validate.json >/dev/null
           python -m json.tool build/custom-pack-lint.json >/dev/null
           python -m json.tool build/custom-pack-readiness.json >/dev/null
@@ -243,6 +251,7 @@ jobs:
           verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
           verity generate schema-bundle examples/content --out build/content-schema-bundle.json
           verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+          verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
           verity generate openapi examples/api-service --out build/api-service.openapi.json
           verity generate cli-reference examples/cli-tool --out build/cli-tool.reference.md
           verity generate asyncapi examples/events --out build/events.asyncapi.json
@@ -264,6 +273,7 @@ jobs:
           python -m json.tool build/gameplay-schema-bundle.json >/dev/null
           python -m json.tool build/content-schema-bundle.json >/dev/null
           python -m json.tool build/economy-schema-bundle.json >/dev/null
+          python -m json.tool build/product-delivery-schema-bundle.json >/dev/null
           python -m json.tool build/validation-report.json >/dev/null
           python -m json.tool build/security-report.json >/dev/null
           python -m json.tool build/observability-report.json >/dev/null
@@ -300,3 +310,4 @@ jobs:
           /tmp/verityspec-wheel/bin/verity validate examples/gameplay
           /tmp/verityspec-wheel/bin/verity validate examples/content
           /tmp/verityspec-wheel/bin/verity validate examples/economy
+          /tmp/verityspec-wheel/bin/verity validate examples/product-delivery

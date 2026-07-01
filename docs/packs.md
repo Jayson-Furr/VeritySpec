@@ -41,6 +41,11 @@ Built-in packs currently include:
   manifests for content implementation and release-review coverage.
 - `verity.pack.economy`: currencies, sources, sinks, rewards, and offers for
   economy implementation and release-review coverage.
+- `verity.pack.product-delivery`: product scope, commercial posture,
+  project-management model, decision, readiness profile, evidence requirement,
+  release process, operations, support, maintenance, archive, decommission,
+  scanner, generator, validation-runner, editor-surface, and agent-context
+  exporter records for spec-driven product-delivery repositories.
 
 ## Manifest
 

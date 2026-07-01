@@ -1796,37 +1796,53 @@ The `v0.43.0` milestone is active.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 103 | Planned | Product-delivery pack foundation for downstream rebuild blockers |
+| 103 | Complete | Product-delivery pack foundation for downstream rebuild blockers |
+| 104 | Planned | v0.43.0 release preparation and verification |
 
 ## Sprint 103 Priorities
 
-Sprint 103 should implement the first built-in product-delivery and
+Sprint 103 implemented the first built-in product-delivery and
 project-management vocabulary needed by downstream spec-driven repositories:
 
-- Add built-in `verity.pack.product-delivery`.
-- Add strict schemas for `product.scope`, `commercial.posture`,
+- Added built-in `verity.pack.product-delivery`.
+- Added strict schemas for `product.scope`, `commercial.posture`,
   `project-management.model`, `decision.record`, `readiness.profile`,
   `evidence.requirement`, `release.process`, `operations.model`,
   `support.policy`, `maintenance.policy`, `archive.policy`,
   `decommission.policy`, `scanner.capability`, `generator.capability`,
   `validation.runner`, `editor.surface`, and `agent-context.exporter`.
-- Add readiness gates and reference rules that connect product scope,
+- Added readiness gates and reference rules that connect product scope,
   commercial posture, GitHub-native project management, decision records,
   evidence requirements, release/support/maintenance/operations/archive
   policies, scanners, generators, validation runners, editor surfaces, and
   agent-context exporters.
-- Add an executable example workspace for a spec-driven product repository
+- Added an executable example workspace for a spec-driven product repository
   that follows: GitHub manages workflow; VeritySpec manages truth.
-- Update tests, CI, README, changelog, roadmap, pack docs, generator docs,
+- Updated tests, CI, README, changelog, roadmap, pack docs, generator docs,
   readiness docs, release checklist, and AI-agent guidance in one bundled
   sprint.
-- Record the remaining missing lifecycle/mobile/liveops/privacy/evidence kinds
+- Recorded the remaining missing lifecycle/mobile/liveops/privacy/evidence kinds
   after this sprint so downstream rebuilds can either proceed or knowingly
   accept a listed gap.
-- Keep Unity, Godot, and Unreal engine-specific additions equivalent where the
+- Kept Unity, Godot, and Unreal engine-specific additions equivalent where the
   concept applies; document explicit exceptions in issues, docs, and tests.
-- Avoid commercial, legal, marketplace-readiness, privacy-law,
+- Avoided commercial, legal, marketplace-readiness, privacy-law,
   app-store-certification, platform-certification, or similar claims.
+
+## Sprint 104 Priorities
+
+Sprint 104 should prepare and verify the v0.43.0 release:
+
+- Verify local tests, pack validation, example validation, graph checks,
+  schema-bundle generation, coverage-dashboard generation, package build,
+  `twine check`, and installed-wheel smoke tests.
+- Confirm README badges, install tag, latest-release text, changelog,
+  roadmap, release notes, downstream workflow pins, and release checklist
+  references align to the intended release.
+- Cut and verify the v0.43.0 GitHub release if CI is green.
+- If hosted checks are unavailable because of billing, quota, credits, or
+  platform availability, verify equivalent checks locally and continue with a
+  clear PR/release note.
 
 ## Next 20 Roadmap Points
 

@@ -18,7 +18,8 @@
     "verity.pack.unreal",
     "verity.pack.gameplay",
     "verity.pack.content",
-    "verity.pack.economy"
+    "verity.pack.economy",
+    "verity.pack.product-delivery"
   ],
   "packPaths": [],
   "records": [

@@ -6,11 +6,12 @@ the initial boundaries for future GUI, desktop, mobile, and game packs.
 
 `verity.pack.game-core`, `verity.pack.game-assets`, `verity.pack.unity`,
 `verity.pack.godot`, `verity.pack.unreal`, `verity.pack.gameplay`,
-`verity.pack.content`, and `verity.pack.economy` now provide the first narrow
-built-in game and engine scopes. The remaining GUI, desktop, mobile,
-progression, liveops, evidence, dependency, portfolio, and broader game scopes
-should still use this note to define pack ownership, overlap rules, and
-readiness expectations before implementation begins.
+`verity.pack.content`, `verity.pack.economy`, and
+`verity.pack.product-delivery` now provide the first narrow built-in game,
+engine, economy, and spec-driven product-delivery scopes. The remaining GUI,
+desktop, mobile, progression, liveops, evidence, dependency, portfolio, and
+broader game scopes should still use this note to define pack ownership,
+overlap rules, and readiness expectations before implementation begins.
 
 ## Pack Boundary Rule
 
@@ -122,11 +123,12 @@ The first mobile schemas should wait until the pack includes store-submission
 readiness examples and validates at least one iOS or Android platform target
 with explicit permission rationale.
 
-## Game Core, Game Assets, Engine, Gameplay, Content, Economy, and Future Game Packs
+## Game Core, Game Assets, Engine, Gameplay, Content, Economy, Product Delivery, and Future Game Packs
 
 Current pack IDs: `verity.pack.game-core`, `verity.pack.game-assets`,
 `verity.pack.unity`, `verity.pack.godot`, `verity.pack.unreal`,
-`verity.pack.gameplay`, `verity.pack.content`, `verity.pack.economy`.
+`verity.pack.gameplay`, `verity.pack.content`, `verity.pack.economy`,
+`verity.pack.product-delivery`.
 
 The game-core pack describes the first narrow game product-contract surface:
 game product identity, playable modes, game loops, and prototype scope. It is
@@ -172,6 +174,14 @@ The economy pack describes the first narrow economy surface: currencies,
 sources, sinks, rewards, and offers. It composes with gameplay and content
 records without becoming a progression, liveops, pricing approval, or platform
 store pack.
+
+The product-delivery pack describes the first narrow spec-driven repository
+delivery surface: product scope, commercial posture, project-management model,
+decision records, readiness profiles, evidence requirements, release process,
+operations, support, maintenance, archive, decommission, scanner, generator,
+validation-runner, editor-surface, and agent-context exporter records. It
+does not provide legal, privacy-law, marketplace, platform-certification,
+mobile-store, liveops, or pricing-approval guarantees.
 
 Future broader game packs may use pack IDs such as `verity.pack.game`,
 `verity.pack.progression`, `verity.pack.quest`, or `verity.pack.liveops`.
