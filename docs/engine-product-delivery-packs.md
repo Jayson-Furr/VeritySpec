@@ -36,6 +36,18 @@ These packs should support engine-tooling repositories, engine-specific game
 workspaces, and spec-driven product management without making commercial,
 legal, marketplace-readiness, or certification claims.
 
+## Engine Pack Parity Rule
+
+Future engine-specific additions should keep Unity, Godot, and Unreal coverage
+equivalent where the concept applies. If VeritySpec adds a Unity-specific
+record kind, readiness gate, generator surface, or executable example
+capability, the same related sprint should add the Godot and Unreal
+equivalents or document why a direct equivalent does not apply.
+
+This keeps downstream engine-tooling repositories from depending on local ad
+hoc packs because one supported engine has newer built-in vocabulary than the
+others.
+
 ## Unity Pack Expansion
 
 Existing pack ID: `verity.pack.unity`.
@@ -168,6 +180,14 @@ project-management and product-delivery source of truth. It should not replace
 GitHub workflow objects; it should connect those objects to product-contract
 records, readiness gates, evidence requirements, and generated reports.
 
+This is the next downstream rebuild blocker after the Unity, Godot, and Unreal
+engine packs. Private spec-driven repositories for engine toolkits and game
+projects need built-in vocabulary for proprietary posture, GitHub-native
+project management, decision completeness, implementation readiness, evidence
+states, release and distribution policy, support, maintenance, operations,
+archive and decommission policy, scanners, generators, editor surfaces, and
+agent-context export.
+
 Useful future record kinds include:
 
 - `product.scope`
@@ -187,6 +207,11 @@ Useful future record kinds include:
 - `validation.runner`
 - `editor.surface`
 - `agent-context.exporter`
+
+Follow-on lifecycle packs or product-delivery expansions should capture the
+remaining mobile game lifecycle, privacy/store, liveops, support, save-data,
+compatibility, decommissioning, and archive vocabulary once the first
+product-delivery slice exists.
 
 ## Implementation Acceptance Criteria
 

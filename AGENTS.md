@@ -60,6 +60,11 @@ fixtures.
 - Prefer small, executable increments over broad speculative architecture.
 - Preserve the pack-based architecture: core stays small; product surfaces
   belong in packs.
+- Keep engine-specific additions parity-aware: when adding a built-in Unity
+  record kind, generator surface, readiness gate, or example capability, add
+  equivalent Godot and Unreal coverage in the same related sprint where the
+  concept applies. If an equivalent does not apply, document the reason in the
+  issue, docs, and tests.
 - New packs should include schemas, examples or fixtures, validation coverage,
   readiness gates where relevant, and docs.
 - Do not commit secrets, tokens, PyPI credentials, or local environment files.
