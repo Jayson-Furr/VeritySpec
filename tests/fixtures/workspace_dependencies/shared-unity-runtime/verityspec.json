@@ -1,0 +1,16 @@
+{
+  "workspace": "studio.library.shared_unity_runtime",
+  "version": "1.2.0",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.unity"
+  ],
+  "packPaths": [],
+  "exports": [
+    "unity.package.save_system"
+  ],
+  "records": [
+    "records/*.json"
+  ]
+}

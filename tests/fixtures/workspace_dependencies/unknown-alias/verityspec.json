@@ -1,0 +1,13 @@
+{
+  "workspace": "studio.game.unknown_alias",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.unity"
+  ],
+  "packPaths": [],
+  "records": [
+    "../support/records/*.json",
+    "records/*.json"
+  ]
+}

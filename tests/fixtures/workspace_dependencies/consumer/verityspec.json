@@ -1,0 +1,22 @@
+{
+  "workspace": "studio.game.dream_extraction",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.unity"
+  ],
+  "packPaths": [],
+  "dependencies": [
+    {
+      "id": "studio.library.shared_unity_runtime",
+      "alias": "sharedUnity",
+      "version": "^1.2.0",
+      "source": "../shared-unity-runtime",
+      "mode": "readonly"
+    }
+  ],
+  "records": [
+    "../support/records/*.json",
+    "records/*.json"
+  ]
+}

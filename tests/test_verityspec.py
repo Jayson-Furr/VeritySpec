@@ -30,6 +30,7 @@ from verityspec.generators import (
 )
 from verityspec.envelope import RECORD_ENVELOPE_REQUIRED
 from verityspec.explain import ISSUE_EXPLANATIONS
+from verityspec.graph import build_graph
 from verityspec.issues import Issue, escape_github_property, parse_issue_location
 from verityspec.pack_validation import list_pack_summaries, validate_builtin_packs, validate_packs
 from verityspec.packs import PACK_ENTRY_POINT_GROUP, load_pack_registry
@@ -69,6 +70,7 @@ ISSUE_CODE_CATALOG_GOLDEN = (
 PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
 PRODUCT_IMPACT_GOLDEN = ROOT / "tests" / "golden" / "product_impact" / "product_impact.json"
+WORKSPACE_DEPENDENCY_FIXTURES = ROOT / "tests" / "fixtures" / "workspace_dependencies"
 FIXED_GENERATED_AT = "2026-01-02T03:04:05Z"
 
 
@@ -392,6 +394,68 @@ class VeritySpecTests(unittest.TestCase):
         issues = validate_workspace(workspace, registry, strict=True)
 
         self.assertEqual([], issues)
+
+    def test_local_workspace_dependency_references_exported_records(self) -> None:
+        workspace = load_workspace(WORKSPACE_DEPENDENCY_FIXTURES / "consumer")
+        registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths, workspace.base_path)
+
+        self.assertEqual([], validate_workspace(workspace, registry, strict=True))
+        self.assertEqual([], evaluate_readiness(workspace, registry, strict=True))
+
+    def test_dependency_aware_graph_includes_exported_dependency_records(self) -> None:
+        workspace = load_workspace(WORKSPACE_DEPENDENCY_FIXTURES / "consumer")
+
+        graph = build_graph(workspace)
+
+        dependency_nodes = {
+            node["id"]: node
+            for node in graph["nodes"]
+            if node.get("workspaceRole") == "dependency"
+        }
+        self.assertIn("sharedUnity::unity.package.save_system", dependency_nodes)
+        self.assertEqual(
+            "studio.library.shared_unity_runtime",
+            dependency_nodes["sharedUnity::unity.package.save_system"]["dependencyWorkspace"],
+        )
+        self.assertEqual(
+            [
+                {
+                    "id": "studio.library.shared_unity_runtime",
+                    "alias": "sharedUnity",
+                    "source": "../shared-unity-runtime",
+                    "version": "1.2.0",
+                    "exportedRecords": ["unity.package.save_system"],
+                }
+            ],
+            graph["dependencies"],
+        )
+        self.assertIn(
+            {
+                "source": "unity.project.dream_extraction",
+                "target": "sharedUnity::unity.package.save_system",
+                "relationship": "usesPackage",
+                "field": "references[0].target",
+            },
+            graph["edges"],
+        )
+
+    def test_workspace_dependency_reference_failures_have_stable_codes(self) -> None:
+        expected_codes = {
+            "private-reference": "dependency.reference.not_exported",
+            "missing-record": "dependency.reference.missing",
+            "unknown-alias": "dependency.alias.unknown",
+            "missing-source": "dependency.source.missing",
+            "id-mismatch": "dependency.id.mismatch",
+        }
+
+        for fixture, expected_code in expected_codes.items():
+            with self.subTest(fixture=fixture):
+                workspace = load_workspace(WORKSPACE_DEPENDENCY_FIXTURES / fixture)
+                registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths, workspace.base_path)
+
+                issues = validate_workspace(workspace, registry, strict=True)
+
+                self.assertEqual([expected_code], [issue.code for issue in issues])
 
     def test_regulated_profile_reports_missing_governance_packs(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "basic")
@@ -953,7 +1017,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add local workspace-dependency prototype fixtures", markdown)
+        self.assertIn("1. Add engine portfolio example guidance", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap

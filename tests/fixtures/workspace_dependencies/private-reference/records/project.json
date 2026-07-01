@@ -1,0 +1,29 @@
+{
+  "id": "unity.project.dream_extraction",
+  "kind": "unity.project",
+  "name": "Dream Extraction Unity Project",
+  "description": "Unity project that incorrectly references a non-exported shared runtime package.",
+  "status": "ready",
+  "owner": "engineering",
+  "unityVersion": "2022.3.20f1",
+  "projectPath": "games/dream-extraction",
+  "renderPipeline": "urp",
+  "scriptingBackend": "il2cpp",
+  "targetPlatforms": [
+    "pc"
+  ],
+  "references": [
+    {
+      "type": "usesPackage",
+      "target": "sharedUnity::unity.package.internal_serializer"
+    },
+    {
+      "type": "scannedBy",
+      "target": "unity.scanner.project_contracts"
+    },
+    {
+      "type": "validatedBy",
+      "target": "unity.validation-runner.project_contracts"
+    }
+  ]
+}

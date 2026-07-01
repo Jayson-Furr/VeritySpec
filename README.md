@@ -97,8 +97,10 @@ This implementation provides:
   packs can eventually be separated from the core package after installed-pack
   discovery, compatibility metadata, migration guidance, and non-breaking
   fixtures are in place.
-- Cross-workspace dependency design guidance for future local-only workspace
-  dependencies, exported records, reference resolution, and lockfiles.
+- A local-only workspace dependency prototype with direct readonly dependency
+  declarations, dependency aliases, manifest-level exported records,
+  alias-qualified reference validation, and dependency-aware graph output,
+  with lockfiles and remote dependency sources kept as future work.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
   retained as the canonical public install path until publishing is enabled.
 

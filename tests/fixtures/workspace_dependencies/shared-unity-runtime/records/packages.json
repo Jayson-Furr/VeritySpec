@@ -1,0 +1,39 @@
+{
+  "records": [
+    {
+      "id": "unity.package.save_system",
+      "kind": "unity.package",
+      "name": "Save System",
+      "description": "Shared Unity save-system package exported to consuming game workspaces.",
+      "status": "ready",
+      "owner": "runtime",
+      "packageName": "com.studio.save-system",
+      "version": "1.2.0",
+      "source": "local",
+      "packagePath": "Packages/com.studio.save-system",
+      "purpose": "Provides shared save serialization and profile persistence.",
+      "capabilities": [
+        "cloud-save",
+        "local-save"
+      ],
+      "references": []
+    },
+    {
+      "id": "unity.package.internal_serializer",
+      "kind": "unity.package",
+      "name": "Internal Serializer",
+      "description": "Internal serializer implementation detail that is not exported to consuming workspaces.",
+      "status": "ready",
+      "owner": "runtime",
+      "packageName": "com.studio.save-system.serializer",
+      "version": "1.2.0",
+      "source": "local",
+      "packagePath": "Packages/com.studio.save-system/Runtime/Serializer",
+      "purpose": "Implements private save serialization details.",
+      "capabilities": [
+        "binary-serialization"
+      ],
+      "references": []
+    }
+  ]
+}

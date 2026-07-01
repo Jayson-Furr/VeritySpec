@@ -34,17 +34,79 @@ validate, lint, and pass readiness immediately.
   when no external packs are used. Relative paths resolve from the workspace
   root. This field is required in `v0.2.0` workspaces.
 - `records`: glob patterns, relative to the workspace root.
+- `dependencies`: optional direct local workspace dependencies. This prototype
+  is local-path, readonly, and direct-dependency only.
+- `exports`: optional dependency-workspace export list. A workspace referenced
+  as a dependency can expose record IDs that consuming workspaces may reference.
 
 Records may be stored as individual JSON objects, arrays of objects, or catalog
 objects with a top-level `records` array.
 
-## Future Dependency Field
+## Local Workspace Dependencies
 
-The current workspace format does not include workspace dependencies. Future
-dependency support should follow
-[Cross-workspace dependencies](cross-workspace-dependencies.md), including the
-local-only first phase, exported-record boundary, alias-qualified reference
-resolution, and lockfile expectations.
+Workspaces can declare direct local, readonly dependencies with
+`dependencies`. This does not change the current workspace format version;
+`v0.2.0` remains current.
+
+```json
+{
+  "workspace": "studio.game.dream_extraction",
+  "specVersion": "v0.2.0",
+  "packs": ["verity.core", "verity.pack.unity"],
+  "packPaths": [],
+  "dependencies": [
+    {
+      "id": "studio.library.shared_unity_runtime",
+      "alias": "sharedUnity",
+      "version": "^1.2.0",
+      "source": "../shared-unity-runtime",
+      "mode": "readonly"
+    }
+  ],
+  "records": ["records/*.json"]
+}
+```
+
+Dependency declarations use these fields:
+
+- `id`: expected workspace ID from the dependency workspace manifest.
+- `alias`: local reference prefix, such as `sharedUnity`.
+- `source`: local path to the dependency workspace.
+- `mode`: currently only `readonly` is supported.
+- `version`: optional exact or caret version constraint checked against the
+  dependency workspace manifest `version`.
+
+Consuming records can reference exported dependency records with an
+alias-qualified target:
+
+```text
+sharedUnity::unity.package.save_system
+```
+
+Dependency workspaces expose records with a manifest-level `exports` array:
+
+```json
+{
+  "workspace": "studio.library.shared_unity_runtime",
+  "version": "1.2.0",
+  "specVersion": "v0.2.0",
+  "packs": ["verity.core", "verity.pack.unity"],
+  "packPaths": [],
+  "exports": ["unity.package.save_system"],
+  "records": ["records/*.json"]
+}
+```
+
+Validation checks dependency source paths, workspace IDs, version constraints,
+aliases, referenced records, exported-record boundaries, deprecated or removed
+dependency records, and pack reference rules. `verity graph --format json`
+includes exported dependency records as alias-qualified dependency nodes.
+
+Current dependency support intentionally excludes remote registries, Git
+authentication, transitive dependency policy, lockfiles, dependency update
+commands, and record-level visibility fields. See
+[Cross-workspace dependencies](cross-workspace-dependencies.md) for the
+longer-term design.
 
 ## Shared Record Envelope
 
