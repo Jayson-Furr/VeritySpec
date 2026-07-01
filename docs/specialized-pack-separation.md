@@ -101,8 +101,9 @@ values. The expected migration path is:
 1. Keep existing workspaces using the same `packs` entries.
 2. Add package-manager dependencies such as `verityspec-pack-unity` where a
    workspace needs detached engine coverage.
-3. Run `verity pack list --format json` to confirm whether each pack is loaded
-   from `built-in`, `installed`, or `external` source.
+3. Run `verity pack doctor --format json` and `verity pack list --format json`
+   to confirm pack discovery health and whether each pack is loaded from
+   `built-in`, `installed`, or `external` source.
 4. Run `verity validate`, `verity lint --strict`, `verity readiness --strict`,
    and generator checks before changing CI pins.
 5. Use migration reports for any future manifest or compatibility-field

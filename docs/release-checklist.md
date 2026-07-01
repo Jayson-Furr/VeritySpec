@@ -24,6 +24,7 @@ Use this checklist for public releases.
 python -m pip install --upgrade build twine
 python -m unittest discover -s tests -v
 verity pack validate
+verity pack doctor --format json > build/pack-doctor.json
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict

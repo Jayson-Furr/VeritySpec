@@ -31,10 +31,10 @@ This implementation provides:
   content contracts, and economy contracts, progression contracts,
   spec-driven product-delivery contracts, mobile lifecycle contracts, live
   operations contracts, and implementation evidence contracts.
-- Pack listing, validation, installed-pack discovery, and scaffolding through
-  `verity pack`, including local external packs, structured generator
-  metadata, and starter reference rules that make generated packs usable from
-  sample workspaces immediately.
+- Pack listing, validation, installed-pack discovery diagnostics, and
+  scaffolding through `verity pack`, including local external packs,
+  structured generator metadata, and starter reference rules that make
+  generated packs usable from sample workspaces immediately.
 - Executable pack scaffold documentation fixtures that show a generated
   external pack plus a consuming workspace layout.
 - Workspace initialization templates for basic, API, CLI, events, and security starter contracts.
@@ -136,6 +136,7 @@ verity --version
 verity init build/init-api --template api --owner platform --force
 verity validate build/init-api
 verity pack list
+verity pack doctor
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity pack validate verity.pack.features --path tests/fixtures/custom_pack
@@ -333,6 +334,8 @@ Built-in packs can be inspected and validated:
 ```bash
 verity pack list
 verity pack list --format json
+verity pack doctor
+verity pack doctor --format json
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity pack validate verity.pack.api --format json

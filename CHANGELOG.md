@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added `verity pack doctor` for non-throwing installed and local pack
+  discovery diagnostics, including entry-point load failures, duplicate pack
+  IDs, built-in collisions, and explicit local override warnings.
+
 ## 0.64.0
 
 - Added `verity generate lifecycle-readiness-report` for product-delivery,

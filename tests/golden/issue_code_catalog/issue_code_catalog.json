@@ -4,10 +4,10 @@
   "verityVersion": "<verityVersion>",
   "source": "verity explain",
   "summary": {
-    "issueCodeCount": 45,
+    "issueCodeCount": 59,
     "severityCounts": {
-      "warning": 14,
-      "error": 31
+      "warning": 15,
+      "error": 44
     },
     "categoryCounts": {
       "accessibility": 1,
@@ -16,7 +16,7 @@
       "deployment": 1,
       "graph": 2,
       "lint": 3,
-      "pack": 2,
+      "pack": 16,
       "profile": 2,
       "readiness": 2,
       "record": 4,
@@ -214,6 +214,118 @@
       "severity": "error",
       "description": "A local or installed pack source could not be resolved into a valid pack manifest.",
       "resolution": "Check local pack paths and installed `verityspec.packs` entry points, then rerun `verity pack list`."
+    },
+    {
+      "code": "pack.external.builtin_collision",
+      "category": "pack",
+      "title": "External pack shadows built-in pack",
+      "severity": "error",
+      "description": "A local pack path declares a pack ID that is reserved by a built-in pack.",
+      "resolution": "Use a distinct external pack ID. Built-in pack IDs cannot be shadowed by local pack paths."
+    },
+    {
+      "code": "pack.external.duplicate_id",
+      "category": "pack",
+      "title": "Duplicate external pack ID",
+      "severity": "error",
+      "description": "Multiple local pack paths declare the same pack ID.",
+      "resolution": "Remove the duplicate local path or ensure each external pack has a distinct ID."
+    },
+    {
+      "code": "pack.external.manifest_id_missing",
+      "category": "pack",
+      "title": "External pack manifest missing ID",
+      "severity": "error",
+      "description": "A local pack manifest does not declare a string `id` field.",
+      "resolution": "Add a string `id` field to the pack manifest."
+    },
+    {
+      "code": "pack.external.manifest_invalid",
+      "category": "pack",
+      "title": "External pack manifest invalid",
+      "severity": "error",
+      "description": "A local pack manifest could not be parsed as a JSON object.",
+      "resolution": "Fix the local pack's `pack.json` file and rerun `verity pack doctor`."
+    },
+    {
+      "code": "pack.external.missing_manifest",
+      "category": "pack",
+      "title": "External pack manifest missing",
+      "severity": "error",
+      "description": "A local pack path does not contain a `pack.json` manifest.",
+      "resolution": "Point the path at a pack directory or `pack.json` file."
+    },
+    {
+      "code": "pack.external.overrides_installed",
+      "category": "pack",
+      "title": "External pack overrides installed pack",
+      "severity": "warning",
+      "description": "A local pack path supplies the same pack ID as an installed package entry point and takes precedence.",
+      "resolution": "Confirm that the local override is intentional, or remove the local path to use the installed pack."
+    },
+    {
+      "code": "pack.external.path_invalid",
+      "category": "pack",
+      "title": "External pack path invalid",
+      "severity": "error",
+      "description": "A local pack path could not be resolved.",
+      "resolution": "Fix the local path or remove the invalid `packPaths`, `--pack-path`, or `verity pack --path` entry."
+    },
+    {
+      "code": "pack.installed.builtin_collision",
+      "category": "pack",
+      "title": "Installed pack shadows built-in pack",
+      "severity": "error",
+      "description": "An installed pack entry point declares a pack ID that is reserved by a built-in pack.",
+      "resolution": "Rename or uninstall the package. Built-in pack IDs cannot be shadowed by installed packs."
+    },
+    {
+      "code": "pack.installed.duplicate_id",
+      "category": "pack",
+      "title": "Duplicate installed pack ID",
+      "severity": "error",
+      "description": "Multiple installed entry points declare the same pack ID.",
+      "resolution": "Keep only one installed distribution for that pack ID, or make the duplicate package expose a distinct ID."
+    },
+    {
+      "code": "pack.installed.entry_point_load_failed",
+      "category": "pack",
+      "title": "Installed pack entry point failed",
+      "severity": "error",
+      "description": "An installed `verityspec.packs` entry point could not be imported or called.",
+      "resolution": "Fix or uninstall the package exposing the failing entry point, then rerun `verity pack doctor`."
+    },
+    {
+      "code": "pack.installed.entry_point_name_mismatch",
+      "category": "pack",
+      "title": "Installed pack entry point name mismatch",
+      "severity": "error",
+      "description": "An installed entry-point name does not match the resolved pack manifest ID.",
+      "resolution": "Update the package entry point name so it exactly matches the manifest `id`."
+    },
+    {
+      "code": "pack.installed.manifest_id_missing",
+      "category": "pack",
+      "title": "Installed pack manifest missing ID",
+      "severity": "error",
+      "description": "An installed pack manifest does not declare a string `id` field.",
+      "resolution": "Fix the installed package manifest so it declares a string `id`."
+    },
+    {
+      "code": "pack.installed.manifest_invalid",
+      "category": "pack",
+      "title": "Installed pack manifest invalid",
+      "severity": "error",
+      "description": "An installed pack manifest could not be parsed as a JSON object.",
+      "resolution": "Fix or uninstall the package exposing the invalid manifest."
+    },
+    {
+      "code": "pack.installed.missing_manifest",
+      "category": "pack",
+      "title": "Installed pack manifest missing",
+      "severity": "error",
+      "description": "An installed pack entry point resolved to a path without a `pack.json` manifest.",
+      "resolution": "Fix the entry point so it returns a pack directory or `pack.json` path."
     },
     {
       "code": "pack.unknown",
