@@ -2226,12 +2226,12 @@ Sprint 120 prepares and verifies the v0.51.0 release:
 
 ## v0.52.0
 
-The `v0.52.0` milestone is focused on security-report release gaps for stale
-evidence and missing verification dates.
+The `v0.52.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 121 | In Progress | Security-report release evidence gaps |
+| 121 | Complete | Security-report release evidence gaps |
+| 122 | Complete | v0.52.0 release preparation and verification |
 
 ## Sprint 121 Priorities
 
@@ -2246,6 +2246,28 @@ Sprint 121 adds security-report release gaps for verification freshness:
   committed security-report golden fixture.
 - Update README, generator docs, changelog, roadmap bookkeeping, and Next 20
   planning.
+
+Sprint 121 delivery added `summary.releaseGaps` to security reports with
+critical unverified, stale evidence, and missing verification-date lists;
+preserved the existing `summary.criticalUnverified` field; updated the
+security-report golden fixture; and refreshed README, generator docs,
+changelog, roadmap, and Next 20 bookkeeping.
+
+## Sprint 122 Priorities
+
+Sprint 122 prepares and verifies the v0.52.0 release:
+
+- Promote Unreleased changelog entries into `0.52.0`.
+- Bump package metadata to `0.52.0`.
+- Add v0.52.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.52.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist, and
+  workflow release pins to `v0.52.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.52.0 GitHub release when checks pass.
+- Close the v0.52.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

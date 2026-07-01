@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.52.0
+
 - Added security-report release-gap summaries for stale evidence and missing
   verification dates while preserving existing verification coverage output.
+- Added v0.52.0 release notes and roadmap closeout.
 
 ## 0.51.0
 
