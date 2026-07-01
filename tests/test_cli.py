@@ -1369,6 +1369,14 @@ class VerityCliTests(unittest.TestCase):
         self.assertEqual("security_report", payload["type"])
         self.assertEqual(1, payload["controlCount"])
         self.assertEqual({"verified": 1}, payload["summary"]["byCoverage"])
+        self.assertEqual(
+            {
+                "criticalUnverified": [],
+                "staleEvidence": [],
+                "missingVerificationDates": [],
+            },
+            payload["summary"]["releaseGaps"],
+        )
         self.assertEqual("security.control.account_access", payload["controls"][0]["id"])
 
     def test_generate_report_accepts_explicit_generated_at(self) -> None:

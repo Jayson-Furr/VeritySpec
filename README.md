@@ -53,7 +53,8 @@ This implementation provides:
   observability reports, accessibility reports, compliance matrices,
   deployment reports, evidence reports, cross-pack coverage dashboards,
   product-impact reports, pack capability indexes, and roadmap governance
-  reports, with OpenAPI
+  reports, including security release-gap summaries for stale evidence and
+  missing verification dates, with OpenAPI
   path-parameter support and
   snapshot-tested type/model output including nested Python dataclasses and
   deterministic timestamp controls for generated JSON reports.
