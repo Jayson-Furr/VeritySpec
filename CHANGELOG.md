@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.64.0
+
 - Added `verity generate lifecycle-readiness-report` for product-delivery,
   mobile, and liveops lifecycle gap summaries, plus an executable
   `examples/lifecycle-readiness` workspace and golden report coverage.
+- Added v0.64.0 release notes and roadmap closeout.
 
 ## 0.63.0
 

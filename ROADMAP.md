@@ -2715,31 +2715,37 @@ bookkeeping.
 
 ## v0.64.0
 
-The `v0.64.0` milestone is in progress.
+The `v0.64.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 141 | In Progress | Lifecycle readiness gap reports |
+| 141 | Complete | Lifecycle readiness gap reports |
 
 ## Sprint 141 Priorities
 
-Sprint 141 is a two-week-sized lifecycle readiness report sprint:
+Sprint 141 completed a two-week-sized lifecycle readiness report sprint:
 
-- Add a product-delivery, mobile, and liveops lifecycle readiness gap report
+- Added a product-delivery, mobile, and liveops lifecycle readiness gap report
   for implementation-ready, soft-launch, launch-candidate, remote-config,
   rollback, support, save-migration, decommission, data-deletion, and
   archive-review summaries.
-- Keep the report as a VeritySpec record coverage and gap artifact, without
+- Kept the report as a VeritySpec record coverage and gap artifact, without
   making commercial, legal, privacy-law, marketplace, app-store,
   platform-certification, live-service, support, or archival readiness claims.
-- Add an executable cross-pack `examples/lifecycle-readiness` workspace.
-- Advertise the generator from the relevant product-delivery, mobile, and
+- Added an executable cross-pack `examples/lifecycle-readiness` workspace.
+- Advertised the generator from the relevant product-delivery, mobile, and
   liveops pack metadata without moving the behavior into the small core.
-- Add CLI, library, golden fixture, example compatibility, and pack validation
+- Added CLI, library, golden fixture, example compatibility, and pack validation
   coverage.
-- Update README, generator docs, pack docs, CI guidance, release checklist,
+- Updated README, generator docs, pack docs, CI guidance, release checklist,
   fixture-refresh guidance, changelog, roadmap, and canonical AI-agent
   commands.
+
+Sprint 141 delivery added `verity generate lifecycle-readiness-report`, a
+cross-pack lifecycle readiness example, product-delivery/mobile/liveops
+generator metadata, committed golden output, compatibility-manifest coverage,
+claim-boundary documentation, and release-bookkeeping updates for the v0.64.0
+release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
