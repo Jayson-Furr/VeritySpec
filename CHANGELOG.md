@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.42.0
+
 - Added built-in `verity.pack.unreal` with `unreal.project`,
   `unreal.plugin`, `unreal.module`, `unreal.target`, `unreal.map`,
   `unreal.blueprint`, `unreal.data-asset`, `unreal.gameplay-tag`,
@@ -10,6 +12,7 @@
   readiness gates, reference rules, an executable Unreal game workspace
   example, graph coverage, schema-bundle coverage, and public docs for Unreal
   game implementation and engine-tooling contracts.
+- Added v0.42.0 release notes and roadmap closeout.
 
 ## 0.41.0
 
