@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import keyword
 import re
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -1949,6 +1949,36 @@ def is_security_control_verified(record: Record) -> bool:
     )
 
 
+def verification_last_verified(record: Record) -> str:
+    verification = record.data.get("verification")
+    if not isinstance(verification, dict):
+        return ""
+    value = verification.get("lastVerified")
+    return value.strip() if isinstance(value, str) else ""
+
+
+def security_control_has_missing_verification_date(record: Record) -> bool:
+    return verification_last_verified(record) == ""
+
+
+def security_control_has_stale_evidence(record: Record) -> bool:
+    verification = record.data.get("verification")
+    if not isinstance(verification, dict):
+        return False
+    review_cadence_days = verification.get("reviewCadenceDays")
+    if not isinstance(review_cadence_days, int) or review_cadence_days < 0:
+        return False
+    last_verified = verification_last_verified(record)
+    if not last_verified:
+        return False
+    try:
+        verified_at = date.fromisoformat(last_verified)
+    except ValueError:
+        return True
+    age_days = (date.today() - verified_at).days
+    return age_days < 0 or age_days > review_cadence_days
+
+
 def accessibility_claim_targets(record: Record, records_by_id: dict[str, Record]) -> list[dict[str, str]]:
     return reference_targets(record, records_by_id, "appliesTo")
 
@@ -1971,6 +2001,8 @@ def generate_security_report(workspace: Workspace, generated_at: str | None = No
     control_entries: list[dict[str, Any]] = []
     verified_control_count = 0
     critical_unverified: list[str] = []
+    stale_evidence: list[str] = []
+    missing_verification_dates: list[str] = []
 
     for record in controls:
         verified = is_security_control_verified(record)
@@ -1978,6 +2010,10 @@ def generate_security_report(workspace: Workspace, generated_at: str | None = No
             verified_control_count += 1
         if record.data.get("riskLevel") == "critical" and not verified and record.id:
             critical_unverified.append(record.id)
+        if record.id and security_control_has_stale_evidence(record):
+            stale_evidence.append(record.id)
+        if record.id and security_control_has_missing_verification_date(record):
+            missing_verification_dates.append(record.id)
 
         control_entries.append(
             {
@@ -2009,6 +2045,11 @@ def generate_security_report(workspace: Workspace, generated_at: str | None = No
             "byRiskLevel": count_by_field(controls, "riskLevel"),
             "verifiedControls": verified_control_count,
             "criticalUnverified": critical_unverified,
+            "releaseGaps": {
+                "criticalUnverified": sorted(critical_unverified),
+                "staleEvidence": sorted(stale_evidence),
+                "missingVerificationDates": sorted(missing_verification_dates),
+            },
         },
         "controls": control_entries,
     }

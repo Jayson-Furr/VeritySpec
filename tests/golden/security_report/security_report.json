@@ -14,7 +14,12 @@
       "high": 1
     },
     "verifiedControls": 1,
-    "criticalUnverified": []
+    "criticalUnverified": [],
+    "releaseGaps": {
+      "criticalUnverified": [],
+      "staleEvidence": [],
+      "missingVerificationDates": []
+    }
   },
   "controls": [
     {

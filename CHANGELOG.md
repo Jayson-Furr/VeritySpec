@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added security-report release-gap summaries for stale evidence and missing
+  verification dates while preserving existing verification coverage output.
+
 ## 0.51.0
 
 - Added Markdown output for `verity generate roadmap-report` so maintainers

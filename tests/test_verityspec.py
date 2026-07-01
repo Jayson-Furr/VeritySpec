@@ -866,12 +866,45 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual({"high": 1}, report["summary"]["byRiskLevel"])
         self.assertEqual(1, report["summary"]["verifiedControls"])
         self.assertEqual([], report["summary"]["criticalUnverified"])
+        self.assertEqual(
+            {
+                "criticalUnverified": [],
+                "staleEvidence": [],
+                "missingVerificationDates": [],
+            },
+            report["summary"]["releaseGaps"],
+        )
         control = report["controls"][0]
         self.assertEqual("security.control.account_access", control["id"])
         self.assertTrue(control["verified"])
         self.assertEqual(
             ["api.accounts.get", "schema.account"],
             [target["id"] for target in control["targets"]],
+        )
+
+    def test_security_report_distinguishes_stale_and_missing_verification_dates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            stale_root = Path(tmp) / "stale"
+            stale_root.mkdir()
+            stale_date = (date.today() - timedelta(days=31)).isoformat()
+            write_security_freshness_workspace(stale_root, stale_date, cadence_days=30)
+
+            missing_root = Path(tmp) / "missing"
+            missing_root.mkdir()
+            write_security_freshness_workspace(missing_root, None, cadence_days=30)
+
+            stale_report = generate_security_report(load_workspace(stale_root))
+            missing_report = generate_security_report(load_workspace(missing_root))
+
+        self.assertEqual(
+            ["security.control.session_review"],
+            stale_report["summary"]["releaseGaps"]["staleEvidence"],
+        )
+        self.assertEqual([], stale_report["summary"]["releaseGaps"]["missingVerificationDates"])
+        self.assertEqual([], missing_report["summary"]["releaseGaps"]["staleEvidence"])
+        self.assertEqual(
+            ["security.control.session_review"],
+            missing_report["summary"]["releaseGaps"]["missingVerificationDates"],
         )
 
     def test_roadmap_report_summarizes_release_governance(self) -> None:
@@ -899,7 +932,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add security-report release gaps", markdown)
+        self.assertIn("1. Add workspace migration impact summaries", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap

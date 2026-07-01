@@ -76,6 +76,8 @@ Security reports include:
 - Control counts by coverage and risk level
 - Verified-control count
 - Critical unverified control IDs
+- Release gaps for critical unverified controls, stale evidence, and missing
+  verification dates
 - Per-control owner, category, objective, verification evidence, and target records
 
 Accessibility reports include:
@@ -205,6 +207,9 @@ Security report output includes:
 - `security.control` records from workspaces that load `verity.pack.security`
 - Verification status based on `coverage`, `verification.method`, and
   `verification.evidence`
+- Release-gap summaries for critical unverified controls, stale evidence based
+  on `verification.reviewCadenceDays`, and missing `verification.lastVerified`
+  dates
 - Target records from explicit `appliesTo` references
 
 The `examples/security` security report shape is covered by a committed golden
