@@ -1025,11 +1025,11 @@ class VeritySpecTests(unittest.TestCase):
         report = generate_coverage_dashboard(workspace)
 
         self.assertEqual("coverage_dashboard", report["type"])
-        self.assertEqual(74, report["recordCount"])
+        self.assertEqual(91, report["recordCount"])
         self.assertEqual(1, report["productCount"])
-        self.assertEqual(16, report["summary"]["trackedSurfaces"])
-        self.assertEqual(16, report["summary"]["loadedSurfacePacks"])
-        self.assertEqual(16, report["summary"]["coveredSurfaces"])
+        self.assertEqual(17, report["summary"]["trackedSurfaces"])
+        self.assertEqual(17, report["summary"]["loadedSurfacePacks"])
+        self.assertEqual(17, report["summary"]["coveredSurfaces"])
         self.assertEqual(100.0, report["summary"]["coveragePercent"])
         self.assertEqual(
             {
@@ -1046,6 +1046,7 @@ class VeritySpecTests(unittest.TestCase):
                 "gameplay": 4,
                 "godot": 14,
                 "observability": 4,
+                "product-delivery": 17,
                 "security": 1,
                 "unity": 12,
                 "unreal": 13,
@@ -1069,6 +1070,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertEqual("verity.pack.game-core", surfaces["game-core"]["packId"])
         self.assertEqual("verity.pack.gameplay", surfaces["gameplay"]["packId"])
         self.assertEqual("verity.pack.godot", surfaces["godot"]["packId"])
+        self.assertEqual("verity.pack.product-delivery", surfaces["product-delivery"]["packId"])
         self.assertEqual("verity.pack.unity", surfaces["unity"]["packId"])
         self.assertEqual("verity.pack.unreal", surfaces["unreal"]["packId"])
         self.assertEqual(["api.coverage.status"], [record["id"] for record in surfaces["api"]["records"]])
@@ -1121,6 +1123,28 @@ class VeritySpecTests(unittest.TestCase):
                 "economy.source.coverage_extract",
             ],
             [record["id"] for record in surfaces["economy"]["records"]],
+        )
+        self.assertEqual(
+            [
+                "agent-context.exporter.coverage_agent_context",
+                "archive.policy.coverage_archive",
+                "commercial.posture.coverage_private_alpha",
+                "decision.record.coverage_truth_layer",
+                "decommission.policy.coverage_sunset",
+                "editor.surface.coverage_dashboard",
+                "evidence.requirement.coverage_ci",
+                "generator.capability.coverage_schema_bundle",
+                "maintenance.policy.coverage_active",
+                "operations.model.coverage_maintained",
+                "product.scope.coverage_delivery",
+                "project-management.model.coverage_github",
+                "readiness.profile.coverage_private_alpha",
+                "release.process.coverage_release",
+                "scanner.capability.coverage_contract_scan",
+                "support.policy.coverage_support",
+                "validation.runner.coverage_ci",
+            ],
+            [record["id"] for record in surfaces["product-delivery"]["records"]],
         )
         self.assertEqual(
             [
@@ -1786,6 +1810,51 @@ class VeritySpecTests(unittest.TestCase):
 
         self.assertIn("readiness.min_items", [issue.code for issue in issues])
         self.assertIn("unreal.validation-runner.missing_scanners", [issue.record_id for issue in issues])
+
+    def test_product_delivery_readiness_requires_validation_runner_scanner_refs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "records").mkdir()
+            (root / "verityspec.json").write_text(
+                json.dumps(
+                    {
+                        "workspace": "product-delivery-gaps",
+                        "specVersion": "v0.2.0",
+                        "packs": ["verity.core", "verity.pack.product-delivery"],
+                        "records": ["records/*.json"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "records" / "runner.json").write_text(
+                json.dumps(
+                    {
+                        "id": "validation.runner.missing_scanners",
+                        "kind": "validation.runner",
+                        "name": "Missing Scanner Refs",
+                        "description": "Product-delivery validation runner missing scanner references.",
+                        "status": "ready",
+                        "owner": "tooling",
+                        "runnerType": "ci",
+                        "command": "verity validate",
+                        "scannerRefs": [],
+                        "references": [
+                            {
+                                "type": "runsScanner",
+                                "target": "scanner.capability.missing",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            workspace = load_workspace(root)
+            registry = load_pack_registry(workspace.pack_ids)
+            issues = evaluate_readiness(workspace, registry, strict=True)
+
+        self.assertIn("readiness.required", [issue.code for issue in issues])
+        self.assertIn("validation.runner.missing_scanners", [issue.record_id for issue in issues])
 
 
 if __name__ == "__main__":

@@ -22,14 +22,15 @@
     "verity.pack.unreal",
     "verity.pack.gameplay",
     "verity.pack.content",
-    "verity.pack.economy"
+    "verity.pack.economy",
+    "verity.pack.product-delivery"
   ],
-  "recordCount": 74,
+  "recordCount": 91,
   "productCount": 1,
   "summary": {
-    "trackedSurfaces": 16,
-    "loadedSurfacePacks": 16,
-    "coveredSurfaces": 16,
+    "trackedSurfaces": 17,
+    "loadedSurfacePacks": 17,
+    "coveredSurfaces": 17,
     "coveragePercent": 100.0,
     "bySurface": {
       "accessibility": 1,
@@ -45,15 +46,21 @@
       "gameplay": 4,
       "godot": 14,
       "observability": 4,
+      "product-delivery": 17,
       "security": 1,
       "unity": 12,
       "unreal": 13
     },
     "byRecordKind": {
       "accessibility.claim": 1,
+      "agent-context.exporter": 1,
       "api.endpoint": 1,
+      "archive.policy": 1,
       "cli.command": 1,
+      "commercial.posture": 1,
       "compliance.mapping": 1,
+      "decision.record": 1,
+      "decommission.policy": 1,
       "deployment.runtime": 1,
       "deployment.target": 1,
       "economy.currency": 1,
@@ -61,7 +68,9 @@
       "economy.reward": 1,
       "economy.sink": 1,
       "economy.source": 1,
+      "editor.surface": 1,
       "event.message": 1,
+      "evidence.requirement": 1,
       "game.ability": 1,
       "game.concept-art": 1,
       "game.content-item": 1,
@@ -78,6 +87,7 @@
       "game.prototype-scope": 1,
       "game.rule": 1,
       "game.visual-identity": 1,
+      "generator.capability": 1,
       "godot.addon": 1,
       "godot.agent-context-exporter": 1,
       "godot.autoload": 1,
@@ -92,13 +102,21 @@
       "godot.script": 1,
       "godot.shared-library": 1,
       "godot.validation-runner": 1,
+      "maintenance.policy": 1,
       "observability.alert": 1,
       "observability.dashboard": 1,
       "observability.metric": 1,
       "observability.telemetry": 1,
+      "operations.model": 1,
       "product": 1,
+      "product.scope": 1,
+      "project-management.model": 1,
+      "readiness.profile": 1,
+      "release.process": 1,
+      "scanner.capability": 1,
       "schema.object": 1,
       "security.control": 1,
+      "support.policy": 1,
       "unity.agent-context-exporter": 1,
       "unity.asmdef": 1,
       "unity.build-target": 1,
@@ -123,7 +141,8 @@
       "unreal.readiness-dashboard": 1,
       "unreal.scanner": 1,
       "unreal.target": 1,
-      "unreal.validation-runner": 1
+      "unreal.validation-runner": 1,
+      "validation.runner": 1
     },
     "releaseGaps": {
       "missingSurfaceRecords": [],
@@ -1122,6 +1141,166 @@
           "targetName": "Coverage Shard Currency"
         }
       ]
+    },
+    {
+      "id": "product-delivery",
+      "name": "Product Delivery",
+      "packId": "verity.pack.product-delivery",
+      "packLoaded": true,
+      "recordKinds": [
+        "product.scope",
+        "commercial.posture",
+        "project-management.model",
+        "decision.record",
+        "readiness.profile",
+        "evidence.requirement",
+        "release.process",
+        "operations.model",
+        "support.policy",
+        "maintenance.policy",
+        "archive.policy",
+        "decommission.policy",
+        "scanner.capability",
+        "generator.capability",
+        "validation.runner",
+        "editor.surface",
+        "agent-context.exporter"
+      ],
+      "productRelationships": [
+        "hasProductScope"
+      ],
+      "recordCount": 17,
+      "covered": true,
+      "records": [
+        {
+          "id": "agent-context.exporter.coverage_agent_context",
+          "kind": "agent-context.exporter",
+          "name": "Implementation Agent Context Exporter",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "archive.policy.coverage_archive",
+          "kind": "archive.policy",
+          "name": "Retained Source Archive Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "commercial.posture.coverage_private_alpha",
+          "kind": "commercial.posture",
+          "name": "Coverage Commercial Posture",
+          "status": "ready",
+          "owner": "product"
+        },
+        {
+          "id": "decision.record.coverage_truth_layer",
+          "kind": "decision.record",
+          "name": "GitHub Manages Workflow",
+          "status": "ready",
+          "owner": "program"
+        },
+        {
+          "id": "decommission.policy.coverage_sunset",
+          "kind": "decommission.policy",
+          "name": "Sunset Decommission Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "editor.surface.coverage_dashboard",
+          "kind": "editor.surface",
+          "name": "Readiness Dashboard Surface",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "evidence.requirement.coverage_ci",
+          "kind": "evidence.requirement",
+          "name": "Coverage CI Evidence Requirement",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "generator.capability.coverage_schema_bundle",
+          "kind": "generator.capability",
+          "name": "Agent Context Generator Capability",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "maintenance.policy.coverage_active",
+          "kind": "maintenance.policy",
+          "name": "Active Maintenance Policy",
+          "status": "ready",
+          "owner": "maintenance"
+        },
+        {
+          "id": "operations.model.coverage_maintained",
+          "kind": "operations.model",
+          "name": "Maintained Toolkit Operations",
+          "status": "ready",
+          "owner": "operations"
+        },
+        {
+          "id": "product.scope.coverage_delivery",
+          "kind": "product.scope",
+          "name": "Coverage Delivery Scope",
+          "status": "ready",
+          "owner": "product"
+        },
+        {
+          "id": "project-management.model.coverage_github",
+          "kind": "project-management.model",
+          "name": "GitHub Native Project Management",
+          "status": "ready",
+          "owner": "program"
+        },
+        {
+          "id": "readiness.profile.coverage_private_alpha",
+          "kind": "readiness.profile",
+          "name": "Coverage Readiness Profile",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "release.process.coverage_release",
+          "kind": "release.process",
+          "name": "Tagged Alpha Release Process",
+          "status": "ready",
+          "owner": "release"
+        },
+        {
+          "id": "scanner.capability.coverage_contract_scan",
+          "kind": "scanner.capability",
+          "name": "Workspace Contract Scanner",
+          "status": "ready",
+          "owner": "tooling"
+        },
+        {
+          "id": "support.policy.coverage_support",
+          "kind": "support.policy",
+          "name": "Coverage Support Policy",
+          "status": "ready",
+          "owner": "support"
+        },
+        {
+          "id": "validation.runner.coverage_ci",
+          "kind": "validation.runner",
+          "name": "Coverage CI Validation Runner",
+          "status": "ready",
+          "owner": "tooling"
+        }
+      ],
+      "productReferences": [
+        {
+          "productId": "product.coverage_dashboard",
+          "relationship": "hasProductScope",
+          "targetId": "product.scope.coverage_delivery",
+          "targetKind": "product.scope",
+          "targetName": "Coverage Delivery Scope"
+        }
+      ]
     }
   ],
   "products": [
@@ -1273,6 +1452,15 @@
             "targetId": "economy.currency.coverage_shard",
             "targetKind": "economy.currency",
             "targetName": "Coverage Shard Currency"
+          }
+        ],
+        "product-delivery": [
+          {
+            "productId": "product.coverage_dashboard",
+            "relationship": "hasProductScope",
+            "targetId": "product.scope.coverage_delivery",
+            "targetKind": "product.scope",
+            "targetName": "Coverage Delivery Scope"
           }
         ]
       },

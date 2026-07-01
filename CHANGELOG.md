@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Added built-in `verity.pack.product-delivery` with `product.scope`,
+  `commercial.posture`, `project-management.model`, `decision.record`,
+  `readiness.profile`, `evidence.requirement`, `release.process`,
+  `operations.model`, `support.policy`, `maintenance.policy`,
+  `archive.policy`, `decommission.policy`, `scanner.capability`,
+  `generator.capability`, `validation.runner`, `editor.surface`, and
+  `agent-context.exporter` records, readiness gates, reference rules, an
+  executable product-delivery example, graph coverage, schema-bundle coverage,
+  coverage-dashboard support, CI coverage, and public docs for spec-driven
+  product-delivery repositories.
+
 ## 0.42.0
 
 - Added built-in `verity.pack.unreal` with `unreal.project`,

@@ -64,6 +64,10 @@ verity readiness examples/content --strict
 verity validate examples/economy
 verity lint examples/economy --strict
 verity readiness examples/economy --strict
+verity validate examples/product-delivery
+verity lint examples/product-delivery --strict
+verity readiness examples/product-delivery --strict
+verity graph examples/product-delivery --format json > build/product-delivery-graph.json
 verity validate tests/fixtures/custom_pack_workspace
 verity validate tests/fixtures/generator_maturity
 verity validate tests/fixtures/cross_pack_coverage
@@ -92,6 +96,7 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 verity generate schema-bundle examples/gameplay --out build/gameplay-schema-bundle.json
 verity generate schema-bundle examples/content --out build/content-schema-bundle.json
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
+verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
@@ -103,6 +108,7 @@ verity generate schema-bundle examples/deployment --out build/deployment-schema-
 python -m json.tool build/unity-graph.json >/dev/null
 python -m json.tool build/godot-graph.json >/dev/null
 python -m json.tool build/unreal-graph.json >/dev/null
+python -m json.tool build/product-delivery-graph.json >/dev/null
 python -m build
 twine check dist/*
 ```
@@ -125,6 +131,7 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/gameplay
 /tmp/verityspec-wheel/bin/verity validate examples/content
 /tmp/verityspec-wheel/bin/verity validate examples/economy
+/tmp/verityspec-wheel/bin/verity validate examples/product-delivery
 ```
 
 If `twine` is installed but the console script is not on `PATH`, run

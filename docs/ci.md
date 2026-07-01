@@ -188,6 +188,20 @@ verity readiness examples/economy --strict
 verity generate schema-bundle examples/economy --out build/economy-schema-bundle.json
 ```
 
+For workspaces that load `verity.pack.product-delivery`, include the usual
+contract checks, graph checks, and a schema bundle for product scope, project
+management, readiness, evidence, release, operations, support, maintenance,
+archive, decommission, scanner, generator, validation-runner, editor-surface,
+and agent-context tooling:
+
+```bash
+verity validate examples/product-delivery
+verity lint examples/product-delivery --strict
+verity readiness examples/product-delivery --strict
+verity graph examples/product-delivery --format json > build/product-delivery-graph.json
+verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
+```
+
 For release-review workspaces that combine multiple product-surface packs,
 generate a cross-pack coverage dashboard:
 

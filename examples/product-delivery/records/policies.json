@@ -1,0 +1,119 @@
+{
+  "records": [
+    {
+      "id": "release.process.tagged_alpha",
+      "kind": "release.process",
+      "name": "Tagged Alpha Release Process",
+      "description": "Defines branch, tag, approval, and artifact rules for private alpha releases.",
+      "status": "ready",
+      "owner": "release",
+      "releaseType": "alpha",
+      "branchStrategy": "feature branches merge through pull requests into main.",
+      "tagPolicy": "Alpha releases use annotated version tags after local and hosted verification pass.",
+      "approvalPolicy": "A maintainer reviews the release notes, changelog, roadmap, and generated artifacts.",
+      "artifactPolicy": "Distribution artifacts are built from the release tag.",
+      "readinessProfileRefs": [
+        "readiness.profile.private_alpha"
+      ],
+      "references": [
+        {
+          "type": "usesReadinessProfile",
+          "target": "readiness.profile.private_alpha"
+        },
+        {
+          "type": "requiresEvidence",
+          "target": "evidence.requirement.local_ci"
+        }
+      ]
+    },
+    {
+      "id": "operations.model.maintained_toolkit",
+      "kind": "operations.model",
+      "name": "Maintained Toolkit Operations",
+      "description": "Defines lightweight operational ownership for a maintained engine-tooling repository.",
+      "status": "ready",
+      "owner": "operations",
+      "operatingModel": "maintained",
+      "incidentPolicy": "Release-blocking failures are tracked as defects and linked to readiness gaps.",
+      "monitoringPolicy": "CI and local verification reports are reviewed before release.",
+      "runbookPath": "docs/release-checklist.md",
+      "escalationOwner": "maintainer",
+      "references": [
+        {
+          "type": "supportedBy",
+          "target": "support.policy.private_alpha"
+        }
+      ]
+    },
+    {
+      "id": "support.policy.private_alpha",
+      "kind": "support.policy",
+      "name": "Private Alpha Support Policy",
+      "description": "Defines support expectations for private alpha users and maintainers.",
+      "status": "ready",
+      "owner": "support",
+      "supportModel": "managed",
+      "channels": [
+        "GitHub Issues",
+        "private maintainer review"
+      ],
+      "responsePolicy": "Release-blocking support issues are triaged before the next candidate.",
+      "escalationPolicy": "Escalate defects that invalidate readiness evidence to the release owner.",
+      "references": []
+    },
+    {
+      "id": "maintenance.policy.active",
+      "kind": "maintenance.policy",
+      "name": "Active Maintenance Policy",
+      "description": "Defines dependency, compatibility, and update expectations while the toolkit is actively maintained.",
+      "status": "ready",
+      "owner": "maintenance",
+      "maintenanceModel": "active",
+      "updateCadence": "Review dependencies and generated artifacts each release cycle.",
+      "dependencyPolicy": "Update dependencies through pull requests with local verification evidence.",
+      "compatibilityPolicy": "Breaking changes require changelog and migration notes.",
+      "references": [
+        {
+          "type": "usesArchivePolicy",
+          "target": "archive.policy.retained_source"
+        },
+        {
+          "type": "usesDecommissionPolicy",
+          "target": "decommission.policy.sunset"
+        }
+      ]
+    },
+    {
+      "id": "archive.policy.retained_source",
+      "kind": "archive.policy",
+      "name": "Retained Source Archive Policy",
+      "description": "Defines source, release, and generated-artifact archival expectations for the repository.",
+      "status": "ready",
+      "owner": "maintenance",
+      "archiveTrigger": "on-sunset",
+      "retentionPolicy": "Retain tagged source, release notes, generated schemas, and verification summaries.",
+      "archiveLocation": "repository releases and archive storage",
+      "artifactManifest": "build/archive-manifest.json",
+      "references": []
+    },
+    {
+      "id": "decommission.policy.sunset",
+      "kind": "decommission.policy",
+      "name": "Sunset Decommission Policy",
+      "description": "Defines the handoff and archival path if the toolkit is replaced or retired.",
+      "status": "ready",
+      "owner": "maintenance",
+      "decommissionTrigger": "replacement",
+      "dataHandling": "No production customer data is represented by this example workspace.",
+      "communicationPlan": "Document replacement guidance in release notes and README.",
+      "rollbackWindow": "One maintenance release cycle",
+      "archivePolicyRef": "archive.policy.retained_source",
+      "references": [
+        {
+          "type": "usesArchivePolicy",
+          "target": "archive.policy.retained_source"
+        }
+      ]
+    }
+  ]
+}

@@ -173,22 +173,22 @@ Useful future record kinds include:
 
 ## Product-Delivery Pack
 
-Proposed pack ID: `verity.pack.product-delivery`.
+Existing pack ID: `verity.pack.product-delivery`.
 
 This pack should describe repositories that use VeritySpec as their
 project-management and product-delivery source of truth. It should not replace
 GitHub workflow objects; it should connect those objects to product-contract
 records, readiness gates, evidence requirements, and generated reports.
 
-This is the next downstream rebuild blocker after the Unity, Godot, and Unreal
-engine packs. Private spec-driven repositories for engine toolkits and game
-projects need built-in vocabulary for proprietary posture, GitHub-native
-project management, decision completeness, implementation readiness, evidence
-states, release and distribution policy, support, maintenance, operations,
-archive and decommission policy, scanners, generators, editor surfaces, and
-agent-context export.
+This first built-in slice covers the downstream rebuild blocker after the
+Unity, Godot, and Unreal engine packs: private spec-driven repositories for
+engine toolkits and game projects need built-in vocabulary for proprietary
+posture, GitHub-native project management, decision completeness,
+implementation readiness, evidence states, release and distribution policy,
+support, maintenance, operations, archive and decommission policy, scanners,
+generators, editor surfaces, and agent-context export.
 
-Useful future record kinds include:
+Delivered record kinds:
 
 - `product.scope`
 - `commercial.posture`
@@ -215,15 +215,15 @@ product-delivery slice exists.
 
 ## Implementation Acceptance Criteria
 
-Future implementation sprints for these packs should include:
+Implementation sprints for these packs and follow-on expansions should include:
 
 - Built-in pack manifests that pass `verity pack validate`.
 - Strict JSON Schemas for every new kind.
 - Readiness gates where the record kind affects release or implementation
   readiness.
 - Reference rules that prove the product-contract graph is coherent.
-- Fixtures or examples for Unity, Godot, Unreal, and spec-driven product
-  delivery workspaces.
+- Fixtures or examples for the affected Unity, Godot, Unreal, and
+  spec-driven product-delivery workspaces.
 - Example workspaces that pass `verity validate`, `verity lint --strict`,
   `verity readiness --strict`, and `verity graph`.
 - Public docs that describe the packs as engine-tooling and product-management

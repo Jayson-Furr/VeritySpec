@@ -1,0 +1,118 @@
+{
+  "records": [
+    {
+      "id": "scanner.capability.workspace_contracts",
+      "kind": "scanner.capability",
+      "name": "Workspace Contract Scanner",
+      "description": "Scans VeritySpec workspace records to find missing product-delivery coverage.",
+      "status": "ready",
+      "owner": "tooling",
+      "scannerType": "workspace",
+      "entryPoint": "verity validate",
+      "scannedKinds": [
+        "product.scope",
+        "release.process",
+        "evidence.requirement"
+      ],
+      "outputPath": "build/reports/validation.json",
+      "references": [
+        {
+          "type": "scansScope",
+          "target": "product.scope.engine_toolkit_delivery"
+        }
+      ]
+    },
+    {
+      "id": "generator.capability.agent_context",
+      "kind": "generator.capability",
+      "name": "Agent Context Generator Capability",
+      "description": "Generates bounded implementation context from product-delivery and readiness records.",
+      "status": "ready",
+      "owner": "tooling",
+      "generatorType": "agent-context",
+      "outputArtifacts": [
+        "agent-context.md"
+      ],
+      "command": "verity generate schema-bundle",
+      "outputPath": "build/agent-context.md",
+      "references": [
+        {
+          "type": "generatesForScope",
+          "target": "product.scope.engine_toolkit_delivery"
+        }
+      ]
+    },
+    {
+      "id": "validation.runner.local_ci",
+      "kind": "validation.runner",
+      "name": "Local CI Validation Runner",
+      "description": "Runs local validation, lint, readiness, graph, and generation checks when hosted CI is unavailable.",
+      "status": "ready",
+      "owner": "tooling",
+      "runnerType": "local",
+      "command": "python -m pytest",
+      "scannerRefs": [
+        "scanner.capability.workspace_contracts"
+      ],
+      "references": [
+        {
+          "type": "runsScanner",
+          "target": "scanner.capability.workspace_contracts"
+        }
+      ]
+    },
+    {
+      "id": "editor.surface.readiness_dashboard",
+      "kind": "editor.surface",
+      "name": "Readiness Dashboard Surface",
+      "description": "Represents an editor or dashboard surface for reviewing product-delivery readiness and evidence gaps.",
+      "status": "ready",
+      "owner": "tooling",
+      "surfaceType": "dashboard",
+      "entryPoint": "docs/readiness-dashboard.md",
+      "supportedActions": [
+        "view readiness gaps",
+        "open linked evidence requests",
+        "export agent context"
+      ],
+      "references": [
+        {
+          "type": "runsValidation",
+          "target": "validation.runner.local_ci"
+        }
+      ]
+    },
+    {
+      "id": "agent-context.exporter.implementation_bundle",
+      "kind": "agent-context.exporter",
+      "name": "Implementation Agent Context Exporter",
+      "description": "Exports scoped product-delivery context for AI agents working in the repository.",
+      "status": "ready",
+      "owner": "tooling",
+      "exporterType": "markdown",
+      "outputPath": "build/agent-context.md",
+      "includedRecordKinds": [
+        "product.scope",
+        "release.process",
+        "readiness.profile",
+        "evidence.requirement"
+      ],
+      "privacyPolicy": "Do not include secrets, credentials, or private customer data in exported context.",
+      "redactionPolicy": "Exclude environment-specific secrets and unpublished commercial terms.",
+      "references": [
+        {
+          "type": "describesScope",
+          "target": "product.scope.engine_toolkit_delivery"
+        },
+        {
+          "type": "usesReadinessProfile",
+          "target": "readiness.profile.private_alpha"
+        },
+        {
+          "type": "usesGenerator",
+          "target": "generator.capability.agent_context"
+        }
+      ]
+    }
+  ]
+}

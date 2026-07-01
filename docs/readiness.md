@@ -108,6 +108,14 @@ Economy records use readiness gates to keep currency, source, sink, reward, and
 offer contracts traceable. An `economy.offer` should include reward references,
 price metadata, availability, and graph links before strict readiness passes.
 
+Product-delivery records use readiness gates to keep spec-driven repositories
+decision-complete enough for implementation and release review. A
+`product.scope` should link to posture, project-management, readiness, release,
+operations, support, maintenance, archive, and decommission policy records.
+Tooling records such as `scanner.capability`, `validation.runner`,
+`editor.surface`, and `agent-context.exporter` should declare the records they
+scan, run, expose, or describe before strict readiness passes.
+
 Run readiness checks:
 
 ```bash
@@ -123,6 +131,7 @@ verity readiness examples/unreal --strict
 verity readiness examples/gameplay --strict
 verity readiness examples/content --strict
 verity readiness examples/economy --strict
+verity readiness examples/product-delivery --strict
 verity readiness examples/basic --strict --format json
 ```
 
