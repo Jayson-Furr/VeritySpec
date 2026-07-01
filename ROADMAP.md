@@ -2506,11 +2506,12 @@ Sprint 132 prepares and verifies the v0.57.0 release:
 
 ## v0.58.0
 
-The `v0.58.0` milestone is focused on active work.
+The `v0.58.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 133 | In Progress | Fixture refresh documentation and golden drift review |
+| 133 | Complete | Fixture refresh documentation and golden drift review |
+| 134 | Complete | v0.58.0 release preparation and verification |
 
 ## Sprint 133 Priorities
 
@@ -2528,6 +2529,28 @@ Sprint 133 is a two-week-sized fixture refresh documentation sprint:
 - Link the new guidance from README, generator docs, and release checklist.
 - Add executable documentation tests and keep changelog, roadmap, and Next 20
   planning aligned.
+
+Sprint 133 delivery added fixture refresh guidance, README/generator/release
+checklist links, deterministic timestamp and placeholder-normalization
+instructions, release-version fixture update guidance, changelog and roadmap
+bookkeeping, and executable documentation tests that keep the guide and roadmap
+report from drifting.
+
+## Sprint 134 Priorities
+
+Sprint 134 prepares and verifies the v0.58.0 release:
+
+- Promote Unreleased changelog entries into `0.58.0`.
+- Bump package metadata to `0.58.0`.
+- Add v0.58.0 release notes.
+- Update README release badge, latest-release text, install tag,
+  package-version text, and release-notes link to `v0.58.0`.
+- Update downstream CI templates, PyPI fallback docs, release checklist,
+  workflow release pins, and evidence fixtures to `v0.58.0`.
+- Run local release verification, package build checks, `twine check`, wheel
+  smoke tests, and GitHub Actions.
+- Tag and publish the v0.58.0 GitHub release when checks pass.
+- Close the v0.58.0 milestone after release verification.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

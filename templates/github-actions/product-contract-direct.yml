@@ -22,7 +22,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install VeritySpec
-        run: pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.57.0"
+        run: pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.58.0"
 
       - name: Check product contract
         shell: bash
