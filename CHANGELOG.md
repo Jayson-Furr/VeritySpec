@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.60.0
+
 - Added deployment-target release evidence links that connect production
   deployment targets to security controls, observability dashboards,
   compliance mappings, and release evidence records with readiness,
   validation, graph, report, example, and fixture coverage.
+- Added v0.60.0 release notes and roadmap closeout.
 
 ## 0.59.0
 

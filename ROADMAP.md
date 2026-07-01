@@ -2604,15 +2604,15 @@ Sprint 136 prepares and verifies the v0.59.0 release:
 
 ## v0.60.0
 
-The `v0.60.0` milestone is focused on active work.
+The `v0.60.0` milestone is complete.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 137 | In Progress | Deployment-target release evidence links |
+| 137 | Complete | Deployment-target release evidence links |
 
 ## Sprint 137 Priorities
 
-Sprint 137 is a two-week-sized deployment evidence sprint:
+Sprint 137 completed a two-week-sized deployment evidence sprint:
 
 - Add release evidence link fields to `deployment.target` records for security
   controls, observability dashboards, compliance mappings, and evidence
