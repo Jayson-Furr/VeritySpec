@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.44.0
+
 - Added built-in `verity.pack.mobile` with `mobile.app-release`,
   `mobile.store-listing`, `mobile.privacy-policy`,
   `mobile.apple-privacy-details`, `mobile.google-play-data-safety`,
@@ -22,6 +24,7 @@
   and public docs for live operations contracts.
 - Added explicit Unity, Godot, and Unreal reference-rule parity for mobile
   release and liveops config relationships.
+- Added v0.44.0 release notes and roadmap closeout.
 
 ## 0.43.0
 
