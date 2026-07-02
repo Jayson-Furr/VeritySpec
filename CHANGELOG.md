@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added golden-fixture refresh automation planning for future dry-run diff
+  summaries, generator allowlists, placeholder preservation, blocked rewrites,
+  and maintainer approval gates before any fixture rewrite command ships.
+
 ## 0.79.0
 
 - Added portfolio report JSON contract planning for a future aggregate report
