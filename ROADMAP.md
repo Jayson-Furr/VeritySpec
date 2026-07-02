@@ -3361,11 +3361,11 @@ release-note bookkeeping aligned for v0.81.0.
 
 ## v0.82.0
 
-The `v0.82.0` milestone is in progress.
+The `v0.82.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 159 | In Progress | Deployment-report Markdown output |
+| 159 | Complete | Deployment-report Markdown output |
 
 ## Sprint 159 Priorities
 
@@ -3386,6 +3386,18 @@ Sprint 159 should add deployment-report Markdown output:
   deployment records and linked evidence; they do not prove external legal,
   commercial, privacy-law, marketplace, app-store, platform-certification,
   pricing-approval, support-SLA, or production-readiness approval.
+
+Sprint 159 delivery added Markdown output for `verity generate
+deployment-report` while preserving the JSON output as the default
+machine-readable contract. The Markdown report now renders workspace metadata,
+summary counts, environment/provider/platform breakdowns, runtime type counts,
+release gaps, deployment target details, runtime details, release policies,
+linked controls, observability dashboards, compliance mappings, and release
+evidence for human release and operations review. The delivery also updates the
+deployment pack generator metadata, CLI behavior, library generator coverage,
+golden fixtures, empty-section handling, README, changelog, generator docs,
+deployment docs, CI smoke commands, fixture-refresh guidance, release
+checklist, and release-note bookkeeping aligned for v0.82.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
