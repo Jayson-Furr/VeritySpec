@@ -40,6 +40,7 @@ verity generate product-impact tests/fixtures/product_impact/baseline tests/fixt
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
+verity generate issue-code-catalog --format markdown --out build/issue-code-catalog.md
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts
@@ -226,11 +227,13 @@ Issue-code catalogs include:
 - Per-code category, title, severity, description, and resolution fields
 - Summary counts by severity and category for docs sites and CI integrations
 
-`issue-code-catalog` does not require a workspace path and currently supports
-JSON output only.
+`issue-code-catalog` does not require a workspace path. JSON remains the
+machine-readable contract; Markdown is intended for documentation sites,
+release review, and human-readable issue-code references.
 
 ```bash
 verity generate issue-code-catalog --out build/issue-code-catalog.json
+verity generate issue-code-catalog --format markdown --out build/issue-code-catalog.md
 ```
 
 ## Current Guarantees

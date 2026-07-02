@@ -247,6 +247,7 @@ verity generate product-impact tests/fixtures/product_impact/baseline tests/fixt
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
+verity generate issue-code-catalog --format markdown --out build/issue-code-catalog.md
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
@@ -322,6 +323,7 @@ verity generate product-impact tests/fixtures/product_impact/baseline tests/fixt
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
+verity generate issue-code-catalog --format markdown --out build/issue-code-catalog.md
 ```
 
 ## Semantic Validation

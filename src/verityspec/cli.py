@@ -20,6 +20,7 @@ from .generators import (
     generate_deployment_report,
     generate_evidence_report,
     generate_issue_code_catalog,
+    generate_issue_code_catalog_markdown,
     generate_lifecycle_readiness_report,
     generate_openapi,
     generate_observability_report,
@@ -689,14 +690,13 @@ def cmd_generate(args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
             return EXIT_USAGE_ERROR
-        if args.format != "json":
-            print(
-                "generate issue-code-catalog supports --format json only.",
-                file=sys.stderr,
-            )
-            return EXIT_USAGE_ERROR
         report = generate_issue_code_catalog(generated_at=generated_at)
-        text = write_generated(report, args.out)
+        value = (
+            generate_issue_code_catalog_markdown(report)
+            if args.format == "markdown"
+            else report
+        )
+        text = write_generated(value, args.out)
         if not args.out:
             print(text, end="" if text.endswith("\n") else "\n")
         else:

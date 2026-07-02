@@ -84,6 +84,95 @@ def generate_issue_code_catalog(generated_at: str | None = None) -> dict[str, An
     }
 
 
+def markdown_cell(value: Any) -> str:
+    text = str(value) if value not in (None, "") else "none"
+    return text.replace("|", "\\|")
+
+
+def generate_issue_code_catalog_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    severity_counts = summary.get("severityCounts", {})
+    category_counts = summary.get("categoryCounts", {})
+    issue_codes = report.get("issueCodes", [])
+
+    lines = [
+        "# VeritySpec Issue Code Catalog",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Source: `{report.get('source')}`",
+        "",
+        (
+            "> This catalog summarizes stable VeritySpec issue-code metadata "
+            "for documentation sites, CI diagnostics, and agent workflows. "
+            "The JSON output remains the machine-readable contract."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+        f"| Issue codes | {markdown_cell(summary.get('issueCodeCount', 0))} |",
+        f"| Categories | {markdown_cell(len(summary.get('categories', [])))} |",
+        f"| Severities | {markdown_cell(len(summary.get('severities', [])))} |",
+        "",
+        "## Severities",
+        "",
+        "| Severity | Count |",
+        "|---|---:|",
+    ]
+
+    if isinstance(severity_counts, dict):
+        for severity in summary.get("severities", []):
+            lines.append(
+                f"| {markdown_cell(severity)} | "
+                f"{markdown_cell(severity_counts.get(severity, 0))} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Categories",
+            "",
+            "| Category | Count |",
+            "|---|---:|",
+        ]
+    )
+
+    if isinstance(category_counts, dict):
+        for category in summary.get("categories", []):
+            lines.append(
+                f"| {markdown_cell(category)} | "
+                f"{markdown_cell(category_counts.get(category, 0))} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Issue Codes",
+            "",
+            "| Code | Category | Severity | Title | Description | Resolution |",
+            "|---|---|---|---|---|---|",
+        ]
+    )
+
+    if isinstance(issue_codes, list):
+        for issue_code in issue_codes:
+            if not isinstance(issue_code, dict):
+                continue
+            lines.append(
+                "| "
+                f"{markdown_cell(issue_code.get('code'))} | "
+                f"{markdown_cell(issue_code.get('category'))} | "
+                f"{markdown_cell(issue_code.get('severity'))} | "
+                f"{markdown_cell(issue_code.get('title'))} | "
+                f"{markdown_cell(issue_code.get('description'))} | "
+                f"{markdown_cell(issue_code.get('resolution'))} |"
+            )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def sanitize_identifier(value: str) -> str:
     text = re.sub(r"[^A-Za-z0-9_]+", "_", value).strip("_")
     if not text:
@@ -1884,11 +1973,6 @@ def generate_roadmap_report(path: str | Path, generated_at: str | None = None) -
         "milestones": milestones,
         "nextRoadmapPoints": next_points,
     }
-
-
-def markdown_cell(value: Any) -> str:
-    text = str(value) if value not in (None, "") else "none"
-    return text.replace("|", "\\|")
 
 
 def generate_roadmap_report_markdown(report: dict[str, Any]) -> str:

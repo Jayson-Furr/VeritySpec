@@ -380,6 +380,33 @@ class VerityCliTests(unittest.TestCase):
         self.assertGreater(payload["summary"]["issueCodeCount"], 0)
         self.assertIn("reference.missing", {item["code"] for item in payload["issueCodes"]})
 
+    def test_issue_code_catalog_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "issue-code-catalog.md"
+            result = verity_command(
+                "generate",
+                "issue-code-catalog",
+                "--format",
+                "markdown",
+                "--generated-at",
+                FIXED_GENERATED_AT,
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated issue-code-catalog", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Issue Code Catalog\n"))
+        self.assertIn(f"- Generated: `{FIXED_GENERATED_AT}`", text)
+        self.assertIn("## Summary", text)
+        self.assertIn("## Issue Codes", text)
+        self.assertIn(
+            "| reference.missing | reference | error | Missing reference target |",
+            text,
+        )
+
     def test_issue_code_catalog_matches_explain_metadata_for_sampled_code(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "issue-code-catalog.json"

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added Markdown output for `verity generate issue-code-catalog` so
+  documentation sites and maintainers can publish stable issue-code metadata
+  without hand-converting the JSON catalog.
+
 ## 0.73.0
 
 - Added parity-aware `device-smoke` validation-runner support for Unity, Godot,
