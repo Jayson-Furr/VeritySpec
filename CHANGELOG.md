@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added a post-tag release verification checklist that records GitHub release
+  asset hashes, skipped PyPI publish review, downloaded wheel smoke checks,
+  public GitHub tag install smoke checks, milestone closure, and agent context
+  refresh evidence.
+
 ## 0.68.0
 
 - Added an installed-pack compatibility metadata design note that defines

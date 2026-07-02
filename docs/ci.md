@@ -41,6 +41,12 @@ Install and environment-setup snippets remain documentation-only, while local
 `verity` examples are smoke-tested with temporary `build/` output paths so
 public command snippets do not drift from the CLI.
 
+After a public release tag is pushed, use the
+[post-tag release verification](post-tag-release-verification.md) checklist to
+record release workflow success, GitHub release asset hashes, skipped PyPI
+publish evidence, downloaded wheel smoke checks, public GitHub tag install
+smoke checks, and milestone closure evidence.
+
 In GitHub Actions, pass `--github-annotations` to `verity validate`, `verity
 lint`, or `verity readiness` to emit workflow annotations for product-contract
 issues while preserving normal text or JSON stdout.

@@ -17,6 +17,9 @@ The checked surfaces include:
   templates under `templates/github-actions/`.
 - `docs/pypi.md` GitHub fallback install guidance.
 - `docs/release-checklist.md` tag examples.
+- [Post-tag release verification](post-tag-release-verification.md) guidance
+  for public GitHub release assets, skipped PyPI publish review, GitHub tag
+  install smoke tests, milestone closure, and agent context refresh evidence.
 - Evidence example and golden fixture release-artifact references.
 
 Run the focused check during release prep:
