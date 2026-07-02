@@ -39,6 +39,19 @@ docs/adr/0001-short-title.md
 Until the first accepted ADR exists, use [adr-template.md](adr-template.md) as
 the canonical template.
 
+Product-delivery workspaces can also index structured `decision.record`
+records without replacing ADR prose:
+
+```bash
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
+```
+
+The generated decision index summarizes decision status, owner, type, graph
+links, and index gaps for review. It does not approve decisions, replace ADR
+text, or make implementation-readiness, legal, commercial, privacy, platform,
+marketplace, or support claims.
+
 ## Status Values
 
 Use one of these statuses:

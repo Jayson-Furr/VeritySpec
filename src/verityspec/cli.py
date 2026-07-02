@@ -19,6 +19,8 @@ from .generators import (
     generate_compliance_matrix,
     generate_coverage_dashboard,
     generate_coverage_dashboard_markdown,
+    generate_decision_index,
+    generate_decision_index_markdown,
     generate_deployment_report,
     generate_evidence_report,
     generate_issue_code_catalog,
@@ -728,7 +730,12 @@ def cmd_generate(args: argparse.Namespace) -> int:
             print(f"Generated roadmap-report: {args.out}")
         return EXIT_SUCCESS
 
-    markdown_workspace_artifacts = {"agent-context", "coverage-dashboard", "security-report"}
+    markdown_workspace_artifacts = {
+        "agent-context",
+        "coverage-dashboard",
+        "decision-index",
+        "security-report",
+    }
     if args.format != "json" and args.artifact not in markdown_workspace_artifacts:
         print(
             f"generate {args.artifact} supports --format json only.",
@@ -822,6 +829,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         ),
         "compliance-matrix": lambda: generate_compliance_matrix(workspace, generated_at=generated_at),
         "coverage-dashboard": lambda: generate_coverage_dashboard(workspace, generated_at=generated_at),
+        "decision-index": lambda: generate_decision_index(workspace, generated_at=generated_at),
         "deployment-report": lambda: generate_deployment_report(workspace, generated_at=generated_at),
         "evidence-report": lambda: generate_evidence_report(workspace, generated_at=generated_at),
         "lifecycle-readiness-report": lambda: generate_lifecycle_readiness_report(
@@ -850,6 +858,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         value = generate_security_report_markdown(value)
     if args.artifact == "coverage-dashboard" and args.format == "markdown":
         value = generate_coverage_dashboard_markdown(value)
+    if args.artifact == "decision-index" and args.format == "markdown":
+        value = generate_decision_index_markdown(value)
     text = write_generated(value, args.out)
     if not args.out:
         print(text, end="" if text.endswith("\n") else "\n")
@@ -1108,6 +1118,7 @@ def build_parser() -> argparse.ArgumentParser:
             "agent-context",
             "compliance-matrix",
             "coverage-dashboard",
+            "decision-index",
             "deployment-report",
             "evidence-report",
             "issue-code-catalog",

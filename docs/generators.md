@@ -38,6 +38,8 @@ verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format m
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
@@ -230,6 +232,30 @@ verity generate agent-context examples/product-delivery --record agent-context.e
 
 JSON output remains future work until the handoff contract stabilizes enough
 for downstream tooling and CI integrations.
+
+Decision indexes include:
+
+- Workspace and VeritySpec version metadata
+- Product-delivery `decision.record` count
+- Decision counts by decision status, record lifecycle status, decision type,
+  and owner
+- Index gaps for accepted decisions without `decidedAt`, decisions with no
+  graph links, proposed decisions, and superseded decisions
+- Per-decision summaries with owner, type, status, decided date, decision text,
+  rationale, references, supersession metadata, and graph-link counts
+- Graph links where a decision record is the source or target
+- Optional Markdown output for ADR and governance review
+
+The JSON decision-index output is the machine-readable contract. The Markdown
+output is a derived internal review artifact. Neither output approves
+decisions, replaces ADR prose, or makes legal, commercial, privacy-law,
+marketplace, platform-certification, support-SLA, or
+implementation-readiness claims.
+
+```bash
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
+```
 
 Roadmap reports include:
 

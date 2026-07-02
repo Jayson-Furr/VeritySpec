@@ -2370,6 +2370,239 @@ def count_by_field(records: list[Record], field: str) -> dict[str, int]:
     return dict(sorted(counts.items(), key=lambda item: item[0]))
 
 
+def generate_decision_index(workspace: Workspace, generated_at: str | None = None) -> dict:
+    decision_records = [
+        record for record in workspace.records if record.kind == "decision.record"
+    ]
+    decision_ids = {record.id for record in decision_records if record.id}
+    graph = build_graph(workspace)
+    graph_links = [
+        edge
+        for edge in graph.get("edges", [])
+        if isinstance(edge, dict)
+        and (
+            edge.get("source") in decision_ids
+            or edge.get("target") in decision_ids
+        )
+    ]
+    graph_links.sort(
+        key=lambda item: (
+            str(item.get("source") or ""),
+            str(item.get("relationship") or ""),
+            str(item.get("target") or ""),
+            str(item.get("field") or ""),
+        )
+    )
+    linked_decision_ids = {
+        value
+        for edge in graph_links
+        for value in (edge.get("source"), edge.get("target"))
+        if value in decision_ids
+    }
+
+    decisions = []
+    accepted_without_dates = []
+    orphaned_decisions = []
+    for record in sorted(decision_records, key=lambda item: item.id or ""):
+        references = [
+            item
+            for item in record.data.get("references", [])
+            if isinstance(item, dict)
+        ]
+        if record.data.get("decisionStatus") == "accepted" and not record.data.get("decidedAt"):
+            if record.id:
+                accepted_without_dates.append(record.id)
+        if record.id and record.id not in linked_decision_ids:
+            orphaned_decisions.append(record.id)
+
+        decisions.append(
+            {
+                "id": record.id,
+                "kind": record.kind,
+                "name": record.data.get("name"),
+                "description": record.data.get("description"),
+                "status": record.data.get("status"),
+                "owner": record.data.get("owner"),
+                "decisionType": record.data.get("decisionType"),
+                "decisionStatus": record.data.get("decisionStatus"),
+                "decidedAt": record.data.get("decidedAt"),
+                "supersedesRef": record.data.get("supersedesRef"),
+                "decision": record.data.get("decision"),
+                "rationale": record.data.get("rationale"),
+                "references": references,
+                "graphLinkCount": sum(
+                    1
+                    for edge in graph_links
+                    if edge.get("source") == record.id or edge.get("target") == record.id
+                ),
+            }
+        )
+
+    return {
+        "type": "decision_index",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "decisionCount": len(decision_records),
+        "summary": {
+            "acceptedDecisionCount": sum(
+                1
+                for record in decision_records
+                if record.data.get("decisionStatus") == "accepted"
+            ),
+            "byDecisionStatus": count_by_field(decision_records, "decisionStatus"),
+            "byRecordStatus": count_by_field(decision_records, "status"),
+            "byDecisionType": count_by_field(decision_records, "decisionType"),
+            "byOwner": count_by_field(decision_records, "owner"),
+            "graphLinkCount": len(graph_links),
+            "indexGaps": {
+                "acceptedWithoutDecidedAt": sorted(accepted_without_dates),
+                "orphanedDecisions": sorted(orphaned_decisions),
+                "proposedDecisions": sorted(
+                    record.id
+                    for record in decision_records
+                    if record.id and record.data.get("decisionStatus") == "proposed"
+                ),
+                "supersededDecisions": sorted(
+                    record.id
+                    for record in decision_records
+                    if record.id and record.data.get("decisionStatus") == "superseded"
+                ),
+            },
+        },
+        "decisions": decisions,
+        "graphLinks": graph_links,
+    }
+
+
+def generate_decision_index_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    gaps = summary.get("indexGaps", {}) if isinstance(summary, dict) else {}
+    decisions = report.get("decisions", [])
+    graph_links = report.get("graphLinks", [])
+
+    lines = [
+        "# VeritySpec Decision Index",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Workspace: `{report.get('workspace')}`",
+        f"- Workspace path: `{report.get('workspacePath')}`",
+        f"- Spec version: `{report.get('specVersion')}`",
+        "",
+        (
+            "> This report indexes product-delivery `decision.record` records "
+            "for ADR and governance review. It does not approve decisions, "
+            "replace ADR prose, or make legal, commercial, privacy-law, "
+            "marketplace, platform-certification, support-SLA, or "
+            "implementation-readiness claims."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+        f"| Decision records | {markdown_cell(report.get('decisionCount', 0))} |",
+        f"| Accepted decisions | {markdown_cell(summary.get('acceptedDecisionCount', 0))} |",
+        f"| Graph links | {markdown_cell(summary.get('graphLinkCount', 0))} |",
+        "",
+        "## Decision Statuses",
+        "",
+        "| Decision status | Count |",
+        "|---|---:|",
+    ]
+    for status, count in summary.get("byDecisionStatus", {}).items():
+        lines.append(f"| {markdown_cell(status)} | {markdown_cell(count)} |")
+
+    lines.extend(
+        [
+            "",
+            "## Decision Types",
+            "",
+            "| Decision type | Count |",
+            "|---|---:|",
+        ]
+    )
+    for decision_type, count in summary.get("byDecisionType", {}).items():
+        lines.append(f"| {markdown_cell(decision_type)} | {markdown_cell(count)} |")
+
+    lines.extend(
+        [
+            "",
+            "## Index Gaps",
+            "",
+            "| Gap | Count | Items |",
+            "|---|---:|---|",
+        ]
+    )
+    if isinstance(gaps, dict):
+        for key, label in [
+            ("acceptedWithoutDecidedAt", "Accepted without decidedAt"),
+            ("orphanedDecisions", "Decisions without graph links"),
+            ("proposedDecisions", "Proposed decisions"),
+            ("supersededDecisions", "Superseded decisions"),
+        ]:
+            items = gaps.get(key, [])
+            item_list = items if isinstance(items, list) else []
+            lines.append(
+                "| "
+                f"{markdown_cell(label)} | "
+                f"{markdown_cell(len(item_list))} | "
+                f"{markdown_join(item_list)} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Decisions",
+            "",
+            "| ID | Type | Decision status | Record status | Owner | Decided at | Graph links | Decision |",
+            "|---|---|---|---|---|---|---:|---|",
+        ]
+    )
+    if isinstance(decisions, list):
+        for decision in decisions:
+            if not isinstance(decision, dict):
+                continue
+            lines.append(
+                "| "
+                f"{markdown_cell(decision.get('id'))} | "
+                f"{markdown_cell(decision.get('decisionType'))} | "
+                f"{markdown_cell(decision.get('decisionStatus'))} | "
+                f"{markdown_cell(decision.get('status'))} | "
+                f"{markdown_cell(decision.get('owner'))} | "
+                f"{markdown_cell(decision.get('decidedAt'))} | "
+                f"{markdown_cell(decision.get('graphLinkCount', 0))} | "
+                f"{markdown_cell(decision.get('decision'))} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Graph Links",
+            "",
+            "| Source | Relationship | Target | Field |",
+            "|---|---|---|---|",
+        ]
+    )
+    if isinstance(graph_links, list):
+        for edge in graph_links:
+            if not isinstance(edge, dict):
+                continue
+            lines.append(
+                "| "
+                f"{markdown_cell(edge.get('source'))} | "
+                f"{markdown_cell(edge.get('relationship'))} | "
+                f"{markdown_cell(edge.get('target'))} | "
+                f"{markdown_cell(edge.get('field'))} |"
+            )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def reference_targets(
     record: Record,
     records_by_id: dict[str, Record],

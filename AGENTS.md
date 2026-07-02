@@ -353,6 +353,8 @@ verity generate product-impact tests/fixtures/product_impact/baseline tests/fixt
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
 ```
 
 External pack checks:

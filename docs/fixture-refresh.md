@@ -55,6 +55,8 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | `tests/golden/pack_capability_index/pack_capability_index.json` | `verity generate pack-capability-index tests/fixtures/custom_pack_workspace --generated-at "$GENERATED_AT" --out build/pack-capability-index.json` |
 | `tests/golden/product_impact/product_impact.json` | `verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --generated-at "$GENERATED_AT" --out build/product-impact.json` |
 | `tests/golden/agent_context/agent_context.md` | `verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --generated-at "$GENERATED_AT" --out build/agent-context.md` |
+| `tests/golden/decision_index/decision_index.json` | `verity generate decision-index examples/product-delivery --generated-at "$GENERATED_AT" --out build/decision-index.json` |
+| `tests/golden/decision_index/decision_index.md` | `verity generate decision-index examples/product-delivery --format markdown --generated-at "$GENERATED_AT" --out build/decision-index.md` |
 | `tests/golden/issue_code_catalog/issue_code_catalog.json` | `verity generate issue-code-catalog --generated-at "$GENERATED_AT" --out build/issue-code-catalog.json` |
 | `tests/golden/issue_code_catalog/issue_code_catalog.md` | `verity generate issue-code-catalog --format markdown --generated-at "$GENERATED_AT" --out build/issue-code-catalog.md` |
 | `tests/golden/generator_maturity/openapi.json` | `verity generate openapi tests/fixtures/generator_maturity --out build/generator-maturity-openapi.json` |
@@ -67,6 +69,7 @@ Use `python -m json.tool` on generated JSON outputs before reviewing them:
 python -m json.tool build/security-report.json >/dev/null
 python -m json.tool build/lifecycle-readiness-report.json >/dev/null
 python -m json.tool build/coverage-dashboard.json >/dev/null
+python -m json.tool build/decision-index.json >/dev/null
 python -m json.tool build/issue-code-catalog.json >/dev/null
 ```
 

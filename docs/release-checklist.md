@@ -80,6 +80,8 @@ verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery --format json > build/product-delivery-graph.json
 verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
 verity validate examples/portfolio
 verity lint examples/portfolio --strict
 verity readiness examples/portfolio --strict
@@ -140,6 +142,8 @@ verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
 verity generate issue-code-catalog --format markdown --out build/issue-code-catalog.md
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
@@ -156,6 +160,7 @@ python -m json.tool build/progression-graph.json >/dev/null
 python -m json.tool build/evidence-graph.json >/dev/null
 python -m json.tool build/evidence-report.json >/dev/null
 python -m json.tool build/lifecycle-readiness-report.json >/dev/null
+python -m json.tool build/decision-index.json >/dev/null
 python -m json.tool build/issue-code-catalog.json >/dev/null
 python -m build
 twine check dist/*
@@ -182,6 +187,8 @@ python -m venv /tmp/verityspec-wheel
 /tmp/verityspec-wheel/bin/verity validate examples/progression
 /tmp/verityspec-wheel/bin/verity validate examples/product-delivery
 /tmp/verityspec-wheel/bin/verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context-wheel.md
+/tmp/verityspec-wheel/bin/verity generate decision-index examples/product-delivery --out build/decision-index-wheel.json
+/tmp/verityspec-wheel/bin/verity generate decision-index examples/product-delivery --format markdown --out build/decision-index-wheel.md
 /tmp/verityspec-wheel/bin/verity validate examples/portfolio
 /tmp/verityspec-wheel/bin/verity validate examples/mobile
 /tmp/verityspec-wheel/bin/verity validate examples/liveops
