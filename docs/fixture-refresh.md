@@ -23,6 +23,12 @@ exists, maintainers should regenerate outputs into `build/`, inspect the diff,
 and then update only the committed fixture files that the tests prove are
 stale.
 
+Future automation is planned separately in the
+[golden fixture refresh automation plan](golden-fixture-refresh-automation-plan.md).
+That plan defines dry-run reports, generator allowlists, placeholder
+preservation, blocked rewrites, and maintainer approval gates before any
+fixture rewrite command ships.
+
 ## Timestamp Discipline
 
 JSON report generators support `--generated-at` for deterministic timestamps.
