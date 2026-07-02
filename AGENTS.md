@@ -90,6 +90,10 @@ fixtures.
   quota, runner availability, or another platform issue, verify the equivalent
   checks locally, record that CI was unavailable for external reasons, and
   continue work from the local evidence.
+- During clean-on-main stopping points after merges or releases, scan open
+  issues and attempt small, unblocked issues before starting unrelated roadmap
+  expansion. Leave larger or blocked issues in the issue tracker with clear
+  status instead of derailing the current release flow.
 
 ## Shell Discipline
 
@@ -181,7 +185,10 @@ loop that has been used successfully in this repository:
 11. For authorized releases, use a release-prep branch and PR, merge to `main`,
     tag from `main`, watch the release workflow, verify the GitHub release and
     uploaded artifacts, and then close the milestone.
-12. When the active roadmap is caught up, keep the next-20 roadmap planning
+12. At clean-on-main moments after merge or release verification, scan open
+    issues and handle small, unblocked issues when doing so keeps the
+    repository releasable and does not interrupt a required release step.
+13. When the active roadmap is caught up, keep the next-20 roadmap planning
     section populated with concrete future points for fixing, improving,
     continuing, and expanding the project.
 
