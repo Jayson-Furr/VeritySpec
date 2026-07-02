@@ -494,6 +494,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [PrismSpec migration](docs/prismspec-migration.md)
 - [CI](docs/ci.md)
 - [Downstream CI](docs/downstream-ci.md)
+- [Downstream CI profile artifacts](docs/downstream-ci-profile-artifacts.md)
 - [Branching strategy](docs/branching.md)
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)

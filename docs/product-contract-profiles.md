@@ -4,6 +4,11 @@ Product-contract profiles are named enforcement modes for validation, lint,
 readiness, and diagnostics. They let a workspace choose a policy posture that
 matches the product context without changing the workspace format.
 
+When profiles run in downstream CI, preserve profile-specific artifacts using
+the [downstream CI profile artifact guidance](downstream-ci-profile-artifacts.md).
+Those artifacts explain VeritySpec check results; they do not replace evidence
+records or external approval.
+
 Profiles are available on:
 
 ```bash

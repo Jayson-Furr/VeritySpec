@@ -1156,9 +1156,9 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add downstream CI profile artifact guidance", markdown)
+        self.assertIn("1. Add deployment-report Markdown output", markdown)
         self.assertIn(
-            "20. Add golden-fixture refresh automation dry-run implementation",
+            "20. Add downstream CI profile artifact manifest planning",
             markdown,
         )
 
