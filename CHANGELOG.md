@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.69.0
+
 - Added a post-tag release verification checklist that records GitHub release
   asset hashes, skipped PyPI publish review, downloaded wheel smoke checks,
   public GitHub tag install smoke checks, milestone closure, and agent context
   refresh evidence.
+- Added v0.69.0 release notes and roadmap closeout.
 
 ## 0.68.0
 
