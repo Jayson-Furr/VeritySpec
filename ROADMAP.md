@@ -2963,11 +2963,11 @@ release-bookkeeping updates for the v0.70.0 release.
 
 ## v0.71.0
 
-The `v0.71.0` milestone is in progress.
+The `v0.71.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 148 | In Progress | Engine evidence traceability |
+| 148 | Complete | Engine evidence traceability |
 
 ## Sprint 148 Priorities
 
@@ -2989,6 +2989,12 @@ sprint:
   downstream-only relationship names such as `provesGap`.
 - Update README, engine pack docs, evidence docs, changelog, roadmap, tests,
   and release bookkeeping.
+
+Sprint 148 delivery added parity-aware engine evidence reference rules,
+executable Unity/Godot/Unreal evidence examples, validation-runner evidence
+links, workspace compatibility manifest updates, README and pack docs updates,
+next-roadmap preservation, and release-bookkeeping updates for the v0.71.0
+release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.71.0
+
 - Added parity-aware evidence reference rules so `evidence.test` can directly
   prove Unity project and scene records, Godot project and scene records, and
   Unreal project and map records.
@@ -9,6 +11,7 @@
   presets, and Unreal targets, plus executable engine examples that link
   validation runners to test evidence and build evidence to concrete
   build/export targets.
+- Added v0.71.0 release notes and roadmap closeout.
 
 ## 0.70.0
 
