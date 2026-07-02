@@ -19,6 +19,12 @@ The core promise is:
 Treat PrismSpec only as historical input for the importer. Do not expand
 VeritySpec by recreating a broad static PrismSpec-style catalog.
 
+## VeritySpec Feedback Loop
+
+When an agent discovers a VeritySpec bug, schema gap, unclear validation result, missing rule, workflow friction, documentation issue, or reusable improvement opportunity while working in this organization, the agent must open an issue in `Jason-Furr/verity-spec` before considering the discovery resolved.
+
+The issue should include the source repository/path, the observed behavior or gap, expected behavior, reproduction or validation command when available, impact/severity, and whether the finding blocks current work. Do not silently work around VeritySpec problems only inside this repository. If GitHub issue creation is unavailable, record the issue candidate in the active work ledger and tell the operator explicitly.
+
 ## Architecture Summary
 
 The repository is a Python package with a CLI named `verity`.
