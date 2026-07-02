@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added downstream CI profile artifact guidance for preserving validation,
+  lint, readiness, doctor, graph, and generated report bundles across release,
+  regulated, public API, and internal-tool workflows.
+
 ## 0.80.0
 
 - Added golden-fixture refresh automation planning for future dry-run diff

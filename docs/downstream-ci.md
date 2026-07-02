@@ -22,6 +22,12 @@ Copy one of the maintained templates into a downstream repository as
 The templates are pinned to the current GitHub release tag so downstream
 repositories get reproducible checks.
 
+For release, regulated, public API, and internal-tool workspaces, preserve the
+machine-readable CI output described in the
+[downstream CI profile artifact guidance](downstream-ci-profile-artifacts.md).
+That guidance covers validation, lint, readiness, doctor, graph, and generated
+report bundles, plus upload-artifact retention and redaction boundaries.
+
 ## Direct Install Workflow
 
 ```yaml
