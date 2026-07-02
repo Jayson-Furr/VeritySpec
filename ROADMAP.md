@@ -3176,11 +3176,11 @@ for v0.76.0.
 
 ## v0.77.0
 
-The `v0.77.0` milestone is in progress.
+The `v0.77.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 154 | In progress | Downstream AI-adapter drift-check guidance |
+| 154 | Complete | Downstream AI-adapter drift-check guidance |
 
 ## Sprint 154 Priorities
 
@@ -3196,6 +3196,15 @@ repositories that maintain agent-specific adapter files:
 - Preserve the boundary that adapters must not contain independent branch,
   test, release, VeritySpec, product, or approval policy.
 - Add documentation tests, README links, changelog, and roadmap bookkeeping.
+
+Sprint 154 delivery added downstream AI-adapter drift-check guidance for
+sibling repositories. The new guide keeps Codex, Claude, ChatGPT, Gemini,
+Unity AI, GitHub Copilot, and similar adapter files as thin pointers to
+`AGENTS.md`, anchors the audit checklist to the organization
+`ai-entry-point-baseline` pattern, documents review commands and boundaries,
+expands adapter governance tests to include Unity AI and GitHub Copilot
+adapters, links the guide from the README, and keeps changelog, roadmap, and
+release-note bookkeeping aligned for v0.77.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

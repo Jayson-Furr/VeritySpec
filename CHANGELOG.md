@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.77.0
+
 - Added downstream AI-adapter drift-check guidance for sibling repositories
   that keep agent-specific Codex, Claude, ChatGPT, Gemini, Copilot, Unity AI,
   or other adapter files, including an audit checklist anchored to the
   organization AI entry-point baseline.
+- Added v0.77.0 release notes and roadmap closeout.
 
 ## 0.76.0
 

@@ -41,6 +41,8 @@ Use this checklist when reviewing a sibling repository:
 - `AGENTS.md` requires post-commit context refresh.
 - `AGENTS.md` requires consulting `organization-patterns` and
   `organization-glossary` before creating reusable practices or durable terms.
+- `AGENTS.md` requires a clean-main issue sweep after merges, releases, or
+  other clean stopping points before unrelated roadmap expansion.
 - `AGENTS.md` keeps release, deploy, publish, package, and store-submission
   actions behind explicit operator approval.
 - Adapter files point back to `AGENTS.md`.

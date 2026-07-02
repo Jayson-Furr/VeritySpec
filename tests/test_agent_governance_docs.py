@@ -67,6 +67,7 @@ class AgentGovernanceDocTests(unittest.TestCase):
             "post-commit context refresh",
             "organization-patterns",
             "organization-glossary",
+            "clean-main issue sweep",
             "release, deploy, publish, package, and store-submission",
             "Adapter files do not contain independent commands",
             "Suggested Adapter Shape",

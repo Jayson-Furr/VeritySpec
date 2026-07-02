@@ -1,3 +1,3 @@
 """VeritySpec executable product-contract toolkit."""
 
-__version__ = "0.76.0"
+__version__ = "0.77.0"
