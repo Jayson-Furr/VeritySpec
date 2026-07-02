@@ -484,6 +484,18 @@
         "unity.readiness-dashboard",
         "unity.agent-context-exporter"
       ]
+    },
+    {
+      "id": "agent-context",
+      "name": "Agent Context",
+      "description": "Emit bounded Markdown handoff context from Unity agent-context exporter records.",
+      "artifactType": "handoff",
+      "outputFormats": [
+        "markdown"
+      ],
+      "recordKinds": [
+        "unity.agent-context-exporter"
+      ]
     }
   ]
 }

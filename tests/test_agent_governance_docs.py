@@ -35,7 +35,7 @@ class AgentGovernanceDocTests(unittest.TestCase):
             "Readiness gates and evidence requirements",
             "prohibited drift",
             "Determinism",
-            "does not implement that command",
+            "first implementation is a Markdown handoff artifact",
             "AGENTS.md",
         ]:
             with self.subTest(phrase=phrase):

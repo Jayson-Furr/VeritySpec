@@ -543,6 +543,18 @@
         "godot.readiness-dashboard",
         "godot.agent-context-exporter"
       ]
+    },
+    {
+      "id": "agent-context",
+      "name": "Agent Context",
+      "description": "Emit bounded Markdown handoff context from Godot agent-context exporter records.",
+      "artifactType": "handoff",
+      "outputFormats": [
+        "markdown"
+      ],
+      "recordKinds": [
+        "godot.agent-context-exporter"
+      ]
     }
   ]
 }

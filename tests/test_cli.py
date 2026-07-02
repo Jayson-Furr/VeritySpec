@@ -2199,6 +2199,100 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("## Product Surface References", text)
         self.assertIn("does not make legal, commercial", text)
 
+    def test_agent_context_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "agent-context.md"
+            result = verity_command(
+                "generate",
+                "agent-context",
+                "examples/product-delivery",
+                "--record",
+                "agent-context.exporter.implementation_bundle",
+                "--format",
+                "markdown",
+                "--generated-at",
+                FIXED_GENERATED_AT,
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated agent-context", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Agent Context\n"))
+        self.assertIn(f"- Generated: `{FIXED_GENERATED_AT}`", text)
+        self.assertIn("agent-context.exporter.implementation_bundle", text)
+        self.assertIn("## Verification Commands", text)
+        self.assertIn("AGENTS.md remains the canonical repository entry point", text)
+
+    def test_agent_context_generator_requires_record(self) -> None:
+        result = verity_command(
+            "generate",
+            "agent-context",
+            "examples/product-delivery",
+            "--format",
+            "markdown",
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("requires --record TARGET_ID", result.stderr)
+
+    def test_agent_context_generator_rejects_json_format(self) -> None:
+        result = verity_command(
+            "generate",
+            "agent-context",
+            "examples/product-delivery",
+            "--record",
+            "agent-context.exporter.implementation_bundle",
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("supports --format markdown only", result.stderr)
+
+    def test_agent_context_generator_rejects_unknown_record(self) -> None:
+        result = verity_command(
+            "generate",
+            "agent-context",
+            "examples/product-delivery",
+            "--record",
+            "agent-context.exporter.missing",
+            "--format",
+            "markdown",
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("target record not found", result.stderr)
+
+    def test_agent_context_generator_rejects_unsupported_target_kind(self) -> None:
+        result = verity_command(
+            "generate",
+            "agent-context",
+            "examples/product-delivery",
+            "--record",
+            "product.scope.engine_toolkit_delivery",
+            "--format",
+            "markdown",
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn("target must be one of", result.stderr)
+
+    def test_agent_context_generator_stops_on_validation_errors(self) -> None:
+        result = verity_command(
+            "generate",
+            "agent-context",
+            "tests/fixtures/broken_semantics",
+            "--record",
+            "agent-context.exporter.missing",
+            "--format",
+            "markdown",
+        )
+
+        self.assertEqual(1, result.returncode)
+        self.assertIn("reference.disallowed", result.stdout)
+        self.assertIn("Generation validation", result.stdout)
+
     def test_pack_capability_index_generator_writes_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "pack-capability-index.json"

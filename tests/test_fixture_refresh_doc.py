@@ -50,6 +50,7 @@ class FixtureRefreshDocTests(unittest.TestCase):
             "coverage-dashboard tests/fixtures/cross_pack_coverage",
             "pack-capability-index tests/fixtures/custom_pack_workspace",
             "product-impact tests/fixtures/product_impact/baseline",
+            "agent-context examples/product-delivery",
             "issue-code-catalog",
             "openapi tests/fixtures/generator_maturity",
             "typescript tests/fixtures/generator_maturity",

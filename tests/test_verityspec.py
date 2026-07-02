@@ -10,6 +10,8 @@ from unittest.mock import patch
 
 from verityspec.generators import (
     generate_accessibility_report,
+    generate_agent_context_markdown,
+    generate_agent_context_report,
     generate_asyncapi,
     generate_compliance_matrix,
     generate_coverage_dashboard,
@@ -77,6 +79,9 @@ ISSUE_CODE_CATALOG_GOLDEN = (
 )
 ISSUE_CODE_CATALOG_MARKDOWN_GOLDEN = (
     ROOT / "tests" / "golden" / "issue_code_catalog" / "issue_code_catalog.md"
+)
+AGENT_CONTEXT_MARKDOWN_GOLDEN = (
+    ROOT / "tests" / "golden" / "agent_context" / "agent_context.md"
 )
 PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
@@ -230,6 +235,19 @@ def normalize_issue_code_catalog_for_golden(report: dict) -> dict:
 
 def normalize_issue_code_catalog_for_markdown_golden(report: dict) -> dict:
     return normalize_issue_code_catalog_for_golden(report)
+
+
+def normalize_agent_context_for_markdown_golden(report: dict) -> dict:
+    normalized = dict(report)
+    workspace_path = report["workspacePath"]
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    normalized["verificationCommands"] = [
+        command.replace(workspace_path, "<workspacePath>")
+        for command in report["verificationCommands"]
+    ]
+    return normalized
 
 
 def write_security_freshness_workspace(root: Path, last_verified: str | None, cadence_days: int = 30) -> None:
@@ -1124,7 +1142,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add a first agent-context generator prototype", markdown)
+        self.assertIn("1. Add ADR index guidance", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1212,6 +1230,14 @@ The `v0.2.0` milestone is focused on active work.
             generate_product_impact_report(
                 load_workspace(PRODUCT_IMPACT_BASELINE),
                 load_workspace(PRODUCT_IMPACT_CURRENT),
+                generated_at=FIXED_GENERATED_AT,
+            )["generatedAt"],
+        )
+        self.assertEqual(
+            FIXED_GENERATED_AT,
+            generate_agent_context_report(
+                load_workspace(ROOT / "examples" / "product-delivery"),
+                "agent-context.exporter.implementation_bundle",
                 generated_at=FIXED_GENERATED_AT,
             )["generatedAt"],
         )
@@ -1940,6 +1966,137 @@ The `v0.2.0` milestone is focused on active work.
         self.assertIn("## Product Surface References", markdown)
         self.assertIn("does not make legal, commercial", markdown)
         self.assertEqual(expected, markdown)
+
+    def test_agent_context_report_summarizes_target_and_graph_records(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        report = generate_agent_context_report(
+            workspace,
+            "agent-context.exporter.implementation_bundle",
+            generated_at=FIXED_GENERATED_AT,
+        )
+
+        self.assertEqual("agent_context", report["type"])
+        self.assertEqual(FIXED_GENERATED_AT, report["generatedAt"])
+        self.assertEqual("agent-context.exporter.implementation_bundle", report["target"]["id"])
+        self.assertEqual("agent-context.exporter", report["target"]["kind"])
+        self.assertEqual("markdown", report["target"]["exporterType"])
+        record_ids = {record["id"] for record in report["records"]}
+        for record_id in [
+            "product.scope.engine_toolkit_delivery",
+            "release.process.tagged_alpha",
+            "readiness.profile.private_alpha",
+            "evidence.requirement.local_ci",
+            "validation.runner.local_ci",
+            "decision.record.github_manages_workflow",
+        ]:
+            with self.subTest(record_id=record_id):
+                self.assertIn(record_id, record_ids)
+
+        self.assertEqual(report["summary"]["recordCount"], len(report["records"]))
+        self.assertEqual(report["summary"]["graphEdgeCount"], len(report["graphEdges"]))
+        self.assertIn(
+            {
+                "source": "agent-context.exporter.implementation_bundle",
+                "target": "product.scope.engine_toolkit_delivery",
+                "relationship": "describesScope",
+                "field": "references[0].target",
+            },
+            report["graphEdges"],
+        )
+        self.assertIn("build/agent-context.md", report["generatedArtifacts"])
+        self.assertTrue(any("AGENTS.md" in boundary for boundary in report["safetyBoundaries"]))
+        self.assertTrue(
+            any(
+                "verity generate agent-context" in command
+                and "--record agent-context.exporter.implementation_bundle" in command
+                for command in report["verificationCommands"]
+            )
+        )
+
+    def test_agent_context_report_accepts_engine_exporter_targets(self) -> None:
+        workspace = load_workspace(COVERAGE_FIXTURE)
+
+        for target_id, expected_kind in [
+            ("unity.agent-context-exporter.coverage_context", "unity.agent-context-exporter"),
+            ("godot.agent-context-exporter.coverage_context", "godot.agent-context-exporter"),
+            ("unreal.agent-context-exporter.coverage_context", "unreal.agent-context-exporter"),
+        ]:
+            with self.subTest(target_id=target_id):
+                report = generate_agent_context_report(
+                    workspace,
+                    target_id,
+                    generated_at=FIXED_GENERATED_AT,
+                )
+                self.assertEqual(expected_kind, report["target"]["kind"])
+                self.assertGreaterEqual(report["summary"]["recordCount"], 1)
+
+    def test_agent_context_generators_are_advertised_by_product_and_engine_packs(self) -> None:
+        registry = load_pack_registry(
+            [
+                "verity.pack.product-delivery",
+                "verity.pack.unity",
+                "verity.pack.godot",
+                "verity.pack.unreal",
+            ]
+        )
+        expectations = {
+            "verity.pack.product-delivery": "agent-context.exporter",
+            "verity.pack.unity": "unity.agent-context-exporter",
+            "verity.pack.godot": "godot.agent-context-exporter",
+            "verity.pack.unreal": "unreal.agent-context-exporter",
+        }
+
+        for pack_id, target_kind in expectations.items():
+            with self.subTest(pack_id=pack_id):
+                pack = registry.packs[pack_id]
+                generator = next(
+                    item
+                    for item in pack.generator_metadata
+                    if item.get("id") == "agent-context"
+                )
+                self.assertIn("agent-context", pack.generators)
+                self.assertEqual(["markdown"], generator["outputFormats"])
+                self.assertEqual([target_kind], generator["recordKinds"])
+
+    def test_agent_context_markdown_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+        expected = AGENT_CONTEXT_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+
+        report = generate_agent_context_report(
+            workspace,
+            "agent-context.exporter.implementation_bundle",
+            generated_at=FIXED_GENERATED_AT,
+        )
+        markdown = generate_agent_context_markdown(
+            normalize_agent_context_for_markdown_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Agent Context\n"))
+        self.assertIn("## Target Exporter", markdown)
+        self.assertIn("## Verification Commands", markdown)
+        self.assertIn("AGENTS.md remains the canonical repository entry point", markdown)
+        self.assertEqual(expected, markdown)
+
+    def test_agent_context_report_rejects_unknown_target(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        with self.assertRaisesRegex(ValueError, "target record not found"):
+            generate_agent_context_report(
+                workspace,
+                "agent-context.exporter.missing",
+                generated_at=FIXED_GENERATED_AT,
+            )
+
+    def test_agent_context_report_rejects_unsupported_target_kind(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        with self.assertRaisesRegex(ValueError, "target must be one of"):
+            generate_agent_context_report(
+                workspace,
+                "product.scope.engine_toolkit_delivery",
+                generated_at=FIXED_GENERATED_AT,
+            )
 
     def test_product_impact_report_expands_changed_record_graph(self) -> None:
         old_workspace = load_workspace(PRODUCT_IMPACT_BASELINE)

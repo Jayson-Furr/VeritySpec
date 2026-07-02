@@ -12,6 +12,8 @@ from .diffing import diff_to_text, diff_workspaces
 from .explain import ISSUE_EXPLANATIONS, explain_issue
 from .generators import (
     generate_accessibility_report,
+    generate_agent_context_markdown,
+    generate_agent_context_report,
     generate_asyncapi,
     generate_cli_reference,
     generate_compliance_matrix,
@@ -726,7 +728,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             print(f"Generated roadmap-report: {args.out}")
         return EXIT_SUCCESS
 
-    markdown_workspace_artifacts = {"coverage-dashboard", "security-report"}
+    markdown_workspace_artifacts = {"agent-context", "coverage-dashboard", "security-report"}
     if args.format != "json" and args.artifact not in markdown_workspace_artifacts:
         print(
             f"generate {args.artifact} supports --format json only.",
@@ -764,6 +766,18 @@ def cmd_generate(args: argparse.Namespace) -> int:
     if not args.workspace:
         print(
             f"generate {args.artifact} requires a workspace path.",
+            file=sys.stderr,
+        )
+        return EXIT_USAGE_ERROR
+    if args.artifact == "agent-context" and not args.record:
+        print(
+            "generate agent-context requires --record TARGET_ID.",
+            file=sys.stderr,
+        )
+        return EXIT_USAGE_ERROR
+    if args.artifact == "agent-context" and args.format != "markdown":
+        print(
+            "generate agent-context supports --format markdown only.",
             file=sys.stderr,
         )
         return EXIT_USAGE_ERROR
@@ -814,13 +828,24 @@ def cmd_generate(args: argparse.Namespace) -> int:
             workspace,
             generated_at=generated_at,
         ),
+        "agent-context": lambda: generate_agent_context_report(
+            workspace,
+            args.record or "",
+            generated_at=generated_at,
+        ),
         "pack-capability-index": lambda: generate_pack_capability_index(
             workspace,
             registry,
             generated_at=generated_at,
         ),
     }
-    value = generators[args.artifact]()
+    try:
+        value = generators[args.artifact]()
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return EXIT_USAGE_ERROR
+    if args.artifact == "agent-context":
+        value = generate_agent_context_markdown(value)
     if args.artifact == "security-report" and args.format == "markdown":
         value = generate_security_report_markdown(value)
     if args.artifact == "coverage-dashboard" and args.format == "markdown":
@@ -1080,6 +1105,7 @@ def build_parser() -> argparse.ArgumentParser:
             "security-report",
             "observability-report",
             "accessibility-report",
+            "agent-context",
             "compliance-matrix",
             "coverage-dashboard",
             "deployment-report",
@@ -1101,6 +1127,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output format for supported generated artifacts.",
     )
     generate_parser.add_argument("--strict", action="store_true")
+    generate_parser.add_argument(
+        "--record",
+        help="Target record ID for generated artifacts that require a record selection.",
+    )
     generate_parser.add_argument(
         "--generated-at",
         help="Override generatedAt for JSON report artifacts with an ISO 8601 datetime.",

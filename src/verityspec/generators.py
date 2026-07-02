@@ -12,6 +12,7 @@ from .diffing import SEVERITY_LEVELS, diff_workspaces
 from .explain import ISSUE_EXPLANATIONS
 from .graph import build_graph
 from .issues import Issue, issue_count
+from .references import extract_reference_edges
 from .packs import Pack, PackRegistry, ReferenceRule, SchemaBinding
 from .workspace import Record, Workspace
 
@@ -169,6 +170,313 @@ def generate_issue_code_catalog_markdown(report: dict[str, Any]) -> str:
                 f"{markdown_cell(issue_code.get('description'))} | "
                 f"{markdown_cell(issue_code.get('resolution'))} |"
             )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
+AGENT_CONTEXT_EXPORTER_KINDS = {
+    "agent-context.exporter",
+    "unity.agent-context-exporter",
+    "godot.agent-context-exporter",
+    "unreal.agent-context-exporter",
+}
+
+
+def _record_summary(record: Record) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "kind": record.kind,
+        "name": record.data.get("name"),
+        "status": record.data.get("status"),
+        "owner": record.data.get("owner"),
+        "description": record.data.get("description"),
+        "location": record.location,
+    }
+
+
+def _agent_context_record_ids(workspace: Workspace, target: Record) -> set[str]:
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    included_kinds = target.data.get("includedRecordKinds", [])
+    included_kind_set = {kind for kind in included_kinds if isinstance(kind, str)}
+    selected = {target.id} if target.id else set()
+
+    for record in workspace.records:
+        if record.id and record.kind in included_kind_set:
+            selected.add(record.id)
+
+    changed = True
+    while changed:
+        changed = False
+        frontier = set(selected)
+        for record in workspace.records:
+            if not record.id:
+                continue
+            outgoing = extract_reference_edges(record)
+            if record.id in frontier:
+                for edge in outgoing:
+                    if edge.target in records_by_id and edge.target not in selected:
+                        selected.add(edge.target)
+                        changed = True
+            for edge in outgoing:
+                if edge.target in frontier and record.id not in selected:
+                    selected.add(record.id)
+                    changed = True
+
+    return selected
+
+
+def generate_agent_context_report(
+    workspace: Workspace,
+    target_record_id: str,
+    generated_at: str | None = None,
+) -> dict[str, Any]:
+    records_by_id = {record.id: record for record in workspace.records if record.id}
+    target = records_by_id.get(target_record_id)
+    if target is None:
+        raise ValueError(f"agent-context target record not found: {target_record_id}")
+    if target.kind not in AGENT_CONTEXT_EXPORTER_KINDS:
+        raise ValueError(
+            "agent-context target must be one of: "
+            + ", ".join(sorted(AGENT_CONTEXT_EXPORTER_KINDS))
+        )
+
+    graph = build_graph(workspace)
+    selected_ids = _agent_context_record_ids(workspace, target)
+    records = [
+        _record_summary(record)
+        for record in workspace.records
+        if record.id in selected_ids
+    ]
+    records.sort(key=lambda item: (str(item.get("kind") or ""), str(item.get("id") or "")))
+
+    edges = [
+        edge
+        for edge in graph.get("edges", [])
+        if isinstance(edge, dict)
+        and (
+            edge.get("source") in selected_ids
+            or edge.get("target") in selected_ids
+        )
+    ]
+    edges.sort(
+        key=lambda item: (
+            str(item.get("source") or ""),
+            str(item.get("relationship") or ""),
+            str(item.get("target") or ""),
+            str(item.get("field") or ""),
+        )
+    )
+
+    deprecated_or_removed = [
+        record
+        for record in records
+        if record.get("status") in {"deprecated", "removed"}
+    ]
+
+    output_path = target.data.get("outputPath")
+    verification_commands = [
+        f"verity validate {workspace.base_path}",
+        f"verity lint {workspace.base_path} --strict",
+        f"verity readiness {workspace.base_path} --strict",
+        f"verity graph {workspace.base_path}",
+        (
+            "verity generate agent-context "
+            f"{workspace.base_path} --record {target_record_id} --format markdown"
+            + (f" --out {output_path}" if isinstance(output_path, str) and output_path else "")
+        ),
+    ]
+
+    return {
+        "type": "agent_context",
+        "generatedAt": generated_at_value(generated_at),
+        "verityVersion": __version__,
+        "workspace": workspace.config.get("workspace", workspace.base_path.name),
+        "workspacePath": str(workspace.base_path),
+        "specVersion": workspace.config.get("specVersion"),
+        "packs": workspace.pack_ids,
+        "target": {
+            **_record_summary(target),
+            "exporterType": target.data.get("exporterType"),
+            "outputPath": output_path,
+            "includedRecordKinds": [
+                kind
+                for kind in target.data.get("includedRecordKinds", [])
+                if isinstance(kind, str)
+            ],
+            "privacyPolicy": target.data.get("privacyPolicy"),
+            "redactionPolicy": target.data.get("redactionPolicy"),
+        },
+        "summary": {
+            "recordCount": len(records),
+            "graphEdgeCount": len(edges),
+            "deprecatedOrRemovedCount": len(deprecated_or_removed),
+        },
+        "records": records,
+        "graphEdges": edges,
+        "deprecatedOrRemovedRecords": deprecated_or_removed,
+        "generatedArtifacts": [
+            value
+            for value in [
+                output_path,
+                *(
+                    target.data.get("outputArtifacts", [])
+                    if isinstance(target.data.get("outputArtifacts"), list)
+                    else []
+                ),
+            ]
+            if isinstance(value, str) and value
+        ],
+        "verificationCommands": verification_commands,
+        "safetyBoundaries": [
+            "This generated context does not prove implementation correctness.",
+            "This generated context does not replace tests, readiness checks, or evidence records.",
+            "This generated context does not make legal, commercial, privacy, marketplace, or certification claims.",
+            "This generated context does not authorize agents to bypass repository process.",
+            "AGENTS.md remains the canonical repository entry point for agent operating rules.",
+        ],
+    }
+
+
+def generate_agent_context_markdown(report: dict[str, Any]) -> str:
+    target = report.get("target", {})
+    summary = report.get("summary", {})
+    records = report.get("records", [])
+    edges = report.get("graphEdges", [])
+    deprecated_or_removed = report.get("deprecatedOrRemovedRecords", [])
+    generated_artifacts = report.get("generatedArtifacts", [])
+    verification_commands = report.get("verificationCommands", [])
+    safety_boundaries = report.get("safetyBoundaries", [])
+
+    lines = [
+        "# VeritySpec Agent Context",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Workspace: `{report.get('workspace')}`",
+        f"- Workspace path: `{report.get('workspacePath')}`",
+        f"- Spec version: `{report.get('specVersion')}`",
+        f"- Target: `{target.get('id')}`",
+        "",
+        (
+            "> This generated context is a bounded product-contract handoff for "
+            "humans, tools, and AI coding agents. It does not replace `AGENTS.md`, "
+            "tests, readiness checks, or implementation evidence."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+        f"| Relevant records | {markdown_cell(summary.get('recordCount', 0))} |",
+        f"| Graph links | {markdown_cell(summary.get('graphEdgeCount', 0))} |",
+        f"| Deprecated or removed records | {markdown_cell(summary.get('deprecatedOrRemovedCount', 0))} |",
+        "",
+        "## Target Exporter",
+        "",
+        "| Field | Value |",
+        "|---|---|",
+        f"| ID | {markdown_cell(target.get('id'))} |",
+        f"| Kind | {markdown_cell(target.get('kind'))} |",
+        f"| Name | {markdown_cell(target.get('name'))} |",
+        f"| Status | {markdown_cell(target.get('status'))} |",
+        f"| Owner | {markdown_cell(target.get('owner'))} |",
+        f"| Exporter type | {markdown_cell(target.get('exporterType'))} |",
+        f"| Output path | {markdown_cell(target.get('outputPath'))} |",
+        f"| Included kinds | {markdown_join(target.get('includedRecordKinds', []))} |",
+        f"| Privacy policy | {markdown_cell(target.get('privacyPolicy'))} |",
+        f"| Redaction policy | {markdown_cell(target.get('redactionPolicy'))} |",
+        "",
+        "## Relevant Records",
+        "",
+        "| ID | Kind | Status | Owner | Description |",
+        "|---|---|---|---|---|",
+    ]
+
+    if isinstance(records, list):
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            lines.append(
+                "| "
+                f"{markdown_cell(record.get('id'))} | "
+                f"{markdown_cell(record.get('kind'))} | "
+                f"{markdown_cell(record.get('status'))} | "
+                f"{markdown_cell(record.get('owner'))} | "
+                f"{markdown_cell(record.get('description'))} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Graph Links",
+            "",
+            "| Source | Relationship | Target | Field |",
+            "|---|---|---|---|",
+        ]
+    )
+
+    if isinstance(edges, list):
+        for edge in edges:
+            if not isinstance(edge, dict):
+                continue
+            lines.append(
+                "| "
+                f"{markdown_cell(edge.get('source'))} | "
+                f"{markdown_cell(edge.get('relationship'))} | "
+                f"{markdown_cell(edge.get('target'))} | "
+                f"{markdown_cell(edge.get('field'))} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Generated Artifacts",
+            "",
+        ]
+    )
+    if isinstance(generated_artifacts, list) and generated_artifacts:
+        for artifact in generated_artifacts:
+            lines.append(f"- `{artifact}`")
+    else:
+        lines.append("- none")
+
+    lines.extend(
+        [
+            "",
+            "## Deprecated Or Removed Records",
+            "",
+        ]
+    )
+    if isinstance(deprecated_or_removed, list) and deprecated_or_removed:
+        for record in deprecated_or_removed:
+            if isinstance(record, dict):
+                lines.append(
+                    f"- `{record.get('id')}` ({record.get('kind')}, {record.get('status')})"
+                )
+    else:
+        lines.append("- none")
+
+    lines.extend(
+        [
+            "",
+            "## Safety Boundaries",
+            "",
+        ]
+    )
+    if isinstance(safety_boundaries, list):
+        for item in safety_boundaries:
+            lines.append(f"- {item}")
+
+    lines.extend(
+        [
+            "",
+            "## Verification Commands",
+            "",
+        ]
+    )
+    if isinstance(verification_commands, list):
+        for command in verification_commands:
+            lines.append(f"- `{command}`")
 
     return "\n".join(lines).rstrip() + "\n"
 

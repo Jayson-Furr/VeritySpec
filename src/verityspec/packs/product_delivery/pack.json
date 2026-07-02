@@ -518,6 +518,18 @@
       ]
     },
     {
+      "id": "agent-context",
+      "name": "Agent Context",
+      "description": "Emit bounded Markdown handoff context from product-delivery agent-context exporter records.",
+      "artifactType": "handoff",
+      "outputFormats": [
+        "markdown"
+      ],
+      "recordKinds": [
+        "agent-context.exporter"
+      ]
+    },
+    {
       "id": "lifecycle-readiness-report",
       "name": "Lifecycle Readiness Report",
       "description": "Summarize product-delivery lifecycle coverage and gaps across product-delivery, mobile, and liveops records.",
