@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.74.0
+
 - Added Markdown output for `verity generate issue-code-catalog` so
   documentation sites and maintainers can publish stable issue-code metadata
   without hand-converting the JSON catalog.
+- Added v0.74.0 release notes and roadmap closeout.
 
 ## 0.73.0
 

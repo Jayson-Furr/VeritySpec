@@ -3067,11 +3067,11 @@ explicit AI entry-point baseline clarification for all organization agents.
 
 ## v0.74.0
 
-The `v0.74.0` milestone is in progress.
+The `v0.74.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 151 | In Progress | Issue-code catalog Markdown output |
+| 151 | Complete | Issue-code catalog Markdown output |
 
 ## Sprint 151 Priorities
 
@@ -3087,6 +3087,16 @@ without changing the existing JSON contract:
 - Add CLI coverage, library coverage, and a golden Markdown fixture.
 - Update README, generator docs, fixture-refresh docs, release checklist,
   changelog, roadmap bookkeeping, and release notes.
+
+Sprint 151 delivery added Markdown output for `verity generate
+issue-code-catalog`, preserving JSON as the machine-readable contract while
+giving documentation sites, maintainers, CI diagnostics, and agent workflows a
+human-readable issue-code catalog with release metadata, summary counts,
+severity and category tables, and issue-code rows. It also kept
+`issue-code-catalog` workspace-free, added CLI and library coverage, added a
+golden Markdown fixture, updated generator and fixture-refresh docs, and
+aligned README, release checklist, changelog, roadmap, and release notes for
+the v0.74.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
