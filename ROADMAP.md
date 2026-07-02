@@ -2852,11 +2852,11 @@ release-bookkeeping updates for the v0.67.0 release.
 
 ## v0.68.0
 
-The `v0.68.0` milestone is active.
+The `v0.68.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 145 | In Progress | Installed-pack compatibility metadata design |
+| 145 | Complete | Installed-pack compatibility metadata design |
 
 ## Sprint 145 Priorities
 
@@ -2880,6 +2880,12 @@ metadata design sprint:
 - Add tests that keep the design note discoverable and preserve the
   no-runtime-enforcement boundary.
 - Update changelog and roadmap bookkeeping.
+
+Sprint 145 delivery added the installed-pack compatibility metadata design
+note, README and pack architecture links, staged adoption guidance, official
+extension-package lifecycle states, regression tests for discoverability and
+runtime non-goals, next-roadmap rotation, and release-bookkeeping updates for
+the v0.68.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

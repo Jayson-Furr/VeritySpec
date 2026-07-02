@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.68.0
+
 - Added an installed-pack compatibility metadata design note that defines
   supported VeritySpec version ranges, workspace format support, pack API
   levels, official extension-package lifecycle states, staged adoption, and
   no-runtime-enforcement guardrails.
+- Added v0.68.0 release notes and roadmap closeout.
 
 ## 0.67.0
 
