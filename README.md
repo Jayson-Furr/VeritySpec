@@ -457,6 +457,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Product surface pack boundaries](docs/product-surface-pack-boundaries.md)
 - [Engine and product-delivery pack direction](docs/engine-product-delivery-packs.md)
 - [Engine full-lifecycle support design](docs/engine-full-lifecycle-support.md)
+- [Lifecycle-readiness engine fixture plan](docs/lifecycle-readiness-fixture-plan.md)
 - [Specialized pack separation plan](docs/specialized-pack-separation.md)
 - [Installed pack compatibility metadata](docs/installed-pack-compatibility-metadata.md)
 - [Official extension compatibility fixtures](docs/official-extension-compatibility-fixtures.md)
