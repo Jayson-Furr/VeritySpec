@@ -271,6 +271,7 @@ verity lint examples/evidence --strict
 verity readiness examples/evidence --strict
 verity graph examples/evidence --format json > build/evidence-graph.json
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
 verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 ```
 

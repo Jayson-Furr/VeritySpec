@@ -2769,6 +2769,199 @@ def generate_evidence_report(workspace: Workspace, generated_at: str | None = No
     }
 
 
+def evidence_report_markdown_gap_rows(gaps: dict[str, Any]) -> list[tuple[str, int, str]]:
+    gap_labels = [
+        ("Missing subjects", "missingSubjects"),
+        ("Missing artifacts", "missingArtifacts"),
+        ("Failing evidence", "failingEvidence"),
+        ("Inconclusive evidence", "inconclusiveEvidence"),
+    ]
+    rows = []
+    for label, key in gap_labels:
+        values = gaps.get(key, [])
+        values_list = values if isinstance(values, list) else []
+        rows.append((label, len(values_list), markdown_join(values_list)))
+    return rows
+
+
+def evidence_report_markdown_subject(subject: Any) -> str:
+    if not isinstance(subject, dict):
+        return "none"
+    subject_id = subject.get("id")
+    subject_kind = subject.get("kind")
+    subject_name = subject.get("name")
+    resolved = subject.get("resolved")
+    details = [value for value in (subject_kind, subject_name) if value]
+    if isinstance(resolved, bool):
+        details.append("resolved" if resolved else "unresolved")
+    if subject_id and details:
+        return markdown_cell(f"{subject_id} ({', '.join(str(value) for value in details)})")
+    return markdown_cell(subject_id or "none")
+
+
+def evidence_report_markdown_references(references: Any) -> str:
+    if not isinstance(references, list):
+        return "none"
+    labels = []
+    for reference in references:
+        if not isinstance(reference, dict):
+            continue
+        relationship = reference.get("type")
+        target = reference.get("target")
+        if relationship and target:
+            labels.append(f"{relationship}: {target}")
+        elif target:
+            labels.append(str(target))
+    return markdown_join(labels)
+
+
+def evidence_report_markdown_counts(
+    heading: str,
+    value_label: str,
+    counts: Any,
+) -> list[str]:
+    lines = ["", f"## {heading}", "", f"| {value_label} | Evidence |", "|---|---:|"]
+    if isinstance(counts, dict) and counts:
+        for value, count in sorted(counts.items(), key=lambda item: str(item[0])):
+            lines.append(f"| {markdown_cell(value)} | {markdown_cell(count)} |")
+    else:
+        lines.append("| none | 0 |")
+    return lines
+
+
+def generate_evidence_report_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    gaps = summary.get("releaseGaps", {})
+    evidence = report.get("evidence", [])
+
+    release_gaps = gaps if isinstance(gaps, dict) else {}
+    missing_subjects = release_gaps.get("missingSubjects", [])
+    missing_artifacts = release_gaps.get("missingArtifacts", [])
+    failing_evidence = release_gaps.get("failingEvidence", [])
+    inconclusive_evidence = release_gaps.get("inconclusiveEvidence", [])
+
+    lines = [
+        "# VeritySpec Evidence Report",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Workspace: `{report.get('workspace')}`",
+        f"- Workspace path: `{report.get('workspacePath')}`",
+        f"- Spec version: `{report.get('specVersion')}`",
+        "",
+        (
+            "> This report summarizes internal VeritySpec implementation, QA, "
+            "release, review, playtest, certification, and artifact evidence "
+            "coverage for product-contract review. The JSON evidence-report "
+            "output remains the machine-readable contract for CI and "
+            "downstream tooling. This Markdown report does not make legal, "
+            "commercial, privacy-law, marketplace, app-store, "
+            "platform-certification, pricing-approval, support-SLA, or "
+            "production-readiness claims."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+    ]
+
+    summary_rows = [
+        ("Evidence records", report.get("evidenceCount", 0)),
+        (
+            "Missing subjects",
+            len(missing_subjects) if isinstance(missing_subjects, list) else 0,
+        ),
+        (
+            "Missing artifacts",
+            len(missing_artifacts) if isinstance(missing_artifacts, list) else 0,
+        ),
+        (
+            "Failing evidence",
+            len(failing_evidence) if isinstance(failing_evidence, list) else 0,
+        ),
+        (
+            "Inconclusive evidence",
+            len(inconclusive_evidence) if isinstance(inconclusive_evidence, list) else 0,
+        ),
+    ]
+    for label, count in summary_rows:
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} |")
+
+    lines.extend(
+        evidence_report_markdown_counts(
+            "Evidence By Kind",
+            "Kind",
+            summary.get("byKind", {}),
+        )
+    )
+    lines.extend(
+        evidence_report_markdown_counts(
+            "Evidence By Lifecycle Status",
+            "Status",
+            summary.get("byStatus", {}),
+        )
+    )
+    lines.extend(
+        evidence_report_markdown_counts(
+            "Evidence By Evidence Status",
+            "Evidence status",
+            summary.get("byEvidenceStatus", {}),
+        )
+    )
+    lines.extend(
+        evidence_report_markdown_counts(
+            "Evidence By Owner",
+            "Owner",
+            summary.get("byOwner", {}),
+        )
+    )
+
+    lines.extend(
+        [
+            "",
+            "## Release Gaps",
+            "",
+            "| Gap | Count | Records |",
+            "|---|---:|---|",
+        ]
+    )
+    for label, count, records in evidence_report_markdown_gap_rows(release_gaps):
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} | {records} |")
+
+    lines.extend(
+        [
+            "",
+            "## Evidence Records",
+            "",
+            "| ID | Kind | Lifecycle status | Evidence status | Owner | Subject | URI | References |",
+            "|---|---|---|---|---|---|---|---|",
+        ]
+    )
+    if isinstance(evidence, list):
+        evidence_row_count = 0
+        for item in sorted(
+            (entry for entry in evidence if isinstance(entry, dict)),
+            key=lambda entry: str(entry.get("id", "")),
+        ):
+            evidence_row_count += 1
+            lines.append(
+                "| "
+                f"{markdown_cell(item.get('id'))} | "
+                f"{markdown_cell(item.get('kind'))} | "
+                f"{markdown_cell(item.get('status'))} | "
+                f"{markdown_cell(item.get('evidenceStatus'))} | "
+                f"{markdown_cell(item.get('owner'))} | "
+                f"{evidence_report_markdown_subject(item.get('subject'))} | "
+                f"{markdown_cell(item.get('uri'))} | "
+                f"{evidence_report_markdown_references(item.get('references'))} |"
+            )
+        if evidence_row_count == 0:
+            lines.append("| none | none | none | none | none | none | none | none |")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 PRODUCT_DELIVERY_KINDS = [
     "product.scope",
     "commercial.posture",

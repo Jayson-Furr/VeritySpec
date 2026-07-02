@@ -517,7 +517,8 @@
       "description": "Summarize implementation, CI, QA, review, playtest, certification, and artifact evidence records.",
       "artifactType": "report",
       "outputFormats": [
-        "json"
+        "json",
+        "markdown"
       ],
       "recordKinds": [
         "evidence.test",

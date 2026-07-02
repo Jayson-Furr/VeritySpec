@@ -52,7 +52,7 @@ This implementation provides:
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices,
   deployment reports with linked release evidence and Markdown release-review
-  output, evidence reports,
+  output, evidence reports with Markdown proof-review output,
   lifecycle readiness gap reports for product-delivery, mobile, and liveops
   surfaces, cross-pack coverage dashboards with JSON and Markdown output,
   product-impact reports, agent-context Markdown handoff artifacts,
@@ -229,6 +229,7 @@ verity generate compliance-matrix examples/compliance --out build/compliance-mat
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
@@ -310,6 +311,7 @@ verity generate validation-report examples/basic --out build/validation-report.j
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json

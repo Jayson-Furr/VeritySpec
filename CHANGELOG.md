@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added Markdown output for `verity generate evidence-report` so implementation
+  and release reviewers can inspect evidence counts, release gaps, subject
+  links, artifact URIs, and per-evidence status without opening JSON.
+
 ## 0.82.0
 
 - Added Markdown output for `verity generate deployment-report` so release and

@@ -20,6 +20,8 @@ from verityspec.generators import (
     generate_decision_index_markdown,
     generate_deployment_report,
     generate_deployment_report_markdown,
+    generate_evidence_report,
+    generate_evidence_report_markdown,
     generate_issue_code_catalog,
     generate_issue_code_catalog_markdown,
     generate_lifecycle_readiness_report,
@@ -66,6 +68,10 @@ COMPLIANCE_MATRIX_GOLDEN = (
 )
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
 DEPLOYMENT_MARKDOWN_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.md"
+EVIDENCE_REPORT_GOLDEN = ROOT / "tests" / "golden" / "evidence_report" / "evidence_report.json"
+EVIDENCE_REPORT_MARKDOWN_GOLDEN = (
+    ROOT / "tests" / "golden" / "evidence_report" / "evidence_report.md"
+)
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
@@ -175,6 +181,18 @@ def normalize_deployment_report_for_golden(report: dict) -> dict:
 
 def normalize_deployment_report_for_markdown_golden(report: dict) -> dict:
     return normalize_deployment_report_for_golden(report)
+
+
+def normalize_evidence_report_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_evidence_report_for_markdown_golden(report: dict) -> dict:
+    return normalize_evidence_report_for_golden(report)
 
 
 def normalize_lifecycle_readiness_report_for_golden(report: dict) -> dict:
@@ -1162,9 +1180,9 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add evidence-report Markdown output", markdown)
+        self.assertIn("1. Add dependency lockfile planning", markdown)
         self.assertIn(
-            "20. Add expanded deployment-report Markdown fixture scenarios",
+            "20. Add expanded evidence-report Markdown fixture scenarios",
             markdown,
         )
 
@@ -2347,6 +2365,71 @@ The `v0.2.0` milestone is focused on active work.
         self.assertIn("deployment-report", pack.generators)
         self.assertEqual(["json", "markdown"], generator["outputFormats"])
         self.assertEqual(["deployment.runtime", "deployment.target"], generator["recordKinds"])
+
+    def test_evidence_report_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "evidence")
+        expected = json.loads(EVIDENCE_REPORT_GOLDEN.read_text(encoding="utf-8"))
+
+        report = generate_evidence_report(workspace)
+
+        datetime.fromisoformat(report["generatedAt"])
+        self.assertEqual(str(ROOT / "examples" / "evidence"), report["workspacePath"])
+        self.assertIsInstance(report["verityVersion"], str)
+        self.assertEqual(expected, normalize_evidence_report_for_golden(report))
+
+    def test_evidence_report_markdown_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "evidence")
+        expected = EVIDENCE_REPORT_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+
+        report = generate_evidence_report(workspace)
+        markdown = generate_evidence_report_markdown(
+            normalize_evidence_report_for_markdown_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Evidence Report\n"))
+        self.assertIn("## Release Gaps", markdown)
+        self.assertIn("## Evidence Records", markdown)
+        self.assertIn("evidence.build.release_wheel", markdown)
+        self.assertIn("release.process.evidence_demo", markdown)
+        self.assertIn("does not make legal, commercial", markdown)
+        self.assertEqual(expected, markdown)
+
+    def test_evidence_report_markdown_handles_empty_sections(self) -> None:
+        markdown = generate_evidence_report_markdown(
+            {
+                "generatedAt": "<generatedAt>",
+                "verityVersion": "<verityVersion>",
+                "workspace": "examples.empty-evidence",
+                "workspacePath": "<workspacePath>",
+                "specVersion": "v0.2.0",
+                "evidenceCount": 0,
+                "summary": {
+                    "byKind": {},
+                    "byStatus": {},
+                    "byOwner": {},
+                    "byEvidenceStatus": {},
+                    "releaseGaps": {},
+                },
+                "evidence": [],
+            }
+        )
+
+        self.assertIn("| none | 0 |", markdown)
+        self.assertIn("| none | none | none | none | none | none | none | none |", markdown)
+
+    def test_evidence_report_generator_is_advertised_by_evidence_pack(self) -> None:
+        registry = load_pack_registry(["verity.pack.evidence"])
+        pack = registry.packs["verity.pack.evidence"]
+        generator = next(
+            item
+            for item in pack.generator_metadata
+            if item.get("id") == "evidence-report"
+        )
+
+        self.assertIn("evidence-report", pack.generators)
+        self.assertEqual(["json", "markdown"], generator["outputFormats"])
+        self.assertIn("evidence.test", generator["recordKinds"])
+        self.assertIn("evidence.artifact", generator["recordKinds"])
 
     def test_lifecycle_readiness_report_summarizes_complete_stages(self) -> None:
         workspace = load_workspace(LIFECYCLE_READINESS_EXAMPLE)
