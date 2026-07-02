@@ -111,6 +111,7 @@ verity validate docs/fixtures/pack-scaffold/workspace
 verity lint docs/fixtures/pack-scaffold/workspace --strict
 verity readiness docs/fixtures/pack-scaffold/workspace --strict
 verity generate security-report examples/security --out build/security-report.json
+verity generate security-report examples/security --format markdown --out build/security-report.md
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json

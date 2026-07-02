@@ -30,6 +30,7 @@ from .generators import (
     generate_roadmap_report_markdown,
     generate_schema_bundle,
     generate_security_report,
+    generate_security_report_markdown,
     generate_typescript,
     generate_validation_report,
     generated_at_value,
@@ -725,7 +726,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             print(f"Generated roadmap-report: {args.out}")
         return EXIT_SUCCESS
 
-    markdown_workspace_artifacts = {"coverage-dashboard"}
+    markdown_workspace_artifacts = {"coverage-dashboard", "security-report"}
     if args.format != "json" and args.artifact not in markdown_workspace_artifacts:
         print(
             f"generate {args.artifact} supports --format json only.",
@@ -820,6 +821,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         ),
     }
     value = generators[args.artifact]()
+    if args.artifact == "security-report" and args.format == "markdown":
+        value = generate_security_report_markdown(value)
     if args.artifact == "coverage-dashboard" and args.format == "markdown":
         value = generate_coverage_dashboard_markdown(value)
     text = write_generated(value, args.out)

@@ -26,6 +26,7 @@ from verityspec.generators import (
     generate_roadmap_report_markdown,
     generate_schema_bundle,
     generate_security_report,
+    generate_security_report_markdown,
     generate_typescript,
     generate_validation_report,
     generated_at_value,
@@ -47,6 +48,9 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERATOR_FIXTURE = ROOT / "tests" / "fixtures" / "generator_maturity"
 GENERATOR_GOLDEN = ROOT / "tests" / "golden" / "generator_maturity"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
+SECURITY_REPORT_MARKDOWN_GOLDEN = (
+    ROOT / "tests" / "golden" / "security_report" / "security_report.md"
+)
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
 ACCESSIBILITY_REPORT_GOLDEN = (
     ROOT / "tests" / "golden" / "accessibility_report" / "accessibility_report.json"
@@ -112,6 +116,11 @@ def normalize_security_report_for_golden(report: dict) -> dict:
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_security_report_for_markdown_golden(report: dict) -> dict:
+    normalized = normalize_security_report_for_golden(report)
     return normalized
 
 
@@ -1107,7 +1116,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add security-report Markdown output", markdown)
+        self.assertIn("1. Add migration-report JSON Schema documentation", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1213,6 +1222,24 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(str(ROOT / "examples" / "security"), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_security_report_for_golden(report))
+
+    def test_security_report_markdown_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "security")
+        expected = SECURITY_REPORT_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+
+        report = generate_security_report(workspace, generated_at=FIXED_GENERATED_AT)
+        markdown = generate_security_report_markdown(
+            normalize_security_report_for_markdown_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Security Report\n"))
+        self.assertIn("## Summary", markdown)
+        self.assertIn("## Coverage", markdown)
+        self.assertIn("## Risk Levels", markdown)
+        self.assertIn("## Release Gaps", markdown)
+        self.assertIn("## Security Controls", markdown)
+        self.assertIn("does not make legal, compliance", markdown)
+        self.assertEqual(expected, markdown)
 
     def test_observability_report_matches_golden_file(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "observability")

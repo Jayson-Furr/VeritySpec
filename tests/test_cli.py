@@ -1698,6 +1698,31 @@ class VerityCliTests(unittest.TestCase):
         )
         self.assertEqual("security.control.account_access", payload["controls"][0]["id"])
 
+    def test_security_report_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "security-report.md"
+            result = verity_command(
+                "generate",
+                "security-report",
+                "examples/security",
+                "--format",
+                "markdown",
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated security-report", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Security Report\n"))
+        self.assertIn("## Summary", text)
+        self.assertIn("| Security controls | 1 |", text)
+        self.assertIn("## Release Gaps", text)
+        self.assertIn("| Stale evidence | 0 | none |", text)
+        self.assertIn("## Security Controls", text)
+        self.assertIn("does not make legal, compliance", text)
+
     def test_generate_report_accepts_explicit_generated_at(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out_path = Path(tmp) / "security-report.json"

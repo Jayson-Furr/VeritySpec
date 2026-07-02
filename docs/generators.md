@@ -13,6 +13,7 @@ verity generate schema-bundle examples/basic --out build/schema-bundle.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate validation-report examples/basic --generated-at 2026-01-02T03:04:05Z --out build/validation-report.json
 verity generate security-report examples/security --out build/security-report.json
+verity generate security-report examples/security --format markdown --out build/security-report.md
 verity generate observability-report examples/observability --out build/observability-report.json
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
@@ -82,6 +83,15 @@ Security reports include:
 - Release gaps for critical unverified controls, stale evidence, and missing
   verification dates
 - Per-control owner, category, objective, verification evidence, and target records
+- Optional Markdown output for maintainers who need a human-readable
+  release-review artifact
+
+The JSON security-report output remains the machine-readable contract for CI
+and downstream tooling. The Markdown output is a derived internal review
+artifact and does not make legal, compliance, privacy-law,
+security-certification, penetration-test, marketplace, app-store,
+platform-certification, pricing-approval, support-SLA, or production-readiness
+claims.
 
 Accessibility reports include:
 
@@ -250,9 +260,10 @@ Security report output includes:
   dates
 - Target records from explicit `appliesTo` references
 
-The `examples/security` security report shape is covered by a committed golden
-fixture. Tests normalize only the dynamic timestamp, absolute workspace path,
-and package version before comparing generated report output.
+The `examples/security` security report JSON and Markdown shapes are covered
+by committed golden fixtures. Tests normalize only the dynamic timestamp,
+absolute workspace path, and package version before comparing generated report
+output.
 
 Accessibility report output includes:
 

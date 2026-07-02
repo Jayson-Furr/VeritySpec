@@ -85,6 +85,7 @@ verity validate examples/security
 verity lint examples/security --strict
 verity readiness examples/security --strict
 verity generate security-report examples/security --out build/security-report.json
+verity generate security-report examples/security --format markdown --out build/security-report.md
 ```
 
 ## Security Report
@@ -97,10 +98,24 @@ verity generate security-report examples/security --out build/security-report.js
 - counts by `riskLevel`
 - verified-control count
 - critical unverified control IDs
+- release gaps for critical unverified controls, stale evidence, and missing
+  verification dates
 - per-control target records from `appliesTo` references
 
-The report is intended for CI, release review, and downstream dashboards.
-The `examples/security` report shape is covered by the committed golden
-fixture at `tests/golden/security_report/security_report.json`. Tests normalize
-only the dynamic timestamp, absolute workspace path, and package version before
+The JSON report is intended for CI and downstream dashboards. Optional
+Markdown output is available for human release review:
+
+```bash
+verity generate security-report examples/security --format markdown --out build/security-report.md
+```
+
+The Markdown output is derived from the JSON report and does not make legal,
+compliance, privacy-law, security-certification, penetration-test,
+marketplace, app-store, platform-certification, pricing-approval, support-SLA,
+or production-readiness claims.
+
+The `examples/security` report shapes are covered by committed golden fixtures
+at `tests/golden/security_report/security_report.json` and
+`tests/golden/security_report/security_report.md`. Tests normalize only the
+dynamic timestamp, absolute workspace path, and package version before
 snapshot comparison.
