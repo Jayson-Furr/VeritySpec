@@ -139,6 +139,7 @@ verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 verity generate issue-code-catalog --out build/issue-code-catalog.json
+verity generate issue-code-catalog --format markdown --out build/issue-code-catalog.md
 verity generate schema-bundle examples/accessibility --out build/accessibility-schema-bundle.json
 verity generate schema-bundle examples/compliance --out build/compliance-schema-bundle.json
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json

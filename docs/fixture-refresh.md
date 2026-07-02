@@ -55,6 +55,7 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | `tests/golden/pack_capability_index/pack_capability_index.json` | `verity generate pack-capability-index tests/fixtures/custom_pack_workspace --generated-at "$GENERATED_AT" --out build/pack-capability-index.json` |
 | `tests/golden/product_impact/product_impact.json` | `verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --generated-at "$GENERATED_AT" --out build/product-impact.json` |
 | `tests/golden/issue_code_catalog/issue_code_catalog.json` | `verity generate issue-code-catalog --generated-at "$GENERATED_AT" --out build/issue-code-catalog.json` |
+| `tests/golden/issue_code_catalog/issue_code_catalog.md` | `verity generate issue-code-catalog --format markdown --generated-at "$GENERATED_AT" --out build/issue-code-catalog.md` |
 | `tests/golden/generator_maturity/openapi.json` | `verity generate openapi tests/fixtures/generator_maturity --out build/generator-maturity-openapi.json` |
 | `tests/golden/generator_maturity/typescript.ts` | `verity generate typescript tests/fixtures/generator_maturity --out build/generator-maturity.ts` |
 | `tests/golden/generator_maturity/python_models.py` | `verity generate python-models tests/fixtures/generator_maturity --out build/generator-maturity.py` |

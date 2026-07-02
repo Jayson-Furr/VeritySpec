@@ -16,6 +16,7 @@ from verityspec.generators import (
     generate_coverage_dashboard_markdown,
     generate_deployment_report,
     generate_issue_code_catalog,
+    generate_issue_code_catalog_markdown,
     generate_lifecycle_readiness_report,
     generate_observability_report,
     generate_openapi,
@@ -73,6 +74,9 @@ PACK_CAPABILITY_INDEX_GOLDEN = (
 )
 ISSUE_CODE_CATALOG_GOLDEN = (
     ROOT / "tests" / "golden" / "issue_code_catalog" / "issue_code_catalog.json"
+)
+ISSUE_CODE_CATALOG_MARKDOWN_GOLDEN = (
+    ROOT / "tests" / "golden" / "issue_code_catalog" / "issue_code_catalog.md"
 )
 PRODUCT_IMPACT_BASELINE = ROOT / "tests" / "fixtures" / "product_impact" / "baseline"
 PRODUCT_IMPACT_CURRENT = ROOT / "tests" / "fixtures" / "product_impact" / "current"
@@ -222,6 +226,10 @@ def normalize_issue_code_catalog_for_golden(report: dict) -> dict:
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
     return normalized
+
+
+def normalize_issue_code_catalog_for_markdown_golden(report: dict) -> dict:
+    return normalize_issue_code_catalog_for_golden(report)
 
 
 def write_security_freshness_workspace(root: Path, last_verified: str | None, cadence_days: int = 30) -> None:
@@ -1116,7 +1124,7 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add issue-code catalog Markdown or schema documentation output", markdown)
+        self.assertIn("1. Add a first agent-context generator prototype", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1884,6 +1892,26 @@ The `v0.2.0` milestone is focused on active work.
         datetime.fromisoformat(report["generatedAt"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_issue_code_catalog_for_golden(report))
+
+    def test_issue_code_catalog_markdown_matches_golden_file(self) -> None:
+        expected = ISSUE_CODE_CATALOG_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+
+        report = generate_issue_code_catalog(generated_at=FIXED_GENERATED_AT)
+        markdown = generate_issue_code_catalog_markdown(
+            normalize_issue_code_catalog_for_markdown_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Issue Code Catalog\n"))
+        self.assertIn("## Summary", markdown)
+        self.assertIn("## Severities", markdown)
+        self.assertIn("## Categories", markdown)
+        self.assertIn("## Issue Codes", markdown)
+        self.assertIn(
+            "| reference.missing | reference | error | Missing reference target |",
+            markdown,
+        )
+        self.assertIn("JSON output remains the machine-readable contract", markdown)
+        self.assertEqual(expected, markdown)
 
     def test_coverage_dashboard_matches_golden_file(self) -> None:
         workspace = load_workspace(COVERAGE_FIXTURE)
