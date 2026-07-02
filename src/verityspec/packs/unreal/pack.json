@@ -215,9 +215,25 @@
         "command"
       ],
       "minItems": {
-        "scannerRefs": 1,
         "references": 1
-      }
+      },
+      "rules": [
+        {
+          "id": "unreal.validation-runner.scanner_refs_required",
+          "code": "readiness.validation_runner.scanner_refs_required",
+          "message": "Unreal validation runners require scannerRefs unless runnerType is device-smoke.",
+          "when": {
+            "field": "runnerType",
+            "notEquals": "device-smoke"
+          },
+          "must": [
+            {
+              "field": "scannerRefs",
+              "present": true
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "unreal.readiness-dashboard.release",
@@ -415,6 +431,11 @@
       "sourceKind": "unreal.validation-runner",
       "relationship": "runsScanner",
       "targetKind": "unreal.scanner"
+    },
+    {
+      "sourceKind": "unreal.validation-runner",
+      "relationship": "validatesRuntime",
+      "targetKind": "unreal.target"
     },
     {
       "sourceKind": "unreal.validation-runner",

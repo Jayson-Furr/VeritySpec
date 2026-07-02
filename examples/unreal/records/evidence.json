@@ -43,6 +43,26 @@
           "target": "unreal.target.pc_development"
         }
       ]
+    },
+    {
+      "id": "evidence.test.unreal_pc_runtime_smoke",
+      "kind": "evidence.test",
+      "name": "Unreal PC Runtime Smoke Evidence",
+      "description": "Passing runtime smoke evidence for launching the packaged Unreal PC development target.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "subjectRef": "unreal.target.pc_development",
+      "subjectKind": "unreal.target",
+      "testType": "unreal",
+      "command": "Tools/RunPCRuntimeSmoke.ps1 -BuildPath Builds/PC/DreamExtraction",
+      "result": "passing",
+      "evidenceUri": "Build/Unreal/pc-runtime-smoke.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "unreal.target.pc_development"
+        }
+      ]
     }
   ]
 }

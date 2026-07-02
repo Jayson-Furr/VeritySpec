@@ -43,6 +43,26 @@
           "target": "unity.build-target.pc_development"
         }
       ]
+    },
+    {
+      "id": "evidence.test.unity_pc_runtime_smoke",
+      "kind": "evidence.test",
+      "name": "Unity PC Runtime Smoke Evidence",
+      "description": "Passing runtime smoke evidence for launching the built Unity PC development artifact.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "subjectRef": "unity.build-target.pc_development",
+      "subjectKind": "unity.build-target",
+      "testType": "unity-play-mode",
+      "command": "tools/run_pc_runtime_smoke.sh builds/pc-development/DreamExtraction.exe",
+      "result": "passing",
+      "evidenceUri": "build/unity/pc-runtime-smoke.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "unity.build-target.pc_development"
+        }
+      ]
     }
   ]
 }

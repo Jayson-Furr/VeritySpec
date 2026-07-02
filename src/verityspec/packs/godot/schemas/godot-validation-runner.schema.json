@@ -13,7 +13,6 @@
     "description",
     "runnerType",
     "command",
-    "scannerRefs",
     "references"
   ],
   "properties": {
@@ -54,6 +53,7 @@
         "ci",
         "local",
         "precommit",
+        "device-smoke",
         "other"
       ]
     },
@@ -66,8 +66,7 @@
       "items": {
         "type": "string",
         "minLength": 1
-      },
-      "minItems": 1
+      }
     },
     "readinessDashboardRef": {
       "type": "string"
@@ -76,6 +75,32 @@
       "$ref": "#/$defs/references"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "runnerType"
+        ],
+        "properties": {
+          "runnerType": {
+            "not": {
+              "const": "device-smoke"
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "scannerRefs"
+        ],
+        "properties": {
+          "scannerRefs": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "references": {
       "type": "array",

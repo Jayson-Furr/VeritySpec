@@ -11,8 +11,7 @@
     "owner",
     "description",
     "runnerType",
-    "command",
-    "scannerRefs"
+    "command"
   ],
   "properties": {
     "id": {
@@ -62,8 +61,7 @@
       "type": "array",
       "items": {
         "type": "string"
-      },
-      "minItems": 1
+      }
     },
     "readinessDashboardRef": {
       "type": "string"
@@ -82,6 +80,32 @@
     }
   },
   "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "runnerType"
+        ],
+        "properties": {
+          "runnerType": {
+            "not": {
+              "const": "device-smoke"
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "scannerRefs"
+        ],
+        "properties": {
+          "scannerRefs": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "reference": {
       "type": "object",

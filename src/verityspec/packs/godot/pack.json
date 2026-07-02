@@ -240,9 +240,25 @@
         "command"
       ],
       "minItems": {
-        "scannerRefs": 1,
         "references": 1
-      }
+      },
+      "rules": [
+        {
+          "id": "godot.validation-runner.scanner_refs_required",
+          "code": "readiness.validation_runner.scanner_refs_required",
+          "message": "Godot validation runners require scannerRefs unless runnerType is device-smoke.",
+          "when": {
+            "field": "runnerType",
+            "notEquals": "device-smoke"
+          },
+          "must": [
+            {
+              "field": "scannerRefs",
+              "present": true
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "godot.readiness-dashboard.release",
@@ -460,6 +476,11 @@
       "sourceKind": "godot.validation-runner",
       "relationship": "runsScanner",
       "targetKind": "godot.scanner"
+    },
+    {
+      "sourceKind": "godot.validation-runner",
+      "relationship": "validatesRuntime",
+      "targetKind": "godot.export-preset"
     },
     {
       "sourceKind": "godot.validation-runner",

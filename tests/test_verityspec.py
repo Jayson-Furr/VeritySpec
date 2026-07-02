@@ -1759,7 +1759,14 @@ The `v0.2.0` milestone is focused on active work.
                 )
 
     def test_evidence_reference_rules_keep_engine_traceability_parity(self) -> None:
-        registry = load_pack_registry(["verity.pack.evidence"])
+        registry = load_pack_registry(
+            [
+                "verity.pack.evidence",
+                "verity.pack.unity",
+                "verity.pack.godot",
+                "verity.pack.unreal",
+            ]
+        )
         rules = {
             (rule.source_kind, rule.relationship, rule.target_kind)
             for rule in registry.reference_rules
@@ -1782,15 +1789,18 @@ The `v0.2.0` milestone is focused on active work.
             "unreal.target",
         ]:
             with self.subTest(build_kind=build_kind):
+                self.assertIn(("evidence.test", "proves", build_kind), rules)
                 self.assertIn(("evidence.build", "proves", build_kind), rules)
 
-        for runner_kind in [
-            "unity.validation-runner",
-            "godot.validation-runner",
-            "unreal.validation-runner",
-        ]:
-            with self.subTest(runner_kind=runner_kind):
+        runtime_links = [
+            ("unity.validation-runner", "unity.build-target"),
+            ("godot.validation-runner", "godot.export-preset"),
+            ("unreal.validation-runner", "unreal.target"),
+        ]
+        for runner_kind, runtime_kind in runtime_links:
+            with self.subTest(runner_kind=runner_kind, runtime_kind=runtime_kind):
                 self.assertIn((runner_kind, "producesEvidence", "evidence.test"), rules)
+                self.assertIn((runner_kind, "validatesRuntime", runtime_kind), rules)
 
     def test_pack_capability_index_summarizes_builtin_and_external_packs(self) -> None:
         workspace = load_workspace(CUSTOM_PACK_WORKSPACE)
@@ -2547,7 +2557,12 @@ The `v0.2.0` milestone is focused on active work.
                         "runnerType": "ci",
                         "command": "unity -batchmode -executeMethod Validate.Run",
                         "scannerRefs": [],
-                        "references": [],
+                        "references": [
+                            {
+                                "type": "runsScanner",
+                                "target": "unity.scanner.missing",
+                            }
+                        ],
                     }
                 ),
                 encoding="utf-8",
@@ -2557,7 +2572,10 @@ The `v0.2.0` milestone is focused on active work.
             registry = load_pack_registry(workspace.pack_ids)
             issues = evaluate_readiness(workspace, registry, strict=True)
 
-        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn(
+            "readiness.validation_runner.scanner_refs_required",
+            [issue.code for issue in issues],
+        )
         self.assertIn("unity.validation-runner.missing_scanners", [issue.record_id for issue in issues])
 
     def test_godot_readiness_requires_validation_runner_scanner_links(self) -> None:
@@ -2587,7 +2605,12 @@ The `v0.2.0` milestone is focused on active work.
                         "runnerType": "ci",
                         "command": "godot --headless --script addons/contracts/run_validation.gd",
                         "scannerRefs": [],
-                        "references": [],
+                        "references": [
+                            {
+                                "type": "runsScanner",
+                                "target": "godot.scanner.missing",
+                            }
+                        ],
                     }
                 ),
                 encoding="utf-8",
@@ -2597,7 +2620,10 @@ The `v0.2.0` milestone is focused on active work.
             registry = load_pack_registry(workspace.pack_ids)
             issues = evaluate_readiness(workspace, registry, strict=True)
 
-        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn(
+            "readiness.validation_runner.scanner_refs_required",
+            [issue.code for issue in issues],
+        )
         self.assertIn("godot.validation-runner.missing_scanners", [issue.record_id for issue in issues])
 
     def test_unreal_readiness_requires_validation_runner_scanner_links(self) -> None:
@@ -2627,7 +2653,12 @@ The `v0.2.0` milestone is focused on active work.
                         "runnerType": "ci",
                         "command": "UnrealEditor-Cmd.exe Project.uproject -run=Contracts",
                         "scannerRefs": [],
-                        "references": [],
+                        "references": [
+                            {
+                                "type": "runsScanner",
+                                "target": "unreal.scanner.missing",
+                            }
+                        ],
                     }
                 ),
                 encoding="utf-8",
@@ -2637,8 +2668,99 @@ The `v0.2.0` milestone is focused on active work.
             registry = load_pack_registry(workspace.pack_ids)
             issues = evaluate_readiness(workspace, registry, strict=True)
 
-        self.assertIn("readiness.min_items", [issue.code for issue in issues])
+        self.assertIn(
+            "readiness.validation_runner.scanner_refs_required",
+            [issue.code for issue in issues],
+        )
         self.assertIn("unreal.validation-runner.missing_scanners", [issue.record_id for issue in issues])
+
+    def test_engine_device_smoke_validation_runners_do_not_require_scanner_refs(self) -> None:
+        cases = [
+            (
+                "unity",
+                "verity.pack.unity",
+                "unity.validation-runner",
+                "unity.build-target.runtime",
+            ),
+            (
+                "godot",
+                "verity.pack.godot",
+                "godot.validation-runner",
+                "godot.export-preset.runtime",
+            ),
+            (
+                "unreal",
+                "verity.pack.unreal",
+                "unreal.validation-runner",
+                "unreal.target.runtime",
+            ),
+        ]
+        for engine, pack_id, kind, target in cases:
+            with self.subTest(engine=engine):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "records").mkdir()
+                    (root / "verityspec.json").write_text(
+                        json.dumps(
+                            {
+                                "workspace": f"{engine}-device-smoke",
+                                "specVersion": "v0.2.0",
+                                "packs": ["verity.core", pack_id],
+                                "records": ["records/*.json"],
+                            }
+                        ),
+                        encoding="utf-8",
+                    )
+                    records = [
+                        {
+                            "id": f"{kind}.without_scanner_refs",
+                            "kind": kind,
+                            "name": "Device Smoke Runner Without Scanner Refs",
+                            "description": "Device-smoke runner that validates a built runtime artifact directly.",
+                            "status": "ready",
+                            "owner": f"{engine}-engineering",
+                            "runnerType": "device-smoke",
+                            "command": "tools/run_device_smoke.sh",
+                            "references": [
+                                {
+                                    "type": "validatesRuntime",
+                                    "target": target,
+                                }
+                            ],
+                        },
+                        {
+                            "id": f"{kind}.empty_scanner_refs",
+                            "kind": kind,
+                            "name": "Device Smoke Runner With Empty Scanner Refs",
+                            "description": "Device-smoke runner that explicitly declares no scanner records.",
+                            "status": "ready",
+                            "owner": f"{engine}-engineering",
+                            "runnerType": "device-smoke",
+                            "command": "tools/run_device_smoke.sh",
+                            "scannerRefs": [],
+                            "references": [
+                                {
+                                    "type": "validatesRuntime",
+                                    "target": target,
+                                }
+                            ],
+                        },
+                    ]
+                    (root / "records" / "runners.json").write_text(
+                        json.dumps({"records": records}),
+                        encoding="utf-8",
+                    )
+
+                    workspace = load_workspace(root)
+                    registry = load_pack_registry(workspace.pack_ids)
+                    validation_issues = validate_workspace(workspace, registry)
+                    readiness_issues = evaluate_readiness(workspace, registry, strict=True)
+
+                self.assertNotIn("schema.validation", [issue.code for issue in validation_issues])
+                self.assertNotIn(
+                    "readiness.validation_runner.scanner_refs_required",
+                    [issue.code for issue in readiness_issues],
+                )
 
     def test_product_delivery_readiness_requires_validation_runner_scanner_refs(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

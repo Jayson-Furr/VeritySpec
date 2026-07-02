@@ -66,6 +66,28 @@
       ]
     },
     {
+      "id": "unreal.validation-runner.pc_runtime_smoke",
+      "kind": "unreal.validation-runner",
+      "name": "Unreal PC Runtime Smoke Runner",
+      "status": "ready",
+      "owner": "tools",
+      "description": "Unreal device-smoke validation runner for launching the packaged prototype artifact and collecting runtime smoke evidence without scanning editor metadata.",
+      "runnerType": "device-smoke",
+      "command": "Tools/RunPCRuntimeSmoke.ps1 -BuildPath Builds/PC/DreamExtraction",
+      "scannerRefs": [],
+      "readinessDashboardRef": "unreal.readiness-dashboard.prototype",
+      "references": [
+        {
+          "type": "validatesRuntime",
+          "target": "unreal.target.pc_development"
+        },
+        {
+          "type": "producesEvidence",
+          "target": "evidence.test.unreal_pc_runtime_smoke"
+        }
+      ]
+    },
+    {
       "id": "unreal.readiness-dashboard.prototype",
       "kind": "unreal.readiness-dashboard",
       "name": "Unreal Prototype Readiness Dashboard",

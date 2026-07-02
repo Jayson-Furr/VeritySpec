@@ -344,10 +344,10 @@
         "verity.pack.unity",
         "verity.pack.evidence"
       ],
-      "recordCount": 19,
+      "recordCount": 21,
       "recordKinds": {
         "evidence.build": 1,
-        "evidence.test": 1,
+        "evidence.test": 2,
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
@@ -364,7 +364,7 @@
         "unity.scanner": 1,
         "unity.scene": 1,
         "unity.shared-library": 1,
-        "unity.validation-runner": 1
+        "unity.validation-runner": 2
       },
       "compatibilityVariants": [
         {
@@ -388,10 +388,10 @@
         "verity.pack.godot",
         "verity.pack.evidence"
       ],
-      "recordCount": 21,
+      "recordCount": 23,
       "recordKinds": {
         "evidence.build": 1,
-        "evidence.test": 1,
+        "evidence.test": 2,
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
@@ -409,7 +409,7 @@
         "godot.scene": 1,
         "godot.script": 1,
         "godot.shared-library": 1,
-        "godot.validation-runner": 1,
+        "godot.validation-runner": 2,
         "product": 1
       },
       "compatibilityVariants": [
@@ -434,10 +434,10 @@
         "verity.pack.unreal",
         "verity.pack.evidence"
       ],
-      "recordCount": 20,
+      "recordCount": 22,
       "recordKinds": {
         "evidence.build": 1,
-        "evidence.test": 1,
+        "evidence.test": 2,
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
@@ -455,7 +455,7 @@
         "unreal.readiness-dashboard": 1,
         "unreal.scanner": 1,
         "unreal.target": 1,
-        "unreal.validation-runner": 1
+        "unreal.validation-runner": 2
       },
       "compatibilityVariants": [
         {

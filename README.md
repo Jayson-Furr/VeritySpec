@@ -115,8 +115,10 @@ This implementation provides:
   a shared exported game-core workspace side by side before aggregate
   portfolio-report behavior is implemented.
 - Engine evidence traceability for Unity, Godot, and Unreal examples, including
-  validation-runner-to-test-evidence links plus direct test/build evidence
-  proof for engine project, scene or map, and build/export target records.
+  validation-runner-to-test-evidence links, device-smoke validation runners
+  for built runtime artifacts that do not require artificial scanner records,
+  plus direct test/build evidence proof for engine project, scene or map, and
+  build/export target records.
 - PyPI trusted-publishing readiness guidance, with GitHub release installation
   retained as the canonical public install path until publishing is enabled.
 

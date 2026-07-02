@@ -79,6 +79,9 @@ prefab, assembly, scene, and build-target records before strict readiness
 passes. Tooling records such as `unity.scanner`, `unity.validation-runner`,
 `unity.readiness-dashboard`, and `unity.agent-context-exporter` should also
 carry graph links to the Unity records they scan, run, report, or describe.
+For `unity.validation-runner`, scanner-backed runner types require
+`scannerRefs`; `runnerType: "device-smoke"` may omit scanner refs when it
+validates a built runtime artifact directly.
 
 Godot records use readiness gates to keep implementation and engine-tooling
 contracts executable. A `godot.project` should link to addon, shared-library,
@@ -87,6 +90,9 @@ records before strict readiness passes. Tooling records such as
 `godot.scanner`, `godot.validation-runner`, `godot.readiness-dashboard`, and
 `godot.agent-context-exporter` should also carry graph links to the Godot
 records they scan, run, report, or describe.
+For `godot.validation-runner`, scanner-backed runner types require
+`scannerRefs`; `runnerType: "device-smoke"` may omit scanner refs when it
+validates an exported runtime artifact directly.
 
 Unreal records use readiness gates to keep implementation and engine-tooling
 contracts executable for games made with Unreal. An `unreal.project` should
@@ -95,6 +101,9 @@ input-action records before strict readiness passes. Tooling records such as
 `unreal.scanner`, `unreal.validation-runner`, `unreal.readiness-dashboard`,
 and `unreal.agent-context-exporter` should also carry graph links to the
 Unreal records they scan, run, report, or describe.
+For `unreal.validation-runner`, scanner-backed runner types require
+`scannerRefs`; `runnerType: "device-smoke"` may omit scanner refs when it
+validates a packaged runtime artifact directly.
 
 Gameplay records use readiness gates to keep mechanics and encounters
 implementation-ready. A `game.mechanic` should declare inputs, outputs, and

@@ -23,6 +23,12 @@ If another organization repository lacks this baseline, record or follow a
 tracking issue such as `Jason-Furr/organization-patterns#6` unless the current
 task explicitly authorizes updating that repository.
 
+All organization AI agents should encounter these requirements through their
+active entry points. Do not rely on conversation history, private notes, or
+agent-specific adapters to carry the baseline; keep `AGENTS.md` files and
+workspace-level entry points aligned with the organization pattern so agents
+refreshing context get the same operating rules.
+
 ## Project Identity
 
 VeritySpec is an executable product-contract framework. It is not a static

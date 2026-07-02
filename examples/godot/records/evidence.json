@@ -43,6 +43,26 @@
           "target": "godot.export-preset.pc_development"
         }
       ]
+    },
+    {
+      "id": "evidence.test.godot_pc_runtime_smoke",
+      "kind": "evidence.test",
+      "name": "Godot PC Runtime Smoke Evidence",
+      "description": "Passing runtime smoke evidence for launching the built Godot PC development export.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "subjectRef": "godot.export-preset.pc_development",
+      "subjectKind": "godot.export-preset",
+      "testType": "godot",
+      "command": "tools/run_pc_runtime_smoke.sh builds/pc-development/DreamExtraction.exe",
+      "result": "passing",
+      "evidenceUri": "build/godot/pc-runtime-smoke.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "godot.export-preset.pc_development"
+        }
+      ]
     }
   ]
 }
