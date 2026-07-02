@@ -28,7 +28,7 @@ verity --version
 Until PyPI publishing is enabled, install from GitHub:
 
 ```bash
-pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.68.0"
+pip install "verityspec @ git+https://github.com/Jason-Furr/verity-spec.git@v0.69.0"
 verity --version
 ```
 

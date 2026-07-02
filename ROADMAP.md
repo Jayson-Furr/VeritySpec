@@ -2889,11 +2889,11 @@ the v0.68.0 release.
 
 ## v0.69.0
 
-The `v0.69.0` milestone is focused on active work.
+The `v0.69.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 146 | In Progress | Release automation guidance artifact |
+| 146 | Complete | Release automation guidance artifact |
 
 ## Sprint 146 Priorities
 
@@ -2915,6 +2915,12 @@ sprint:
 - Add tests that keep the checklist discoverable and preserve the required
   evidence categories.
 - Update changelog and roadmap bookkeeping.
+
+Sprint 146 delivery added the post-tag release verification checklist,
+README and release-process links, release-integrity coverage for the new
+current-tag checklist surface, regression tests for required evidence
+categories, next-roadmap rotation, and release-bookkeeping updates for the
+v0.69.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
