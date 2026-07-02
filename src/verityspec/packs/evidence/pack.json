@@ -326,6 +326,51 @@
     {
       "sourceKind": "evidence.test",
       "relationship": "proves",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "unity.scene"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "godot.project"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "godot.scene"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "unreal.project"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "unreal.map"
+    },
+    {
+      "sourceKind": "evidence.build",
+      "relationship": "proves",
+      "targetKind": "unity.build-target"
+    },
+    {
+      "sourceKind": "evidence.build",
+      "relationship": "proves",
+      "targetKind": "godot.export-preset"
+    },
+    {
+      "sourceKind": "evidence.build",
+      "relationship": "proves",
+      "targetKind": "unreal.target"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
       "targetKind": "progression.track"
     },
     {

@@ -1,0 +1,48 @@
+{
+  "records": [
+    {
+      "id": "evidence.test.unity_contracts",
+      "kind": "evidence.test",
+      "name": "Unity Contract Validation Evidence",
+      "description": "Passing Unity validation-runner evidence for the prototype project and scene contracts.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "subjectRef": "unity.scene.prototype_zone",
+      "subjectKind": "unity.scene",
+      "testType": "unity-edit-mode",
+      "command": "unity -batchmode -projectPath unity/DreamExtraction -executeMethod DreamExtraction.Editor.ContractValidation.Run",
+      "result": "passing",
+      "evidenceUri": "build/unity/prototype-contract-validation.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "unity.scene.prototype_zone"
+        },
+        {
+          "type": "proves",
+          "target": "unity.project.dream_extraction"
+        }
+      ]
+    },
+    {
+      "id": "evidence.build.unity_pc_development",
+      "kind": "evidence.build",
+      "name": "Unity PC Development Build Evidence",
+      "description": "Passing build evidence for the Unity PC development build target.",
+      "status": "ready",
+      "owner": "build-engineering",
+      "subjectRef": "unity.build-target.pc_development",
+      "artifactPath": "builds/pc-development/DreamExtraction.exe",
+      "artifactType": "unity-build",
+      "platform": "windows",
+      "buildVersion": "0.1.0",
+      "result": "passing",
+      "references": [
+        {
+          "type": "proves",
+          "target": "unity.build-target.pc_development"
+        }
+      ]
+    }
+  ]
+}

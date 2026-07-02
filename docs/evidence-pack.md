@@ -39,8 +39,17 @@ The pack declares reference rules for:
 - progression gates to playtest and QA evidence
 - Unity, Godot, and Unreal validation runners to test evidence
 - Unity, Godot, and Unreal readiness dashboards to QA evidence
+- test evidence to Unity project and scene records, Godot project and scene
+  records, and Unreal project and map records
+- build evidence to Unity build-target records, Godot export-preset records,
+  and Unreal target records
 - evidence records to the product, release, decision, archive, progression,
   mobile, and product-delivery records they prove, review, capture, or archive
+
+For blocked or incomplete engine checks, use `evidence.test.result` values such
+as `skipped` or `inconclusive` with a normal `proves` reference to the engine
+record. The pack does not introduce a separate gap relationship vocabulary for
+engine evidence.
 
 ## Evidence Report
 
@@ -66,4 +75,6 @@ verity generate schema-bundle examples/evidence --out build/evidence-schema-bund
 
 The executable example records test, CI, build, review, screenshot, video, QA,
 playtest, certification-checklist, and artifact evidence linked to
-product-delivery records.
+product-delivery records. The Unity, Godot, and Unreal examples also include
+engine-specific test and build evidence records that directly prove their
+project, scene or map, and build/export target contracts.

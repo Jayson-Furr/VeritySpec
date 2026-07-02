@@ -4,7 +4,8 @@
   "packs": [
     "verity.core",
     "verity.pack.game-core",
-    "verity.pack.unity"
+    "verity.pack.unity",
+    "verity.pack.evidence"
   ],
   "packPaths": [],
   "records": [

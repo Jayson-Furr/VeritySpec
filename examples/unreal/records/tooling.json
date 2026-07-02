@@ -58,6 +58,10 @@
         {
           "type": "runsScanner",
           "target": "unreal.scanner.contracts"
+        },
+        {
+          "type": "producesEvidence",
+          "target": "evidence.test.unreal_contracts"
         }
       ]
     },

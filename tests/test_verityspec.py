@@ -1758,6 +1758,40 @@ The `v0.2.0` milestone is focused on active work.
                     rules,
                 )
 
+    def test_evidence_reference_rules_keep_engine_traceability_parity(self) -> None:
+        registry = load_pack_registry(["verity.pack.evidence"])
+        rules = {
+            (rule.source_kind, rule.relationship, rule.target_kind)
+            for rule in registry.reference_rules
+        }
+
+        for engine_kind in [
+            "unity.project",
+            "unity.scene",
+            "godot.project",
+            "godot.scene",
+            "unreal.project",
+            "unreal.map",
+        ]:
+            with self.subTest(engine_kind=engine_kind):
+                self.assertIn(("evidence.test", "proves", engine_kind), rules)
+
+        for build_kind in [
+            "unity.build-target",
+            "godot.export-preset",
+            "unreal.target",
+        ]:
+            with self.subTest(build_kind=build_kind):
+                self.assertIn(("evidence.build", "proves", build_kind), rules)
+
+        for runner_kind in [
+            "unity.validation-runner",
+            "godot.validation-runner",
+            "unreal.validation-runner",
+        ]:
+            with self.subTest(runner_kind=runner_kind):
+                self.assertIn((runner_kind, "producesEvidence", "evidence.test"), rules)
+
     def test_pack_capability_index_summarizes_builtin_and_external_packs(self) -> None:
         workspace = load_workspace(CUSTOM_PACK_WORKSPACE)
         registry = load_pack_registry(workspace.pack_ids, workspace.pack_paths, workspace.base_path)

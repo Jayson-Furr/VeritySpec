@@ -4,7 +4,8 @@
   "packs": [
     "verity.core",
     "verity.pack.game-core",
-    "verity.pack.unreal"
+    "verity.pack.unreal",
+    "verity.pack.evidence"
   ],
   "records": [
     "records/*.json"

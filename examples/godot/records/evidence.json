@@ -1,0 +1,48 @@
+{
+  "records": [
+    {
+      "id": "evidence.test.godot_contracts",
+      "kind": "evidence.test",
+      "name": "Godot Contract Validation Evidence",
+      "description": "Passing Godot validation-runner evidence for the prototype project and scene contracts.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "subjectRef": "godot.scene.prototype_zone",
+      "subjectKind": "godot.scene",
+      "testType": "godot",
+      "command": "godot --headless --path godot/DreamExtraction --script addons/contract_tools/run_validation.gd",
+      "result": "passing",
+      "evidenceUri": "build/godot/prototype-contract-validation.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "godot.scene.prototype_zone"
+        },
+        {
+          "type": "proves",
+          "target": "godot.project.dream_extraction"
+        }
+      ]
+    },
+    {
+      "id": "evidence.build.godot_pc_development",
+      "kind": "evidence.build",
+      "name": "Godot PC Development Export Evidence",
+      "description": "Passing build evidence for the Godot PC development export preset.",
+      "status": "ready",
+      "owner": "build-engineering",
+      "subjectRef": "godot.export-preset.pc_development",
+      "artifactPath": "builds/pc-development/DreamExtraction.exe",
+      "artifactType": "godot-export",
+      "platform": "windows",
+      "buildVersion": "0.1.0",
+      "result": "passing",
+      "references": [
+        {
+          "type": "proves",
+          "target": "godot.export-preset.pc_development"
+        }
+      ]
+    }
+  ]
+}

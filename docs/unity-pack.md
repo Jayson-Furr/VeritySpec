@@ -85,6 +85,11 @@ This scope composes with `verity.pack.game-core`: game-core defines early game
 product intent, modes, loops, and prototype scope; Unity records describe the
 engine-specific implementation and tooling boundary.
 
+When the workspace also loads `verity.pack.evidence`, Unity validation runners
+can use `producesEvidence` to point at `evidence.test` records. Test evidence
+can directly prove `unity.project` and `unity.scene` records, and build
+evidence can directly prove `unity.build-target` records.
+
 ## Readiness
 
 Strict readiness checks require each ready Unity record to have enough metadata
@@ -127,4 +132,5 @@ verity generate schema-bundle examples/unity --out build/unity-schema-bundle.jso
 The example workspace models the Dream Extraction game concept with one Unity
 project, package dependency, package, shared library, assembly definition,
 prefab, prototype scene, PC development build target, scanner, validation
-runner, readiness dashboard, and agent-context exporter.
+runner, readiness dashboard, agent-context exporter, and evidence records for
+contract validation plus PC development build proof.

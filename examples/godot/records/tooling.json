@@ -57,6 +57,10 @@
         {
           "type": "runsScanner",
           "target": "godot.scanner.prototype_contracts"
+        },
+        {
+          "type": "producesEvidence",
+          "target": "evidence.test.godot_contracts"
         }
       ]
     },

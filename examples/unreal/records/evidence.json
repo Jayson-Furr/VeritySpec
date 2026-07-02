@@ -1,0 +1,48 @@
+{
+  "records": [
+    {
+      "id": "evidence.test.unreal_contracts",
+      "kind": "evidence.test",
+      "name": "Unreal Contract Validation Evidence",
+      "description": "Passing Unreal validation-runner evidence for the prototype project and map contracts.",
+      "status": "ready",
+      "owner": "unreal-engineering",
+      "subjectRef": "unreal.map.dream_zone",
+      "subjectKind": "unreal.map",
+      "testType": "unreal",
+      "command": "UnrealEditor-Cmd.exe DreamExtraction.uproject -run=VeritySpecValidation",
+      "result": "passing",
+      "evidenceUri": "Build/Unreal/prototype-contract-validation.json",
+      "references": [
+        {
+          "type": "proves",
+          "target": "unreal.map.dream_zone"
+        },
+        {
+          "type": "proves",
+          "target": "unreal.project.dream_extraction"
+        }
+      ]
+    },
+    {
+      "id": "evidence.build.unreal_pc_development",
+      "kind": "evidence.build",
+      "name": "Unreal PC Development Target Evidence",
+      "description": "Passing build evidence for the Unreal PC development target.",
+      "status": "ready",
+      "owner": "build-engineering",
+      "subjectRef": "unreal.target.pc_development",
+      "artifactPath": "Builds/PC/DreamExtraction",
+      "artifactType": "unreal-package",
+      "platform": "Win64",
+      "buildVersion": "0.1.0",
+      "result": "passing",
+      "references": [
+        {
+          "type": "proves",
+          "target": "unreal.target.pc_development"
+        }
+      ]
+    }
+  ]
+}

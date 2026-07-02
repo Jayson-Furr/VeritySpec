@@ -341,10 +341,13 @@
       "packs": [
         "verity.core",
         "verity.pack.game-core",
-        "verity.pack.unity"
+        "verity.pack.unity",
+        "verity.pack.evidence"
       ],
-      "recordCount": 17,
+      "recordCount": 19,
       "recordKinds": {
+        "evidence.build": 1,
+        "evidence.test": 1,
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
@@ -382,10 +385,13 @@
       "packs": [
         "verity.core",
         "verity.pack.game-core",
-        "verity.pack.godot"
+        "verity.pack.godot",
+        "verity.pack.evidence"
       ],
-      "recordCount": 19,
+      "recordCount": 21,
       "recordKinds": {
+        "evidence.build": 1,
+        "evidence.test": 1,
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
@@ -425,10 +431,13 @@
       "packs": [
         "verity.core",
         "verity.pack.game-core",
-        "verity.pack.unreal"
+        "verity.pack.unreal",
+        "verity.pack.evidence"
       ],
-      "recordCount": 18,
+      "recordCount": 20,
       "recordKinds": {
+        "evidence.build": 1,
+        "evidence.test": 1,
         "game.loop": 1,
         "game.mode": 1,
         "game.product": 1,
