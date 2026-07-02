@@ -1156,8 +1156,8 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add downstream AI-adapter drift-check guidance", markdown)
-        self.assertIn("20. Add decision-index JSON Schema documentation", markdown)
+        self.assertIn("1. Add lifecycle-readiness fixture planning", markdown)
+        self.assertIn("20. Add AI entry-point drift report planning", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
