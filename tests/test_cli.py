@@ -2104,6 +2104,32 @@ class VerityCliTests(unittest.TestCase):
         )
         self.assertEqual("evidence.artifact.release_manifest", payload["evidence"][0]["id"])
 
+    def test_evidence_report_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "evidence-report.md"
+            result = verity_command(
+                "generate",
+                "evidence-report",
+                "examples/evidence",
+                "--format",
+                "markdown",
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated evidence-report", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Evidence Report\n"))
+        self.assertIn("## Summary", text)
+        self.assertIn("| Evidence records | 10 |", text)
+        self.assertIn("## Release Gaps", text)
+        self.assertIn("| Failing evidence | 0 | none |", text)
+        self.assertIn("## Evidence Records", text)
+        self.assertIn("evidence.build.release_wheel", text)
+        self.assertIn("does not make legal, commercial", text)
+
     def test_evidence_report_generator_matches_golden_file(self) -> None:
         expected = json.loads(EVIDENCE_REPORT_GOLDEN.read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as tmp:

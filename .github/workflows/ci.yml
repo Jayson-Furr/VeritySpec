@@ -268,6 +268,7 @@ jobs:
           verity generate deployment-report examples/deployment --out build/deployment-report.json
           verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
           verity generate evidence-report examples/evidence --out build/evidence-report.json
+          verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
           verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
           verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
           verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json

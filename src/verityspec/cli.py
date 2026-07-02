@@ -24,6 +24,7 @@ from .generators import (
     generate_deployment_report,
     generate_deployment_report_markdown,
     generate_evidence_report,
+    generate_evidence_report_markdown,
     generate_issue_code_catalog,
     generate_issue_code_catalog_markdown,
     generate_lifecycle_readiness_report,
@@ -736,6 +737,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         "coverage-dashboard",
         "decision-index",
         "deployment-report",
+        "evidence-report",
         "security-report",
     }
     if args.format != "json" and args.artifact not in markdown_workspace_artifacts:
@@ -864,6 +866,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         value = generate_decision_index_markdown(value)
     if args.artifact == "deployment-report" and args.format == "markdown":
         value = generate_deployment_report_markdown(value)
+    if args.artifact == "evidence-report" and args.format == "markdown":
+        value = generate_evidence_report_markdown(value)
     text = write_generated(value, args.out)
     if not args.out:
         print(text, end="" if text.endswith("\n") else "\n")

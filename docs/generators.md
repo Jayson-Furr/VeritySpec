@@ -20,6 +20,7 @@ verity generate compliance-matrix examples/compliance --out build/compliance-mat
 verity generate deployment-report examples/deployment --out build/deployment-report.json
 verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
 verity generate schema-bundle examples/game-assets --out build/game-assets-schema-bundle.json
@@ -127,6 +128,14 @@ Evidence reports include:
 - Release gaps for missing subjects, missing artifact or URI fields, failing
   evidence, and inconclusive evidence
 - Per-evidence subject resolution, URI, and reference detail
+- Optional Markdown output for maintainers who need a human-readable
+  implementation and release proof-review artifact
+
+The JSON evidence-report output remains the machine-readable contract for CI
+and downstream tooling. The Markdown output is a derived internal review
+artifact and does not make legal, commercial, privacy-law, marketplace,
+app-store, platform-certification, pricing-approval, support-SLA, or
+production-readiness claims.
 
 Lifecycle readiness reports include:
 

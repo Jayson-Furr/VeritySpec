@@ -69,6 +69,18 @@ artifact; test evidence records whether the artifact ran successfully.
   evidence, and inconclusive evidence
 - per-evidence subject resolution and URI detail
 
+Markdown output is also available for implementation and release proof review:
+
+```bash
+verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
+```
+
+The JSON report remains the machine-readable contract for CI and downstream
+tooling. The Markdown report summarizes declared VeritySpec evidence records
+only. It does not make legal, commercial, privacy-law, marketplace, app-store,
+platform-certification, pricing-approval, support-SLA, or production-readiness
+claims.
+
 ## Commands
 
 ```bash
@@ -77,6 +89,7 @@ verity lint examples/evidence --strict
 verity readiness examples/evidence --strict
 verity graph examples/evidence
 verity generate evidence-report examples/evidence --out build/evidence-report.json
+verity generate evidence-report examples/evidence --format markdown --out build/evidence-report.md
 verity generate schema-bundle examples/evidence --out build/evidence-schema-bundle.json
 ```
 

@@ -56,6 +56,7 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | `tests/golden/deployment/deployment_report.json` | `verity generate deployment-report examples/deployment --generated-at "$GENERATED_AT" --out build/deployment-report.json` |
 | `tests/golden/deployment/deployment_report.md` | `verity generate deployment-report examples/deployment --format markdown --generated-at "$GENERATED_AT" --out build/deployment-report.md` |
 | `tests/golden/evidence_report/evidence_report.json` | `verity generate evidence-report examples/evidence --generated-at "$GENERATED_AT" --out build/evidence-report.json` |
+| `tests/golden/evidence_report/evidence_report.md` | `verity generate evidence-report examples/evidence --format markdown --generated-at "$GENERATED_AT" --out build/evidence-report.md` |
 | `tests/golden/lifecycle_readiness/lifecycle_readiness_report.json` | `verity generate lifecycle-readiness-report examples/lifecycle-readiness --generated-at "$GENERATED_AT" --out build/lifecycle-readiness-report.json` |
 | `tests/golden/coverage_dashboard/coverage_dashboard.json` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --generated-at "$GENERATED_AT" --out build/coverage-dashboard.json` |
 | `tests/golden/coverage_dashboard/coverage_dashboard.md` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --generated-at "$GENERATED_AT" --out build/coverage-dashboard.md` |
