@@ -464,6 +464,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [CLI command module decomposition](docs/cli-command-modules.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
 - [Portfolio-level validation foundation](docs/portfolio-validation.md)
+- [Portfolio report JSON contract plan](docs/portfolio-report-json-contract-plan.md)
 - [Engine portfolio compatibility fixtures](docs/engine-portfolio-compatibility.md)
 - [Product contract profiles](docs/product-contract-profiles.md)
 - [Security pack](docs/security-pack.md)

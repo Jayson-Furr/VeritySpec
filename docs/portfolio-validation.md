@@ -133,6 +133,8 @@ sections include:
 
 The first report implementation should prefer JSON before Markdown so CI can
 consume a stable contract. Markdown can follow once the JSON shape has settled.
+The planned machine-readable shape is defined in the
+[portfolio report JSON contract plan](portfolio-report-json-contract-plan.md).
 
 ## Non-Claims
 
