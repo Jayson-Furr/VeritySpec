@@ -3,11 +3,15 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from verityspec.pack_compatibility import compare_pack_mirror
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "docs" / "product-surface-pack-boundaries.md"
 ENGINE_DOC = ROOT / "docs" / "engine-product-delivery-packs.md"
 SEPARATION_DOC = ROOT / "docs" / "specialized-pack-separation.md"
+EXTENSION_FIXTURE_DOC = ROOT / "docs" / "official-extension-compatibility-fixtures.md"
+UNITY_MIRROR = ROOT / "tests" / "fixtures" / "official_extension_mirrors" / "verityspec-pack-unity" / "pack"
 
 
 class ProductSurfaceBoundaryTests(unittest.TestCase):
@@ -18,9 +22,11 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
         self.assertIn("docs/product-surface-pack-boundaries.md", readme)
         self.assertIn("docs/engine-product-delivery-packs.md", readme)
         self.assertIn("docs/specialized-pack-separation.md", readme)
+        self.assertIn("docs/official-extension-compatibility-fixtures.md", readme)
         self.assertIn("product-surface-pack-boundaries.md", packs)
         self.assertIn("engine-product-delivery-packs.md", packs)
         self.assertIn("specialized-pack-separation.md", packs)
+        self.assertIn("official-extension-compatibility-fixtures.md", packs)
 
     def test_boundary_note_defines_expected_surface_packs(self) -> None:
         text = DOC.read_text(encoding="utf-8")
@@ -81,9 +87,38 @@ class ProductSurfaceBoundaryTests(unittest.TestCase):
             "Do not remove specialized bundled packs in the first separation sprint.",
             "Do not rename pack IDs or record kinds for packaging reasons.",
             "Do not make arbitrary installed packages shadow built-in pack IDs.",
+            "verity pack compare",
         ]:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
+
+    def test_official_extension_fixture_guidance_defines_mirror_contract(self) -> None:
+        text = EXTENSION_FIXTURE_DOC.read_text(encoding="utf-8")
+
+        for phrase in [
+            "verity pack compare verity.pack.unity",
+            "manifest identity",
+            "schema declarations",
+            "schema JSON content",
+            "readiness gates",
+            "reference rules",
+            "generator metadata",
+            "does not detach bundled packs",
+            "does not allow arbitrary installed packages to shadow built-in pack IDs",
+        ]:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_official_extension_unity_mirror_matches_bundled_pack(self) -> None:
+        report, issues = compare_pack_mirror("verity.pack.unity", UNITY_MIRROR)
+
+        self.assertEqual([], issues)
+        self.assertTrue(report["passed"])
+        self.assertEqual(0, report["summary"]["differences"])
+        self.assertEqual(report["source"]["schemaDeclarations"], report["mirror"]["schemaDeclarations"])
+        self.assertEqual(report["source"]["readinessGates"], report["mirror"]["readinessGates"])
+        self.assertEqual(report["source"]["referenceRules"], report["mirror"]["referenceRules"])
+        self.assertEqual(report["source"]["generatorMetadata"], report["mirror"]["generatorMetadata"])
 
     def test_boundary_note_preserves_cross_cutting_ownership(self) -> None:
         text = DOC.read_text(encoding="utf-8")

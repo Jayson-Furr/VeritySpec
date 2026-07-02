@@ -207,6 +207,7 @@ verity --version
 verity init build/init-api --template api --owner platform --force
 verity pack list
 verity pack doctor
+verity pack compare verity.pack.unity --mirror tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack
 verity pack validate
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
 verity validate examples/basic

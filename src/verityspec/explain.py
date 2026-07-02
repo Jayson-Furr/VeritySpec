@@ -128,6 +128,24 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "An installed pack entry point resolved to a path without a `pack.json` manifest.",
         "resolution": "Fix the entry point so it returns a pack directory or `pack.json` path.",
     },
+    "pack.mirror.id_mismatch": {
+        "title": "Pack mirror ID mismatch",
+        "severity": "error",
+        "description": "An official-extension mirror pack declares a different manifest ID than the source pack being compared.",
+        "resolution": "Preserve the existing pack ID in the mirror package. Packaging splits must not rename pack IDs or record kinds.",
+    },
+    "pack.mirror.invalid": {
+        "title": "Pack mirror invalid",
+        "severity": "error",
+        "description": "A pack mirror path could not be loaded as a pack directory or `pack.json` manifest.",
+        "resolution": "Point `--mirror` at a valid pack directory or manifest and rerun `verity pack compare`.",
+    },
+    "pack.mirror.surface_mismatch": {
+        "title": "Pack mirror surface mismatch",
+        "severity": "error",
+        "description": "An official-extension mirror differs from the source pack in schemas, readiness gates, reference rules, generator metadata, or manifest fields.",
+        "resolution": "Update the mirror fixture or package so its public pack contract matches the source pack, or document and migrate the intentional change before detaching the pack.",
+    },
     "profile.required_pack": {
         "title": "Required profile pack missing",
         "severity": "error",

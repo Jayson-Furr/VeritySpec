@@ -25,6 +25,7 @@ python -m pip install --upgrade build twine
 python -m unittest discover -s tests -v
 verity pack validate
 verity pack doctor --format json > build/pack-doctor.json
+verity pack compare verity.pack.unity --mirror tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack --format json > build/unity-pack-mirror.json
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict

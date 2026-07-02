@@ -1,0 +1,468 @@
+{
+  "id": "verity.pack.unity",
+  "version": "0.1.0",
+  "name": "VeritySpec Unity Pack",
+  "description": "Unity project, package, shared-library, prefab, assembly, scanner, validation-runner, readiness-dashboard, agent-context, scene, and build-target records for engine-specific product-contract coverage.",
+  "schemas": [
+    {
+      "kind": "unity.project",
+      "path": "schemas/unity-project.schema.json"
+    },
+    {
+      "kind": "unity.package-dependency",
+      "path": "schemas/unity-package-dependency.schema.json"
+    },
+    {
+      "kind": "unity.package",
+      "path": "schemas/unity-package.schema.json"
+    },
+    {
+      "kind": "unity.shared-library",
+      "path": "schemas/unity-shared-library.schema.json"
+    },
+    {
+      "kind": "unity.prefab",
+      "path": "schemas/unity-prefab.schema.json"
+    },
+    {
+      "kind": "unity.asmdef",
+      "path": "schemas/unity-asmdef.schema.json"
+    },
+    {
+      "kind": "unity.scanner",
+      "path": "schemas/unity-scanner.schema.json"
+    },
+    {
+      "kind": "unity.validation-runner",
+      "path": "schemas/unity-validation-runner.schema.json"
+    },
+    {
+      "kind": "unity.readiness-dashboard",
+      "path": "schemas/unity-readiness-dashboard.schema.json"
+    },
+    {
+      "kind": "unity.agent-context-exporter",
+      "path": "schemas/unity-agent-context-exporter.schema.json"
+    },
+    {
+      "kind": "unity.scene",
+      "path": "schemas/unity-scene.schema.json"
+    },
+    {
+      "kind": "unity.build-target",
+      "path": "schemas/unity-build-target.schema.json"
+    }
+  ],
+  "readinessGates": [
+    {
+      "id": "unity.project.release",
+      "kind": "unity.project",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "unityVersion",
+        "projectPath",
+        "renderPipeline",
+        "scriptingBackend"
+      ],
+      "minItems": {
+        "targetPlatforms": 1,
+        "references": 3
+      }
+    },
+    {
+      "id": "unity.package-dependency.release",
+      "kind": "unity.package-dependency",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "packageName",
+        "versionRequirement",
+        "source",
+        "purpose"
+      ]
+    },
+    {
+      "id": "unity.scene.release",
+      "kind": "unity.scene",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scenePath",
+        "sceneRole",
+        "loadMode"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.build-target.release",
+      "kind": "unity.build-target",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "platform",
+        "buildConfiguration",
+        "outputPath"
+      ],
+      "minItems": {
+        "scenes": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.package.release",
+      "kind": "unity.package",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "packageName",
+        "version",
+        "source",
+        "purpose"
+      ]
+    },
+    {
+      "id": "unity.shared-library.release",
+      "kind": "unity.shared-library",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "libraryName",
+        "versionRequirement"
+      ],
+      "minItems": {
+        "packageRefs": 1,
+        "exportedCapabilities": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.prefab.release",
+      "kind": "unity.prefab",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "prefabPath",
+        "prefabRole"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.asmdef.release",
+      "kind": "unity.asmdef",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "asmdefPath",
+        "assemblyName"
+      ],
+      "minItems": {
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.scanner.release",
+      "kind": "unity.scanner",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "scannerType",
+        "entryPoint"
+      ],
+      "minItems": {
+        "scannedKinds": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.validation-runner.release",
+      "kind": "unity.validation-runner",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "runnerType",
+        "command"
+      ],
+      "minItems": {
+        "scannerRefs": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.readiness-dashboard.release",
+      "kind": "unity.readiness-dashboard",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "dashboardPath",
+        "dashboardType"
+      ],
+      "minItems": {
+        "trackedRecordKinds": 1,
+        "references": 1
+      }
+    },
+    {
+      "id": "unity.agent-context-exporter.release",
+      "kind": "unity.agent-context-exporter",
+      "required": [
+        "owner",
+        "name",
+        "description",
+        "exporterType",
+        "outputPath"
+      ],
+      "minItems": {
+        "includedRecordKinds": 1,
+        "references": 1
+      }
+    }
+  ],
+  "referenceRules": [
+    {
+      "sourceKind": "product",
+      "relationship": "hasUnityProject",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "game.product",
+      "relationship": "implementedBy",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "containsScene",
+      "targetKind": "unity.scene"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "buildsFor",
+      "targetKind": "unity.build-target"
+    },
+    {
+      "sourceKind": "unity.scene",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.build-target",
+      "relationship": "includesScene",
+      "targetKind": "unity.scene"
+    },
+    {
+      "sourceKind": "unity.build-target",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "usesSharedLibrary",
+      "targetKind": "unity.shared-library"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "containsPrefab",
+      "targetKind": "unity.prefab"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "declaresAssembly",
+      "targetKind": "unity.asmdef"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "scannedBy",
+      "targetKind": "unity.scanner"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "validatedBy",
+      "targetKind": "unity.validation-runner"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "reportsReadinessTo",
+      "targetKind": "unity.readiness-dashboard"
+    },
+    {
+      "sourceKind": "unity.project",
+      "relationship": "exportsAgentContextWith",
+      "targetKind": "unity.agent-context-exporter"
+    },
+    {
+      "sourceKind": "unity.package",
+      "relationship": "declaredByDependency",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.package",
+      "relationship": "providedByLibrary",
+      "targetKind": "unity.shared-library"
+    },
+    {
+      "sourceKind": "unity.shared-library",
+      "relationship": "includesPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.shared-library",
+      "relationship": "declaresAssembly",
+      "targetKind": "unity.asmdef"
+    },
+    {
+      "sourceKind": "unity.prefab",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.prefab",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.prefab",
+      "relationship": "implementedByAssembly",
+      "targetKind": "unity.asmdef"
+    },
+    {
+      "sourceKind": "unity.asmdef",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.asmdef",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package-dependency"
+    },
+    {
+      "sourceKind": "unity.scene",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.scene",
+      "relationship": "usesPrefab",
+      "targetKind": "unity.prefab"
+    },
+    {
+      "sourceKind": "unity.scene",
+      "relationship": "implementedByAssembly",
+      "targetKind": "unity.asmdef"
+    },
+    {
+      "sourceKind": "unity.build-target",
+      "relationship": "usesPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.scanner",
+      "relationship": "scansProject",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "unity.scanner",
+      "relationship": "scansPackage",
+      "targetKind": "unity.package"
+    },
+    {
+      "sourceKind": "unity.scanner",
+      "relationship": "scansPrefab",
+      "targetKind": "unity.prefab"
+    },
+    {
+      "sourceKind": "unity.scanner",
+      "relationship": "scansAssembly",
+      "targetKind": "unity.asmdef"
+    },
+    {
+      "sourceKind": "unity.validation-runner",
+      "relationship": "runsScanner",
+      "targetKind": "unity.scanner"
+    },
+    {
+      "sourceKind": "unity.validation-runner",
+      "relationship": "reportsTo",
+      "targetKind": "unity.readiness-dashboard"
+    },
+    {
+      "sourceKind": "unity.readiness-dashboard",
+      "relationship": "tracksProject",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "unity.readiness-dashboard",
+      "relationship": "tracksRunner",
+      "targetKind": "unity.validation-runner"
+    },
+    {
+      "sourceKind": "unity.agent-context-exporter",
+      "relationship": "describesProject",
+      "targetKind": "unity.project"
+    },
+    {
+      "sourceKind": "unity.agent-context-exporter",
+      "relationship": "includesDashboard",
+      "targetKind": "unity.readiness-dashboard"
+    },
+    {
+      "sourceKind": "unity.agent-context-exporter",
+      "relationship": "includesRunner",
+      "targetKind": "unity.validation-runner"
+    },
+    {
+      "sourceKind": "unity.agent-context-exporter",
+      "relationship": "includesScanner",
+      "targetKind": "unity.scanner"
+    }
+  ],
+  "generators": [
+    {
+      "id": "schema-bundle",
+      "name": "Schema Bundle",
+      "description": "Emit JSON Schema definitions for Unity records.",
+      "artifactType": "schema-bundle",
+      "outputFormats": [
+        "json"
+      ],
+      "recordKinds": [
+        "unity.project",
+        "unity.package-dependency",
+        "unity.scene",
+        "unity.build-target",
+        "unity.package",
+        "unity.shared-library",
+        "unity.prefab",
+        "unity.asmdef",
+        "unity.scanner",
+        "unity.validation-runner",
+        "unity.readiness-dashboard",
+        "unity.agent-context-exporter"
+      ]
+    }
+  ]
+}

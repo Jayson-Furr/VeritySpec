@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added `verity pack compare` for official-extension mirror fixture checks
+  that compare manifest identity, schema declarations, schema JSON content,
+  readiness gates, reference rules, and generator metadata without loading the
+  mirror into the active pack registry.
+- Added the first official-extension mirror fixture guidance and Unity mirror
+  fixture for future `verityspec-pack-unity` compatibility checks before any
+  bundled-pack detach work begins.
+
 ## 0.65.0
 
 - Added `verity pack doctor` for non-throwing installed and local pack

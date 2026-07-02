@@ -4,10 +4,10 @@
   "verityVersion": "<verityVersion>",
   "source": "verity explain",
   "summary": {
-    "issueCodeCount": 59,
+    "issueCodeCount": 62,
     "severityCounts": {
       "warning": 15,
-      "error": 44
+      "error": 47
     },
     "categoryCounts": {
       "accessibility": 1,
@@ -16,7 +16,7 @@
       "deployment": 1,
       "graph": 2,
       "lint": 3,
-      "pack": 16,
+      "pack": 19,
       "profile": 2,
       "readiness": 2,
       "record": 4,
@@ -326,6 +326,30 @@
       "severity": "error",
       "description": "An installed pack entry point resolved to a path without a `pack.json` manifest.",
       "resolution": "Fix the entry point so it returns a pack directory or `pack.json` path."
+    },
+    {
+      "code": "pack.mirror.id_mismatch",
+      "category": "pack",
+      "title": "Pack mirror ID mismatch",
+      "severity": "error",
+      "description": "An official-extension mirror pack declares a different manifest ID than the source pack being compared.",
+      "resolution": "Preserve the existing pack ID in the mirror package. Packaging splits must not rename pack IDs or record kinds."
+    },
+    {
+      "code": "pack.mirror.invalid",
+      "category": "pack",
+      "title": "Pack mirror invalid",
+      "severity": "error",
+      "description": "A pack mirror path could not be loaded as a pack directory or `pack.json` manifest.",
+      "resolution": "Point `--mirror` at a valid pack directory or manifest and rerun `verity pack compare`."
+    },
+    {
+      "code": "pack.mirror.surface_mismatch",
+      "category": "pack",
+      "title": "Pack mirror surface mismatch",
+      "severity": "error",
+      "description": "An official-extension mirror differs from the source pack in schemas, readiness gates, reference rules, generator metadata, or manifest fields.",
+      "resolution": "Update the mirror fixture or package so its public pack contract matches the source pack, or document and migrate the intentional change before detaching the pack."
     },
     {
       "code": "pack.unknown",

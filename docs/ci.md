@@ -5,6 +5,7 @@ Recommended minimal CI:
 ```bash
 verity pack validate
 verity pack doctor --format json > build/pack-doctor.json
+verity pack compare verity.pack.unity --mirror tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack --format json > build/unity-pack-mirror.json
 verity validate examples/basic
 verity lint examples/basic --strict
 verity readiness examples/basic --strict
@@ -306,6 +307,18 @@ verity readiness tests/fixtures/custom_pack_workspace --strict
 verity generate schema-bundle tests/fixtures/custom_pack_workspace --out build/custom-schema-bundle.json
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 ```
+
+For future official extension-package mirrors, compare the mirror fixture
+against the bundled source pack without loading the mirror into the active
+registry:
+
+```bash
+verity pack compare verity.pack.unity --mirror tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack --format json > build/unity-pack-mirror.json
+```
+
+This verifies manifest identity, schema declarations, schema JSON content,
+readiness gates, reference rules, and generator metadata while preserving the
+current built-in pack collision guard.
 
 For generated pack scaffold documentation fixtures:
 

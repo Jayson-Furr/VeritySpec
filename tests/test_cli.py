@@ -16,6 +16,7 @@ from verityspec import __version__
 ROOT = Path(__file__).resolve().parents[1]
 CUSTOM_PACK = "tests/fixtures/custom_pack"
 CUSTOM_PACK_WORKSPACE = "tests/fixtures/custom_pack_workspace"
+UNITY_EXTENSION_MIRROR = "tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack"
 MIGRATION_FIXTURES = ROOT / "tests" / "fixtures" / "migration"
 SECURITY_REPORT_GOLDEN = ROOT / "tests" / "golden" / "security_report" / "security_report.json"
 OBSERVABILITY_GOLDEN = ROOT / "tests" / "golden" / "observability"
@@ -1243,6 +1244,110 @@ class VerityCliTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertFalse(payload["passed"])
         self.assertEqual("pack.external.builtin_collision", payload["issues"][0]["code"])
+
+    def test_pack_compare_official_extension_mirror_json_output(self) -> None:
+        result = verity_command(
+            "pack",
+            "compare",
+            "verity.pack.unity",
+            "--mirror",
+            UNITY_EXTENSION_MIRROR,
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(0, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["passed"])
+        self.assertEqual("pack.compare", payload["command"])
+        self.assertEqual("verity.pack.unity", payload["packId"])
+        self.assertEqual("built-in", payload["source"]["source"])
+        self.assertEqual("mirror", payload["mirror"]["source"])
+        self.assertEqual([], payload["differences"])
+        self.assertGreater(payload["summary"]["schemas"], 0)
+        self.assertGreater(payload["summary"]["readinessGates"], 0)
+        self.assertGreater(payload["summary"]["referenceRules"], 0)
+        self.assertGreater(payload["summary"]["generators"], 0)
+
+    def test_pack_compare_reports_mirror_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            mirror_path = Path(tmp) / "unity-mirror"
+            shutil.copytree(ROOT / UNITY_EXTENSION_MIRROR, mirror_path)
+            manifest_path = mirror_path / "pack.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["generators"] = []
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+            result = verity_command(
+                "pack",
+                "compare",
+                "verity.pack.unity",
+                "--mirror",
+                str(mirror_path),
+                "--format",
+                "json",
+            )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertEqual("pack.mirror.surface_mismatch", payload["issues"][0]["code"])
+        self.assertTrue(
+            any(difference["surface"] == "generatorMetadata" for difference in payload["differences"])
+        )
+
+    def test_pack_compare_reports_invalid_mirror_path(self) -> None:
+        result = verity_command(
+            "pack",
+            "compare",
+            "verity.pack.unity",
+            "--mirror",
+            "tests/fixtures/official_extension_mirrors/missing-pack",
+            "--format",
+            "json",
+        )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertEqual("pack.mirror.invalid", payload["issues"][0]["code"])
+
+    def test_pack_compare_reports_mirror_id_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            mirror_path = Path(tmp) / "unity-mirror"
+            shutil.copytree(ROOT / UNITY_EXTENSION_MIRROR, mirror_path)
+            manifest_path = mirror_path / "pack.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["id"] = "verity.pack.unity-renamed"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+            result = verity_command(
+                "pack",
+                "compare",
+                "verity.pack.unity",
+                "--mirror",
+                str(mirror_path),
+                "--format",
+                "json",
+            )
+
+        self.assertEqual(1, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["passed"])
+        self.assertEqual("pack.mirror.id_mismatch", payload["issues"][0]["code"])
+
+    def test_pack_compare_text_output(self) -> None:
+        result = verity_command(
+            "pack",
+            "compare",
+            "verity.pack.unity",
+            "--mirror",
+            UNITY_EXTENSION_MIRROR,
+        )
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Pack mirror comparison passed.", result.stdout)
+        self.assertIn("Pack: verity.pack.unity", result.stdout)
 
     def test_pack_init_creates_valid_external_pack(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

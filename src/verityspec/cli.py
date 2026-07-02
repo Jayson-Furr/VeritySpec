@@ -51,6 +51,7 @@ from .migrations import (
     migration_capabilities_to_text,
     migration_report_to_text,
 )
+from .pack_compatibility import compare_pack_mirror, pack_mirror_report_to_text
 from .pack_diagnostics import diagnose_pack_discovery, pack_discovery_report_to_text
 from .pack_validation import list_pack_summaries, validate_packs
 from .packs import load_pack_registry
@@ -940,6 +941,15 @@ def cmd_pack_doctor(args: argparse.Namespace) -> int:
     return issue_exit(issues)
 
 
+def cmd_pack_compare(args: argparse.Namespace) -> int:
+    report, issues = compare_pack_mirror(args.pack_id, args.mirror)
+    if args.format == "json":
+        print(json.dumps(report, indent=2))
+    else:
+        print(pack_mirror_report_to_text(report))
+    return issue_exit(issues)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="verity", description="VeritySpec product-contract CLI.")
     parser.add_argument("--version", action="version", version=f"verity {__version__}")
@@ -1122,6 +1132,19 @@ def build_parser() -> argparse.ArgumentParser:
     pack_doctor_parser.add_argument("--format", choices=["text", "json"], default="text")
     pack_doctor_parser.add_argument("--path", action="append", default=[], help="Local pack directory or pack.json path.")
     pack_doctor_parser.set_defaults(func=cmd_pack_doctor)
+
+    pack_compare_parser = pack_subparsers.add_parser(
+        "compare",
+        help="Compare a loaded pack with an official-extension mirror pack path.",
+    )
+    pack_compare_parser.add_argument("pack_id")
+    pack_compare_parser.add_argument(
+        "--mirror",
+        required=True,
+        help="Mirror pack directory or pack.json path to compare without loading it into the registry.",
+    )
+    pack_compare_parser.add_argument("--format", choices=["text", "json"], default="text")
+    pack_compare_parser.set_defaults(func=cmd_pack_compare)
 
     pack_init_parser = pack_subparsers.add_parser("init", help="Create a local pack scaffold.")
     pack_init_parser.add_argument("pack_id")
