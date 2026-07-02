@@ -518,6 +518,19 @@
       ]
     },
     {
+      "id": "decision-index",
+      "name": "Decision Index",
+      "description": "Index product-delivery decision records for ADR and governance review.",
+      "artifactType": "report",
+      "outputFormats": [
+        "json",
+        "markdown"
+      ],
+      "recordKinds": [
+        "decision.record"
+      ]
+    },
+    {
       "id": "agent-context",
       "name": "Agent Context",
       "description": "Emit bounded Markdown handoff context from product-delivery agent-context exporter records.",

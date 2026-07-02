@@ -16,6 +16,8 @@ from verityspec.generators import (
     generate_compliance_matrix,
     generate_coverage_dashboard,
     generate_coverage_dashboard_markdown,
+    generate_decision_index,
+    generate_decision_index_markdown,
     generate_deployment_report,
     generate_issue_code_catalog,
     generate_issue_code_catalog_markdown,
@@ -67,6 +69,10 @@ COVERAGE_DASHBOARD_GOLDEN = (
 )
 COVERAGE_DASHBOARD_MARKDOWN_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.md"
+)
+DECISION_INDEX_GOLDEN = ROOT / "tests" / "golden" / "decision_index" / "decision_index.json"
+DECISION_INDEX_MARKDOWN_GOLDEN = (
+    ROOT / "tests" / "golden" / "decision_index" / "decision_index.md"
 )
 COVERAGE_FIXTURE = ROOT / "tests" / "fixtures" / "cross_pack_coverage"
 CUSTOM_PACK_WORKSPACE = ROOT / "tests" / "fixtures" / "custom_pack_workspace"
@@ -247,6 +253,14 @@ def normalize_agent_context_for_markdown_golden(report: dict) -> dict:
         command.replace(workspace_path, "<workspacePath>")
         for command in report["verificationCommands"]
     ]
+    return normalized
+
+
+def normalize_decision_index_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
     return normalized
 
 
@@ -1142,7 +1156,8 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add ADR index guidance", markdown)
+        self.assertIn("1. Add downstream AI-adapter drift-check guidance", markdown)
+        self.assertIn("20. Add decision-index JSON Schema documentation", markdown)
 
     def test_roadmap_report_treats_focused_milestone_as_active(self) -> None:
         roadmap = """# Roadmap
@@ -1966,6 +1981,67 @@ The `v0.2.0` milestone is focused on active work.
         self.assertIn("## Product Surface References", markdown)
         self.assertIn("does not make legal, commercial", markdown)
         self.assertEqual(expected, markdown)
+
+    def test_decision_index_summarizes_product_delivery_decisions(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        report = generate_decision_index(workspace, generated_at=FIXED_GENERATED_AT)
+
+        self.assertEqual("decision_index", report["type"])
+        self.assertEqual(FIXED_GENERATED_AT, report["generatedAt"])
+        self.assertEqual(1, report["decisionCount"])
+        self.assertEqual(1, report["summary"]["acceptedDecisionCount"])
+        self.assertEqual({"accepted": 1}, report["summary"]["byDecisionStatus"])
+        self.assertEqual({"operations": 1}, report["summary"]["byDecisionType"])
+        self.assertEqual([], report["summary"]["indexGaps"]["acceptedWithoutDecidedAt"])
+        self.assertEqual([], report["summary"]["indexGaps"]["orphanedDecisions"])
+        self.assertEqual("decision.record.github_manages_workflow", report["decisions"][0]["id"])
+        self.assertEqual(1, report["decisions"][0]["graphLinkCount"])
+        self.assertIn(
+            {
+                "source": "project-management.model.github_native",
+                "target": "decision.record.github_manages_workflow",
+                "relationship": "recordsDecision",
+                "field": "references[0].target",
+            },
+            report["graphLinks"],
+        )
+
+    def test_decision_index_matches_golden_file(self) -> None:
+        expected = json.loads(DECISION_INDEX_GOLDEN.read_text(encoding="utf-8"))
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        report = generate_decision_index(workspace, generated_at=FIXED_GENERATED_AT)
+
+        self.assertEqual(expected, normalize_decision_index_for_golden(report))
+
+    def test_decision_index_markdown_matches_golden_file(self) -> None:
+        expected = DECISION_INDEX_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+        workspace = load_workspace(ROOT / "examples" / "product-delivery")
+
+        report = generate_decision_index(workspace, generated_at=FIXED_GENERATED_AT)
+        markdown = generate_decision_index_markdown(
+            normalize_decision_index_for_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Decision Index\n"))
+        self.assertIn("## Index Gaps", markdown)
+        self.assertIn("decision.record.github_manages_workflow", markdown)
+        self.assertIn("does not approve decisions", markdown)
+        self.assertEqual(expected, markdown)
+
+    def test_decision_index_generator_is_advertised_by_product_delivery_pack(self) -> None:
+        registry = load_pack_registry(["verity.pack.product-delivery"])
+        pack = registry.packs["verity.pack.product-delivery"]
+        generator = next(
+            item
+            for item in pack.generator_metadata
+            if item.get("id") == "decision-index"
+        )
+
+        self.assertIn("decision-index", pack.generators)
+        self.assertEqual(["json", "markdown"], generator["outputFormats"])
+        self.assertEqual(["decision.record"], generator["recordKinds"])
 
     def test_agent_context_report_summarizes_target_and_graph_records(self) -> None:
         workspace = load_workspace(ROOT / "examples" / "product-delivery")

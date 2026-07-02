@@ -35,6 +35,7 @@ KNOWN_GENERATORS = {
     "agent-context",
     "compliance-matrix",
     "coverage-dashboard",
+    "decision-index",
     "deployment-report",
     "evidence-report",
     "lifecycle-readiness-report",

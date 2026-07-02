@@ -85,6 +85,8 @@ verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery
 verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
+verity generate decision-index examples/product-delivery --out build/decision-index.json
+verity generate decision-index examples/product-delivery --format markdown --out build/decision-index.md
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 ```
 
@@ -124,6 +126,8 @@ models a spec-driven engine-tooling repository. It demonstrates:
 - a product root linked to `product.scope`
 - proprietary private-alpha posture without external readiness claims
 - GitHub-native workflow mapped back to VeritySpec truth records
+- a decision-index generator that summarizes `decision.record` governance
+  records for ADR review without approving decisions or replacing ADR prose
 - readiness and evidence requirements
 - release, operations, support, maintenance, archive, and decommission policy
 - scanner, generator, validation-runner, editor-surface, and agent-context

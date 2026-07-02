@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added `verity generate decision-index` with JSON and Markdown output for
+  product-delivery `decision.record` governance and ADR review, including
+  graph-link summaries, index-gap reporting, CLI coverage, and golden
+  fixtures.
+
 ## 0.75.0
 
 - Added the first Markdown `verity generate agent-context` prototype for

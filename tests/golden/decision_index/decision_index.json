@@ -1,0 +1,61 @@
+{
+  "type": "decision_index",
+  "generatedAt": "<generatedAt>",
+  "verityVersion": "<verityVersion>",
+  "workspace": "examples.product_delivery",
+  "workspacePath": "<workspacePath>",
+  "specVersion": "v0.2.0",
+  "packs": [
+    "verity.core",
+    "verity.pack.product-delivery"
+  ],
+  "decisionCount": 1,
+  "summary": {
+    "acceptedDecisionCount": 1,
+    "byDecisionStatus": {
+      "accepted": 1
+    },
+    "byRecordStatus": {
+      "ready": 1
+    },
+    "byDecisionType": {
+      "operations": 1
+    },
+    "byOwner": {
+      "program": 1
+    },
+    "graphLinkCount": 1,
+    "indexGaps": {
+      "acceptedWithoutDecidedAt": [],
+      "orphanedDecisions": [],
+      "proposedDecisions": [],
+      "supersededDecisions": []
+    }
+  },
+  "decisions": [
+    {
+      "id": "decision.record.github_manages_workflow",
+      "kind": "decision.record",
+      "name": "GitHub Manages Workflow",
+      "description": "Records the operating decision that GitHub manages workflow while VeritySpec manages truth.",
+      "status": "ready",
+      "owner": "program",
+      "decisionType": "operations",
+      "decisionStatus": "accepted",
+      "decidedAt": "2026-06-30",
+      "supersedesRef": null,
+      "decision": "GitHub manages workflow and VeritySpec manages product-contract truth.",
+      "rationale": "This keeps execution state and source-of-truth records explicit without duplicating workflow systems.",
+      "references": [],
+      "graphLinkCount": 1
+    }
+  ],
+  "graphLinks": [
+    {
+      "source": "project-management.model.github_native",
+      "target": "decision.record.github_manages_workflow",
+      "relationship": "recordsDecision",
+      "field": "references[0].target"
+    }
+  ]
+}

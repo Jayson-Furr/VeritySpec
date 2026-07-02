@@ -34,6 +34,7 @@ LIFECYCLE_READINESS_GOLDEN = (
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
+DECISION_INDEX_GOLDEN = ROOT / "tests" / "golden" / "decision_index" / "decision_index.json"
 COVERAGE_FIXTURE = "tests/fixtures/cross_pack_coverage"
 PACK_CAPABILITY_INDEX_GOLDEN = (
     ROOT / "tests" / "golden" / "pack_capability_index" / "pack_capability_index.json"
@@ -134,6 +135,14 @@ def normalize_lifecycle_readiness_report_for_golden(report: dict) -> dict:
 
 
 def normalize_coverage_dashboard_for_golden(report: dict) -> dict:
+    normalized = dict(report)
+    normalized["generatedAt"] = "<generatedAt>"
+    normalized["verityVersion"] = "<verityVersion>"
+    normalized["workspacePath"] = "<workspacePath>"
+    return normalized
+
+
+def normalize_decision_index_for_golden(report: dict) -> dict:
     normalized = dict(report)
     normalized["generatedAt"] = "<generatedAt>"
     normalized["verityVersion"] = "<verityVersion>"
@@ -2198,6 +2207,85 @@ class VerityCliTests(unittest.TestCase):
         self.assertIn("## Surface Coverage", text)
         self.assertIn("## Product Surface References", text)
         self.assertIn("does not make legal, commercial", text)
+
+    def test_decision_index_generator_writes_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "decision-index.json"
+            result = verity_command(
+                "generate",
+                "decision-index",
+                "examples/product-delivery",
+                "--generated-at",
+                FIXED_GENERATED_AT,
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated decision-index", result.stdout)
+        self.assertEqual("decision_index", payload["type"])
+        self.assertEqual(FIXED_GENERATED_AT, payload["generatedAt"])
+        self.assertEqual(1, payload["decisionCount"])
+        self.assertEqual({"accepted": 1}, payload["summary"]["byDecisionStatus"])
+        self.assertEqual([], payload["summary"]["indexGaps"]["orphanedDecisions"])
+
+    def test_decision_index_generator_matches_golden_file(self) -> None:
+        expected = json.loads(DECISION_INDEX_GOLDEN.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "decision-index.json"
+            result = verity_command(
+                "generate",
+                "decision-index",
+                "examples/product-delivery",
+                "--out",
+                str(out_path),
+            )
+
+            payload = json.loads(out_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(0, result.returncode)
+        datetime.fromisoformat(payload["generatedAt"])
+        self.assertEqual(str(ROOT / "examples/product-delivery"), payload["workspacePath"])
+        self.assertIsInstance(payload["verityVersion"], str)
+        self.assertEqual(expected, normalize_decision_index_for_golden(payload))
+
+    def test_decision_index_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "decision-index.md"
+            result = verity_command(
+                "generate",
+                "decision-index",
+                "examples/product-delivery",
+                "--format",
+                "markdown",
+                "--generated-at",
+                FIXED_GENERATED_AT,
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated decision-index", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Decision Index\n"))
+        self.assertIn(f"- Generated: `{FIXED_GENERATED_AT}`", text)
+        self.assertIn("## Index Gaps", text)
+        self.assertIn("decision.record.github_manages_workflow", text)
+        self.assertIn("does not approve decisions", text)
+
+    def test_decision_index_generator_stops_on_validation_errors(self) -> None:
+        result = verity_command(
+            "generate",
+            "decision-index",
+            "tests/fixtures/broken_semantics",
+        )
+
+        self.assertEqual(1, result.returncode)
+        self.assertIn("reference.disallowed", result.stdout)
+        self.assertIn("Generation validation", result.stdout)
 
     def test_agent_context_generator_writes_markdown_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
