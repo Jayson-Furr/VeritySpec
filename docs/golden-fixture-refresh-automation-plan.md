@@ -70,7 +70,7 @@ preserve evidence:
   "type": "golden_fixture_refresh_plan",
   "schemaVersion": "0.1.0",
   "generatedAt": "2026-01-02T03:04:05Z",
-  "verityVersion": "0.81.0",
+  "verityVersion": "0.82.0",
   "mode": "dry_run",
   "allowlist": {
     "generators": [],

@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.82.0
+
 - Added Markdown output for `verity generate deployment-report` so release and
   operations reviewers can inspect deployment targets, runtimes, release gaps,
   release policies, linked controls, dashboards, compliance mappings, and
   release evidence without opening JSON.
+- Added v0.82.0 release notes and roadmap closeout.
 
 ## 0.81.0
 
