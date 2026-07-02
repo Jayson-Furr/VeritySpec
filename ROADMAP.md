@@ -2998,11 +2998,11 @@ release.
 
 ## v0.72.0
 
-The `v0.72.0` milestone is in progress.
+The `v0.72.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 149 | In Progress | Migration-report JSON Schema documentation |
+| 149 | Complete | Migration-report JSON Schema documentation |
 
 ## Sprint 149 Priorities
 
@@ -3020,6 +3020,15 @@ documentation sprint:
 - Keep runtime migration behavior unchanged unless tests reveal a documented
   report field is missing.
 - Update changelog, roadmap bookkeeping, and Next 20 planning.
+
+Sprint 149 delivery added a public migration-report JSON Schema, schema
+documentation for workspace migration reports, blocked-report exit-code
+guidance, CI and README links, executable schema validation tests for real
+successful and blocked `verity migrate` outputs, next-roadmap rotation, and
+release-bookkeeping updates for the v0.72.0 release. It also aligned the
+canonical AI-agent entry point with the organization-wide entry-point baseline
+so VeritySpec agents preserve the same patterns/glossary, work-ledger,
+context-refresh, and approval-gate discipline used across the organization.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

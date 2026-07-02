@@ -2,9 +2,14 @@
 
 ## Unreleased
 
+## 0.72.0
+
 - Added a documented migration-report JSON Schema for `verity migrate` outputs
   so CI integrations can validate migration paths, impact summaries, changes,
   files written, manual follow-up, and blocked migration reports.
+- Aligned the canonical AI-agent entry point with the organization-wide
+  entry-point baseline for all agents.
+- Added v0.72.0 release notes and roadmap closeout.
 
 ## 0.71.0
 
