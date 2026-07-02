@@ -2784,15 +2784,15 @@ checklist coverage, and release-bookkeeping updates for the v0.65.0 release.
 
 ## v0.66.0
 
-The `v0.66.0` milestone is active.
+The `v0.66.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 143 | In Progress | Official-extension package compatibility fixtures |
+| 143 | Complete | Official-extension package compatibility fixtures |
 
 ## Sprint 143 Priorities
 
-Sprint 143 should complete a two-week-sized official-extension compatibility
+Sprint 143 completed a two-week-sized official-extension compatibility
 fixture sprint:
 
 - Add a `verity pack compare <pack-id> --mirror <path>` command that compares a
@@ -2811,6 +2811,12 @@ fixture sprint:
   installed packages to shadow built-in pack IDs.
 - Update tests, README, pack docs, CI guidance, release checklist, changelog,
   roadmap bookkeeping, and canonical AI-agent commands.
+
+Sprint 143 delivery added `verity pack compare`, text and JSON official-extension
+mirror reports, stable mirror issue-code explanations, a Unity mirror fixture
+for future `verityspec-pack-unity` compatibility checks, documentation for the
+fixture contract and non-goals, CI/release-checklist guidance, README command
+coverage, and release-bookkeeping updates for the v0.66.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
