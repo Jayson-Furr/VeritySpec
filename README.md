@@ -97,8 +97,9 @@ This implementation provides:
   packages, so specialized game, mobile, liveops, Unity, Godot, and Unreal
   packs can eventually be separated from the core package after installed-pack
   discovery, compatibility metadata, migration guidance, and non-breaking
-  fixtures are in place, including `verity pack compare` mirror checks for
-  future official extension packages.
+  fixtures are in place, including an installed-pack compatibility metadata
+  design note and `verity pack compare` mirror checks for future official
+  extension packages.
 - A local-only workspace dependency prototype with direct readonly dependency
   declarations, dependency aliases, manifest-level exported records,
   alias-qualified reference validation, and dependency-aware graph output,
@@ -432,6 +433,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Engine and product-delivery pack direction](docs/engine-product-delivery-packs.md)
 - [Engine full-lifecycle support design](docs/engine-full-lifecycle-support.md)
 - [Specialized pack separation plan](docs/specialized-pack-separation.md)
+- [Installed pack compatibility metadata](docs/installed-pack-compatibility-metadata.md)
 - [Official extension compatibility fixtures](docs/official-extension-compatibility-fixtures.md)
 - [CLI command module decomposition](docs/cli-command-modules.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)

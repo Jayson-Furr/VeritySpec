@@ -98,4 +98,6 @@ This guidance does not:
 Specifically, it does not detach bundled packs and does not allow arbitrary installed packages to shadow built-in pack IDs.
 
 The specialized-pack separation plan remains the governing document for the
-larger packaging transition.
+larger packaging transition. The proposed metadata shape and lifecycle states
+are captured in
+[Installed pack compatibility metadata](installed-pack-compatibility-metadata.md).

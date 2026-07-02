@@ -16,6 +16,9 @@ Write an ADR for decisions such as:
 - Adding a new generator family or stable output contract.
 - Changing migration compatibility or rollback policy.
 - Changing installed-pack discovery rules.
+- Changing installed-pack compatibility metadata enforcement after the
+  [installed-pack compatibility metadata](installed-pack-compatibility-metadata.md)
+  design note.
 - Changing AI-agent entry-point, branching, release, or CI fallback policy.
 - Choosing a long-term architecture for cross-workspace dependencies.
 - Changing the CLI command module architecture after the

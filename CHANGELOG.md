@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added an installed-pack compatibility metadata design note that defines
+  supported VeritySpec version ranges, workspace format support, pack API
+  levels, official extension-package lifecycle states, staged adoption, and
+  no-runtime-enforcement guardrails.
+
 ## 0.67.0
 
 - Added a CLI command module decomposition design note that defines staged

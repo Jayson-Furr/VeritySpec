@@ -304,7 +304,9 @@ installed-pack discovery, compatibility metadata, migration guidance, and
 fixtures proving separated packs behave the same as bundled packs. The staged
 guardrails for that work are defined in
 [Specialized pack separation plan](specialized-pack-separation.md), with the
-first mirror fixture guidance in
+installed-pack metadata contract in
+[Installed pack compatibility metadata](installed-pack-compatibility-metadata.md)
+and the first mirror fixture guidance in
 [Official extension compatibility fixtures](official-extension-compatibility-fixtures.md).
 
 The likely separation boundary is:
