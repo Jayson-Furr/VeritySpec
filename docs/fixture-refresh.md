@@ -54,6 +54,7 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | `tests/golden/coverage_dashboard/coverage_dashboard.md` | `verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --generated-at "$GENERATED_AT" --out build/coverage-dashboard.md` |
 | `tests/golden/pack_capability_index/pack_capability_index.json` | `verity generate pack-capability-index tests/fixtures/custom_pack_workspace --generated-at "$GENERATED_AT" --out build/pack-capability-index.json` |
 | `tests/golden/product_impact/product_impact.json` | `verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --generated-at "$GENERATED_AT" --out build/product-impact.json` |
+| `tests/golden/agent_context/agent_context.md` | `verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --generated-at "$GENERATED_AT" --out build/agent-context.md` |
 | `tests/golden/issue_code_catalog/issue_code_catalog.json` | `verity generate issue-code-catalog --generated-at "$GENERATED_AT" --out build/issue-code-catalog.json` |
 | `tests/golden/issue_code_catalog/issue_code_catalog.md` | `verity generate issue-code-catalog --format markdown --generated-at "$GENERATED_AT" --out build/issue-code-catalog.md` |
 | `tests/golden/generator_maturity/openapi.json` | `verity generate openapi tests/fixtures/generator_maturity --out build/generator-maturity-openapi.json` |

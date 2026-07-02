@@ -84,6 +84,7 @@ verity validate examples/product-delivery
 verity lint examples/product-delivery --strict
 verity readiness examples/product-delivery --strict
 verity graph examples/product-delivery
+verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
 verity generate schema-bundle examples/product-delivery --out build/product-delivery-schema-bundle.json
 ```
 

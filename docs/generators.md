@@ -37,6 +37,7 @@ verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out buil
 verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format markdown --out build/coverage-dashboard.md
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
+verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
@@ -199,6 +200,36 @@ Product-impact reports include:
 ```bash
 verity generate product-impact previous-workspace current-workspace --out build/product-impact.json
 ```
+
+Agent-context artifacts include:
+
+- Workspace identity, VeritySpec version, workspace format, and selected
+  exporter target
+- Target exporter metadata, output path, included record kinds, privacy policy,
+  and redaction policy
+- Relevant product-contract records selected from the exporter, declared
+  included kinds, and connected graph records
+- Graph links between selected records
+- Generated artifacts named by the exporter
+- Deprecated or removed selected records
+- Safety boundaries stating that generated context does not replace
+  `AGENTS.md`, tests, readiness checks, or evidence records
+- Verification commands for validation, linting, readiness, graph review, and
+  regenerating the agent-context Markdown artifact
+
+`agent-context` requires `--record` and currently supports Markdown output
+only. The target record must be `agent-context.exporter`,
+`unity.agent-context-exporter`, `godot.agent-context-exporter`, or
+`unreal.agent-context-exporter`. VeritySpec validates the workspace before
+generation and fails on validation errors instead of silently producing stale
+or incomplete handoff context.
+
+```bash
+verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
+```
+
+JSON output remains future work until the handoff contract stabilizes enough
+for downstream tooling and CI integrations.
 
 Roadmap reports include:
 

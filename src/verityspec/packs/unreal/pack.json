@@ -497,6 +497,18 @@
         "unreal.readiness-dashboard",
         "unreal.agent-context-exporter"
       ]
+    },
+    {
+      "id": "agent-context",
+      "name": "Agent Context",
+      "description": "Emit bounded Markdown handoff context from Unreal agent-context exporter records.",
+      "artifactType": "handoff",
+      "outputFormats": [
+        "markdown"
+      ],
+      "recordKinds": [
+        "unreal.agent-context-exporter"
+      ]
     }
   ]
 }

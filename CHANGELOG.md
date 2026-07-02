@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added the first Markdown `verity generate agent-context` prototype for
+  product-delivery and engine agent-context exporter records, including
+  validation preflight behavior, graph-linked record selection, safety
+  boundaries, verification commands, CLI coverage, and a golden Markdown
+  fixture.
+
 ## 0.74.0
 
 - Added Markdown output for `verity generate issue-code-catalog` so

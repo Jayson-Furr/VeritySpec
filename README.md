@@ -54,10 +54,10 @@ This implementation provides:
   deployment reports with linked release evidence, evidence reports,
   lifecycle readiness gap reports for product-delivery, mobile, and liveops
   surfaces, cross-pack coverage dashboards with JSON and Markdown output,
-  product-impact reports, pack capability indexes, roadmap governance
-  reports, and issue-code catalogs, including security release-gap summaries
-  for stale evidence and missing verification dates, with OpenAPI
-  path-parameter support and
+  product-impact reports, agent-context Markdown handoff artifacts, pack
+  capability indexes, roadmap governance reports, and issue-code catalogs,
+  including security release-gap summaries for stale evidence and missing
+  verification dates, with OpenAPI path-parameter support and
   snapshot-tested type/model output including nested Python dataclasses and
   deterministic timestamp controls for generated JSON reports.
 - A PrismSpec importer that produces a converted workspace and migration report.
@@ -174,6 +174,7 @@ verity validate examples/economy
 verity validate examples/progression
 verity validate examples/product-delivery
 verity graph examples/product-delivery
+verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
 verity validate examples/lifecycle-readiness
 verity graph examples/lifecycle-readiness
 verity validate examples/mobile
@@ -244,6 +245,7 @@ verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out
 verity generate schema-bundle docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-schema-bundle.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
+verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
@@ -320,6 +322,7 @@ verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --format m
 verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
 verity generate pack-capability-index docs/fixtures/pack-scaffold/workspace --out build/pack-scaffold-capability-index.json
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
+verity generate agent-context examples/product-delivery --record agent-context.exporter.implementation_bundle --format markdown --out build/agent-context.md
 verity generate roadmap-report . --out build/roadmap-report.json
 verity generate roadmap-report . --format markdown --out build/roadmap-report.md
 verity generate issue-code-catalog --out build/issue-code-catalog.json
