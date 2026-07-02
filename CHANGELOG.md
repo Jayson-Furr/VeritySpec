@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added downstream AI-adapter drift-check guidance for sibling repositories
+  that keep agent-specific Codex, Claude, ChatGPT, Gemini, Copilot, Unity AI,
+  or other adapter files, including an audit checklist anchored to the
+  organization AI entry-point baseline.
+
 ## 0.76.0
 
 - Added `verity generate decision-index` with JSON and Markdown output for

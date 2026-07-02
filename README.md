@@ -445,6 +445,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Changelog](CHANGELOG.md)
 - [AI agent entry point](AGENTS.md)
 - [Agent-context generation design](docs/agent-context-generation.md)
+- [Downstream AI adapter drift checks](docs/downstream-ai-adapter-drift.md)
 - [Architecture decision records](docs/architecture-decision-records.md)
 - [ADR template](docs/adr-template.md)
 - [Roadmap](ROADMAP.md)
