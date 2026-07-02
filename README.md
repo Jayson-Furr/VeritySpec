@@ -62,7 +62,10 @@ This implementation provides:
   deterministic timestamp controls for generated JSON reports.
 - A PrismSpec importer that produces a converted workspace and migration report.
 - Workspace migration-chain planning and reporting through `verity migrate`,
-  including record, pack, generator, and workspace-format impact summaries.
+  including record, pack, generator, and workspace-format impact summaries,
+  plus a documented
+  [migration-report JSON Schema](docs/migration-report-schema.md) for CI
+  integrations.
 - Migration dry-run fixture coverage for each supported workspace version edge.
 - Fixture compatibility coverage and golden compatibility manifests across
   supported workspace format versions.

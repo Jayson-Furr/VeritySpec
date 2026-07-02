@@ -85,6 +85,11 @@ can review affected behavior before rewriting a workspace:
 Existing report fields such as `migrationPath`, `changes`, `filesWritten`, and
 `manualFollowUp` remain present for downstream compatibility.
 
+The workspace migration report JSON contract is documented in
+[Migration Report JSON Schema](migration-report-schema.md), with a
+machine-readable schema at
+[`docs/schemas/migration-report.schema.json`](schemas/migration-report.schema.json).
+
 The current migration path from legacy workspaces is:
 
 ```text

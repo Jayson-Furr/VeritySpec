@@ -121,4 +121,6 @@ Every record kind must require:
 Pack schemas can add kind-specific fields while keeping this common envelope.
 
 See [Versioning and migrations](versioning-and-migrations.md) for
-`specVersion` validation and `verity migrate` behavior.
+`specVersion` validation and `verity migrate` behavior, including the
+[Migration Report JSON Schema](migration-report-schema.md) for CI consumers of
+workspace migration reports.
