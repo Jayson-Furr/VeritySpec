@@ -3032,11 +3032,11 @@ context-refresh, and approval-gate discipline used across the organization.
 
 ## v0.73.0
 
-The `v0.73.0` milestone is in progress.
+The `v0.73.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 150 | In Progress | Device/runtime smoke validation runners |
+| 150 | Complete | Device/runtime smoke validation runners |
 
 ## Sprint 150 Priorities
 
@@ -3056,6 +3056,14 @@ sprint:
   examples for runtime smoke validation.
 - Update engine pack docs, readiness docs, README, changelog, tests, golden
   fixtures, and release bookkeeping.
+
+Sprint 150 delivery added parity-aware `device-smoke` validation-runner
+semantics for Unity, Godot, and Unreal, preserving strict scanner references
+for scanner-backed runner types while allowing direct runtime smoke checks to
+omit scanner records. It also added runtime validation graph links, test
+evidence proof rules, executable engine examples, readiness and pack docs,
+issue-code explanations, Unity official-extension mirror alignment, and an
+explicit AI entry-point baseline clarification for all organization agents.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

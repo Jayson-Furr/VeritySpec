@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.73.0
+
 - Added parity-aware `device-smoke` validation-runner support for Unity, Godot,
   and Unreal so built artifact/runtime smoke checks can omit scanner records
   while normal scanner-backed runners still require `scannerRefs`.
@@ -11,6 +13,7 @@
 - Clarified that organization AI-agent entry-point baseline requirements must
   live in active entry points, not conversation history or agent-specific
   adapters.
+- Added v0.73.0 release notes and roadmap closeout.
 
 ## 0.72.0
 
