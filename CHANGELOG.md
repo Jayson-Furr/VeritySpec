@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added Markdown output for `verity generate deployment-report` so release and
+  operations reviewers can inspect deployment targets, runtimes, release gaps,
+  release policies, linked controls, dashboards, compliance mappings, and
+  release evidence without opening JSON.
+
 ## 0.81.0
 
 - Added downstream CI profile artifact guidance for preserving validation,

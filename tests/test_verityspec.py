@@ -19,6 +19,7 @@ from verityspec.generators import (
     generate_decision_index,
     generate_decision_index_markdown,
     generate_deployment_report,
+    generate_deployment_report_markdown,
     generate_issue_code_catalog,
     generate_issue_code_catalog_markdown,
     generate_lifecycle_readiness_report,
@@ -64,6 +65,7 @@ COMPLIANCE_MATRIX_GOLDEN = (
     ROOT / "tests" / "golden" / "compliance_matrix" / "compliance_matrix.json"
 )
 DEPLOYMENT_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.json"
+DEPLOYMENT_MARKDOWN_GOLDEN = ROOT / "tests" / "golden" / "deployment" / "deployment_report.md"
 COVERAGE_DASHBOARD_GOLDEN = (
     ROOT / "tests" / "golden" / "coverage_dashboard" / "coverage_dashboard.json"
 )
@@ -169,6 +171,10 @@ def normalize_deployment_report_for_golden(report: dict) -> dict:
     normalized["verityVersion"] = "<verityVersion>"
     normalized["workspacePath"] = "<workspacePath>"
     return normalized
+
+
+def normalize_deployment_report_for_markdown_golden(report: dict) -> dict:
+    return normalize_deployment_report_for_golden(report)
 
 
 def normalize_lifecycle_readiness_report_for_golden(report: dict) -> dict:
@@ -1156,9 +1162,9 @@ class VeritySpecTests(unittest.TestCase):
         self.assertIn("## Recent Milestones", markdown)
         self.assertIn("## Recent Sprint Rows", markdown)
         self.assertIn("## Next 20 Roadmap Points", markdown)
-        self.assertIn("1. Add deployment-report Markdown output", markdown)
+        self.assertIn("1. Add evidence-report Markdown output", markdown)
         self.assertIn(
-            "20. Add downstream CI profile artifact manifest planning",
+            "20. Add expanded deployment-report Markdown fixture scenarios",
             markdown,
         )
 
@@ -2281,6 +2287,66 @@ The `v0.2.0` milestone is focused on active work.
         self.assertEqual(str(ROOT / "examples" / "deployment"), report["workspacePath"])
         self.assertIsInstance(report["verityVersion"], str)
         self.assertEqual(expected, normalize_deployment_report_for_golden(report))
+
+    def test_deployment_report_markdown_matches_golden_file(self) -> None:
+        workspace = load_workspace(ROOT / "examples" / "deployment")
+        expected = DEPLOYMENT_MARKDOWN_GOLDEN.read_text(encoding="utf-8")
+
+        report = generate_deployment_report(workspace)
+        markdown = generate_deployment_report_markdown(
+            normalize_deployment_report_for_markdown_golden(report)
+        )
+
+        self.assertTrue(markdown.startswith("# VeritySpec Deployment Report\n"))
+        self.assertIn("## Release Gaps", markdown)
+        self.assertIn("## Deployment Targets", markdown)
+        self.assertIn("## Runtimes", markdown)
+        self.assertIn("deployment.target.checkout_production", markdown)
+        self.assertIn("evidence.ci-run.checkout_release", markdown)
+        self.assertIn("does not make legal, commercial", markdown)
+        self.assertEqual(expected, markdown)
+
+    def test_deployment_report_markdown_handles_empty_sections(self) -> None:
+        markdown = generate_deployment_report_markdown(
+            {
+                "generatedAt": "<generatedAt>",
+                "verityVersion": "<verityVersion>",
+                "workspace": "examples.empty-deployment",
+                "workspacePath": "<workspacePath>",
+                "specVersion": "v0.2.0",
+                "targetCount": 0,
+                "runtimeCount": 0,
+                "summary": {
+                    "byEnvironment": {},
+                    "byProvider": {},
+                    "byPlatform": {},
+                    "runtimesByType": {},
+                    "releaseGaps": {},
+                },
+                "targets": [],
+                "runtimes": [],
+            }
+        )
+
+        self.assertIn("| none | 0 |", markdown)
+        self.assertIn(
+            "| none | none | none | none | none | none | none | none | none | none | none | none | none |",
+            markdown,
+        )
+        self.assertIn("| none | none | none | none | none | none | none | none |", markdown)
+
+    def test_deployment_report_generator_is_advertised_by_deployment_pack(self) -> None:
+        registry = load_pack_registry(["verity.pack.deployment"])
+        pack = registry.packs["verity.pack.deployment"]
+        generator = next(
+            item
+            for item in pack.generator_metadata
+            if item.get("id") == "deployment-report"
+        )
+
+        self.assertIn("deployment-report", pack.generators)
+        self.assertEqual(["json", "markdown"], generator["outputFormats"])
+        self.assertEqual(["deployment.runtime", "deployment.target"], generator["recordKinds"])
 
     def test_lifecycle_readiness_report_summarizes_complete_stages(self) -> None:
         workspace = load_workspace(LIFECYCLE_READINESS_EXAMPLE)

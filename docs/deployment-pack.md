@@ -59,6 +59,7 @@ verity validate examples/deployment
 verity lint examples/deployment --strict
 verity readiness examples/deployment --strict
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
 ```
 
@@ -77,5 +78,21 @@ verity generate schema-bundle examples/deployment --out build/deployment-schema-
   security controls, observability dashboards, compliance mappings, and release
   evidence status/URI summaries
 
-The report is intended for CI, release review, operations handoff, and
+The JSON report is intended for CI, release review, operations handoff, and
 downstream deployment dashboards.
+
+Markdown output is also available:
+
+```bash
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
+```
+
+The Markdown report renders the same deployment summary, release gaps, target
+details, runtime details, release policies, and linked release evidence as a
+human-readable release and operations review artifact. The JSON output remains
+the machine-readable contract for CI and downstream tooling.
+
+The Markdown report summarizes declared VeritySpec records only. It does not
+make legal, commercial, privacy-law, marketplace, app-store,
+platform-certification, pricing-approval, support-SLA, or production-readiness
+claims.

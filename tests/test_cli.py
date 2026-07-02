@@ -2029,6 +2029,32 @@ class VerityCliTests(unittest.TestCase):
             [item["id"] for item in payload["targets"][0]["releaseEvidence"]],
         )
 
+    def test_deployment_report_generator_writes_markdown_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "deployment-report.md"
+            result = verity_command(
+                "generate",
+                "deployment-report",
+                "examples/deployment",
+                "--format",
+                "markdown",
+                "--out",
+                str(out_path),
+            )
+
+            text = out_path.read_text(encoding="utf-8")
+
+        self.assertEqual(0, result.returncode)
+        self.assertIn("Generated deployment-report", result.stdout)
+        self.assertTrue(text.startswith("# VeritySpec Deployment Report\n"))
+        self.assertIn("## Summary", text)
+        self.assertIn("| Deployment targets | 1 |", text)
+        self.assertIn("## Release Gaps", text)
+        self.assertIn("| Production without release evidence | 0 | none |", text)
+        self.assertIn("## Deployment Targets", text)
+        self.assertIn("evidence.ci-run.checkout_release", text)
+        self.assertIn("does not make legal, commercial", text)
+
     def test_deployment_report_generator_matches_golden_file(self) -> None:
         expected = json.loads(DEPLOYMENT_GOLDEN.read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as tmp:

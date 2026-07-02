@@ -3947,6 +3947,214 @@ def generate_deployment_report(workspace: Workspace, generated_at: str | None = 
     }
 
 
+def deployment_report_markdown_gap_rows(gaps: dict[str, Any]) -> list[tuple[str, int, str]]:
+    gap_labels = [
+        ("Targets without runtime", "targetsWithoutRuntime"),
+        ("Runtimes without targets", "runtimesWithoutTargets"),
+        ("Production without approval", "productionWithoutApproval"),
+        ("Production without health checks", "productionWithoutHealthChecks"),
+        ("Targets without rollback plan", "targetsWithoutRollbackPlan"),
+        ("Production without security controls", "productionWithoutSecurityControls"),
+        ("Production without observability", "productionWithoutObservability"),
+        ("Production without compliance mapping", "productionWithoutComplianceMapping"),
+        ("Production without release evidence", "productionWithoutReleaseEvidence"),
+        ("Missing owners", "missingOwners"),
+    ]
+    rows = []
+    for label, key in gap_labels:
+        values = gaps.get(key, [])
+        values_list = values if isinstance(values, list) else []
+        rows.append((label, len(values_list), markdown_join(values_list)))
+    return rows
+
+
+def deployment_report_markdown_linked_records(records: Any) -> str:
+    if not isinstance(records, list):
+        return "none"
+    labels = []
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        record_id = record.get("id")
+        record_kind = record.get("kind")
+        record_status = record.get("status")
+        evidence_status = record.get("evidenceStatus")
+        details = [value for value in (record_kind, record_status, evidence_status) if value]
+        if record_id and details:
+            labels.append(f"{record_id} ({', '.join(str(value) for value in details)})")
+        elif record_id:
+            labels.append(str(record_id))
+    return markdown_join(labels)
+
+
+def deployment_report_markdown_release_policy(policy: Any) -> str:
+    if not isinstance(policy, dict):
+        return "none"
+    fields = []
+    for label, key in (
+        ("strategy", "strategy"),
+        ("approval required", "approvalRequired"),
+        ("owner", "owner"),
+        ("change window", "changeWindow"),
+        ("freeze policy", "freezePolicy"),
+    ):
+        value = policy.get(key)
+        if value not in (None, "", []):
+            if isinstance(value, bool):
+                value = markdown_bool(value)
+            fields.append(f"{label}: {value}")
+    return markdown_cell("; ".join(fields)) if fields else "none"
+
+
+def deployment_report_markdown_runtime(runtime: Any) -> str:
+    if not isinstance(runtime, dict):
+        return "none"
+    runtime_id = runtime.get("id")
+    runtime_type = runtime.get("runtimeType")
+    runtime_name = runtime.get("runtimeName")
+    version = runtime.get("version")
+    details = [value for value in (runtime_type, runtime_name, version) if value]
+    if runtime_id and details:
+        return markdown_cell(f"{runtime_id} ({', '.join(str(value) for value in details)})")
+    return markdown_cell(runtime_id or "none")
+
+
+def generate_deployment_report_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    gaps = summary.get("releaseGaps", {})
+    targets = report.get("targets", [])
+    runtimes = report.get("runtimes", [])
+
+    lines = [
+        "# VeritySpec Deployment Report",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Workspace: `{report.get('workspace')}`",
+        f"- Workspace path: `{report.get('workspacePath')}`",
+        f"- Spec version: `{report.get('specVersion')}`",
+        "",
+        (
+            "> This report summarizes internal VeritySpec deployment-target, "
+            "runtime, release-policy, and linked evidence coverage for release "
+            "and operations review. The JSON deployment-report output remains "
+            "the machine-readable contract for CI and downstream tooling. This "
+            "Markdown report does not make legal, commercial, privacy-law, "
+            "marketplace, app-store, platform-certification, pricing-approval, "
+            "support-SLA, or production-readiness claims."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+    ]
+
+    for label, count in (
+        ("Deployment targets", report.get("targetCount", 0)),
+        ("Runtimes", report.get("runtimeCount", 0)),
+    ):
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} |")
+
+    for heading, counts in (
+        ("Targets By Environment", summary.get("byEnvironment", {})),
+        ("Targets By Provider", summary.get("byProvider", {})),
+        ("Targets By Platform", summary.get("byPlatform", {})),
+        ("Runtimes By Type", summary.get("runtimesByType", {})),
+    ):
+        lines.extend(["", f"## {heading}", "", "| Value | Count |", "|---|---:|"])
+        if isinstance(counts, dict) and counts:
+            for value, count in sorted(counts.items(), key=lambda item: str(item[0])):
+                lines.append(f"| {markdown_cell(value)} | {markdown_cell(count)} |")
+        else:
+            lines.append("| none | 0 |")
+
+    lines.extend(
+        [
+            "",
+            "## Release Gaps",
+            "",
+            "| Gap | Count | Records |",
+            "|---|---:|---|",
+        ]
+    )
+    if isinstance(gaps, dict):
+        for label, count, records in deployment_report_markdown_gap_rows(gaps):
+            lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} | {records} |")
+
+    lines.extend(
+        [
+            "",
+            "## Deployment Targets",
+            "",
+            (
+                "| ID | Environment | Provider | Platform | Regions | Runtime | "
+                "Approval | Health check | Rollback | Security | Observability | "
+                "Compliance | Release evidence |"
+            ),
+            "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+        ]
+    )
+    if isinstance(targets, list):
+        target_row_count = 0
+        for target in sorted(
+            (item for item in targets if isinstance(item, dict)),
+            key=lambda item: str(item.get("id", "")),
+        ):
+            target_row_count += 1
+            lines.append(
+                "| "
+                f"{markdown_cell(target.get('id'))} | "
+                f"{markdown_cell(target.get('environment'))} | "
+                f"{markdown_cell(target.get('provider'))} | "
+                f"{markdown_cell(target.get('platform'))} | "
+                f"{markdown_join(target.get('regions', []) if isinstance(target.get('regions'), list) else [])} | "
+                f"{deployment_report_markdown_runtime(target.get('runtime'))} | "
+                f"{deployment_report_markdown_release_policy(target.get('releasePolicy'))} | "
+                f"{markdown_cell(target.get('healthCheckUrl'))} | "
+                f"{markdown_cell(target.get('rollbackPlan'))} | "
+                f"{deployment_report_markdown_linked_records(target.get('securityControls'))} | "
+                f"{deployment_report_markdown_linked_records(target.get('observabilityDashboards'))} | "
+                f"{deployment_report_markdown_linked_records(target.get('complianceMappings'))} | "
+                f"{deployment_report_markdown_linked_records(target.get('releaseEvidence'))} |"
+            )
+        if target_row_count == 0:
+            lines.append("| none | none | none | none | none | none | none | none | none | none | none | none | none |")
+
+    lines.extend(
+        [
+            "",
+            "## Runtimes",
+            "",
+            "| ID | Type | Runtime | Version | Artifact | Language | Entrypoint | Dependencies |",
+            "|---|---|---|---|---|---|---|---|",
+        ]
+    )
+    if isinstance(runtimes, list):
+        runtime_row_count = 0
+        for runtime in sorted(
+            (item for item in runtimes if isinstance(item, dict)),
+            key=lambda item: str(item.get("id", "")),
+        ):
+            runtime_row_count += 1
+            dependencies = runtime.get("dependencies", [])
+            lines.append(
+                "| "
+                f"{markdown_cell(runtime.get('id'))} | "
+                f"{markdown_cell(runtime.get('runtimeType'))} | "
+                f"{markdown_cell(runtime.get('runtimeName'))} | "
+                f"{markdown_cell(runtime.get('version'))} | "
+                f"{markdown_cell(runtime.get('artifactType'))} | "
+                f"{markdown_cell(runtime.get('language'))} | "
+                f"{markdown_cell(runtime.get('entrypoint'))} | "
+                f"{markdown_join(dependencies if isinstance(dependencies, list) else [])} |"
+            )
+        if runtime_row_count == 0:
+            lines.append("| none | none | none | none | none | none | none | none |")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def has_reference(record: Record, relationship: str) -> bool:
     return bool(reference_targets(record, {}, relationship))
 

@@ -266,6 +266,7 @@ jobs:
           verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
           verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
           verity generate deployment-report examples/deployment --out build/deployment-report.json
+          verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
           verity generate evidence-report examples/evidence --out build/evidence-report.json
           verity generate coverage-dashboard tests/fixtures/cross_pack_coverage --out build/coverage-dashboard.json
           verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out build/pack-capability-index.json
