@@ -2961,6 +2961,35 @@ coverage, README and docs updates, canonical agent feedback-loop guidance,
 clean-on-main open-issue sweep guidance, next-roadmap rotation, and
 release-bookkeeping updates for the v0.70.0 release.
 
+## v0.71.0
+
+The `v0.71.0` milestone is in progress.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 148 | In Progress | Engine evidence traceability |
+
+## Sprint 148 Priorities
+
+Sprint 148 should complete a two-week-sized engine evidence traceability
+sprint:
+
+- Add parity-aware evidence reference rules so test evidence can directly
+  prove Unity project and scene records, Godot project and scene records, and
+  Unreal project and map records.
+- Add build evidence reference rules so build evidence can directly prove
+  Unity build-target records, Godot export-preset records, and Unreal target
+  records.
+- Keep Unity validation-runner evidence parity explicit with Godot and Unreal
+  validation-runner `producesEvidence` behavior.
+- Update the Unity, Godot, and Unreal executable examples with evidence
+  records that prove concrete engine implementation and build/export records.
+- Document that skipped or inconclusive engine checks should use
+  `evidence.test.result` with the normal `proves` relationship instead of
+  downstream-only relationship names such as `provesGap`.
+- Update README, engine pack docs, evidence docs, changelog, roadmap, tests,
+  and release bookkeeping.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension

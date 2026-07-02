@@ -61,6 +61,11 @@ product intent, modes, loops, and prototype scope; Godot records describe the
 engine-specific implementation and tooling boundary for a game made with
 Godot.
 
+When the workspace also loads `verity.pack.evidence`, Godot validation runners
+can use `producesEvidence` to point at `evidence.test` records. Test evidence
+can directly prove `godot.project` and `godot.scene` records, and build
+evidence can directly prove `godot.export-preset` records.
+
 ## Readiness
 
 Strict readiness checks require each ready Godot record to have enough metadata
@@ -96,4 +101,5 @@ verity generate schema-bundle examples/godot --out build/godot-schema-bundle.jso
 The example workspace models the Dream Extraction game concept with one Godot
 project, addon, shared library, prototype scene, node contract, resource,
 script, autoload, input action, PC export preset, scanner, validation runner,
-readiness dashboard, and agent-context exporter.
+readiness dashboard, agent-context exporter, and evidence records for contract
+validation plus PC development export proof.

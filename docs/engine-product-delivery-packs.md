@@ -200,6 +200,32 @@ Useful future record kinds include:
 - `unreal.shared-plugin-dependency`
 - `unreal.editor-tool`
 
+## Engine Evidence Traceability
+
+Engine examples compose the engine packs with `verity.pack.evidence` so
+implementation proof can target concrete engine records instead of only a broad
+product scope.
+
+Supported evidence reference rules include:
+
+- `unity.validation-runner` `producesEvidence` `evidence.test`
+- `godot.validation-runner` `producesEvidence` `evidence.test`
+- `unreal.validation-runner` `producesEvidence` `evidence.test`
+- `evidence.test` `proves` `unity.project`
+- `evidence.test` `proves` `unity.scene`
+- `evidence.test` `proves` `godot.project`
+- `evidence.test` `proves` `godot.scene`
+- `evidence.test` `proves` `unreal.project`
+- `evidence.test` `proves` `unreal.map`
+- `evidence.build` `proves` `unity.build-target`
+- `evidence.build` `proves` `godot.export-preset`
+- `evidence.build` `proves` `unreal.target`
+
+For a skipped or blocked engine check, model the evidence record with
+`result: "skipped"` or `result: "inconclusive"` and keep the normal `proves`
+relationship to the engine record being checked. Do not introduce ad hoc
+relationships such as `provesGap` in downstream workspaces.
+
 ## Product-Delivery Pack
 
 Existing pack ID: `verity.pack.product-delivery`.

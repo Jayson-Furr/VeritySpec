@@ -59,6 +59,11 @@ product intent, modes, loops, and prototype scope; Unreal records describe the
 engine-specific implementation and tooling boundary for a game made with
 Unreal.
 
+When the workspace also loads `verity.pack.evidence`, Unreal validation
+runners can use `producesEvidence` to point at `evidence.test` records. Test
+evidence can directly prove `unreal.project` and `unreal.map` records, and
+build evidence can directly prove `unreal.target` records.
+
 ## Readiness
 
 Strict readiness checks require each ready Unreal record to have enough
@@ -93,4 +98,5 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 The example workspace models the Dream Extraction game concept with one Unreal
 project, plugin, module, target, prototype map, Blueprint, data asset,
 gameplay tag, input action, scanner, validation runner, readiness dashboard,
-and agent-context exporter.
+agent-context exporter, and evidence records for contract validation plus PC
+development target proof.

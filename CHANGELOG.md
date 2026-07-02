@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added parity-aware evidence reference rules so `evidence.test` can directly
+  prove Unity project and scene records, Godot project and scene records, and
+  Unreal project and map records.
+- Added build evidence reference rules for Unity build targets, Godot export
+  presets, and Unreal targets, plus executable engine examples that link
+  validation runners to test evidence and build evidence to concrete
+  build/export targets.
+
 ## 0.70.0
 
 - Added Markdown output for `verity generate security-report` so release
