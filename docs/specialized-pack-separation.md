@@ -147,8 +147,9 @@ how workspaces load packs.
 
 Create official extension package candidates that contain the same pack
 manifests, schemas, docs, examples, and tests as the bundled packs. CI should
-compare bundled and installed variants, but normal users should still receive
-bundled packs by default.
+compare bundled and installed variants, including `verity pack compare` checks
+against official-extension mirror fixtures, but normal users should still
+receive bundled packs by default.
 
 ### Phase 3: Detachable Official Packs
 

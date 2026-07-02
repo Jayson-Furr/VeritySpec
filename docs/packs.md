@@ -120,6 +120,7 @@ verity pack list
 verity pack list --format json
 verity pack doctor
 verity pack doctor --format json
+verity pack compare verity.pack.unity --mirror tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack
 verity pack validate
 verity pack validate verity.pack.api --format json
 verity pack init verity.pack.features --out build/packs/features --kind feature.flag --force
@@ -272,6 +273,22 @@ duplicate pack IDs with conflicting paths are errors. The command does not
 detach bundled packs or allow arbitrary installed packages to shadow built-in
 pack IDs.
 
+`verity pack compare` compares a loaded source pack with a mirror pack path
+without loading the mirror into the active registry. This supports future
+official extension-package fixture checks while preserving the current
+built-in collision guard:
+
+```bash
+verity pack compare verity.pack.unity \
+  --mirror tests/fixtures/official_extension_mirrors/verityspec-pack-unity/pack \
+  --format json
+```
+
+The comparison checks manifest identity, schema declarations, schema JSON
+content, readiness gates, reference rules, and generator metadata. It does not
+detach bundled packs or allow arbitrary installed packages to shadow built-in
+pack IDs.
+
 ## Long-Term Pack Distribution Goal
 
 VeritySpec's product direction is a small core runtime plus official extension
@@ -286,7 +303,9 @@ into separately installable official packages once VeritySpec has stable
 installed-pack discovery, compatibility metadata, migration guidance, and
 fixtures proving separated packs behave the same as bundled packs. The staged
 guardrails for that work are defined in
-[Specialized pack separation plan](specialized-pack-separation.md).
+[Specialized pack separation plan](specialized-pack-separation.md), with the
+first mirror fixture guidance in
+[Official extension compatibility fixtures](official-extension-compatibility-fixtures.md).
 
 The likely separation boundary is:
 
