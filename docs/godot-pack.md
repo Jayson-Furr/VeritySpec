@@ -36,7 +36,8 @@ liveops, and evidence to the game-oriented packs.
 - `godot.scanner`: a scanner contract for Godot project, addon, scene, script,
   and resource inspection.
 - `godot.validation-runner`: a validation-runner contract that names the
-  Godot checks it runs and the scanner records it uses.
+  Godot checks it runs, the scanner records it uses for scanner-backed checks,
+  or the exported runtime artifact it validates for `device-smoke` checks.
 - `godot.readiness-dashboard`: a readiness-dashboard contract for Godot
   project/tooling status summaries.
 - `godot.agent-context-exporter`: an agent-context exporter contract for
@@ -63,8 +64,12 @@ Godot.
 
 When the workspace also loads `verity.pack.evidence`, Godot validation runners
 can use `producesEvidence` to point at `evidence.test` records. Test evidence
-can directly prove `godot.project` and `godot.scene` records, and build
-evidence can directly prove `godot.export-preset` records.
+can directly prove `godot.project`, `godot.scene`, and `godot.export-preset`
+records, and build evidence can directly prove `godot.export-preset` records.
+Use `runnerType: "device-smoke"` for runtime smoke checks that launch an
+exported artifact directly; these runners may omit `scannerRefs` or set it to
+an empty list. Other Godot validation-runner types still require scanner
+references.
 
 ## Readiness
 
@@ -86,7 +91,9 @@ for implementation, export, validation, and agent handoff:
   graph links.
 - Scanners, validation runners, readiness dashboards, and agent-context
   exporters need command or output metadata plus graph links to the records
-  they scan, run, report, or describe.
+  they scan, run, report, or describe. Scanner-backed validation runners need
+  scanner references; `device-smoke` runners instead link to the export preset
+  they validate and to test evidence.
 
 ## Commands
 
@@ -100,6 +107,7 @@ verity generate schema-bundle examples/godot --out build/godot-schema-bundle.jso
 
 The example workspace models the Dream Extraction game concept with one Godot
 project, addon, shared library, prototype scene, node contract, resource,
-script, autoload, input action, PC export preset, scanner, validation runner,
-readiness dashboard, agent-context exporter, and evidence records for contract
-validation plus PC development export proof.
+script, autoload, input action, PC export preset, scanner, scanner-backed
+validation runner, device-smoke runtime runner, readiness dashboard,
+agent-context exporter, and evidence records for contract validation, runtime
+smoke validation, and PC development export proof.

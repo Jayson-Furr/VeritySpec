@@ -60,6 +60,28 @@
       ]
     },
     {
+      "id": "unity.validation-runner.pc_runtime_smoke",
+      "kind": "unity.validation-runner",
+      "name": "PC Runtime Smoke Runner",
+      "description": "Unity device-smoke validation runner for launching the built prototype artifact and collecting runtime smoke evidence without scanning project metadata.",
+      "status": "ready",
+      "owner": "unity-engineering",
+      "runnerType": "device-smoke",
+      "command": "tools/run_pc_runtime_smoke.sh builds/pc-development/DreamExtraction.exe",
+      "scannerRefs": [],
+      "readinessDashboardRef": "unity.readiness-dashboard.prototype",
+      "references": [
+        {
+          "type": "validatesRuntime",
+          "target": "unity.build-target.pc_development"
+        },
+        {
+          "type": "producesEvidence",
+          "target": "evidence.test.unity_pc_runtime_smoke"
+        }
+      ]
+    },
+    {
       "id": "unity.readiness-dashboard.prototype",
       "kind": "unity.readiness-dashboard",
       "name": "Prototype Readiness Dashboard",

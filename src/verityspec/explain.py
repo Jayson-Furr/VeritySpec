@@ -170,6 +170,12 @@ ISSUE_EXPLANATIONS: dict[str, dict[str, str]] = {
         "description": "A readiness gate requires a list field to contain at least a minimum number of items.",
         "resolution": "Add the required items to the record.",
     },
+    "readiness.validation_runner.scanner_refs_required": {
+        "title": "Validation runner scanner references required",
+        "severity": "warning",
+        "description": "A scanner-backed engine validation runner is missing scanner references.",
+        "resolution": "Add scannerRefs for scanner-backed runners, or use runnerType device-smoke when the runner validates a built artifact or device runtime directly.",
+    },
     "record.id.duplicate": {
         "title": "Duplicate record ID",
         "severity": "error",

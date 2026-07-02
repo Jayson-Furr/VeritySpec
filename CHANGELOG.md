@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Added parity-aware `device-smoke` validation-runner support for Unity, Godot,
+  and Unreal so built artifact/runtime smoke checks can omit scanner records
+  while normal scanner-backed runners still require `scannerRefs`.
+- Added runtime validation graph links and evidence rules so device-smoke
+  runners can prove Unity build targets, Godot export presets, and Unreal
+  targets through `evidence.test`.
+- Clarified that organization AI-agent entry-point baseline requirements must
+  live in active entry points, not conversation history or agent-specific
+  adapters.
+
 ## 0.72.0
 
 - Added a documented migration-report JSON Schema for `verity migrate` outputs

@@ -24,7 +24,8 @@ workspace dependency behavior into the core kernel.
 - `unity.scanner`: a scanner contract for Unity project/package/prefab/assembly
   inspection.
 - `unity.validation-runner`: a validation-runner contract that names the
-  Unity checks it runs and the scanner records it uses.
+  Unity checks it runs, the scanner records it uses for scanner-backed checks,
+  or the built runtime artifact it validates for `device-smoke` checks.
 - `unity.readiness-dashboard`: a readiness-dashboard contract for Unity
   project/tooling status summaries.
 - `unity.agent-context-exporter`: an agent-context exporter contract for
@@ -73,6 +74,7 @@ The pack declares these reference relationships:
 - `unity.scanner` `scansPrefab` `unity.prefab`
 - `unity.scanner` `scansAssembly` `unity.asmdef`
 - `unity.validation-runner` `runsScanner` `unity.scanner`
+- `unity.validation-runner` `validatesRuntime` `unity.build-target`
 - `unity.validation-runner` `reportsTo` `unity.readiness-dashboard`
 - `unity.readiness-dashboard` `tracksProject` `unity.project`
 - `unity.readiness-dashboard` `tracksRunner` `unity.validation-runner`
@@ -87,8 +89,11 @@ engine-specific implementation and tooling boundary.
 
 When the workspace also loads `verity.pack.evidence`, Unity validation runners
 can use `producesEvidence` to point at `evidence.test` records. Test evidence
-can directly prove `unity.project` and `unity.scene` records, and build
-evidence can directly prove `unity.build-target` records.
+can directly prove `unity.project`, `unity.scene`, and `unity.build-target`
+records, and build evidence can directly prove `unity.build-target` records.
+Use `runnerType: "device-smoke"` for runtime smoke checks that launch a built
+artifact directly; these runners may omit `scannerRefs` or set it to an empty
+list. Other Unity validation-runner types still require scanner references.
 
 ## Readiness
 
@@ -108,8 +113,9 @@ for implementation and build handoff:
   graph references.
 - Scanners need scan scope, scanned record kinds, output format, and graph
   references.
-- Validation runners need command metadata, scanner references, and graph
-  references.
+- Validation runners need command metadata and graph references. Scanner-backed
+  runners need scanner references; `device-smoke` runners instead link to the
+  build target they validate and to test evidence.
 - Readiness dashboards need target audience, tracked record kinds, output
   format, and graph references.
 - Agent-context exporters need export format, included record kinds, output
@@ -131,6 +137,7 @@ verity generate schema-bundle examples/unity --out build/unity-schema-bundle.jso
 
 The example workspace models the Dream Extraction game concept with one Unity
 project, package dependency, package, shared library, assembly definition,
-prefab, prototype scene, PC development build target, scanner, validation
-runner, readiness dashboard, agent-context exporter, and evidence records for
-contract validation plus PC development build proof.
+prefab, prototype scene, PC development build target, scanner, scanner-backed
+validation runner, device-smoke runtime runner, readiness dashboard,
+agent-context exporter, and evidence records for contract validation, runtime
+smoke validation, and PC development build proof.

@@ -336,6 +336,11 @@
     {
       "sourceKind": "evidence.test",
       "relationship": "proves",
+      "targetKind": "unity.build-target"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
       "targetKind": "godot.project"
     },
     {
@@ -346,12 +351,22 @@
     {
       "sourceKind": "evidence.test",
       "relationship": "proves",
+      "targetKind": "godot.export-preset"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
       "targetKind": "unreal.project"
     },
     {
       "sourceKind": "evidence.test",
       "relationship": "proves",
       "targetKind": "unreal.map"
+    },
+    {
+      "sourceKind": "evidence.test",
+      "relationship": "proves",
+      "targetKind": "unreal.target"
     },
     {
       "sourceKind": "evidence.build",

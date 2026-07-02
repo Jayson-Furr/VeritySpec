@@ -211,15 +211,27 @@ Supported evidence reference rules include:
 - `unity.validation-runner` `producesEvidence` `evidence.test`
 - `godot.validation-runner` `producesEvidence` `evidence.test`
 - `unreal.validation-runner` `producesEvidence` `evidence.test`
+- `unity.validation-runner` `validatesRuntime` `unity.build-target`
+- `godot.validation-runner` `validatesRuntime` `godot.export-preset`
+- `unreal.validation-runner` `validatesRuntime` `unreal.target`
 - `evidence.test` `proves` `unity.project`
 - `evidence.test` `proves` `unity.scene`
+- `evidence.test` `proves` `unity.build-target`
 - `evidence.test` `proves` `godot.project`
 - `evidence.test` `proves` `godot.scene`
+- `evidence.test` `proves` `godot.export-preset`
 - `evidence.test` `proves` `unreal.project`
 - `evidence.test` `proves` `unreal.map`
+- `evidence.test` `proves` `unreal.target`
 - `evidence.build` `proves` `unity.build-target`
 - `evidence.build` `proves` `godot.export-preset`
 - `evidence.build` `proves` `unreal.target`
+
+Engine validation runners use scanner references for scanner-backed contract
+checks. For built artifact, physical-device, or direct runtime smoke checks,
+use `runnerType: "device-smoke"` and link the runner to the build/export/target
+record with `validatesRuntime`; these runners may omit `scannerRefs` or set it
+to an empty list without inventing artificial scanner records.
 
 For a skipped or blocked engine check, model the evidence record with
 `result: "skipped"` or `result: "inconclusive"` and keep the normal `proves`

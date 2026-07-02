@@ -3030,6 +3030,33 @@ canonical AI-agent entry point with the organization-wide entry-point baseline
 so VeritySpec agents preserve the same patterns/glossary, work-ledger,
 context-refresh, and approval-gate discipline used across the organization.
 
+## v0.73.0
+
+The `v0.73.0` milestone is in progress.
+
+| Sprint | Status | Focus |
+|---:|---|---|
+| 150 | In Progress | Device/runtime smoke validation runners |
+
+## Sprint 150 Priorities
+
+Sprint 150 should complete a two-week-sized engine validation-runner semantics
+sprint:
+
+- Add a parity-aware `device-smoke` validation-runner mode for Unity, Godot,
+  and Unreal records.
+- Allow `device-smoke` runners to omit `scannerRefs` or use an empty
+  `scannerRefs` list when they validate a built artifact or physical-device
+  runtime directly.
+- Keep scanner-backed runner types strict: non-device-smoke validation runners
+  must still declare scanner references.
+- Add runtime validation graph links from engine validation runners to Unity
+  build targets, Godot export presets, and Unreal targets.
+- Add test-evidence proof rules and executable Unity, Godot, and Unreal
+  examples for runtime smoke validation.
+- Update engine pack docs, readiness docs, README, changelog, tests, golden
+  fixtures, and release bookkeeping.
+
 ## Product Goal: Core Runtime and Official Extension Packs
 
 VeritySpec should evolve toward a smaller core runtime plus official extension

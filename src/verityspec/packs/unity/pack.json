@@ -198,9 +198,25 @@
         "command"
       ],
       "minItems": {
-        "scannerRefs": 1,
         "references": 1
-      }
+      },
+      "rules": [
+        {
+          "id": "unity.validation-runner.scanner_refs_required",
+          "code": "readiness.validation_runner.scanner_refs_required",
+          "message": "Unity validation runners require scannerRefs unless runnerType is device-smoke.",
+          "when": {
+            "field": "runnerType",
+            "notEquals": "device-smoke"
+          },
+          "must": [
+            {
+              "field": "scannerRefs",
+              "present": true
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "unity.readiness-dashboard.release",
@@ -403,6 +419,11 @@
       "sourceKind": "unity.validation-runner",
       "relationship": "runsScanner",
       "targetKind": "unity.scanner"
+    },
+    {
+      "sourceKind": "unity.validation-runner",
+      "relationship": "validatesRuntime",
+      "targetKind": "unity.build-target"
     },
     {
       "sourceKind": "unity.validation-runner",

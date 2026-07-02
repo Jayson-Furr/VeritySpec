@@ -65,6 +65,28 @@
       ]
     },
     {
+      "id": "godot.validation-runner.pc_runtime_smoke",
+      "kind": "godot.validation-runner",
+      "name": "PC Runtime Smoke Runner",
+      "description": "Godot device-smoke validation runner for launching the exported prototype artifact and collecting runtime smoke evidence without scanning project metadata.",
+      "status": "ready",
+      "owner": "godot-engineering",
+      "runnerType": "device-smoke",
+      "command": "tools/run_pc_runtime_smoke.sh builds/pc-development/DreamExtraction.exe",
+      "scannerRefs": [],
+      "readinessDashboardRef": "godot.readiness-dashboard.prototype",
+      "references": [
+        {
+          "type": "validatesRuntime",
+          "target": "godot.export-preset.pc_development"
+        },
+        {
+          "type": "producesEvidence",
+          "target": "evidence.test.godot_pc_runtime_smoke"
+        }
+      ]
+    },
+    {
       "id": "godot.readiness-dashboard.prototype",
       "kind": "godot.readiness-dashboard",
       "name": "Prototype Readiness Dashboard",

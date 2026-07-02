@@ -33,7 +33,8 @@ liveops, and evidence to the game-oriented packs.
 - `unreal.scanner`: a scanner contract for Unreal project, plugin, map,
   Blueprint, and data-asset inspection.
 - `unreal.validation-runner`: a validation-runner contract that names the
-  Unreal checks it runs and the scanner records it uses.
+  Unreal checks it runs, the scanner records it uses for scanner-backed checks,
+  or the packaged runtime artifact it validates for `device-smoke` checks.
 - `unreal.readiness-dashboard`: a readiness-dashboard contract for Unreal
   project/tooling status summaries.
 - `unreal.agent-context-exporter`: an agent-context exporter contract for
@@ -61,8 +62,12 @@ Unreal.
 
 When the workspace also loads `verity.pack.evidence`, Unreal validation
 runners can use `producesEvidence` to point at `evidence.test` records. Test
-evidence can directly prove `unreal.project` and `unreal.map` records, and
-build evidence can directly prove `unreal.target` records.
+evidence can directly prove `unreal.project`, `unreal.map`, and
+`unreal.target` records, and build evidence can directly prove `unreal.target`
+records. Use `runnerType: "device-smoke"` for runtime smoke checks that
+launch a packaged artifact directly; these runners may omit `scannerRefs` or
+set it to an empty list. Other Unreal validation-runner types still require
+scanner references.
 
 ## Readiness
 
@@ -83,7 +88,9 @@ handoff:
 - Input actions need action name, value type, and device types.
 - Scanners, validation runners, readiness dashboards, and agent-context
   exporters need command or output metadata plus graph links to the records
-  they scan, run, report, or describe.
+  they scan, run, report, or describe. Scanner-backed validation runners need
+  scanner references; `device-smoke` runners instead link to the target they
+  validate and to test evidence.
 
 ## Commands
 
@@ -97,6 +104,7 @@ verity generate schema-bundle examples/unreal --out build/unreal-schema-bundle.j
 
 The example workspace models the Dream Extraction game concept with one Unreal
 project, plugin, module, target, prototype map, Blueprint, data asset,
-gameplay tag, input action, scanner, validation runner, readiness dashboard,
-agent-context exporter, and evidence records for contract validation plus PC
+gameplay tag, input action, scanner, scanner-backed validation runner,
+device-smoke runtime runner, readiness dashboard, agent-context exporter, and
+evidence records for contract validation, runtime smoke validation, and PC
 development target proof.
