@@ -213,6 +213,8 @@ After the release workflow finishes:
 - Close the release milestone.
 - Refresh agent context from `AGENTS.md`, `git status`, and the latest commit
   before continuing with the next sprint.
+- Record the full post-tag evidence with the
+  [post-tag release verification](post-tag-release-verification.md) checklist.
 
 ## PyPI
 

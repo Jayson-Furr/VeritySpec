@@ -59,6 +59,7 @@ class ReleaseIntegrityTests(unittest.TestCase):
             ROOT / ".github" / "workflows" / "product-contract.yml",
             ROOT / "docs" / "downstream-ci.md",
             ROOT / "docs" / "pypi.md",
+            ROOT / "docs" / "post-tag-release-verification.md",
             ROOT / "docs" / "release-checklist.md",
             ROOT / "templates" / "github-actions" / "product-contract-direct.yml",
             ROOT / "templates" / "github-actions" / "product-contract-monorepo.yml",

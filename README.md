@@ -81,6 +81,10 @@ This implementation provides:
 - Release-integrity consistency checks that keep package metadata, README
   release surfaces, release notes, downstream workflow pins, release checklist
   examples, and evidence fixtures aligned with the current package version.
+- Post-tag release verification guidance that records GitHub release asset
+  hashes, skipped PyPI publish review, downloaded wheel smoke checks, public
+  GitHub tag install smoke checks, milestone closure, and agent context refresh
+  evidence.
 - A canonical AI agent entry point with shell discipline, branch/PR/release
   workflow rules, CI fallback behavior, and roadmap bookkeeping requirements.
 - Public contribution guidance, issue templates, and maintainer review
@@ -470,6 +474,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [PyPI publishing](docs/pypi.md)
 - [Release checklist](docs/release-checklist.md)
 - [Release integrity checks](docs/release-integrity.md)
+- [Post-tag release verification](docs/post-tag-release-verification.md)
 - [v0.68.0 release notes](docs/release-notes-v0.68.0.md)
 - [v0.67.0 release notes](docs/release-notes-v0.67.0.md)
 - [v0.66.0 release notes](docs/release-notes-v0.66.0.md)
