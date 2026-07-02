@@ -210,7 +210,7 @@
       "name": "Deployment Report",
       "description": "Summarize deployment runtimes, targets, linked release evidence, ownership, environments, and release gaps.",
       "artifactType": "report",
-      "outputFormats": ["json"],
+      "outputFormats": ["json", "markdown"],
       "recordKinds": ["deployment.runtime", "deployment.target"]
     }
   ]

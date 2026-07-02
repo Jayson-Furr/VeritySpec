@@ -119,6 +119,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json

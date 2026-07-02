@@ -51,7 +51,8 @@ This implementation provides:
 - Generators for OpenAPI, AsyncAPI, TypeScript types, Python models, schema
   bundles, CLI reference docs, validation reports, security reports,
   observability reports, accessibility reports, compliance matrices,
-  deployment reports with linked release evidence, evidence reports,
+  deployment reports with linked release evidence and Markdown release-review
+  output, evidence reports,
   lifecycle readiness gap reports for product-delivery, mobile, and liveops
   surfaces, cross-pack coverage dashboards with JSON and Markdown output,
   product-impact reports, agent-context Markdown handoff artifacts,
@@ -226,6 +227,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
@@ -306,6 +308,7 @@ verity diff previous-workspace current-workspace --format json
 verity generate openapi examples/basic --out build/openapi.json
 verity generate validation-report examples/basic --out build/validation-report.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json

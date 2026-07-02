@@ -110,6 +110,7 @@ verity validate examples/deployment
 verity lint examples/deployment --strict
 verity readiness examples/deployment --strict
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate schema-bundle examples/deployment --out build/deployment-schema-bundle.json
 ```
 

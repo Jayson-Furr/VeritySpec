@@ -18,6 +18,7 @@ verity generate observability-report examples/observability --out build/observab
 verity generate accessibility-report examples/accessibility --out build/accessibility-report.json
 verity generate compliance-matrix examples/compliance --out build/compliance-matrix.json
 verity generate deployment-report examples/deployment --out build/deployment-report.json
+verity generate deployment-report examples/deployment --format markdown --out build/deployment-report.md
 verity generate evidence-report examples/evidence --out build/evidence-report.json
 verity generate lifecycle-readiness-report examples/lifecycle-readiness --out build/lifecycle-readiness-report.json
 verity generate schema-bundle examples/game-core --out build/game-core-schema-bundle.json
@@ -147,8 +148,19 @@ Deployment reports include:
 - Target counts by environment, provider, and platform
 - Runtime counts by runtime type
 - Release gaps for missing runtime links, production approval, production
-  health checks, rollback plans, and owners
-- Per-runtime and per-target release-review detail
+  health checks, rollback plans, security links, observability links,
+  compliance links, release evidence links, and owners
+- Per-runtime and per-target release-review detail, including linked security
+  controls, observability dashboards, compliance mappings, release policies,
+  rollback plans, and release evidence summaries
+- Optional Markdown output for maintainers who need a human-readable release
+  and operations review artifact
+
+The JSON deployment-report output remains the machine-readable contract for CI
+and downstream tooling. The Markdown output is a derived internal review
+artifact and does not make legal, commercial, privacy-law, marketplace,
+app-store, platform-certification, pricing-approval, support-SLA, or
+production-readiness claims.
 
 Coverage dashboards include:
 
