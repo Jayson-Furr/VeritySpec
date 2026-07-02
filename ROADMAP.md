@@ -2820,15 +2820,15 @@ coverage, and release-bookkeeping updates for the v0.66.0 release.
 
 ## v0.67.0
 
-The `v0.67.0` milestone is active.
+The `v0.67.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 144 | In Progress | CLI command module decomposition design |
+| 144 | Complete | CLI command module decomposition design |
 
 ## Sprint 144 Priorities
 
-Sprint 144 should complete a two-week-sized CLI command module decomposition
+Sprint 144 completed a two-week-sized CLI command module decomposition
 design sprint:
 
 - Add a public CLI command module decomposition design note before larger
@@ -2844,6 +2844,11 @@ design sprint:
 - Add tests that keep the design note discoverable and preserve the non-goal
   boundary.
 - Update changelog and roadmap bookkeeping.
+
+Sprint 144 delivery added the CLI command module decomposition design note,
+README and developer-doc links, regression tests for discoverability,
+compatibility surfaces, and non-goals, next-roadmap rotation, and
+release-bookkeeping updates for the v0.67.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

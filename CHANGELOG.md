@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.67.0
+
 - Added a CLI command module decomposition design note that defines staged
   `verityspec.commands` boundaries, shared helper ownership, migration phases,
   and compatibility guardrails before larger command families expand the CLI.
+- Added v0.67.0 release notes and roadmap closeout.
 
 ## 0.66.0
 
