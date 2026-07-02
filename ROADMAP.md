@@ -3244,11 +3244,11 @@ bookkeeping aligned for v0.78.0.
 
 ## v0.79.0
 
-The `v0.79.0` milestone is in progress.
+The `v0.79.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 156 | In Progress | Portfolio report JSON contract planning |
+| 156 | Complete | Portfolio report JSON contract planning |
 
 ## Sprint 156 Priorities
 
@@ -3271,6 +3271,16 @@ implementing aggregate portfolio-report generation:
   privacy-law, marketplace, app-store, platform, pricing, support-SLA, or
   production-readiness approval.
 - Add documentation tests, README links, changelog, and roadmap bookkeeping.
+
+Sprint 156 delivery added portfolio report JSON contract planning for the
+future aggregate `verity generate portfolio-report` surface. The new plan
+defines the planned `portfolio_report` JSON shape, workspace inventory
+entries, relationship summaries, impact warnings, evidence gaps,
+generated-artifact refresh needs, agent-context refresh needs, follow-up
+recommendations, fixture families, implementation acceptance gates, and
+non-claim boundaries. It links the plan from the portfolio validation
+foundation and README, adds documentation tests, and keeps changelog, roadmap,
+Next 20 planning, and release-note bookkeeping aligned for v0.79.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
