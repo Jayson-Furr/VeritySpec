@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added a documented migration-report JSON Schema for `verity migrate` outputs
+  so CI integrations can validate migration paths, impact summaries, changes,
+  files written, manual follow-up, and blocked migration reports.
+
 ## 0.71.0
 
 - Added parity-aware evidence reference rules so `evidence.test` can directly

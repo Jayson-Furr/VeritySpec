@@ -21,6 +21,13 @@ verity generate pack-capability-index tests/fixtures/custom_pack_workspace --out
 verity generate product-impact tests/fixtures/product_impact/baseline tests/fixtures/product_impact/current --out build/product-impact.json
 ```
 
+The migration report written to `build/migration.json` follows the
+[Migration Report JSON Schema](migration-report-schema.md). Downstream CI can
+validate it against
+[`docs/schemas/migration-report.schema.json`](schemas/migration-report.schema.json)
+before inspecting `blocked`, `impactSummary`, `changes`, `filesWritten`, or
+`manualFollowUp`.
+
 For repositories with multiple workspaces, run the contract checks for each
 workspace and generate the artifacts that matter for that product surface.
 Downstream GitHub Actions users can copy

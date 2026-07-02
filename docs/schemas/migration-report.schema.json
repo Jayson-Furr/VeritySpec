@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verityspec.org/schemas/reports/migration-report.schema.json",
+  "title": "VeritySpec workspace migration report",
+  "description": "Machine-readable report emitted by verity migrate --format json and verity migrate --report-out.",
+  "type": "object",
+  "required": [
+    "type",
+    "source",
+    "targetVersion",
+    "dryRun",
+    "changed",
+    "blocked",
+    "migrationPath",
+    "impactSummary",
+    "availableTargets",
+    "changes",
+    "filesWritten",
+    "manualFollowUp"
+  ],
+  "properties": {
+    "type": {
+      "const": "verityspec_migration_report"
+    },
+    "source": {
+      "type": "string",
+      "description": "Absolute path of the workspace or requested workspace path used for migration."
+    },
+    "fromVersion": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Workspace-declared source specVersion or legacy version value when available."
+    },
+    "fromVersionKey": {
+      "type": "string",
+      "description": "Normalized migration graph source key such as legacy, v0.1.0, or v0.2.0."
+    },
+    "targetVersion": {
+      "type": "string",
+      "description": "Requested target workspace format version."
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "True when migration was planned without writing files."
+    },
+    "changed": {
+      "type": "boolean",
+      "description": "True when the migration report contains changes or a workspace manifest rewrite."
+    },
+    "blocked": {
+      "type": "boolean",
+      "description": "True when VeritySpec could not produce or run a migration path."
+    },
+    "migrationPath": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/migrationStep"
+      },
+      "description": "Ordered migration steps that VeritySpec planned or ran."
+    },
+    "impactSummary": {
+      "$ref": "#/$defs/impactSummary"
+    },
+    "availableTargets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target versions reachable from the normalized source key."
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/change"
+      },
+      "description": "Manifest and record rewrite operations planned or performed by migration."
+    },
+    "changeCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Count of entries in changes. Present on successful migration reports."
+    },
+    "filesWritten": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Absolute file paths written by a non-dry-run migration."
+    },
+    "manualFollowUp": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Human follow-up items required after the migration report is reviewed."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "blocked": {
+            "const": false
+          }
+        },
+        "required": [
+          "blocked"
+        ]
+      },
+      "then": {
+        "required": [
+          "fromVersionKey",
+          "changeCount"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "blocked": {
+            "const": true
+          }
+        },
+        "required": [
+          "blocked"
+        ]
+      },
+      "then": {
+        "properties": {
+          "changed": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "impactSummary": {
+      "type": "object",
+      "required": [
+        "workspaceFormat",
+        "records",
+        "packs",
+        "generators"
+      ],
+      "properties": {
+        "workspaceFormat": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "packs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "generators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "migrationStep": {
+      "type": "object",
+      "required": [
+        "id",
+        "fromVersion",
+        "toVersion",
+        "description",
+        "impacts"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fromVersion": {
+          "type": "string"
+        },
+        "toVersion": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "impacts": {
+          "$ref": "#/$defs/impactSummary"
+        }
+      },
+      "additionalProperties": true
+    },
+    "change": {
+      "type": "object",
+      "required": [
+        "path",
+        "action",
+        "field",
+        "before",
+        "after"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "set",
+            "rename",
+            "remove",
+            "normalize",
+            "upgrade"
+          ]
+        },
+        "field": {
+          "type": "string"
+        },
+        "before": true,
+        "after": true,
+        "recordId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
