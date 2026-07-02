@@ -3100,11 +3100,11 @@ the v0.74.0 release.
 
 ## v0.75.0
 
-The `v0.75.0` milestone is focused on active work.
+The `v0.75.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 152 | In Progress | Agent-context generator prototype |
+| 152 | Complete | Agent-context generator prototype |
 
 ## Sprint 152 Priorities
 
@@ -3126,6 +3126,16 @@ Sprint 152 should add the first bounded agent-context generator prototype:
 - Add CLI coverage, library coverage, a golden Markdown fixture, README,
   generator docs, fixture-refresh guidance, release checklist coverage,
   changelog, and roadmap bookkeeping.
+
+Sprint 152 delivery added the first Markdown `verity generate agent-context`
+prototype for product-delivery and engine agent-context exporter records. It
+uses existing workspace loading, pack loading, validation, and graph behavior;
+fails on validation errors; selects target, included-kind, and graph-connected
+records; emits safety boundaries and verification commands; advertises the
+generator in product-delivery, Unity, Godot, and Unreal pack metadata; adds the
+Unity official-extension mirror update; and includes CLI, library, golden
+fixture, README, docs, release checklist, changelog, roadmap, and release-note
+bookkeeping for v0.75.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

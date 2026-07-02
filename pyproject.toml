@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verityspec"
-version = "0.74.0"
+version = "0.75.0"
 description = "Executable product contracts for humans, tools, and agents."
 readme = "README.md"
 requires-python = ">=3.9"
