@@ -33,6 +33,9 @@ released as one clean bundle.
   has been explicitly recorded.
 - After merging, verify `main` and keep `ROADMAP.md`, `CHANGELOG.md`, and
   `README.md` aligned with the completed work.
+- CLI decomposition work should follow the staged
+  [CLI command module decomposition](cli-command-modules.md) design note and
+  avoid mixing command movement with unrelated feature work.
 
 ## AI Agent Requirements
 

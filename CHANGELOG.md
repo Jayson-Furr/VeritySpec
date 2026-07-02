@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added a CLI command module decomposition design note that defines staged
+  `verityspec.commands` boundaries, shared helper ownership, migration phases,
+  and compatibility guardrails before larger command families expand the CLI.
+
 ## 0.66.0
 
 - Added `verity pack compare` for official-extension mirror fixture checks
