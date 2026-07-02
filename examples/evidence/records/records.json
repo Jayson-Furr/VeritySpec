@@ -178,10 +178,10 @@
       "status": "ready",
       "owner": "release",
       "subjectRef": "release.process.evidence_demo",
-      "artifactPath": "dist/verityspec-0.73.0-py3-none-any.whl",
+      "artifactPath": "dist/verityspec-0.74.0-py3-none-any.whl",
       "artifactType": "wheel",
       "platform": "python",
-      "buildVersion": "0.73.0",
+      "buildVersion": "0.74.0",
       "result": "passing",
       "references": [
         {

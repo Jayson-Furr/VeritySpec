@@ -11,11 +11,11 @@ It records the evidence required after the public release exists.
 ## Setup
 
 Run these commands from a clean checkout on `main` after the release tag has
-been pushed. Replace `v0.73.0` only when verifying a different release.
+been pushed. Replace `v0.74.0` only when verifying a different release.
 
 ```bash
 REPO=Jason-Furr/verity-spec
-TAG=v0.73.0
+TAG=v0.74.0
 VERSION="${TAG#v}"
 ```
 
