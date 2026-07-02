@@ -3284,11 +3284,11 @@ Next 20 planning, and release-note bookkeeping aligned for v0.79.0.
 
 ## v0.80.0
 
-The `v0.80.0` milestone is in progress.
+The `v0.80.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 157 | In Progress | Golden-fixture refresh automation planning |
+| 157 | Complete | Golden-fixture refresh automation planning |
 
 ## Sprint 157 Priorities
 
@@ -3309,6 +3309,16 @@ command ships:
   runtime behavior, fixture rewrite behavior, generator changes, or release
   readiness claims.
 - Add documentation tests, README links, changelog, and roadmap bookkeeping.
+
+Sprint 157 delivery added golden-fixture refresh automation planning for a
+future dry-run-first fixture refresh surface. The new plan defines the planned
+`golden_fixture_refresh_plan` JSON shape, explicit generator allowlists,
+generated output review, fixture comparisons, placeholder preservation, diff
+summaries, blocked rewrites, maintainer approval gates, fixture families,
+implementation acceptance gates, and non-claim boundaries. It links the plan
+from the fixture refresh guide and README, adds documentation tests, and keeps
+changelog, roadmap, Next 20 planning, and release-note bookkeeping aligned for
+v0.80.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

@@ -32,7 +32,7 @@ jobs:
             workspace: specs/internal-tool
             profile: internal-tool
             strict: false
-    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.79.0
+    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.80.0
     with:
       workspace: ${{ matrix.workspace }}
       profile: ${{ matrix.profile }}
