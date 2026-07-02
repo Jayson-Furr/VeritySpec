@@ -61,7 +61,9 @@ game, mobile, or liveops packs:
 The staged product plan is maintained in
 [Specialized pack separation plan](specialized-pack-separation.md). That plan
 keeps the current bundled packs available until official extension packages
-can prove compatibility, parity, migration, and rollback behavior.
+can prove compatibility, parity, migration, and rollback behavior. The proposed
+installed-pack metadata contract is documented in
+[Installed pack compatibility metadata](installed-pack-compatibility-metadata.md).
 
 ## Engine Pack Parity Rule
 

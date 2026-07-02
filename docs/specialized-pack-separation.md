@@ -93,6 +93,11 @@ The metadata should be machine-readable so `verity pack validate`, `verity
 doctor`, CI templates, and future migration tooling can fail early when a
 workspace installs an incompatible extension package.
 
+The first proposed shape and lifecycle vocabulary are captured in
+[Installed pack compatibility metadata](installed-pack-compatibility-metadata.md).
+That design note is intentionally documentation-only until runtime diagnostics
+and detach gates are implemented in later sprints.
+
 ## Migration Guidance
 
 A packaging split should not force users to rename records or rewrite `kind`

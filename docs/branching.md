@@ -36,6 +36,10 @@ released as one clean bundle.
 - CLI decomposition work should follow the staged
   [CLI command module decomposition](cli-command-modules.md) design note and
   avoid mixing command movement with unrelated feature work.
+- Installed-pack compatibility enforcement should follow the staged
+  [installed-pack compatibility metadata](installed-pack-compatibility-metadata.md)
+  design note and avoid mixing diagnostics, detach gates, or packaged extension
+  releases into design-only sprints.
 
 ## AI Agent Requirements
 
