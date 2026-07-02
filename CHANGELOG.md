@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.79.0
+
 - Added portfolio report JSON contract planning for a future aggregate report
   covering workspace inventory, validation and readiness status, impact
   warnings, evidence gaps, generated-artifact refresh needs, agent-context
   refresh needs, and non-claim boundaries.
+- Added v0.79.0 release notes and roadmap closeout.
 
 ## 0.78.0
 
