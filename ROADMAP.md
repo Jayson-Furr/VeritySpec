@@ -3208,11 +3208,11 @@ release-note bookkeeping aligned for v0.77.0.
 
 ## v0.78.0
 
-The `v0.78.0` milestone is in progress.
+The `v0.78.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 155 | In progress | Lifecycle-readiness engine fixture planning |
+| 155 | Complete | Lifecycle-readiness engine fixture planning |
 
 ## Sprint 155 Priorities
 
@@ -3230,6 +3230,17 @@ Sprint 155 should plan the first lifecycle-readiness engine fixture slice:
 - Preserve the boundary that integration workspaces remain transitional until
   first-class cross-workspace dependency resolution exists.
 - Add documentation tests, README links, changelog, and roadmap bookkeeping.
+
+Sprint 155 delivery added lifecycle-readiness engine fixture planning for the
+first engine-prototype implementation slice. The new plan defines future Unity,
+Godot, Unreal, and integration fixture families, documents parity expectations
+for engine projects, runtime targets, scanners, validation runners,
+agent-context exporters, and evidence records, lists future executable
+validate, lint, readiness, and graph commands, preserves the integration
+workspace boundary until first-class cross-workspace dependency resolution
+exists, links the plan from the engine full-lifecycle design note and README,
+adds documentation tests, and keeps changelog, roadmap, and release-note
+bookkeeping aligned for v0.78.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

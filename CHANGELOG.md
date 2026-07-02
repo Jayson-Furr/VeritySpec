@@ -2,10 +2,13 @@
 
 ## Unreleased
 
+## 0.78.0
+
 - Added lifecycle-readiness engine fixture planning for the first
   engine-prototype implementation slice, including Unity, Godot, and Unreal
   parity expectations, planned fixture families, future executable commands,
   and non-claim boundaries.
+- Added v0.78.0 release notes and roadmap closeout.
 
 ## 0.77.0
 
