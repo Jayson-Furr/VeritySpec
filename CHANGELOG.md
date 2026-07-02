@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.81.0
+
 - Added downstream CI profile artifact guidance for preserving validation,
   lint, readiness, doctor, graph, and generated report bundles across release,
   regulated, public API, and internal-tool workflows.
+- Added v0.81.0 release notes and roadmap closeout.
 
 ## 0.80.0
 

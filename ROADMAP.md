@@ -3322,11 +3322,11 @@ v0.80.0.
 
 ## v0.81.0
 
-The `v0.81.0` milestone is in progress.
+The `v0.81.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 158 | In Progress | Downstream CI profile artifact guidance |
+| 158 | Complete | Downstream CI profile artifact guidance |
 
 ## Sprint 158 Priorities
 
@@ -3347,6 +3347,17 @@ Sprint 158 should add downstream CI profile artifact guidance:
   platform-certification, pricing-approval, support-SLA, or production
   readiness approval.
 - Add documentation tests, README links, changelog, and roadmap bookkeeping.
+
+Sprint 158 delivery added downstream CI profile artifact guidance for
+preserving release, regulated, public API, and internal-tool profile evidence
+from downstream workflow runs. The new guide defines recommended artifact
+bundle contents for validation, lint, readiness, doctor, graph, validation
+report, and profile-specific report outputs, adds GitHub Actions
+`upload-artifact` examples with stable names and retention guidance, documents
+redaction and path boundaries, records local-verification fallback behavior for
+external GitHub Actions platform outages, proposes an organization-patterns
+follow-up, and keeps README, changelog, roadmap, Next 20 planning, and
+release-note bookkeeping aligned for v0.81.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
