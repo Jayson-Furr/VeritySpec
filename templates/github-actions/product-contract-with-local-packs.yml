@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   verity:
-    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.65.0
+    uses: Jason-Furr/verity-spec/.github/workflows/product-contract.yml@v0.66.0
     with:
       workspace: specs/product
       pack-paths: packs/features packs/security
