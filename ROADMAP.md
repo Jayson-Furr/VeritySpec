@@ -3139,11 +3139,11 @@ bookkeeping for v0.75.0.
 
 ## v0.76.0
 
-The `v0.76.0` milestone is in progress.
+The `v0.76.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 153 | In progress | Decision-record index generator |
+| 153 | Complete | Decision-record index generator |
 
 ## Sprint 153 Priorities
 
@@ -3162,6 +3162,17 @@ Sprint 153 should complete a two-week-sized decision-index generator sprint:
 - Add CLI coverage, library coverage, golden JSON and Markdown fixtures,
   README, generator docs, ADR docs, product-delivery docs, fixture-refresh
   guidance, release checklist coverage, changelog, and roadmap bookkeeping.
+
+Sprint 153 delivery added `verity generate decision-index` for
+product-delivery `decision.record` records. It emits deterministic JSON and
+Markdown reports for ADR and governance review, summarizes decisions by
+decision status, record status, decision type, and owner, includes graph-link
+and supersession details, reports index gaps for accepted, proposed,
+superseded, and orphaned decisions, advertises the generator in
+`verity.pack.product-delivery`, and includes CLI, library, golden fixture,
+README, generator docs, ADR docs, product-delivery docs, fixture-refresh
+guidance, release checklist, changelog, roadmap, and release-note bookkeeping
+for v0.76.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
