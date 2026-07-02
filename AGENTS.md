@@ -7,6 +7,22 @@ file, `AGENTS.md` wins.
 This entry point is intended for Codex, GitHub Copilot, Claude, Claude Code,
 ChatGPT, Gemini, Unity AI, and other coding agents.
 
+## Organization Entry-Point Baseline
+
+This file follows the organization-wide AI entry-point baseline in
+`../organization-patterns/patterns/ai-entry-point-baseline.md`. When updating
+this file or sibling repository entry points, preserve the baseline
+requirements for paired workspace/repository reads, shell discipline,
+organization pattern and glossary consultation, work ledgers, content
+opportunity handling, VeritySpec feedback issues, post-commit refresh,
+clean-main issue sweeps, user-change preservation, secret protection, and
+explicit approval gates for release, deploy, publish, package, and store
+submission actions.
+
+If another organization repository lacks this baseline, record or follow a
+tracking issue such as `Jason-Furr/organization-patterns#6` unless the current
+task explicitly authorizes updating that repository.
+
 ## Project Identity
 
 VeritySpec is an executable product-contract framework. It is not a static
