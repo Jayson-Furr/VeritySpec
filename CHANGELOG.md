@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added lifecycle-readiness engine fixture planning for the first
+  engine-prototype implementation slice, including Unity, Godot, and Unreal
+  parity expectations, planned fixture families, future executable commands,
+  and non-claim boundaries.
+
 ## 0.77.0
 
 - Added downstream AI-adapter drift-check guidance for sibling repositories

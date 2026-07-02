@@ -234,3 +234,8 @@ engine library workspaces. Until then, integration workspaces remain the
 recommended transitional pattern.
 
 The rule is explicit: integration workspaces remain the recommended transitional pattern.
+
+The first follow-on fixture plan is documented in
+`docs/lifecycle-readiness-fixture-plan.md`. That plan defines the narrow
+engine-prototype readiness fixture slice that should precede broader lifecycle
+implementation work.
