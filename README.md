@@ -433,6 +433,7 @@ Records are normal JSON files. Every record has an `id`, `kind`, `name`,
 - [Engine full-lifecycle support design](docs/engine-full-lifecycle-support.md)
 - [Specialized pack separation plan](docs/specialized-pack-separation.md)
 - [Official extension compatibility fixtures](docs/official-extension-compatibility-fixtures.md)
+- [CLI command module decomposition](docs/cli-command-modules.md)
 - [Cross-workspace dependencies](docs/cross-workspace-dependencies.md)
 - [Portfolio-level validation foundation](docs/portfolio-validation.md)
 - [Engine portfolio compatibility fixtures](docs/engine-portfolio-compatibility.md)

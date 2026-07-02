@@ -18,6 +18,8 @@ Write an ADR for decisions such as:
 - Changing installed-pack discovery rules.
 - Changing AI-agent entry-point, branching, release, or CI fallback policy.
 - Choosing a long-term architecture for cross-workspace dependencies.
+- Changing the CLI command module architecture after the
+  [CLI command module decomposition](cli-command-modules.md) design note.
 
 Small bug fixes, docs corrections, and narrow schema additions usually do not
 need an ADR unless they change public guarantees.
