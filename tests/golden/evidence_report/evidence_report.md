@@ -72,7 +72,7 @@
 | ID | Kind | Lifecycle status | Evidence status | Owner | Subject | URI | References |
 |---|---|---|---|---|---|---|---|
 | evidence.artifact.release_manifest | evidence.artifact | ready | ready | release | release.process.evidence_demo (release.process, Evidence Demo Release Process, resolved) | archive/releases/manifest.json | archives: archive.policy.release_artifacts, proves: release.process.evidence_demo |
-| evidence.build.release_wheel | evidence.build | ready | passing | release | release.process.evidence_demo (release.process, Evidence Demo Release Process, resolved) | dist/verityspec-0.82.0-py3-none-any.whl | proves: release.process.evidence_demo |
+| evidence.build.release_wheel | evidence.build | ready | passing | release | release.process.evidence_demo (release.process, Evidence Demo Release Process, resolved) | dist/verityspec-0.83.0-py3-none-any.whl | proves: release.process.evidence_demo |
 | evidence.certification-checklist.release_candidate | evidence.certification-checklist | ready | passing | release | release.process.evidence_demo (release.process, Evidence Demo Release Process, resolved) | release/checklists/candidate.md | proves: release.process.evidence_demo |
 | evidence.ci-run.release_ci | evidence.ci-run | ready | success | release | release.process.evidence_demo (release.process, Evidence Demo Release Process, resolved) | https://github.com/Jason-Furr/verity-spec/actions/runs/28489756302 | proves: release.process.evidence_demo |
 | evidence.playtest.prototype_loop | evidence.playtest | ready | positive | design | product.scope.evidence_demo (product.scope, Evidence Demo Scope, resolved) | playtests/prototype-loop.md | proves: product.scope.evidence_demo |

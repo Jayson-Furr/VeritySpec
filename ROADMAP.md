@@ -3401,11 +3401,11 @@ checklist, and release-note bookkeeping aligned for v0.82.0.
 
 ## v0.83.0
 
-The `v0.83.0` milestone is in progress.
+The `v0.83.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 160 | In Progress | Evidence-report Markdown output |
+| 160 | Complete | Evidence-report Markdown output |
 
 ## Sprint 160 Priorities
 
@@ -3425,6 +3425,17 @@ Sprint 160 should add evidence-report Markdown output:
   evidence records and linked subjects; they do not prove external legal,
   commercial, privacy-law, marketplace, app-store, platform-certification,
   pricing-approval, support-SLA, or production-readiness approval.
+
+Sprint 160 delivery added Markdown output for `verity generate evidence-report`
+while preserving the JSON output as the default machine-readable contract. The
+Markdown report now renders workspace metadata, evidence counts, evidence
+kind, lifecycle status, evidence status, owner breakdowns, release gaps,
+per-evidence subject resolution, URI fields, references, and evidence status
+for implementation and release proof review. The delivery also updates the
+evidence pack generator metadata, CLI behavior, library generator coverage,
+golden fixtures, empty-section handling, README, changelog, generator docs,
+evidence docs, CI smoke commands, fixture-refresh guidance, release checklist,
+and release-note bookkeeping aligned for v0.83.0.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 
