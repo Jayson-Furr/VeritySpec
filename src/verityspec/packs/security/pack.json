@@ -106,7 +106,7 @@
       "name": "Security Report",
       "description": "Summarize security controls, verification coverage, and release gaps.",
       "artifactType": "report",
-      "outputFormats": ["json"],
+      "outputFormats": ["json", "markdown"],
       "recordKinds": ["security.control"]
     }
   ]

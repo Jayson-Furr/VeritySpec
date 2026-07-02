@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added Markdown output for `verity generate security-report` so release
+  reviewers can inspect security-control summaries, release gaps, and
+  verification details as a human-readable artifact while preserving the
+  existing JSON security-report contract.
+- Added security-report Markdown golden fixture, CLI coverage, security pack
+  generator metadata, CI/release checklist command coverage, and documentation
+  for the JSON-versus-Markdown contract boundary.
+
 ## 0.69.0
 
 - Added a post-tag release verification checklist that records GitHub release

@@ -42,6 +42,7 @@ where needed. Keep those placeholders when refreshing golden fixtures.
 | Fixture | Regeneration command |
 |---|---|
 | `tests/golden/security_report/security_report.json` | `verity generate security-report examples/security --generated-at "$GENERATED_AT" --out build/security-report.json` |
+| `tests/golden/security_report/security_report.md` | `verity generate security-report examples/security --format markdown --generated-at "$GENERATED_AT" --out build/security-report.md` |
 | `tests/golden/observability/observability_report.json` | `verity generate observability-report examples/observability --generated-at "$GENERATED_AT" --out build/observability-report.json` |
 | `tests/golden/observability/schema_bundle.json` | `verity generate schema-bundle examples/observability --out build/observability-schema-bundle.json` |
 | `tests/golden/accessibility_report/accessibility_report.json` | `verity generate accessibility-report examples/accessibility --generated-at "$GENERATED_AT" --out build/accessibility-report.json` |

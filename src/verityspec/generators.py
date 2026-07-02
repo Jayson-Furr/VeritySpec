@@ -2630,6 +2630,187 @@ def generate_security_report(workspace: Workspace, generated_at: str | None = No
     }
 
 
+def security_report_markdown_gap_rows(gaps: dict[str, Any]) -> list[tuple[str, int, str]]:
+    critical_unverified = gaps.get("criticalUnverified", [])
+    stale_evidence = gaps.get("staleEvidence", [])
+    missing_dates = gaps.get("missingVerificationDates", [])
+
+    return [
+        (
+            "Critical unverified controls",
+            len(critical_unverified) if isinstance(critical_unverified, list) else 0,
+            markdown_join(critical_unverified if isinstance(critical_unverified, list) else []),
+        ),
+        (
+            "Stale evidence",
+            len(stale_evidence) if isinstance(stale_evidence, list) else 0,
+            markdown_join(stale_evidence if isinstance(stale_evidence, list) else []),
+        ),
+        (
+            "Missing verification dates",
+            len(missing_dates) if isinstance(missing_dates, list) else 0,
+            markdown_join(missing_dates if isinstance(missing_dates, list) else []),
+        ),
+    ]
+
+
+def security_report_markdown_verification(verification: Any) -> str:
+    if not isinstance(verification, dict):
+        return "none"
+
+    fields = []
+    for label, key in (
+        ("method", "method"),
+        ("evidence", "evidence"),
+        ("last verified", "lastVerified"),
+        ("cadence days", "reviewCadenceDays"),
+    ):
+        value = verification.get(key)
+        if value not in (None, "", []):
+            fields.append(f"{label}: {value}")
+    return markdown_cell("; ".join(fields)) if fields else "none"
+
+
+def security_report_markdown_target(target: Any) -> str:
+    if not isinstance(target, dict):
+        return str(target)
+    target_id = target.get("id")
+    target_kind = target.get("kind")
+    if target_id and target_kind:
+        return f"{target_id} ({target_kind})"
+    return str(target_id or target_kind or "unknown")
+
+
+def generate_security_report_markdown(report: dict[str, Any]) -> str:
+    summary = report.get("summary", {})
+    gaps = summary.get("releaseGaps", {})
+    controls = report.get("controls", [])
+    coverage_counts = summary.get("byCoverage", {})
+    risk_counts = summary.get("byRiskLevel", {})
+
+    release_gaps = gaps if isinstance(gaps, dict) else {}
+    critical_unverified = release_gaps.get("criticalUnverified", [])
+    stale_evidence = release_gaps.get("staleEvidence", [])
+    missing_dates = release_gaps.get("missingVerificationDates", [])
+
+    lines = [
+        "# VeritySpec Security Report",
+        "",
+        f"- Generated: `{report.get('generatedAt')}`",
+        f"- VeritySpec: `{report.get('verityVersion')}`",
+        f"- Workspace: `{report.get('workspace')}`",
+        f"- Workspace path: `{report.get('workspacePath')}`",
+        f"- Spec version: `{report.get('specVersion')}`",
+        "",
+        (
+            "> This report summarizes internal VeritySpec security-control "
+            "coverage for release review. The JSON security-report output "
+            "remains the machine-readable contract for CI and downstream "
+            "tooling. This Markdown report does not make legal, compliance, "
+            "privacy-law, security-certification, penetration-test, "
+            "marketplace, app-store, platform-certification, pricing-approval, "
+            "support-SLA, or production-readiness claims."
+        ),
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+    ]
+
+    summary_rows = [
+        ("Security controls", report.get("controlCount", 0)),
+        ("Verified controls", summary.get("verifiedControls", 0)),
+        (
+            "Critical unverified controls",
+            len(critical_unverified) if isinstance(critical_unverified, list) else 0,
+        ),
+        ("Stale evidence records", len(stale_evidence) if isinstance(stale_evidence, list) else 0),
+        (
+            "Missing verification dates",
+            len(missing_dates) if isinstance(missing_dates, list) else 0,
+        ),
+    ]
+    for label, count in summary_rows:
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} |")
+
+    lines.extend(
+        [
+            "",
+            "## Coverage",
+            "",
+            "| Coverage | Controls |",
+            "|---|---:|",
+        ]
+    )
+    if isinstance(coverage_counts, dict) and coverage_counts:
+        for coverage, count in sorted(coverage_counts.items(), key=lambda item: str(item[0])):
+            lines.append(f"| {markdown_cell(coverage)} | {markdown_cell(count)} |")
+    else:
+        lines.append("| none | 0 |")
+
+    lines.extend(
+        [
+            "",
+            "## Risk Levels",
+            "",
+            "| Risk level | Controls |",
+            "|---|---:|",
+        ]
+    )
+    if isinstance(risk_counts, dict) and risk_counts:
+        for risk, count in sorted(risk_counts.items(), key=lambda item: str(item[0])):
+            lines.append(f"| {markdown_cell(risk)} | {markdown_cell(count)} |")
+    else:
+        lines.append("| none | 0 |")
+
+    lines.extend(
+        [
+            "",
+            "## Release Gaps",
+            "",
+            "| Gap | Count | Records |",
+            "|---|---:|---|",
+        ]
+    )
+    for label, count, records in security_report_markdown_gap_rows(release_gaps):
+        lines.append(f"| {markdown_cell(label)} | {markdown_cell(count)} | {records} |")
+
+    lines.extend(
+        [
+            "",
+            "## Security Controls",
+            "",
+            "| ID | Name | Status | Owner | Risk | Coverage | Verified | Verification | Targets |",
+            "|---|---|---|---|---|---|---|---|---|",
+        ]
+    )
+    if isinstance(controls, list):
+        sorted_controls = sorted(
+            (control for control in controls if isinstance(control, dict)),
+            key=lambda control: str(control.get("id", "")),
+        )
+        for control in sorted_controls:
+            targets = control.get("targets", [])
+            target_labels = []
+            if isinstance(targets, list):
+                target_labels = [security_report_markdown_target(target) for target in targets]
+            lines.append(
+                "| "
+                f"{markdown_cell(control.get('id'))} | "
+                f"{markdown_cell(control.get('name'))} | "
+                f"{markdown_cell(control.get('status'))} | "
+                f"{markdown_cell(control.get('owner'))} | "
+                f"{markdown_cell(control.get('riskLevel'))} | "
+                f"{markdown_cell(control.get('coverage'))} | "
+                f"{markdown_bool(control.get('verified'))} | "
+                f"{security_report_markdown_verification(control.get('verification'))} | "
+                f"{markdown_join(target_labels)} |"
+            )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def generate_accessibility_report(workspace: Workspace, generated_at: str | None = None) -> dict:
     claims = [record for record in workspace.records if record.kind == "accessibility.claim"]
     records_by_id = {record.id: record for record in workspace.records if record.id}

@@ -58,6 +58,7 @@ verity validate examples/security
 verity lint examples/security --strict
 verity readiness examples/security --strict
 verity generate security-report examples/security --out build/security-report.json
+verity generate security-report examples/security --format markdown --out build/security-report.md
 ```
 
 For workspaces that load `verity.pack.observability`, include the usual
