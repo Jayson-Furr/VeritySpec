@@ -2924,11 +2924,11 @@ v0.69.0 release.
 
 ## v0.70.0
 
-The `v0.70.0` milestone is focused on active work.
+The `v0.70.0` milestone is released.
 
 | Sprint | Status | Focus |
 |---:|---|---|
-| 147 | In Progress | Security-report Markdown output |
+| 147 | Complete | Security-report Markdown output |
 
 ## Sprint 147 Priorities
 
@@ -2953,6 +2953,13 @@ Sprint 147 should complete a two-week-sized security-report Markdown sprint:
   penetration-test, marketplace, app-store, platform-certification,
   pricing-approval, support-SLA, or production-readiness claims.
 - Update changelog and roadmap bookkeeping.
+
+Sprint 147 delivery added security-report Markdown output, JSON contract
+preservation, security pack generator metadata for JSON and Markdown, CLI,
+library, and golden Markdown coverage, CI and release-checklist command
+coverage, README and docs updates, canonical agent feedback-loop guidance,
+clean-on-main open-issue sweep guidance, next-roadmap rotation, and
+release-bookkeeping updates for the v0.70.0 release.
 
 ## Product Goal: Core Runtime and Official Extension Packs
 

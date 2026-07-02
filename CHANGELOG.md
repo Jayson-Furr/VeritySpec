@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.70.0
+
 - Added Markdown output for `verity generate security-report` so release
   reviewers can inspect security-control summaries, release gaps, and
   verification details as a human-readable artifact while preserving the
@@ -9,6 +11,9 @@
 - Added security-report Markdown golden fixture, CLI coverage, security pack
   generator metadata, CI/release checklist command coverage, and documentation
   for the JSON-versus-Markdown contract boundary.
+- Added canonical AI-agent feedback-loop guidance and clean-on-main open-issue
+  sweep guidance to reduce drift across agent-managed work.
+- Added v0.70.0 release notes and roadmap closeout.
 
 ## 0.69.0
 
