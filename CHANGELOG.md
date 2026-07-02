@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.80.0
+
 - Added golden-fixture refresh automation planning for future dry-run diff
   summaries, generator allowlists, placeholder preservation, blocked rewrites,
   and maintainer approval gates before any fixture rewrite command ships.
+- Added v0.80.0 release notes and roadmap closeout.
 
 ## 0.79.0
 

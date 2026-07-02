@@ -58,7 +58,7 @@ The report should be deterministic and structured for CI consumption:
   "type": "portfolio_report",
   "schemaVersion": "0.1.0",
   "generatedAt": "2026-01-02T03:04:05Z",
-  "verityVersion": "0.79.0",
+  "verityVersion": "0.80.0",
   "portfolio": {},
   "summary": {},
   "workspaces": [],
